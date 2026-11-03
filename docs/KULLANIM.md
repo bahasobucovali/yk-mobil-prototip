@@ -50,7 +50,7 @@ Bilinmesi gerekenler:
 6. **Worldcard ile öde** seç → **Öde** → **Yapı Kredi Mobil ile Onayla** (Face ID simülasyonu)
 7. Başarı ekranı + Worldpuan kazanımı
 
-Diğer uçtan uca akışlar: **Setur otonom senaryosu** (`#setur`), **Karekod ile Öde** (`#springboard`'dan başlar), **Birikim** (Yuvarla / Ekstreden / Maden), **Ödül Yolu**, **Harcama Bölüştür**, **Birlikte Kazan**.
+Diğer uçtan uca akışlar: **Setur otonom senaryosu** (`#setur`), **Karekod ile Öde** (`#springboard`'dan başlar), **Birikim** (Yuvarla / Ekstreden / Maden), **Ödül Yolu**, **Harcama Bölüştür**, **Birlikte Kazan**, **Sky Limit** (taslak — menü → Krediler).
 
 ## Bölümlere doğrudan erişim (hash linkleri)
 
@@ -98,6 +98,11 @@ Her bölüm, akışı baştan tekrarlamadan kendi hash linkiyle doğrudan açıl
 | Birlikte Kazan — yeni hedef | `#reward-goal-new` |
 | Birlikte Kazan — ilerleme | `#reward-goal-track` |
 | Birlikte Kazan — kutlama | `#reward-goal-win` |
+| Sky Limit (taslak) — ana ekran | `#sky-limit` |
+| Sky Limit — limit dağılımı (ürünler arası aktarım) | `#sky-limit-manage` |
+| Sky Limit — değişiklik onayı | `#sky-limit-confirm` |
+| Sky Limit — işlem sonucu | `#sky-limit-success` |
+| Sky Limit — ödeme sonrası açılan limit | `#sky-limit-payment` |
 | Arama | `#search` |
 | Ayarlar | `#settings` |
 | Bölümler hub'ı | `#sections` |
@@ -120,3 +125,10 @@ Tek "Birikim" girişi altında 4 birikim türü × 3 yöntem matrisi (Harcama Yu
 
 ### Ödül Yolu / Harcama Bölüştür / Birlikte Kazan
 Benim Dünyam altında level haritalı görev-ödül yolculuğu; FAST tabanlı harcama bölüştürme istekleri; ortak hedefle biriktirip TL ödül kazanılan Birlikte Kazan.
+
+### Sky Limit (taslak)
+500.000 TL'lik tek ortak kredi limiti İhtiyaç Kredisi, Taksitli Ticari Kredi ve Kredili Hesap arasında dağıtılır. Soldaki menü → **Krediler**'den açılır.
+- **Ana ekran:** toplam / kullanılan / kullanılabilir limit, ürün bazında dağılım çubuğu (koyu: kullanılan, açık: kullanılabilir), yaklaşan taksit, son ödemeler ve açılan limitler.
+- **Limit dağılımı:** kaydırarak, +/− ile ya da tutar yazarak ürünler arası aktarım. Bir ürünün limiti kullanılan tutarın altına inemez, ürünlere dağıtılan toplam 500.000 TL'yi aşamaz; sınır zorlanınca kart içinde uyarı çıkar.
+- **Onay → sonuç:** önceki/yeni dağılım, ürün bazında değişiklikler, işlem özeti; Vazgeç değişikliği iptal eder.
+- **Ödeme sonrası açılan limit:** yaklaşan taksitte **Öde** → 20.000 TL limit yeniden açılır → **Limiti Başka Ürüne Aktar** ile dağılım ekranına geçilir.

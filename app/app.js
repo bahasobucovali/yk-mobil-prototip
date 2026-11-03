@@ -237,6 +237,9 @@ const SECTIONS = [
   { hash: 'reward-goal-new', icon: 'target', t: 'Birlikte Kazan — Yeni hedef', d: 'Grup, hedef tutar, dönem, eşit/katkı paylaşımı' },
   { hash: 'reward-goal-track', icon: 'pie', t: 'Birlikte Kazan — İlerleme', d: 'Kolektif ilerleme, üye katkıları, ödül havuzu (dolu)' },
   { hash: 'reward-goal-win', icon: 'star', t: 'Birlikte Kazan — Kutlama', d: 'Hedefe ulaşıldı, havuz kişi başı paylaşıldı, Ödüllerim' },
+  { hash: 'sky-limit',  icon: 'loan',     t: 'Taslak — Sky Limit', d: 'Tek ortak kredi limiti: toplam limit, ürün bazında dağılım, son ödemeler' },
+  { hash: 'sky-limit-manage', icon: 'transfer', t: 'Taslak — Sky Limit: Limit dağılımı', d: 'Ürünler arası limit aktarımı (kaydırma + tutar girişi, kurallarla)' },
+  { hash: 'sky-limit-payment', icon: 'refresh', t: 'Taslak — Sky Limit: Ödeme sonrası açılan limit', d: '20.000 TL taksit ödendi → limit yeniden açıldı, başka üründe kullan' },
   { hash: 'insights',   icon: 'pie',      t: 'Harcama Analizi',      d: 'Aylık toplam, kategori dağılımı, işyeri kırılımı' },
   { hash: 'limits',     icon: 'target',   t: 'Harcama Limitlerim',   d: 'Kategoriye tutar girerek aylık limit koy' },
   { hash: 'kid',        icon: 'wallet2',  t: 'Çocuk Ek Kartı',       d: 'Limit, harçlık, birikim hedefi, veli eşleştirme, onaylar, rozetler' },
@@ -6064,6 +6067,581 @@ function svCreditRoundup(spent) {
   });
 }
 
+/* ======================================================================
+   SKY LIMIT (draft)
+   One shared credit limit split across several credit products. The
+   customer moves limit between eligible products (never below the used
+   amount, never above the Sky Limit total); repayments re-open limit that
+   can be reused in another product. Mock data + local UI state only.
+   ====================================================================== */
+
+const SKY_TOTAL = 500000;   // total Sky Limit (TL)
+const SKY_STEP = 5000;      // slider / stepper increment (TL)
+const SKY_ICO_BRIEFCASE = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3 12.5h18"/></svg>';
+const SKY_ICO_MINUS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg>';
+const SKY_ICO_UNLOCK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.6-1.7"/></svg>';
+const SKY_ICO_ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+// Product hues: checked as a categorical set (colour-blind separation + contrast)
+// on both theme card surfaces (#1c1c1f dark, #ffffff light). Order = bar order.
+const SKY_PRODUCTS = [
+  { id: 'personal',   name: 'İhtiyaç Kredisi',       sub: 'Bireysel · Taksitli', color: '#0098cb', icon: I.loan },
+  { id: 'commercial', name: 'Taksitli Ticari Kredi', sub: 'Ticari · Taksitli',   color: '#D9772F', icon: SKY_ICO_BRIEFCASE },
+  { id: 'overdraft',  name: 'Kredili Hesap',         sub: 'Hesaba bağlı',        color: '#8B7FD6', icon: I.wallet },
+];
+
+state.sky = {
+  limits: { personal: 200000, commercial: 200000, overdraft: 100000 },   // allocated limit per product
+  used:   { personal: 100000, commercial: 150000, overdraft: 50000 },    // used (outstanding) per product
+  draft: null,        // limits being edited on the management screen
+  change: null,       // last confirmed re-distribution { before, after, no, date }
+  payment: null,      // last installment payment that re-opened limit
+  nextInst: { product: 'personal', amount: 20000, dates: ['10 Kasım', '10 Aralık', '10 Ocak', '10 Şubat'], i: 0 },
+  history: [          // recent repayments that re-opened limit (newest first)
+    { product: 'overdraft',  title: 'Kredili Hesap ödemesi',         amount: 8000,  date: '28 Ekim 2026' },
+    { product: 'personal',   title: 'İhtiyaç Kredisi taksiti',       amount: 20000, date: '10 Ekim 2026' },
+    { product: 'commercial', title: 'Taksitli Ticari Kredi taksiti', amount: 25000, date: '5 Ekim 2026' },
+  ],
+};
+let skyWarnTimers = {};
+
+/* -------------------- helpers -------------------- */
+function skyP(id) { return SKY_PRODUCTS.find(p => p.id === id); }
+function skyTL(n) { return Math.round(n).toLocaleString('tr-TR') + ' TL'; }
+function skySum(o) { return SKY_PRODUCTS.reduce((a, p) => a + (o[p.id] || 0), 0); }
+function skyFree(limits) { return SKY_TOTAL - skySum(limits); }              // not allocated to any product
+function skyUsedTotal() { return skySum(state.sky.used); }
+function skyAvailTotal() { return SKY_TOTAL - skyUsedTotal(); }
+function skyPct(n, of) { return of ? Math.max(0, Math.min(100, n / of * 100)) : 0; }
+function skyTint(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; }
+function skyVars(p) { return `--c:${p.color};--ct:${skyTint(p.color, .34)};--cs:${skyTint(p.color, .15)}`; }
+function skyDeltaHTML(d, cls = '') {
+  if (!d) return '';
+  return `<span class="sky-delta ${d > 0 ? 'up' : 'down'} ${cls}">${d > 0 ? '+' : '−'}${skyTL(Math.abs(d))}</span>`;
+}
+function skyNow() {
+  const d = new Date(), p2 = n => String(n).padStart(2, '0');
+  return `${p2(d.getDate())}.${p2(d.getMonth() + 1)}.${d.getFullYear()} · ${p2(d.getHours())}:${p2(d.getMinutes())}`;
+}
+function skyTxnNo() { return 'SKY' + String(Math.floor(100000000 + Math.random() * 900000000)); }
+function skyHasChange() { const s = state.sky; return !!s.draft && SKY_PRODUCTS.some(p => s.draft[p.id] !== s.limits[p.id]); }
+function skyMoved(before, after) { return SKY_PRODUCTS.reduce((a, p) => a + Math.max(0, after[p.id] - before[p.id]), 0); }
+
+/* Allocation bar: one segment per product (width = limit share), solid = used, tint = available.
+   Unallocated limit (if any) is drawn as a hatched segment at the end. */
+function skyBarHTML(limits, used) {
+  const free = skyFree(limits);
+  const segs = SKY_PRODUCTS.filter(p => limits[p.id] > 0).map(p => {
+    const lim = limits[p.id], u = Math.min(used[p.id], lim);
+    return `<span class="sky-seg" style="flex:${lim} 1 0;${skyVars(p)}"><i style="width:${skyPct(u, lim).toFixed(2)}%"></i></span>`;
+  }).join('');
+  return `<div class="sky-bar" role="img" aria-label="Ürünlere göre limit dağılımı">${segs}${free > 0 ? `<span class="sky-seg free" style="flex:${free} 1 0"></span>` : ''}</div>`;
+}
+function skyKeysHTML(limits) {
+  return `<div class="sky-keys">
+    <span class="sky-key"><i class="sw"></i>Kullanılan</span>
+    <span class="sky-key"><i class="sw avail"></i>Kullanılabilir</span>
+    ${skyFree(limits) > 0 ? '<span class="sky-key"><i class="sw free"></i>Dağıtılmamış</span>' : ''}
+  </div>`;
+}
+
+/* -------------------- Screen 1 — Sky Limit home (dashboard) -------------------- */
+function SkyHome() {
+  const s = state.sky, used = skyUsedTotal(), avail = skyAvailTotal(), free = skyFree(s.limits);
+  const pct = Math.round(used / SKY_TOTAL * 100);
+  const ni = s.nextInst, nip = skyP(ni.product);
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head ru-nav-accent">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Sky Limit</div>
+      <button class="icon-btn" data-action="sky-info" aria-label="Sky Limit nasıl çalışır?">${I.info}</button>
+    </div>
+    <div class="screen-scroll">
+      <div class="ru-statcard sky-hero">
+        <div class="ru-jar-label">Toplam Sky Limit</div>
+        <div class="ru-jar-amt">${skyTL(SKY_TOTAL)}</div>
+        <div class="sky-hero-meter" role="img" aria-label="Kullanım oranı yüzde ${pct}"><i style="width:${pct}%"></i></div>
+        <div class="ru-statrow">
+          <div class="ru-stat"><div class="ru-stat-l">Kullanılan</div><div class="ru-stat-v">${skyTL(used)}</div></div>
+          <div class="ru-stat mid"><div class="ru-stat-l">Kullanılabilir</div><div class="ru-stat-v">${skyTL(avail)}</div></div>
+          <div class="ru-stat"><div class="ru-stat-l">Kullanım oranı</div><div class="ru-stat-v">%${pct}</div></div>
+        </div>
+      </div>
+
+      <div class="sky-card">
+        <div class="sky-card-h"><span>Limit dağılımı</span><button class="sp-link" data-action="sky-manage">Değiştir ${I.chevR}</button></div>
+        ${skyBarHTML(s.limits, s.used)}
+        ${skyKeysHTML(s.limits)}
+        <div class="sky-prods">${SKY_PRODUCTS.map(skyProdRowHTML).join('')}</div>
+        ${free > 0 ? `<div class="sky-free-row" data-action="sky-manage"><span>Dağıtılmamış limit <b>${skyTL(free)}</b></span><em>Bir ürüne ata ${I.chevR}</em></div>` : ''}
+      </div>
+
+      <div class="sky-card sky-next" style="${skyVars(nip)}">
+        <span class="sky-ico">${I.calendar}</span>
+        <div class="sky-next-mid"><b>Yaklaşan taksit · ${ni.dates[ni.i]}</b><span>${nip.name} · ödediğinde ${skyTL(ni.amount)} limitin yeniden açılır</span></div>
+        <div class="sky-next-r"><b>${skyTL(ni.amount)}</b><button class="sky-pill" data-action="sky-pay">Öde</button></div>
+      </div>
+
+      <div class="ru-txn-title">Son ödemeler ve açılan limitler</div>
+      <div class="ru-txns">${s.history.slice(0, 4).map(skyHistRowHTML).join('')}</div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary" data-action="sky-manage">Limit Dağılımını Değiştir</button>
+    </div>
+  </div>`;
+}
+function skyProdRowHTML(p) {
+  const s = state.sky, lim = s.limits[p.id], u = s.used[p.id];
+  return `<div class="sky-prod" style="${skyVars(p)}">
+    <div class="sky-prod-top">
+      <span class="sky-ico">${p.icon}</span>
+      <div class="sky-prod-mid"><b>${p.name}</b><span>${p.sub} · Pay %${Math.round(lim / SKY_TOTAL * 100)}</span></div>
+      <div class="sky-prod-r"><b>${skyTL(lim)}</b><span>Tanımlı limit</span></div>
+    </div>
+    <div class="sky-meter"><i style="width:${skyPct(u, lim).toFixed(2)}%"></i></div>
+    <div class="sky-prod-foot"><span>Kullanılan <b>${skyTL(u)}</b></span><span>Kullanılabilir <b>${skyTL(lim - u)}</b></span></div>
+  </div>`;
+}
+function skyHistRowHTML(h) {
+  const p = skyP(h.product);
+  return `<div class="ru-txn">
+    <span class="ru-txn-ico sky-txn-ico" style="${skyVars(p)}">${I.refresh}</span>
+    <div class="ru-txn-mid"><div class="ru-txn-m">${h.title}</div><div class="ru-txn-s">${skyTL(h.amount)} ödendi</div><div class="ru-txn-d">${h.date}</div></div>
+    <div class="sky-txn-r"><span class="ru-txn-add">+${skyTL(h.amount)}</span><span>limit açıldı</span></div>
+  </div>`;
+}
+function skyInfoSheet() {
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Sky Limit nasıl çalışır?</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="sky-how">
+      <div class="sky-how-row"><span class="sky-how-ico">${I.grid}</span><div><b>Tek limit, birden fazla ürün</b><span>İhtiyaç kredisi, taksitli ticari kredi ve kredili hesap limitlerin tek bir Sky Limit altında toplanır.</span></div></div>
+      <div class="sky-how-row"><span class="sky-how-ico">${I.transfer}</span><div><b>Dağılımı sen belirle</b><span>Tahsis koşulların çerçevesinde limitini uygun ürünler arasında dilediğin zaman aktarabilirsin.</span></div></div>
+      <div class="sky-how-row"><span class="sky-how-ico">${I.refresh}</span><div><b>Ödedikçe limitin açılır</b><span>Taksit ve kredili hesap ödemelerin kadar limitin yeniden açılır; bu limiti uygun başka bir üründe de kullanabilirsin.</span></div></div>
+    </div>
+    ${skyRulesHTML('in')}
+    <button class="sheet-btn" data-action="close-sheet">Anladım</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+function skyRulesHTML(cls = '') {
+  return `<div class="sky-rules ${cls}">
+    <div>${I.lock}<span>Bir ürünün limiti, o üründe kullanılan tutarın altına indirilemez.</span></div>
+    <div>${I.info}<span>Ürünlere dağıtılan toplam limit, ${skyTL(SKY_TOTAL)} Sky Limit tutarını aşamaz.</span></div>
+  </div>`;
+}
+
+/* -------------------- Screen 2 — limit management -------------------- */
+function SkyManage() {
+  const s = state.sky;
+  if (!s.draft) s.draft = { ...s.limits };
+  const free = skyFree(s.draft);
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Limit Dağılımı</div>
+      <button class="sky-reset" data-action="sky-reset">${I.undo} Sıfırla</button>
+    </div>
+    <div class="screen-scroll sky-manage">
+      <div class="sky-sum">
+        <div class="sky-sum-top">
+          <div class="sky-sum-t"><span>Toplam Sky Limit</span><b>${skyTL(SKY_TOTAL)}</b></div>
+          <div class="sky-free ${free > 0 ? 'on' : ''}" id="sky-free"><span>Dağıtılabilir limit</span><b>${skyTL(free)}</b></div>
+        </div>
+        <div id="sky-sum-bar">${skyBarHTML(s.draft, s.used)}</div>
+        <div id="sky-sum-keys">${skyKeysHTML(s.draft)}</div>
+      </div>
+      <p class="sky-lead">Kaydırarak ya da tutarı yazarak ürünler arasında limit aktarabilirsin. Bir üründen azalttığın limit dağıtılabilir limite eklenir; oradan başka bir ürüne verebilirsin.</p>
+      ${SKY_PRODUCTS.map(skyEditCardHTML).join('')}
+      ${skyRulesHTML()}
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary ${skyHasChange() ? '' : 'disabled'}" id="sky-next" data-action="sky-review">Devam</button>
+    </div>
+  </div>`;
+}
+function skyEditCardHTML(p) {
+  const s = state.sky, v = s.draft[p.id], cur = s.limits[p.id], u = s.used[p.id];
+  return `<div class="sky-edit ${v !== cur ? 'changed' : ''}" id="sky-e-${p.id}" style="${skyVars(p)}">
+    <div class="sky-edit-top">
+      <span class="sky-ico">${p.icon}</span>
+      <div class="sky-edit-mid"><b>${p.name}</b><span>Mevcut limit ${skyTL(cur)}</span></div>
+      <span id="sky-d-${p.id}">${skyDeltaHTML(v - cur)}</span>
+    </div>
+    <div class="sky-amt-row">
+      <button class="sky-step" data-action="sky-step" data-id="${p.id}" data-dir="-1" aria-label="${p.name} limitini azalt">${SKY_ICO_MINUS}</button>
+      <label class="sky-amt"><input class="sky-amt-input" id="sky-in-${p.id}" data-id="${p.id}" inputmode="numeric" enterkeyhint="done" autocomplete="off" value="${v.toLocaleString('tr-TR')}" aria-label="${p.name} yeni limit"><span>TL</span></label>
+      <button class="sky-step" data-action="sky-step" data-id="${p.id}" data-dir="1" aria-label="${p.name} limitini artır">${I.plus}</button>
+    </div>
+    <div class="sky-slider" id="sky-sl-${p.id}" style="${skySliderVars(p.id)}">
+      <div class="sky-track"><span class="t-used"></span><span class="t-avail"></span><span class="t-reach"></span></div>
+      <input type="range" class="sky-range" data-id="${p.id}" min="0" max="${SKY_TOTAL}" step="${SKY_STEP}" value="${v}" aria-label="${p.name} limiti">
+    </div>
+    <div class="sky-edit-meta">
+      <span class="sky-min">${I.lock} Kullanılan <b>${skyTL(u)}</b></span>
+      <span>Kullanılabilir <b id="sky-av-${p.id}">${skyTL(v - u)}</b></span>
+    </div>
+    <div class="sky-warn" id="sky-w-${p.id}" role="status" aria-live="polite"></div>
+  </div>`;
+}
+function skySliderVars(id) {
+  const s = state.sky, d = s.draft, free = skyFree(d);
+  return `--u:${skyPct(s.used[id], SKY_TOTAL)}%;--v:${skyPct(d[id], SKY_TOTAL)}%;--r:${skyPct(d[id] + free, SKY_TOTAL)}%`;
+}
+function skyFitInput(inp) {       // keep the amount centred next to "TL"
+  const v = inp.value || '0', digits = v.replace(/\D/g, '').length, dots = (v.match(/\./g) || []).length;
+  inp.style.width = (Math.max(1, digits) + dots * 0.45 + 0.4) + 'ch';
+}
+function skySetupManage() {
+  document.querySelectorAll('.sky-range').forEach(r => {
+    r.addEventListener('input', () => skySetDraft(r.dataset.id, +r.value));
+  });
+  document.querySelectorAll('.sky-amt-input').forEach(inp => {
+    skyFitInput(inp);
+    inp.addEventListener('focus', () => inp.select());
+    inp.addEventListener('input', () => {
+      const digits = inp.value.replace(/\D/g, '').slice(0, 7);
+      inp.value = digits ? (+digits).toLocaleString('tr-TR') : '';
+      skyFitInput(inp);
+    });
+    inp.addEventListener('change', () => skySetDraft(inp.dataset.id, +inp.value.replace(/\D/g, '')));
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+  });
+}
+/* Apply a new value for one product, enforcing the two rules:
+   1) never below the product's used amount, 2) total allocation never above SKY_TOTAL. */
+function skySetDraft(id, raw) {
+  const s = state.sky, d = s.draft;
+  if (!d) return;
+  const min = s.used[id], free = skyFree(d), max = d[id] + free;
+  let v = Math.round(raw) || 0, warn = '';
+  if (v < min) {
+    v = min; warn = `Kullanılan limitin (${skyTL(min)}) altına inemezsin.`;
+  } else if (v > max) {
+    v = max;
+    warn = free > 0
+      ? `En fazla ${skyTL(max)} tanımlayabilirsin; dağıtılabilir limitin ${skyTL(free)}.`
+      : 'Dağıtılabilir limitin yok. Artırmak için önce başka bir ürünün limitini azalt.';
+  }
+  d[id] = v;
+  skyRefreshManage();
+  skyWarn(id, warn);
+}
+function skyStep(id, dir) {
+  const v = state.sky.draft[id];
+  skySetDraft(id, dir > 0 ? Math.floor(v / SKY_STEP) * SKY_STEP + SKY_STEP : Math.ceil(v / SKY_STEP) * SKY_STEP - SKY_STEP);
+}
+function skyReset() {
+  state.sky.draft = { ...state.sky.limits };
+  skyRefreshManage();
+  SKY_PRODUCTS.forEach(p => skyWarn(p.id, ''));
+}
+/* Partial DOM update while editing (no full render → no flicker, slider keeps its drag) */
+function skyRefreshManage() {
+  const s = state.sky, d = s.draft, free = skyFree(d);
+  SKY_PRODUCTS.forEach(p => {
+    const sl = document.getElementById('sky-sl-' + p.id);
+    if (!sl) return;
+    sl.style.setProperty('--v', skyPct(d[p.id], SKY_TOTAL) + '%');
+    sl.style.setProperty('--r', skyPct(d[p.id] + free, SKY_TOTAL) + '%');
+    const rng = sl.querySelector('.sky-range');
+    if (+rng.value !== d[p.id]) rng.value = d[p.id];
+    const inp = document.getElementById('sky-in-' + p.id);
+    if (inp && document.activeElement !== inp) { inp.value = d[p.id].toLocaleString('tr-TR'); skyFitInput(inp); }
+    document.getElementById('sky-d-' + p.id).innerHTML = skyDeltaHTML(d[p.id] - s.limits[p.id]);
+    document.getElementById('sky-av-' + p.id).textContent = skyTL(d[p.id] - s.used[p.id]);
+    document.getElementById('sky-e-' + p.id).classList.toggle('changed', d[p.id] !== s.limits[p.id]);
+  });
+  const fr = document.getElementById('sky-free');
+  if (fr) { fr.classList.toggle('on', free > 0); fr.querySelector('b').textContent = skyTL(free); }
+  document.getElementById('sky-sum-bar').innerHTML = skyBarHTML(d, s.used);
+  document.getElementById('sky-sum-keys').innerHTML = skyKeysHTML(d);
+  document.getElementById('sky-next').classList.toggle('disabled', !skyHasChange());
+}
+function skyWarn(id, msg) {
+  const el = document.getElementById('sky-w-' + id);
+  if (!el) return;
+  clearTimeout(skyWarnTimers[id]);
+  if (!msg) { el.classList.remove('show'); return; }
+  el.innerHTML = `${I.info}<span>${msg}</span>`;
+  el.classList.add('show');
+  skyWarnTimers[id] = setTimeout(() => el.classList.remove('show'), 3500);
+}
+function skyReview() {
+  const a = document.activeElement;
+  if (a && a.classList.contains('sky-amt-input')) a.blur();   // commit a typed amount first
+  if (skyHasChange()) go('sky-limit-confirm');
+}
+
+/* -------------------- Screen 3 — confirm the change -------------------- */
+function SkyConfirm() {
+  const s = state.sky;
+  if (!skyHasChange()) { state.screen = 'sky-limit'; return SkyHome(); }
+  const before = s.limits, after = s.draft, moved = skyMoved(before, after), freeAfter = skyFree(after);
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Değişikliği Onayla</div>
+    </div>
+    <div class="screen-scroll">
+      <div class="sky-card sky-first">
+        <div class="sky-card-h"><span>Limit dağılımı</span></div>
+        <div class="sky-cmp"><span class="sky-cmp-l">Önceki</span>${skyBarHTML(before, s.used)}</div>
+        <div class="sky-cmp"><span class="sky-cmp-l">Yeni</span>${skyBarHTML(after, s.used)}</div>
+        ${skyKeysHTML(after)}
+      </div>
+      <div class="sky-card pad0">
+        <div class="sky-card-h">Ürün bazında değişiklikler</div>
+        ${SKY_PRODUCTS.map(p => skyKVRowHTML(p, before, after, true)).join('')}
+      </div>
+      <div class="sky-card pad0">
+        <div class="sky-card-h">İşlem özeti</div>
+        <div class="sky-rows">
+          <div class="r-row"><span class="r-l">Toplam Sky Limit</span><span class="r-r">${skyTL(SKY_TOTAL)}</span></div>
+          ${moved ? `<div class="r-row"><span class="r-l">Ürünler arası aktarılan limit</span><span class="r-r">${skyTL(moved)}</span></div>` : ''}
+          ${freeAfter > 0 ? `<div class="r-row"><span class="r-l">Dağıtılmamış kalacak limit</span><span class="r-r">${skyTL(freeAfter)}</span></div>` : ''}
+          <div class="r-row"><span class="r-l">Kullanılan limit</span><span class="r-r">${skyTL(skyUsedTotal())} <i class="sky-same">değişmez</i></span></div>
+          <div class="r-row"><span class="r-l">Toplam kullanılabilir limit</span><span class="r-r">${skyTL(skyAvailTotal())}</span></div>
+          <div class="r-row"><span class="r-l">Geçerlilik</span><span class="r-r">Onaydan hemen sonra</span></div>
+        </div>
+      </div>
+      <div class="sky-note">${I.info}<span>Kullandığın krediler ve taksitlerin bu değişiklikten etkilenmez; yalnızca ürünlere ayrılan limitler güncellenir.${freeAfter > 0 ? ' Dağıtılmamış limit Sky Limit\'inde bekler, istediğin zaman bir ürüne verebilirsin.' : ''}</span></div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary" id="sky-approve" data-action="sky-approve">Onayla</button>
+      <button class="btn-ghost" data-action="sky-cancel">Vazgeç</button>
+    </div>
+  </div>`;
+}
+/* Product row with "Limit" and "Kullanılabilir" lines; showBefore → "eski → yeni" (confirm screen) */
+function skyKVRowHTML(p, before, after, showBefore) {
+  const u = state.sky.used[p.id], b = before[p.id], a = after[p.id], diff = a - b;
+  const val = (x, y) => (showBefore && diff ? `<s>${x.toLocaleString('tr-TR')}</s>${SKY_ICO_ARROW}` : '') + `<b>${skyTL(y)}</b>`;
+  const tag = diff ? skyDeltaHTML(diff, 'sm') : (showBefore ? '<span class="sky-kv-same">Değişiklik yok</span>' : '');
+  return `<div class="sky-kv ${showBefore && !diff ? 'same' : ''}" style="${skyVars(p)}">
+    <span class="sky-ico sm">${p.icon}</span>
+    <div class="sky-kv-body">
+      <div class="sky-kv-head"><b>${p.name}</b>${tag}</div>
+      <div class="sky-kv-line"><span>Limit</span><span>${val(b, a)}</span></div>
+      <div class="sky-kv-line"><span>Kullanılabilir</span><span>${val(b - u, a - u)}</span></div>
+    </div>
+  </div>`;
+}
+function skyApprove() {
+  const btn = document.getElementById('sky-approve');
+  if (!btn) return;
+  btn.classList.add('sky-busy');
+  btn.innerHTML = '<span class="spinner"></span> Onaylanıyor…';
+  btn.style.pointerEvents = 'none';
+  setTimeout(() => {
+    const s = state.sky;
+    s.change = { before: { ...s.limits }, after: { ...s.draft }, no: skyTxnNo(), date: skyNow() };
+    s.limits = { ...s.draft };
+    s.draft = null;
+    go('sky-limit-success');
+  }, 1300);
+}
+
+/* -------------------- Screen 4 — result -------------------- */
+function SkySuccess() {
+  const s = state.sky, c = s.change;
+  if (!c) { state.screen = 'sky-limit'; return SkyHome(); }
+  return `
+  <div class="screen anim-fade">
+    <div class="screen-scroll">
+      <div class="success sky-success">
+        <div class="success-check"><div class="ring">${I.checkBig}</div></div>
+        <h2>Limit dağılımın güncellendi</h2>
+        <div class="succ-date">${c.date}</div>
+        <p class="sky-succ-sub">Yeni limitlerin hemen kullanıma hazır.</p>
+        <div class="sky-card flat">
+          <div class="sky-card-h"><span>Yeni limit dağılımı</span></div>
+          ${skyBarHTML(c.after, s.used)}
+          ${skyKeysHTML(c.after)}
+          <div class="sky-prods">${SKY_PRODUCTS.map(p => skyKVRowHTML(p, c.before, c.after, false)).join('')}</div>
+        </div>
+        <div class="receipt">
+          <div class="r-row"><span class="r-l">İşlem No</span><span class="r-r">${c.no}</span></div>
+          <div class="r-row"><span class="r-l">İşlem tarihi</span><span class="r-r">${c.date}</span></div>
+          <div class="r-row"><span class="r-l">Aktarılan limit</span><span class="r-r">${skyTL(skyMoved(c.before, c.after))}</span></div>
+          <div class="r-row"><span class="r-l">Toplam kullanılabilir limit</span><span class="r-r">${skyTL(skyAvailTotal())}</span></div>
+        </div>
+        <div class="success-actions">
+          <button class="btn-primary" data-action="sky-home">Sky Limit'e Dön</button>
+          <button class="btn-outline" data-action="go-home">Ana Sayfaya Dön</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* -------------------- Installment payment → limit re-opens -------------------- */
+function skyPaySheet() {
+  const ni = state.sky.nextInst, p = skyP(ni.product);
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-amount-label">${p.name} · ${ni.dates[ni.i]} taksiti</div>
+    <div class="sheet-amount">${fmtTL(ni.amount)}</div>
+    <div class="sky-sheet-gain">${I.refresh}<span>Ödemeden sonra <b>${skyTL(ni.amount)}</b> limitin yeniden açılır.</span></div>
+    <div class="sheet-pay-row"><span>Ödeme hesabı</span><span class="spr-r">Vadesiz TL Hesabım · 12345678</span></div>
+    <button class="sheet-btn" id="sky-pay-btn" data-action="sky-pay-approve">${I.shield} Ödemeyi Onaylıyorum</button>
+    <button class="sheet-btn ghost" data-action="close-sheet">Vazgeç</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+function skyPayApprove() {
+  const btn = document.getElementById('sky-pay-btn');
+  if (!btn) return;
+  btn.innerHTML = '<span class="spinner"></span> Ödeme yapılıyor…';
+  btn.style.pointerEvents = 'none';
+  setTimeout(() => {
+    skyApplyPayment();
+    closeSheet();
+    setTimeout(() => go('sky-limit-payment'), 250);
+  }, 1400);
+}
+function skyApplyPayment() {
+  const s = state.sky, ni = s.nextInst, id = ni.product;
+  const amt = Math.min(ni.amount, s.used[id]);
+  const beforeAvail = skyAvailTotal();
+  s.used[id] -= amt;
+  s.payment = {
+    product: id, amount: amt, inst: ni.dates[ni.i], next: ni.dates[Math.min(ni.i + 1, ni.dates.length - 1)],
+    beforeAvail, afterAvail: skyAvailTotal(), no: skyTxnNo(), date: skyNow(),
+  };
+  s.history.unshift({ product: id, title: `${skyP(id).name} taksiti`, amount: amt, date: 'Bugün' });
+  ni.i = Math.min(ni.i + 1, ni.dates.length - 1);
+}
+
+/* -------------------- Screen 5 — limit re-opened after payment -------------------- */
+function SkyPaid() {
+  const s = state.sky, pm = s.payment;
+  if (!pm) { state.screen = 'sky-limit'; return SkyHome(); }
+  const p = skyP(pm.product);
+  return `
+  <div class="screen anim-fade">
+    <div class="screen-scroll">
+      <div class="success sky-success">
+        <div class="success-check"><div class="ring">${I.checkBig}</div></div>
+        <h2>Taksitin ödendi</h2>
+        <div class="succ-date">${p.name} · ${pm.inst} taksiti · ${pm.date}</div>
+
+        <div class="sky-reopen">
+          <div class="sky-reopen-l">${SKY_ICO_UNLOCK} Yeniden açılan limit</div>
+          <div class="sky-reopen-amt">+${skyTL(pm.amount)}</div>
+          <div class="sky-reopen-meter" role="img" aria-label="Kullanılabilir limit ${skyTL(pm.afterAvail)}"><i id="sky-reopen-fill" style="width:${skyPct(pm.beforeAvail, SKY_TOTAL)}%"></i></div>
+          <div class="sky-reopen-row">
+            <span>Kullanılabilir limit</span>
+            <span class="sky-reopen-v"><s>${skyTL(pm.beforeAvail)}</s>${SKY_ICO_ARROW}<b id="sky-count">${skyTL(pm.beforeAvail)}</b></span>
+          </div>
+        </div>
+
+        <div class="sky-flow">
+          <div class="sky-flow-s"><span class="n">1</span><b>Taksit ödendi</b><em>${skyTL(pm.amount)}</em></div>
+          <div class="sky-flow-s"><span class="n">2</span><b>Limit açıldı</b><em>+${skyTL(pm.amount)}</em></div>
+          <div class="sky-flow-s"><span class="n">3</span><b>Yeniden kullan</b><em>Uygun ürünlerde</em></div>
+        </div>
+
+        <div class="sky-card flat">
+          <div class="sky-card-h"><span>Bu limiti nerede kullanabilirsin?</span></div>
+          <div class="sky-prods">${SKY_PRODUCTS.map(q => skyUseRowHTML(q, pm)).join('')}</div>
+          <div class="sky-note in">${I.info}<span>Açılan tutar ${p.name} limitine geri eklendi. Başka bir üründe kullanmak için limit dağılımını değiştirebilirsin.</span></div>
+        </div>
+
+        <div class="receipt">
+          <div class="r-row"><span class="r-l">Ödenen tutar</span><span class="r-r">${fmtTL(pm.amount)}</span></div>
+          <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">Vadesiz TL Hesabım</span></div>
+          <div class="r-row"><span class="r-l">Sıradaki taksit</span><span class="r-r">${pm.next}</span></div>
+          <div class="r-row"><span class="r-l">İşlem No</span><span class="r-r">${pm.no}</span></div>
+        </div>
+        <div class="success-actions">
+          <button class="btn-primary" data-action="sky-manage-after-pay">${I.transfer} Limiti Başka Ürüne Aktar</button>
+          <button class="btn-outline" data-action="sky-home">Sky Limit'e Dön</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function skyUseRowHTML(q, pm) {
+  const s = state.sky, avail = s.limits[q.id] - s.used[q.id], paid = q.id === pm.product;
+  const act = paid
+    ? `<button class="sky-pill" data-action="toast" data-msg="Kredi kullanımı prototipte aktif değil">Kullan</button>`
+    : `<button class="sky-pill ghost" data-action="sky-manage-after-pay">Aktar</button>`;
+  return `<div class="sky-res" style="${skyVars(q)}">
+    <span class="sky-ico sm">${q.icon}</span>
+    <div class="sky-res-mid"><b>${q.name}</b><span>Kullanılabilir ${skyTL(avail)}</span>${paid ? `<em class="sky-opened">+${skyTL(pm.amount)} açıldı</em>` : ''}</div>
+    ${act}
+  </div>`;
+}
+function skySetupPaid() {
+  const pm = state.sky.payment;
+  if (!pm) return;
+  const el = document.getElementById('sky-count'), fill = document.getElementById('sky-reopen-fill');
+  setTimeout(() => { if (fill) fill.style.width = skyPct(pm.afterAvail, SKY_TOTAL) + '%'; }, 150);
+  const from = pm.beforeAvail, to = pm.afterAvail, dur = 900;
+  let t0 = null;
+  const tick = now => {
+    if (!document.body.contains(el)) return;
+    if (t0 === null) t0 = now;
+    const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = skyTL(from + (to - from) * e);
+    if (k < 1) requestAnimationFrame(tick);
+  };
+  setTimeout(() => requestAnimationFrame(tick), 250);
+}
+
+/* -------------------- navigation helpers -------------------- */
+// Drop the flow screens from the back stack so "back" lands where Sky Limit was opened from
+function skyUnwind() {
+  const i = state.nav.map(f => f.screen).lastIndexOf('sky-limit');
+  if (i >= 0) state.nav = state.nav.slice(0, i);
+}
+function skyGoHome() {
+  skyUnwind();
+  state.sky.draft = null;
+  state.chatSeed = false;
+  state.screen = 'sky-limit';
+  render();
+}
+function skyOpenManage(fromFlow) {
+  if (fromFlow) {              // from a result screen: back from management should return to Sky Limit home
+    skyUnwind();
+    state.nav.push({ screen: 'sky-limit', chatSeed: false });
+    state.sky.draft = { ...state.sky.limits };
+    state.screen = 'sky-limit-manage';
+    return render();
+  }
+  state.sky.draft = { ...state.sky.limits };
+  go('sky-limit-manage');
+}
+function skyCancel() {
+  skyGoHome();
+  toast('Limit değişikliği iptal edildi');
+}
+// Deep links (#sky-limit-…) prepare the state they need without replaying the flow
+function skyDemoDraft() {      // demo change: move 50.000 TL from İhtiyaç Kredisi to Kredili Hesap
+  const s = state.sky, d = { ...s.limits };
+  const amt = Math.min(50000, d.personal - s.used.personal);
+  d.personal -= amt; d.overdraft += amt;
+  return d;
+}
+function skySeed(h) {
+  const s = state.sky;
+  if (h === 'sky-limit') s.draft = null;
+  if (h === 'sky-limit-manage') s.draft = { ...s.limits };
+  if (h === 'sky-limit-confirm' && !skyHasChange()) s.draft = skyDemoDraft();
+  if (h === 'sky-limit-success' && !s.change) {
+    const after = skyDemoDraft();
+    s.change = { before: { ...s.limits }, after, no: skyTxnNo(), date: skyNow() };
+    s.limits = { ...after };
+    s.draft = null;
+  }
+  if (h === 'sky-limit-payment' && !s.payment) skyApplyPayment();
+}
+
 function render() {
   let html = '';
   switch (state.screen) {
@@ -6116,6 +6694,11 @@ function render() {
     case 'birikim-apply': html = BirikimApply(); break;
     case 'birikim-manage': html = BirikimManage(); break;
     case 'birikim-history': html = BirikimHistory(); break;
+    case 'sky-limit': html = SkyHome(); break;
+    case 'sky-limit-manage': html = SkyManage(); break;
+    case 'sky-limit-confirm': html = SkyConfirm(); break;
+    case 'sky-limit-success': html = SkySuccess(); break;
+    case 'sky-limit-payment': html = SkyPaid(); break;
     default: html = PlaceholderScreen(state.placeholderTitle || 'Yakında'); break;
   }
   app.innerHTML = html;
@@ -6131,6 +6714,8 @@ function render() {
   if (state.screen === 'metal-jar') setupMetalJar();
   if (state.screen === 'birikim-apply') setupBirikimApply();
   if (state.screen === 'card-detail') setupDcvv();
+  if (state.screen === 'sky-limit-manage') skySetupManage();
+  if (state.screen === 'sky-limit-payment') skySetupPaid();
   if (state.screen === 'split-amount') setTimeout(() => { const i = document.getElementById('spl-amt-input'); i && i.focus(); }, 280);
 }
 
@@ -7373,6 +7958,7 @@ document.addEventListener('click', (e) => {
       if (id === 'home') return goHome();
       if (id === 'world') { closeDrawer(); return go('fayda'); }   // Benim Dünyam → Fayda Yolculukları
       if (id === 'transfer') { closeDrawer(); return gotoSection('split'); }   // Para Transferleri → Harcama Bölüştür / Ödeme İste
+      if (id === 'loan') { closeDrawer(); return gotoSection('sky-limit'); }   // Krediler → Sky Limit (draft)
       // Diğer menüler placeholder
       state.placeholderTitle = t.dataset.label;
       return go('placeholder');
@@ -7423,6 +8009,19 @@ document.addEventListener('click', (e) => {
     case 'set-theme': return setTheme(t.dataset.theme);
     case 'toggle-switch': return t.classList.toggle('on');
 
+    // Sky Limit (draft)
+    case 'sky-info': return skyInfoSheet();
+    case 'sky-manage': return skyOpenManage(false);
+    case 'sky-manage-after-pay': return skyOpenManage(true);
+    case 'sky-step': return skyStep(t.dataset.id, +t.dataset.dir);
+    case 'sky-reset': return skyReset();
+    case 'sky-review': return skyReview();
+    case 'sky-approve': return skyApprove();
+    case 'sky-cancel': return skyCancel();
+    case 'sky-home': return skyGoHome();
+    case 'sky-pay': return skyPaySheet();
+    case 'sky-pay-approve': return skyPayApprove();
+
     case 'toast': return toast(t.dataset.msg || 'Bu işlem prototipte aktif değil');
   }
 });
@@ -7440,7 +8039,7 @@ function updateClock() {
    Her bölümün kendi hash linki var: #home #assistant #setur #chat #payment
    #success #tracking #search #settings #sections
    Link açıldığında ekran gereken state ile hazır gelir (akışı tekrarlamadan). */
-const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history'];
+const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'sky-limit', 'sky-limit-manage', 'sky-limit-confirm', 'sky-limit-success', 'sky-limit-payment'];
 function routeTo(hash) {
   const h = (hash || '').replace('#', '') || 'home';
   if (!ROUTES.includes(h)) return false;
@@ -7543,6 +8142,8 @@ function routeTo(hash) {
   }
   if (h === 'reward-goal-track' && !bkById(state.bk.viewId)) state.bk.viewId = bkGoals[0].id;
   if (h === 'reward-goal-win') { const g = bkView(); g.spent = g.target; g.status = 'done'; bkAwardOnce(g); }
+  // Sky Limit deep links: confirm / result / payment screens open with demo state
+  if (h.startsWith('sky-limit')) skySeed(h);
   state.chatSeed = false;
   state.screen = h;
   return true;
