@@ -535,6 +535,14 @@ main#app {
   color: #fff; padding: 2px 6px; border-radius: 6px;
   margin-top: 4px; vertical-align: middle;
 }
+/* "YENİ" tag for draft features in search (same shape as .ai-tag, brand blue) */
+.new-tag {
+  display: inline-block; white-space: nowrap;
+  font-size: 9px; font-weight: 800; letter-spacing: .5px;
+  background: var(--primary); color: #fff;
+  padding: 2px 6px; border-radius: 6px;
+  margin-top: 4px; vertical-align: middle;
+}
 
 /* =========================================================
    GENEL EKRAN BAŞLIĞI (geri + başlık)

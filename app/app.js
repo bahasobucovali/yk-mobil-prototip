@@ -795,7 +795,8 @@ function SearchEmpty() {
       <p>İşlemleri, akıllı rehber kayıtlarınızı, ödeme yapmak istediğiniz faturaların kurumlarını arayabilirsiniz ve arama sonuçlarından işlem yapabilirsiniz.</p>
     </div>
     <div class="result-group-title">Önerilenler</div>
-    ${AssistantResult()}`;
+    ${AssistantResult()}
+    ${SEARCH_FEATURES.map(f => FeatureResult(f)).join('')}`;
 }
 
 function AssistantResult(query) {
@@ -816,13 +817,46 @@ function AssistantResult(query) {
     </div>`;
 }
 
+/* Draft features reachable from search (also listed under "Önerilenler") */
+const SEARCH_FEATURES = [
+  { hash: 'sky-limit', name: 'Sky Limit', icon: I.loan, sub: 'Kredi limitlerini tek ortak limitte yönet',
+    keys: ['limit', 'kredi limiti', 'ortak limit', 'limit aktarımı', 'limit dağılımı', 'kredi', 'ihtiyaç kredisi', 'ticari kredi', 'kredili hesap'] },
+  { hash: 'toplu-borc', name: 'Toplu Borç Ödeme', icon: I.payments, sub: 'Kart, esnek hesap ve kredi borçların tek ekstrede',
+    keys: ['borç', 'borç öde', 'toplu ödeme', 'ekstre', 'kredi kartı borcu', 'kart borcu', 'esnek hesap', 'kmh', 'taksit', 'konut kredisi', 'taşıt kredisi', 'kredi borcu'] },
+];
+// Turkish-aware and accent-insensitive: "Borç", "borc" and "BORÇ" match alike (keeps string length)
+function searchNorm(s) {
+  return s.toLocaleLowerCase('tr').replace(/[çğıöşü]/g, c => ({ ç: 'c', ğ: 'g', ı: 'i', ö: 'o', ş: 's', ü: 'u' })[c]);
+}
+function searchFeatureMatches(q) {
+  const n = searchNorm(q.trim());
+  return SEARCH_FEATURES.filter(f => [f.name, ...f.keys].some(k => { const kn = searchNorm(k); return kn.includes(n) || n.includes(kn); }));
+}
+function searchHighlight(name, query) {
+  const q = query.trim(), i = searchNorm(name).indexOf(searchNorm(q));
+  return i < 0 ? name : name.slice(0, i) + '<em>' + name.slice(i, i + q.length) + '</em>' + name.slice(i + q.length);
+}
+function FeatureResult(f, query) {
+  return `
+    <div class="result feature" data-action="route" data-hash="${f.hash}">
+      <div class="result-ico">${f.icon}</div>
+      <div>
+        <div class="result-name">${query ? searchHighlight(f.name, query) : f.name}</div>
+        <div><span class="new-tag">YENİ</span></div>
+        <div class="result-sub">${f.sub}</div>
+      </div>
+      <span class="chev-r">${I.chevR}</span>
+    </div>`;
+}
+
 function searchResultsFor(q) {
   const query = q.trim();
   if (!query) return SearchEmpty();
   const keys = ['yapı kredi alışveriş asistanı', 'asistan', 'alışveriş', 'yapay zeka', 'kampanya', 'world', 'robot', 'koçtaş', 'asistanı'];
   const match = keys.some(k => k.includes(query.toLowerCase()) || query.toLowerCase().includes(k) || k.startsWith(query.toLowerCase()));
-  if (match) {
-    return `<div class="result-group-title">Arama Sonuçları</div>${AssistantResult(query)}`;
+  const features = searchFeatureMatches(query);
+  if (match || features.length) {
+    return `<div class="result-group-title">Arama Sonuçları</div>${features.map(f => FeatureResult(f, query)).join('')}${match ? AssistantResult(query) : ''}`;
   }
   return `<div class="search-empty"><p>"${query}" için sonuç bulunamadı.</p></div>`;
 }

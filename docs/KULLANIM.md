@@ -50,7 +50,9 @@ Bilinmesi gerekenler:
 6. **Worldcard ile öde** seç → **Öde** → **Yapı Kredi Mobil ile Onayla** (Face ID simülasyonu)
 7. Başarı ekranı + Worldpuan kazanımı
 
-Diğer uçtan uca akışlar: **Setur otonom senaryosu** (`#setur`), **Karekod ile Öde** (`#springboard`'dan başlar), **Birikim** (Yuvarla / Ekstreden / Maden), **Ödül Yolu**, **Harcama Bölüştür**, **Birlikte Kazan**, **Sky Limit** (taslak — menü → Krediler).
+Diğer uçtan uca akışlar: **Setur otonom senaryosu** (`#setur`), **Karekod ile Öde** (`#springboard`'dan başlar), **Birikim** (Yuvarla / Ekstreden / Maden), **Ödül Yolu**, **Harcama Bölüştür**, **Birlikte Kazan**, **Sky Limit** (taslak — menü → Krediler), **Toplu Borç Ödeme** (taslak — menü → Ödemeler).
+
+Taslak özellikler ana sayfadaki **"Yapı Kredi Mobil'de Ara"** çubuğundan da açılır: arama ekranında **Önerilenler** altında "YENİ" etiketiyle görünürler; "sky", "limit", "borç", "toplu", "ekstre" gibi kelimelerle aranabilirler (Türkçe karakter yazmadan da eşleşir).
 
 ## Bölümlere doğrudan erişim (hash linkleri)
 
@@ -124,7 +126,7 @@ World Pay ile ödeme yapınca fark otomatik kumbaraya düşer ve başarı ekran�
 Telefon ana ekranındaki (springboard) YK widget'ından: Karekod ile Öde → kamera TR Karekod'u otomatik okur → işyeri + tutar gelir → kart/hesap seç → Öde → onay → başarı. Uygulamaya giriş adımı atlanır.
 
 ### Toplu Borç Ödeme (taslak)
-Kredi kartı, esnek hesap (KMH), ihtiyaç, konut ve taşıt kredisi borçları ay sonunda tek ekstrede birleşir (Kasım 2026: 78.000 TL, son ödeme 15 Kasım). Yeni kredi ya da yapılandırma değildir; ürünlerin koşulları değişmez. Soldaki menü → **Ödemeler**'den açılır.
+Kredi kartı, esnek hesap (KMH), ihtiyaç, konut ve taşıt kredisi borçları ay sonunda tek ekstrede birleşir (Kasım 2026: 78.000 TL, son ödeme 15 Kasım). Yeni kredi ya da yapılandırma değildir; ürünlerin koşulları değişmez. Soldaki menü → **Ödemeler**'den ya da ana sayfadaki aramadan ("borç", "toplu", "ekstre") açılır.
 - **Ana ekran:** toplam borç, kesim/son ödeme tarihi, ürün bazında dağılım çubuğu ve tutarlar, ekstre detayı ve ödeme geçmişi girişleri, **Toplu Öde**.
 - **Toplu ödeme:** hesap seçimi ve bakiye. Vadesiz TL Hesabım (10.000 TL) yetersiz bakiye uyarısı verir; Maaş Hesabım ile devam edilir.
 - **Onay → sonuç:** hesap, dönem ve ürün özeti; Face ID simülasyonuyla onay, referans no ve güncel ekstre durumu (kalan borç 0).
@@ -140,7 +142,7 @@ Tek "Birikim" girişi altında 4 birikim türü × 3 yöntem matrisi (Harcama Yu
 Benim Dünyam altında level haritalı görev-ödül yolculuğu; FAST tabanlı harcama bölüştürme istekleri; ortak hedefle biriktirip TL ödül kazanılan Birlikte Kazan.
 
 ### Sky Limit (taslak)
-500.000 TL'lik tek ortak kredi limiti İhtiyaç Kredisi, Taksitli Ticari Kredi ve Kredili Hesap arasında dağıtılır. Soldaki menü → **Krediler**'den açılır.
+500.000 TL'lik tek ortak kredi limiti İhtiyaç Kredisi, Taksitli Ticari Kredi ve Kredili Hesap arasında dağıtılır. Soldaki menü → **Krediler**'den ya da ana sayfadaki aramadan ("sky", "limit") açılır.
 - **Ana ekran:** toplam / kullanılan / kullanılabilir limit, ürün bazında dağılım çubuğu (koyu: kullanılan, açık: kullanılabilir), yaklaşan taksit, son ödemeler ve açılan limitler.
 - **Limit dağılımı:** kaydırarak, +/− ile ya da tutar yazarak ürünler arası aktarım. Bir ürünün limiti kullanılan tutarın altına inemez, ürünlere dağıtılan toplam 500.000 TL'yi aşamaz; sınır zorlanınca kart içinde uyarı çıkar.
 - **Onay → sonuç:** önceki/yeni dağılım, ürün bazında değişiklikler, işlem özeti; Vazgeç değişikliği iptal eder.
