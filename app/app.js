@@ -243,6 +243,9 @@ const SECTIONS = [
   { hash: 'insights',   icon: 'pie',      t: 'Harcama Analizi',      d: 'Aylık toplam, kategori dağılımı, işyeri kırılımı' },
   { hash: 'limits',     icon: 'target',   t: 'Harcama Limitlerim',   d: 'Kategoriye tutar girerek aylık limit koy' },
   { hash: 'kid',        icon: 'wallet2',  t: 'Çocuk Ek Kartı',       d: 'Limit, harçlık, birikim hedefi, veli eşleştirme, onaylar, rozetler' },
+  { hash: 'toplu-borc', icon: 'payments', t: 'Taslak — Toplu Borç Ödeme', d: 'Kart, esnek hesap ve kredi borçları tek ekstrede: toplam borç, dağılım, toplu öde' },
+  { hash: 'toplu-borc-ekstre', icon: 'doc', t: 'Taslak — Toplu Borç: Ekstre detayı', d: 'Ürün bazında borç, taksit ve son ödeme bilgileri' },
+  { hash: 'toplu-borc-gecmis', icon: 'receipt', t: 'Taslak — Toplu Borç: Ödeme geçmişi', d: 'Önceki toplu ödemeler, durum ve işlem detayı' },
   { hash: 'search',    icon: 'search',   t: 'Arama',               d: 'Arama ekranı' },
   { hash: 'settings',  icon: 'gear',     t: 'Ayarlar',             d: 'Tema ve bildirimler' },
 ];
@@ -4299,6 +4302,434 @@ function PlaceholderScreen(title) {
   </div>`;
 }
 
+/* ======================================================================
+   TOPLU BORÇ ÖDEME (draft)
+   Debts from several products (credit card, flexible account, loans) are
+   combined into one monthly statement and paid in a single transaction.
+   It is NOT a new loan, a debt transfer or a restructuring: products keep
+   their own terms. Mock data + local UI state only.
+   ====================================================================== */
+
+const DEBT_ICO_CAR = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3.6a1 1 0 0 1-1-1v-3.1a2 2 0 0 1 .6-1.4L5 9.7l1.6-3.4A2 2 0 0 1 8.4 5.2h7.2a2 2 0 0 1 1.8 1.1L19 9.7l1.8 1.8a2 2 0 0 1 .6 1.4V16a1 1 0 0 1-1 1H19M9 17h6M5 9.7h14"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>';
+const DEBT_PERIOD = {
+  label: 'Kasım 2026', cut: '31 Ekim 2026', due: '15 Kasım 2026', dueShort: '15 Kasım',
+  dueDate: new Date(2026, 10, 15), nextCut: '30 Kasım 2026',
+};
+// Ordered by amount (largest first) — the same order in the bar and in every list.
+// Hues: checked as a categorical set (colour-blind separation of neighbours + contrast)
+// on both theme card surfaces (#1c1c1f dark, #ffffff light).
+const DEBT_ITEMS = [
+  { id: 'card',     name: 'Kredi Kartı',     sub: 'World Gold •••• 1234', kind: 'Dönem borcu',      amount: 24500, color: '#D9772F', icon: I.card,
+    rows: [['Hesap kesim', '31 Ekim 2026'], ['Son ödeme', '15 Kasım 2026']] },
+  { id: 'mortgage', name: 'Konut Kredisi',   sub: 'Kredi no 4402 1187',   kind: 'Kasım taksiti',    amount: 18000, color: '#14A5A0', icon: I.home,
+    rows: [['Taksit', '23 / 120 · kalan 97'], ['Son ödeme', '15 Kasım 2026']] },
+  { id: 'auto',     name: 'Taşıt Kredisi',   sub: 'Kredi no 4402 3391',   kind: 'Kasım taksiti',    amount: 15000, color: '#C08A1E', icon: DEBT_ICO_CAR,
+    rows: [['Taksit', '11 / 48 · kalan 37'], ['Son ödeme', '15 Kasım 2026']] },
+  { id: 'personal', name: 'İhtiyaç Kredisi', sub: 'Kredi no 4402 5520',   kind: 'Kasım taksiti',    amount: 12500, color: '#0098cb', icon: I.loan,
+    rows: [['Taksit', '8 / 36 · kalan 28'], ['Son ödeme', '15 Kasım 2026']] },
+  { id: 'flex',     name: 'Esnek Hesap',     sub: 'KMH · Limit 25.000 TL', kind: 'Kullanılan tutar', amount: 8000,  color: '#7B61C9', icon: I.bank,
+    rows: [['Esnek hesap limiti', '25.000,00 TL'], ['Son ödeme', 'Sabit tarih yok']],
+    note: 'Esnek hesapta sabit bir son ödeme tarihi yoktur; borç, ödemeyle kapanır.' },
+];
+// Payable TL accounts. "Vadesiz TL Hesabım" keeps the home screen balance (10.000 TL), so it cannot cover the statement.
+const DEBT_ACCTS = [
+  { id: 'salary', name: 'Maaş Hesabım',       no: 'Vadesiz TL · 8765 4321', balance: 96750 },
+  { id: 'main',   name: 'Vadesiz TL Hesabım', no: 'Vadesiz TL · 12345678',  balance: USER.balance },
+];
+const DEBT_LOANS = { mortgage: 18000, auto: 15000, personal: 12500 };   // fixed monthly installments (history)
+
+state.debt = {
+  account: 'salary',   // selected payment account
+  paid: false,
+  payment: null,       // { amount, acct, ref, date, dateShort }
+  history: [           // previous consolidated payments (newest first); card / flex vary, loans are fixed
+    { id: 'h10',  period: 'Ekim 2026',    date: '14.10.2026 · 10:42', amount: 76450, acct: 'Maaş Hesabım',       ok: true,  ref: 'TBO20261014204731', card: 23950, flex: 7000 },
+    { id: 'h09',  period: 'Eylül 2026',   date: '15.09.2026 · 09:18', amount: 79120, acct: 'Maaş Hesabım',       ok: true,  ref: 'TBO20260915118640', card: 26120, flex: 7500 },
+    { id: 'h08',  period: 'Ağustos 2026', date: '14.08.2026 · 18:05', amount: 77300, acct: 'Maaş Hesabım',       ok: true,  ref: 'TBO20260814390215', card: 25300, flex: 6500 },
+    { id: 'h07b', period: 'Temmuz 2026',  date: '15.07.2026 · 13:40', amount: 75880, acct: 'Maaş Hesabım',       ok: true,  ref: 'TBO20260715551902', card: 24380, flex: 6000 },
+    { id: 'h07a', period: 'Temmuz 2026',  date: '15.07.2026 · 09:12', amount: 75880, acct: 'Vadesiz TL Hesabım', ok: false, ref: 'TBO20260715092047', card: 24380, flex: 6000, reason: 'Yetersiz bakiye' },
+    { id: 'h06',  period: 'Haziran 2026', date: '13.06.2026 · 11:27', amount: 74600, acct: 'Maaş Hesabım',       ok: true,  ref: 'TBO20260613472298', card: 23100, flex: 6000 },
+  ],
+};
+
+/* -------------------- helpers -------------------- */
+function debtTotal() { return DEBT_ITEMS.reduce((a, d) => a + d.amount, 0); }
+function debtAcct(id = state.debt.account) { return DEBT_ACCTS.find(a => a.id === id) || DEBT_ACCTS[0]; }
+function debtTint(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; }
+function debtDaysLeft() {
+  const t = new Date(); t.setHours(0, 0, 0, 0);
+  return Math.round((DEBT_PERIOD.dueDate - t) / 86400000);
+}
+function debtDaysLabel() {
+  const n = debtDaysLeft();
+  return n > 0 ? `${n} gün` : n === 0 ? 'Bugün' : 'Süresi geçti';
+}
+function debtNow() {
+  const d = new Date(), p2 = n => String(n).padStart(2, '0');
+  return {
+    full: `${p2(d.getDate())}.${p2(d.getMonth() + 1)}.${d.getFullYear()} · ${p2(d.getHours())}:${p2(d.getMinutes())}`,
+    short: `${d.getDate()} ${AYLAR_UZUN[d.getMonth()]}`,
+    ref: `TBO${d.getFullYear()}${p2(d.getMonth() + 1)}${p2(d.getDate())}${String(Math.floor(100000 + Math.random() * 900000))}`,
+  };
+}
+const AYLAR_UZUN = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+function debtIcoHTML(d, cls = '') { return `<span class="debt-ico ${cls}" style="--c:${d.color}">${d.icon}</span>`; }
+function debtTLImg() { return `<img src="assets/tl-white.png" class="tl-img" alt="₺" onerror="this.outerHTML='<span class=\\'tl-glyph\\'>₺</span>'">`; }
+/* Part-to-whole bar: one segment per product, width = share of the statement */
+function debtBarHTML() {
+  return `<div class="debt-bar" role="img" aria-label="Ürünlere göre borç dağılımı">${DEBT_ITEMS.map(d =>
+    `<span class="debt-seg" style="flex:${d.amount} 1 0;background:${d.color}"></span>`).join('')}</div>`;
+}
+function debtPaidChip(txt = 'Ödendi') { return `<span class="debt-chip ok">${I.check}${txt}</span>`; }
+
+/* -------------------- Screen 1 — dashboard -------------------- */
+function DebtHome() {
+  const s = state.debt, total = debtTotal(), pm = s.payment;
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head ru-nav-accent">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Toplu Borç Ödeme</div>
+      <button class="icon-btn" data-action="debt-info" aria-label="Toplu Borç Ödeme nedir?">${I.info}</button>
+    </div>
+    <div class="screen-scroll">
+      <div class="ru-statcard debt-hero">
+        <div class="ru-jar-label">${DEBT_PERIOD.label} ekstresi · ${s.paid ? 'Kalan borç' : 'Toplam borç'}</div>
+        <div class="ru-jar-amt">${fmtTL2(s.paid ? 0 : total)}</div>
+        ${s.paid
+          ? `<div class="debt-hero-pill ok">${I.check} ${pm.dateShort} tarihinde ${fmtTL2(pm.amount)} ödendi</div>`
+          : `<div class="debt-hero-pill">${I.calendar} Son ödeme ${DEBT_PERIOD.due}</div>`}
+        <div class="ru-statrow">
+          ${s.paid ? `
+          <div class="ru-stat"><div class="ru-stat-l">Ödenen</div><div class="ru-stat-v">${fmtShortTL(pm.amount)}</div></div>
+          <div class="ru-stat mid"><div class="ru-stat-l">Ödeme tarihi</div><div class="ru-stat-v">${pm.dateShort}</div></div>
+          <div class="ru-stat"><div class="ru-stat-l">Sonraki kesim</div><div class="ru-stat-v">30 Kasım</div></div>` : `
+          <div class="ru-stat"><div class="ru-stat-l">Hesap kesim</div><div class="ru-stat-v">31 Ekim</div></div>
+          <div class="ru-stat mid"><div class="ru-stat-l">Son ödeme</div><div class="ru-stat-v">${DEBT_PERIOD.dueShort}</div></div>
+          <div class="ru-stat"><div class="ru-stat-l">Kalan süre</div><div class="ru-stat-v">${debtDaysLabel()}</div></div>`}
+        </div>
+      </div>
+
+      <div class="debt-card">
+        <div class="debt-card-h"><span>Borç dağılımı</span><span class="debt-card-sub">${DEBT_ITEMS.length} ürün</span></div>
+        ${debtBarHTML()}
+        <div class="debt-rows">${DEBT_ITEMS.map(d => debtRowHTML(d, total)).join('')}</div>
+        <div class="debt-total"><span>${s.paid ? 'Ödenen toplam' : 'Toplam ödenecek tutar'}</span><b>${fmtTL2(total)}</b></div>
+      </div>
+
+      <div class="ru-info-card debt-links">
+        <div class="ru-info-row tap" data-action="debt-statement"><span class="ru-info-ico">${I.doc}</span><span class="ru-info-k">Ekstre detayları</span><span class="ru-info-v">${DEBT_PERIOD.label}</span>${I.chevR}</div>
+        <div class="ru-info-row tap" data-action="debt-history"><span class="ru-info-ico">${I.receipt}</span><span class="ru-info-k">Ödeme geçmişi</span><span class="ru-info-v">${s.history.length} işlem</span>${I.chevR}</div>
+      </div>
+    </div>
+    <div class="pay-foot">
+      ${s.paid
+        ? `<button class="btn-outline" data-action="debt-history">Ödeme Geçmişini Gör</button>`
+        : `<button class="pay-btn" data-action="debt-pay"><span>Toplu Öde</span><span class="div"></span><span>${fmtTL2(total)}</span></button>`}
+    </div>
+  </div>`;
+}
+function debtRowHTML(d, total) {
+  return `<div class="debt-row">
+    ${debtIcoHTML(d)}
+    <div class="debt-row-mid"><b>${d.name}</b><span>${d.kind}</span></div>
+    <div class="debt-row-r"><b>${fmtTL2(d.amount)}</b>${state.debt.paid ? debtPaidChip() : `<span>%${Math.round(d.amount / total * 100)}</span>`}</div>
+  </div>`;
+}
+function debtInfoSheet() {
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Toplu Borç Ödeme nedir?</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="debt-how">
+      <div class="debt-how-row"><span class="debt-how-ico">${I.doc}</span><div><b>Tek ekstre</b><span>Kredi kartı, esnek hesap ve kredi taksitlerin her ay sonunda tek bir ekstrede birleşir.</span></div></div>
+      <div class="debt-how-row"><span class="debt-how-ico">${I.calendar}</span><div><b>Tek tarih, tek işlem</b><span>Tüm ürünlerin borcunu aynı son ödeme tarihinde, tek bir ödemeyle kapatırsın.</span></div></div>
+      <div class="debt-how-row"><span class="debt-how-ico">${I.shield}</span><div><b>Ürünlerin değişmez</b><span>Bu yeni bir kredi ya da borç yapılandırması değildir; kredilerinin faiz, vade ve taksit koşulları aynen devam eder.</span></div></div>
+    </div>
+    <button class="sheet-btn" data-action="close-sheet">Anladım</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- Screen 2 — statement details -------------------- */
+function DebtStatement() {
+  const s = state.debt, total = debtTotal();
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Ekstre Detayı</div>
+      <button class="icon-btn debt-nav-r" data-action="toast" data-msg="Ekstre PDF'i prototipte aktif değil" aria-label="Ekstreyi indir">${I.doc}</button>
+    </div>
+    <div class="screen-scroll">
+      <div class="debt-card debt-st-head">
+        <div class="debt-card-h"><span>${DEBT_PERIOD.label} Toplu Ekstresi</span>${s.paid ? debtPaidChip() : ''}</div>
+        <div class="debt-st-grid">
+          <div><span>Hesap kesim</span><b>${DEBT_PERIOD.cut}</b></div>
+          <div><span>Son ödeme</span><b>${DEBT_PERIOD.due}</b></div>
+          <div><span>Ürün</span><b>${DEBT_ITEMS.length}</b></div>
+        </div>
+      </div>
+      ${DEBT_ITEMS.map(debtStatementCardHTML).join('')}
+      <div class="debt-card debt-st-total">
+        <div><span>Toplam borç</span><em>${DEBT_ITEMS.length} ürün · ${DEBT_PERIOD.label} dönemi</em></div>
+        <b>${fmtTL2(total)}</b>
+      </div>
+    </div>
+    ${s.paid ? '' : `<div class="pay-foot"><button class="pay-btn" data-action="debt-pay"><span>Toplu Öde</span><span class="div"></span><span>${fmtTL2(total)}</span></button></div>`}
+  </div>`;
+}
+function debtStatementCardHTML(d) {
+  return `<div class="debt-st" style="--c:${d.color}">
+    <div class="debt-st-top">
+      ${debtIcoHTML(d)}
+      <div class="debt-st-mid"><b>${d.name}</b><span>${d.sub}</span></div>
+      <div class="debt-st-amt"><b>${fmtTL2(d.amount)}</b>${state.debt.paid ? debtPaidChip() : `<span>${d.kind}</span>`}</div>
+    </div>
+    <div class="debt-st-rows">${d.rows.map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join('')}</div>
+    ${d.note ? `<div class="debt-st-note">${I.info}<span>${d.note}</span></div>` : ''}
+  </div>`;
+}
+
+/* -------------------- Screen 3 — consolidated payment -------------------- */
+function DebtPay() {
+  const s = state.debt;
+  if (s.paid) { state.screen = 'toplu-borc'; return DebtHome(); }
+  const total = debtTotal();
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Toplu Ödeme</div>
+    </div>
+    <div class="screen-scroll">
+      <div class="debt-card debt-owed">
+        <div><span>Toplam ekstre borcu</span><em>${DEBT_PERIOD.label} · Son ödeme ${DEBT_PERIOD.due}</em></div>
+        <b>${fmtTL2(total)}</b>
+      </div>
+      <div class="qr-amt-box debt-amt-box">
+        <div class="qr-amt-lbl">Ödenecek tutar</div>
+        <div class="qr-amt">${fmtTL2(total)}</div>
+        <div class="qr-amt-sub">Ekstredeki ${DEBT_ITEMS.length} ürünün borcunun tamamı · tek işlem</div>
+      </div>
+
+      <div class="pay-section-title">Ödeme hesabı</div>
+      ${DEBT_ACCTS.map(a => debtAcctHTML(a, total)).join('')}
+      <div class="debt-warn" id="debt-warn">${debtWarnHTML()}</div>
+
+      <div class="pay-section-title">Ödeme özeti</div>
+      <div class="receipt debt-receipt" id="debt-summary">${debtSummaryHTML()}</div>
+    </div>
+    <div class="pay-foot">
+      <button class="pay-btn" id="debt-continue" data-action="debt-continue" ${debtAcct().balance < total ? 'disabled' : ''}><span>Devam Et</span><span class="div"></span><span>${fmtTL2(total)}</span></button>
+      <div class="secure-note">${I.lock} Bilgilerin 256 bit SSL ile korunur</div>
+    </div>
+  </div>`;
+}
+function debtAcctHTML(a, total) {
+  const short = a.balance < total;
+  return `<div class="method debt-acct ${a.id === state.debt.account ? 'selected' : ''} ${short ? 'short' : ''}" data-action="debt-acct" data-id="${a.id}">
+    <div class="m-ico tl-ico">${debtTLImg()}</div>
+    <div class="debt-acct-mid">
+      <div class="m-name">${a.name}</div>
+      <div class="m-sub">${a.no}</div>
+      <div class="debt-bal">Kullanılabilir bakiye <b>${fmtTL2(a.balance)}</b>${short ? '<span class="debt-chip warn">Yetersiz</span>' : ''}</div>
+    </div>
+    <div class="m-check">${I.check}</div>
+  </div>`;
+}
+function debtWarnHTML() {
+  const a = debtAcct(), gap = debtTotal() - a.balance;
+  return gap > 0 ? `${I.info}<span><b>${a.name}</b> bakiyesi bu ödeme için yeterli değil (${fmtTL2(gap)} eksik). Başka bir hesap seç.</span>` : '';
+}
+function debtSummaryHTML() {
+  const a = debtAcct(), total = debtTotal(), after = a.balance - total;
+  return `
+    <div class="r-row"><span class="r-l">Ekstre dönemi</span><span class="r-r">${DEBT_PERIOD.label}</span></div>
+    <div class="r-row"><span class="r-l">Ödenecek tutar</span><span class="r-r">${fmtTL2(total)}</span></div>
+    <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">${a.name}</span></div>
+    <div class="r-row"><span class="r-l">Ödeme sonrası bakiye</span><span class="r-r ${after < 0 ? 'debt-neg' : ''}">${after < 0 ? 'Yetersiz bakiye' : fmtTL2(after)}</span></div>`;
+}
+/* Account choice: partial DOM update (no re-render → no slide-in replay) */
+function debtSelectAcct(id) {
+  state.debt.account = id;
+  document.querySelectorAll('.debt-acct').forEach(el => el.classList.toggle('selected', el.dataset.id === id));
+  const w = document.getElementById('debt-warn'); if (w) w.innerHTML = debtWarnHTML();
+  const sm = document.getElementById('debt-summary'); if (sm) sm.innerHTML = debtSummaryHTML();
+  const b = document.getElementById('debt-continue'); if (b) b.disabled = debtAcct().balance < debtTotal();
+}
+
+/* -------------------- Screen 4 — confirm -------------------- */
+function DebtConfirm() {
+  const s = state.debt, total = debtTotal(), a = debtAcct();
+  if (s.paid || a.balance < total) { state.screen = 'toplu-borc'; return DebtHome(); }
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Ödemeyi Onayla</div>
+    </div>
+    <div class="screen-scroll">
+      <div class="debt-confirm-amt">
+        <span>Toplam ödeme tutarı</span>
+        <b>${fmtTL2(total)}</b>
+        <em>${DEBT_PERIOD.label} toplu ekstresi</em>
+      </div>
+      <div class="receipt debt-receipt">
+        <div class="r-row"><span class="r-l">Ödeme yapılacak hesap</span><span class="r-r">${a.name}<br><i class="debt-sub">${a.no}</i></span></div>
+        <div class="r-row"><span class="r-l">Ekstre dönemi</span><span class="r-r">${DEBT_PERIOD.label}</span></div>
+        <div class="r-row"><span class="r-l">Son ödeme tarihi</span><span class="r-r">${DEBT_PERIOD.due}</span></div>
+        <div class="r-row"><span class="r-l">Ödeme sonrası bakiye</span><span class="r-r">${fmtTL2(a.balance - total)}</span></div>
+      </div>
+      <div class="debt-card pad0 debt-list">
+        <div class="debt-card-h"><span>Borcu oluşturan ürünler</span><span class="debt-card-sub">${DEBT_ITEMS.length} ürün</span></div>
+        ${DEBT_ITEMS.map(d => `<div class="debt-li">${debtIcoHTML(d, 'sm')}<div class="debt-li-mid"><b>${d.name}</b><span>${d.kind}</span></div><b class="debt-li-a">${fmtTL2(d.amount)}</b></div>`).join('')}
+        <div class="debt-li total"><span>Toplam</span><b class="debt-li-a">${fmtTL2(total)}</b></div>
+      </div>
+      <div class="debt-note">${I.info}<span>Onayladığında ${fmtTL2(total)} hesabından çekilir ve ekstredeki ${DEBT_ITEMS.length} ürünün ${DEBT_PERIOD.label} borcu kapanır. Kredilerinin vade ve taksit koşulları değişmez.</span></div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary debt-approve" id="debt-approve" data-action="debt-approve">${I.faceid} Onayla</button>
+      <button class="btn-ghost" data-action="debt-cancel">Vazgeç</button>
+    </div>
+  </div>`;
+}
+function debtApprove() {
+  const btn = document.getElementById('debt-approve');
+  if (!btn) return;
+  btn.innerHTML = '<span class="spinner"></span> Ödeme Onaylanıyor…';
+  btn.style.pointerEvents = 'none';
+  setTimeout(() => { debtApplyPayment(); go('toplu-borc-sonuc'); }, 1500);
+}
+function debtApplyPayment() {
+  const s = state.debt, a = debtAcct(), total = debtTotal(), now = debtNow();
+  a.balance -= total;
+  s.paid = true;
+  s.payment = { amount: total, acct: a.name, acctNo: a.no, balanceAfter: a.balance, ref: now.ref, date: now.full, dateShort: now.short };
+  s.history.unshift({
+    id: 'h11', period: DEBT_PERIOD.label, date: now.full, amount: total, acct: a.name, ok: true, ref: now.ref, isNew: true,
+    card: DEBT_ITEMS.find(d => d.id === 'card').amount, flex: DEBT_ITEMS.find(d => d.id === 'flex').amount,
+  });
+}
+
+/* -------------------- Screen 5 — result -------------------- */
+function DebtResult() {
+  const s = state.debt, pm = s.payment;
+  if (!pm) { state.screen = 'toplu-borc'; return DebtHome(); }
+  return `
+  <div class="screen anim-fade">
+    <div class="screen-scroll">
+      <div class="success debt-success">
+        <div class="success-check"><div class="ring">${I.checkBig}</div></div>
+        <h2>Ödemen Başarıyla Gerçekleşti</h2>
+        <div class="succ-date">${pm.date}</div>
+        <div class="amt">${fmtTL2(pm.amount)}</div>
+        <div class="prod">${DEBT_PERIOD.label} toplu ekstresi</div>
+
+        <div class="debt-card flat">
+          <div class="debt-card-h"><span>Güncel ekstre durumu</span>${debtPaidChip()}</div>
+          <div class="debt-left"><span>Kalan borç</span><b>${fmtTL2(0)}</b></div>
+          ${DEBT_ITEMS.map(d => `<div class="debt-li">${debtIcoHTML(d, 'sm')}<div class="debt-li-mid"><b>${d.name}</b><span>${fmtTL2(d.amount)} ödendi</span></div><span class="debt-li-ok">${I.check}</span></div>`).join('')}
+          <div class="debt-next">${I.calendar}<span>Sonraki ekstre ${DEBT_PERIOD.nextCut} tarihinde kesilecek.</span></div>
+        </div>
+
+        <div class="receipt">
+          <div class="r-row"><span class="r-l">İşlem referans no</span><span class="r-r">${pm.ref}</span></div>
+          <div class="r-row"><span class="r-l">Ödeme tarihi</span><span class="r-r">${pm.date}</span></div>
+          <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">${pm.acct}</span></div>
+          <div class="r-row"><span class="r-l">Hesap bakiyesi</span><span class="r-r">${fmtTL2(pm.balanceAfter)}</span></div>
+        </div>
+        <div class="success-actions">
+          <button class="btn-primary" data-action="debt-home">Ana Ekrana Dön</button>
+          <button class="btn-outline" data-action="debt-history-after">Ödeme Geçmişi</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* -------------------- Screen 6 — payment history -------------------- */
+function DebtHistory() {
+  const h = state.debt.history, ok = h.filter(x => x.ok);
+  const paidSum = ok.reduce((a, x) => a + x.amount, 0);
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Ödeme Geçmişi</div>
+    </div>
+    <div class="screen-scroll">
+      <div class="debt-card debt-hist-sum">
+        <div><span>2026'da toplu ödemeler</span><b>${fmtTL2(paidSum)}</b></div>
+        <div class="debt-hist-counts"><span class="debt-chip ok">${I.check}${ok.length} başarılı</span>${h.length > ok.length ? `<span class="debt-chip fail">${I.close}${h.length - ok.length} başarısız</span>` : ''}</div>
+      </div>
+      <div class="ru-txn-title">2026</div>
+      <div class="debt-hist">${h.map(debtHistRowHTML).join('')}</div>
+    </div>
+  </div>`;
+}
+function debtHistRowHTML(x) {
+  return `<div class="debt-h ${x.isNew ? 'new' : ''}" data-action="debt-hist-open" data-id="${x.id}">
+    <span class="debt-h-ico ${x.ok ? 'ok' : 'fail'}">${x.ok ? I.check : I.close}</span>
+    <div class="debt-h-mid"><b>${x.period} ekstresi${x.isNew ? ' <em class="debt-new">Yeni</em>' : ''}</b><span>${x.date}</span></div>
+    <div class="debt-h-r"><b>${fmtTL2(x.amount)}</b><span class="debt-status ${x.ok ? 'ok' : 'fail'}">${x.ok ? 'Başarılı' : 'Başarısız'}</span></div>
+    <span class="debt-h-chev">${I.chevR}</span>
+  </div>`;
+}
+function debtHistSheet(id) {
+  const x = state.debt.history.find(h => h.id === id);
+  if (!x) return;
+  const amounts = { card: x.card, flex: x.flex, ...DEBT_LOANS };
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>İşlem Detayı</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="debt-sh-head">
+      <span class="debt-status big ${x.ok ? 'ok' : 'fail'}">${x.ok ? I.check : I.close}${x.ok ? 'Başarılı' : 'Başarısız'}</span>
+      <b>${fmtTL2(x.amount)}</b>
+      <span>${x.period} toplu ekstresi</span>
+    </div>
+    <div class="receipt debt-sh-receipt">
+      <div class="r-row"><span class="r-l">İşlem tarihi</span><span class="r-r">${x.date}</span></div>
+      <div class="r-row"><span class="r-l">Referans no</span><span class="r-r">${x.ref}</span></div>
+      <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">${x.acct}</span></div>
+      ${x.ok ? '' : `<div class="r-row"><span class="r-l">Neden</span><span class="r-r">${x.reason}</span></div>`}
+    </div>
+    ${x.ok
+      ? `<div class="debt-sh-prods">${DEBT_ITEMS.map(d => `<div><i style="background:${d.color}"></i><span>${d.name}</span><b>${fmtTL2(amounts[d.id])}</b></div>`).join('')}</div>`
+      : `<div class="debt-note in">${I.info}<span>Ödeme gerçekleşmedi; ekstre borcu değişmedi. Aynı gün başka bir hesaptan ödendi.</span></div>`}
+    <button class="sheet-btn ghost" data-action="toast" data-msg="Dekont paylaşımı prototipte aktif değil">Dekontu Paylaş</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- navigation -------------------- */
+// Drop the flow screens from the back stack so "back" lands where the feature was opened from
+function debtUnwind() {
+  const i = state.nav.map(f => f.screen).lastIndexOf('toplu-borc');
+  if (i >= 0) state.nav = state.nav.slice(0, i);
+}
+function debtGoHome() {
+  debtUnwind();
+  state.chatSeed = false;
+  state.screen = 'toplu-borc';
+  render();
+}
+function debtHistoryAfterPay() {
+  debtUnwind();
+  state.nav.push({ screen: 'toplu-borc', chatSeed: false });
+  state.screen = 'toplu-borc-gecmis';
+  render();
+}
+function debtCancel() {
+  debtGoHome();
+  toast('Ödeme iptal edildi');
+}
+// Deep links (#toplu-borc-…) prepare the state they need without replaying the flow
+function debtSeed(h) {
+  const s = state.debt;
+  if ((h === 'toplu-borc-odeme' || h === 'toplu-borc-onay') && debtAcct().balance < debtTotal()) s.account = 'salary';
+  if (h === 'toplu-borc-sonuc' && !s.paid) debtApplyPayment();
+}
+
 /* ===================================================================
    RENDER & NAVİGASYON
    =================================================================== */
@@ -6678,6 +7109,12 @@ function render() {
     case 'insights-cats': html = AllCatsScreen(); break;
     case 'limits': html = LimitsScreen(); break;
     case 'kid': html = KidScreen(); break;
+    case 'toplu-borc': html = DebtHome(); break;
+    case 'toplu-borc-ekstre': html = DebtStatement(); break;
+    case 'toplu-borc-odeme': html = DebtPay(); break;
+    case 'toplu-borc-onay': html = DebtConfirm(); break;
+    case 'toplu-borc-sonuc': html = DebtResult(); break;
+    case 'toplu-borc-gecmis': html = DebtHistory(); break;
     case 'card-detail': html = CardDetailScreen(); break;
     case 'split': html = SplitHub(); break;
     case 'split-pick': html = SplitPick(); break;
@@ -7956,6 +8393,7 @@ document.addEventListener('click', (e) => {
     case 'menu-nav': {
       const id = t.dataset.id;
       if (id === 'home') return goHome();
+      if (id === 'payments') { closeDrawer(); return gotoSection('toplu-borc'); }   // Ödemeler → Toplu Borç Ödeme (draft)
       if (id === 'world') { closeDrawer(); return go('fayda'); }   // Benim Dünyam → Fayda Yolculukları
       if (id === 'transfer') { closeDrawer(); return gotoSection('split'); }   // Para Transferleri → Harcama Bölüştür / Ödeme İste
       if (id === 'loan') { closeDrawer(); return gotoSection('sky-limit'); }   // Krediler → Sky Limit (draft)
@@ -8006,6 +8444,19 @@ document.addEventListener('click', (e) => {
     case 'bk-to-wallet': return gotoSection('fayda-wallet');
     case 'bk-done': return gotoSection('reward-goal');
 
+    // Toplu Borç Ödeme (draft)
+    case 'debt-info': return debtInfoSheet();
+    case 'debt-statement': return go('toplu-borc-ekstre');
+    case 'debt-history': return go('toplu-borc-gecmis');
+    case 'debt-pay': return go('toplu-borc-odeme');
+    case 'debt-acct': return debtSelectAcct(t.dataset.id);
+    case 'debt-continue': return go('toplu-borc-onay');
+    case 'debt-approve': return debtApprove();
+    case 'debt-cancel': return debtCancel();
+    case 'debt-home': return debtGoHome();
+    case 'debt-history-after': return debtHistoryAfterPay();
+    case 'debt-hist-open': return debtHistSheet(t.dataset.id);
+
     case 'set-theme': return setTheme(t.dataset.theme);
     case 'toggle-switch': return t.classList.toggle('on');
 
@@ -8054,6 +8505,7 @@ function routeTo(hash) {
   }
   // Karekod ile Öde derin-linkleri — işyeri seçili değilse demo işyerini kur
   if (['qr-scan', 'qr-pay', 'qr-success'].includes(h)) qrSeed();
+  if (h.startsWith('toplu-borc')) debtSeed(h);   // Toplu Borç Ödeme deep links
   if (h === 'assistant') {            // Koçtaş sohbetini dolu göster
     state.chatStarted = true;
     state.chatSeed = true;
@@ -8148,6 +8600,8 @@ function routeTo(hash) {
   state.screen = h;
   return true;
 }
+// Toplu Borç Ödeme (draft) routes — kept on their own line so parallel draft branches merge without conflicts
+ROUTES.push('toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis');
 /* Bölüm linkine git: nereden geldiğimizi geri yığınına ekle (geri o ekrana dönsün),
    state'i kur, URL hash'ini güncelle (paylaşılabilir), çiz */
 function gotoSection(hash) {

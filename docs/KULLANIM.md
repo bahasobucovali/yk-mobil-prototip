@@ -88,6 +88,12 @@ Her bölüm, akışı baştan tekrarlamadan kendi hash linkiyle doğrudan açıl
 | Ödül Yolu — yolculuk (level haritası) | `#fayda-journey` |
 | Ödül Yolu — tam ekran ödül seçimi | `#fayda-reward` |
 | Ödüllerim — kazanılmış/aktif ödüller | `#fayda-wallet` |
+| Toplu Borç Ödeme (taslak) — ana ekran | `#toplu-borc` |
+| Toplu Borç Ödeme — ekstre detayı | `#toplu-borc-ekstre` |
+| Toplu Borç Ödeme — toplu ödeme (hesap seçimi) | `#toplu-borc-odeme` |
+| Toplu Borç Ödeme — ödeme onayı | `#toplu-borc-onay` |
+| Toplu Borç Ödeme — işlem sonucu | `#toplu-borc-sonuc` |
+| Toplu Borç Ödeme — ödeme geçmişi | `#toplu-borc-gecmis` |
 | Harcama Bölüştür — hub | `#split` |
 | Harcama Bölüştür — harcama seç | `#split-pick` |
 | Harcama Bölüştür — tutar girerek istek | `#split-amount` |
@@ -116,6 +122,13 @@ World Pay ile ödeme yapınca fark otomatik kumbaraya düşer ve başarı ekran�
 
 ### Karekod ile Öde (ana ekran widget'ı)
 Telefon ana ekranındaki (springboard) YK widget'ından: Karekod ile Öde → kamera TR Karekod'u otomatik okur → işyeri + tutar gelir → kart/hesap seç → Öde → onay → başarı. Uygulamaya giriş adımı atlanır.
+
+### Toplu Borç Ödeme (taslak)
+Kredi kartı, esnek hesap (KMH), ihtiyaç, konut ve taşıt kredisi borçları ay sonunda tek ekstrede birleşir (Kasım 2026: 78.000 TL, son ödeme 15 Kasım). Yeni kredi ya da yapılandırma değildir; ürünlerin koşulları değişmez. Soldaki menü → **Ödemeler**'den açılır.
+- **Ana ekran:** toplam borç, kesim/son ödeme tarihi, ürün bazında dağılım çubuğu ve tutarlar, ekstre detayı ve ödeme geçmişi girişleri, **Toplu Öde**.
+- **Toplu ödeme:** hesap seçimi ve bakiye. Vadesiz TL Hesabım (10.000 TL) yetersiz bakiye uyarısı verir; Maaş Hesabım ile devam edilir.
+- **Onay → sonuç:** hesap, dönem ve ürün özeti; Face ID simülasyonuyla onay, referans no ve güncel ekstre durumu (kalan borç 0).
+- **Ödeme geçmişi:** önceki toplu ödemeler (biri başarısız); satıra dokununca işlem detayı açılır.
 
 ### Widget Galerisi
 Tüm YK widget çeşitleri tek ana-ekran yüzeyinde: karekod aksiyon kartı, bakiye, Worldpuan, aylık bütçe donut'u, Kartsız ATM, döviz & altın kurları. Karekodlu widget'lar dokununca ödeme akışını açar.
