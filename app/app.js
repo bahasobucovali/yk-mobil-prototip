@@ -251,13 +251,13 @@ const SECTIONS = [
   { hash: 'erken-maas', icon: 'salaryEarly', t: 'Taslak — Erken Maaş Erişimi', d: 'Maaşın %25\'ine maaş gününü beklemeden eriş: limit, tutar seçimi, koşullar' },
   { hash: 'erken-maas-tutar', icon: 'wallet2', t: 'Taslak — Erken Maaş: Tutar belirle', d: 'Kaydırma + tutar girişi, limit üstü talep engeli' },
   { hash: 'erken-maas-gecmis', icon: 'receipt', t: 'Taslak — Erken Maaş: İşlem geçmişi', d: 'Önceki erişimler ve geri ödeme durumları' },
-  { hash: 'arac', icon: 'car', t: 'Taslak — Taşıt Kredisi Marketplace', d: 'Araç ara, karşılaştır, kredini ve kaskonu tek akışta tamamla, teslimi izle' },
+  { hash: 'arac', icon: 'car', t: 'Taslak — Taşıt Kredisi Marketplace', d: 'Otokoç araçları: ara, karşılaştır, kredini ve kaskonu tek akışta tamamla, teslimi izle' },
   { hash: 'arac-liste', icon: 'search', t: 'Taslak — Taşıt: İlanlar ve karşılaştırma', d: 'Filtre, sıralama, favoriler, 3 araca kadar yan yana karşılaştırma' },
   { hash: 'arac-detay', icon: 'car', t: 'Taslak — Taşıt: Araç detayı', d: 'Galeri, özellikler, bayi bilgisi, kredi ön onayı başlangıcı' },
   { hash: 'arac-on-onay', icon: 'shield', t: 'Taslak — Taşıt: Kredi ön onayı', d: 'Peşinat, vade, ön değerlendirme sonucu (kesin onay değildir)' },
   { hash: 'arac-kredi', icon: 'loan', t: 'Taslak — Taşıt: Kredi ve ödeme planı', d: 'Peşinat ve vade değiştikçe canlı taksit, senaryo karşılaştırma' },
   { hash: 'arac-basvuru', icon: 'doc', t: 'Taslak — Taşıt: Başvuru ve kullandırım', d: 'Özet, belgeler, sözleşmeler; kesin değerlendirme ve kullandırım ayrı adım' },
-  { hash: 'arac-kasko', icon: 'insurance', t: 'Taslak — Taşıt: Kasko teklifleri', d: 'Teklif ve teminat karşılaştırma, poliçe seçimi ve onayı' },
+  { hash: 'arac-kasko', icon: 'insurance', t: 'Taslak — Taşıt: Kasko teklifleri', d: 'Allianz Türkiye kasko paketleri: teminat karşılaştırma, poliçe onayı' },
   { hash: 'arac-takip', icon: 'truck', t: 'Taslak — Taşıt: Teslim ve süreç takibi', d: 'Kredi, kullandırım, kasko ve teslim durumu tek ekranda' },
   { hash: 'search',    icon: 'search',   t: 'Arama',               d: 'Arama ekranı' },
   { hash: 'settings',  icon: 'gear',     t: 'Ayarlar',             d: 'Tema ve bildirimler' },
@@ -839,7 +839,7 @@ const SEARCH_FEATURES = [
   { hash: 'erken-maas', name: 'Erken Maaş Erişimi', icon: I.salaryEarly, sub: 'Maaşının %25\'ine maaş gününü beklemeden eriş',
     keys: ['erken maaş', 'maaş', 'maaş avansı', 'avans', 'erken erişim', 'maaş kredisi', 'kredi', 'nakit'] },
   { hash: 'arac', name: 'Taşıt Kredisi Marketplace', icon: I.car, sub: 'Aracını bul, kredini ve kaskonu tek akışta tamamla',
-    keys: ['araç', 'araba', 'otomobil', 'taşıt', 'taşıt kredisi', 'araç kredisi', 'oto kredi', 'kasko', 'galeri', 'bayi', 'ikinci el', 'sıfır araç', 'marketplace', 'kredi'] },
+    keys: ['araç', 'araba', 'otomobil', 'taşıt', 'taşıt kredisi', 'araç kredisi', 'oto kredi', 'kasko', 'galeri', 'bayi', 'ikinci el', 'sıfır araç', 'marketplace', 'otokoç', 'allianz', 'kredi'] },
 ];
 // Turkish-aware and accent-insensitive: "Borç", "borc" and "BORÇ" match alike (keeps string length)
 function searchNorm(s) {
@@ -5274,9 +5274,10 @@ function ewaSeed(h) {
    TAŞIT KREDİSİ MARKETPLACE (draft)
    Car search → listing & price comparison → details → loan pre-approval →
    loan & payment plan → final application & disbursement → kasko →
-   delivery tracking, in one journey. Cars, dealers and insurers are demo
-   data; rates, instalments and premiums are EXAMPLE figures that do not
-   represent real banking terms. Car pictures are representative vector
+   delivery tracking, in one journey. Sellers are Otokoç Otomotiv (Koç
+   Topluluğu) locations and kasko comes from Allianz Türkiye; listings,
+   rates, instalments, coverages and premiums are EXAMPLE figures that do
+   not represent real terms. Car pictures are representative vector
    illustrations (real photos can be added per car via `photos`).
    ====================================================================== */
 
@@ -5300,13 +5301,17 @@ const VM_ICO = {
 };
 // Mock customer data used in the pre-evaluation (masked; no real personal data)
 const VM_PROFILE = { name: 'Selçuk İmre', tckn: '•••••••••42', phone: '0 (5••) ••• •• 24', job: 'Özel sektör · Ücretli', income: 150000 };
-// Dealers and sellers are DEMO data (fictional businesses)
+// Every listing is sold by an Otokoç Otomotiv (Koç Topluluğu) location: new cars by Otokoç
+// authorized dealers, used cars by Otokoç 2. El. Locations are DEMO data; no third-party sellers.
+const VM_PAYEE = { short: 'Otokoç Otomotiv', legal: 'Otokoç Otomotiv Tic. ve San. A.Ş.' };   // loan is paid to the seller
 const VM_DEALERS = {
-  d1: { name: 'Atlas Premium Otomotiv', kind: 'Yetkili bayi', city: 'İstanbul', district: 'Sarıyer', addr: 'Maslak Mah. Büyükdere Cad. No: 214', rating: 4.8 },
-  d2: { name: 'Boğaz Oto Galeri',        kind: 'Galeri',       city: 'İstanbul', district: 'Ataşehir', addr: 'Barbaros Mah. Kardelen Sok. No: 7', rating: 4.5 },
-  d3: { name: 'Başkent Motorlu Araçlar', kind: 'Yetkili bayi', city: 'Ankara',   district: 'Çankaya', addr: 'Kızılırmak Mah. Ufuk Ünv. Cad. No: 12', rating: 4.7 },
-  d4: { name: 'Ege Premium Oto',         kind: 'Galeri',       city: 'İzmir',    district: 'Bornova', addr: 'Kazımdirik Mah. 372. Sok. No: 9', rating: 4.6 },
-  d5: { name: 'Uludağ Otomotiv',         kind: 'Yetkili bayi', city: 'Bursa',    district: 'Nilüfer', addr: 'Odunluk Mah. Akademi Cad. No: 31', rating: 4.7 },
+  d1: { name: 'Otokoç 2. El',            kind: '2. El',        city: 'İstanbul', district: 'Sarıyer' },
+  d2: { name: 'Otokoç 2. El',            kind: '2. El',        city: 'İstanbul', district: 'Ataşehir' },
+  d3: { name: 'Otokoç 2. El',            kind: '2. El',        city: 'Ankara',   district: 'Çankaya' },
+  d4: { name: 'Otokoç 2. El',            kind: '2. El',        city: 'İzmir',    district: 'Bornova' },
+  d5: { name: 'Otokoç 2. El',            kind: '2. El',        city: 'Bursa',    district: 'Nilüfer' },
+  d6: { name: 'Otokoç Sultanbeyli Ford', kind: 'Yetkili bayi', city: 'İstanbul', district: 'Sultanbeyli' },
+  d7: { name: 'Otokoç İstinye Fiat',     kind: 'Yetkili bayi', city: 'İstanbul', district: 'Sarıyer' },
 };
 const VM_EQUIP_PREMIUM = ['Matrix LED farlar', 'Dijital gösterge paneli', 'Geri görüş kamerası', 'Adaptif hız sabitleyici', 'Kablosuz CarPlay / Android Auto', 'Çift bölgeli otomatik klima', 'Elektrikli bagaj kapağı', 'Isıtmalı ön koltuklar'];
 const VM_EQUIP_BASIC = ['LED gündüz farları', 'Geri görüş kamerası', 'Hız sabitleyici', 'CarPlay / Android Auto', 'Otomatik klima', 'Park sensörleri'];
@@ -5318,20 +5323,24 @@ const VM_CARS = [
   { id: 'tucson',  brand: 'Hyundai',       model: 'Tucson',  trim: '1.6 T-GDI Elite Plus',       year: 2023, km: 25000, price: 1780000, cond: 'used', type: 'SUV',           fuel: 'Benzin', gear: 'Otomatik (DCT)', engine: '1.6 T-GDI · 180 PS', drive: 'Önden çekiş', colorName: 'Yeşil', color: '#3e5a4b', dealer: 'd3', featured: true, equip: VM_EQUIP_BASIC },
   { id: 'c200',    brand: 'Mercedes-Benz', model: 'C 200',   trim: 'AMG',                        year: 2021, km: 58000, price: 2450000, cond: 'used', type: 'Sedan',         fuel: 'Benzin (hafif hibrit)', gear: 'Otomatik (9G-Tronic)', engine: '1.5 · 204 PS', drive: 'Arkadan itiş', colorName: 'Gri', color: '#7d858e', dealer: 'd3', equip: VM_EQUIP_PREMIUM },
   { id: 'a3',      brand: 'Audi',          model: 'A3',      trim: 'Sportback 35 TFSI S line',   year: 2023, km: 21000, price: 1850000, cond: 'used', type: 'Hatchback',     fuel: 'Benzin', gear: 'Otomatik (S tronic)', engine: '1.5 TFSI · 150 PS', drive: 'Önden çekiş', colorName: 'Kırmızı', color: '#a8232c', dealer: 'd2', equip: VM_EQUIP_PREMIUM },
-  { id: 'octavia', brand: 'Skoda',         model: 'Octavia', trim: '1.5 TSI e-TEC Premium',      year: 2026, km: 0,     price: 1890000, cond: 'new',  type: 'Sedan',         fuel: 'Benzin (hafif hibrit)', gear: 'Otomatik (DSG)', engine: '1.5 TSI · 150 PS', drive: 'Önden çekiş', colorName: 'Gümüş', color: '#a9b0b8', dealer: 'd5', equip: VM_EQUIP_BASIC },
+  { id: 'puma',    brand: 'Ford',          model: 'Puma',    trim: '1.0 EcoBoost Hibrit ST-Line', year: 2026, km: 0,     price: 1890000, cond: 'new',  type: 'SUV',           fuel: 'Benzin (hafif hibrit)', gear: 'Otomatik (7 ileri)', engine: '1.0 EcoBoost · 155 PS', drive: 'Önden çekiş', colorName: 'Mavi', color: '#2f5f9e', dealer: 'd6', equip: VM_EQUIP_BASIC },
   { id: 'passat',  brand: 'Volkswagen',    model: 'Passat',  trim: '1.5 TSI Elegance',           year: 2022, km: 38000, price: 1550000, cond: 'used', type: 'Sedan',         fuel: 'Benzin', gear: 'Otomatik (DSG)', engine: '1.5 TSI · 150 PS', drive: 'Önden çekiş', colorName: 'Mavi', color: '#2a4e86', dealer: 'd4', equip: VM_EQUIP_BASIC },
   { id: 'p3008',   brand: 'Peugeot',       model: '3008',    trim: '1.2 PureTech GT',            year: 2022, km: 47000, price: 1420000, cond: 'used', type: 'SUV',           fuel: 'Benzin', gear: 'Otomatik (EAT8)', engine: '1.2 PureTech · 130 PS', drive: 'Önden çekiş', colorName: 'Gri', color: '#5f6873', dealer: 'd5', equip: VM_EQUIP_BASIC },
   { id: 'corolla', brand: 'Toyota',        model: 'Corolla', trim: '1.5 Dream',                  year: 2023, km: 22000, price: 1120000, cond: 'used', type: 'Sedan',         fuel: 'Benzin', gear: 'Otomatik (Multidrive S)', engine: '1.5 · 125 PS', drive: 'Önden çekiş', colorName: 'Beyaz', color: '#eceff2', dealer: 'd4', equip: VM_EQUIP_BASIC },
-  { id: 'egea',    brand: 'Fiat',          model: 'Egea',    trim: 'SW 1.4 Fire Urban Plus',     year: 2026, km: 0,     price: 1090000, cond: 'new',  type: 'Station Wagon', fuel: 'Benzin', gear: 'Manuel', engine: '1.4 Fire · 95 PS', drive: 'Önden çekiş', colorName: 'Bordo', color: '#6e1f2b', dealer: 'd3', equip: VM_EQUIP_BASIC },
+  { id: 'egea',    brand: 'Fiat',          model: 'Egea',    trim: 'SW 1.4 Fire Urban Plus',     year: 2026, km: 0,     price: 1090000, cond: 'new',  type: 'Station Wagon', fuel: 'Benzin', gear: 'Manuel', engine: '1.4 Fire · 95 PS', drive: 'Önden çekiş', colorName: 'Bordo', color: '#6e1f2b', dealer: 'd7', equip: VM_EQUIP_BASIC },
   { id: 'clio',    brand: 'Renault',       model: 'Clio',    trim: '1.0 TCe Touch',              year: 2023, km: 18000, price: 890000,  cond: 'used', type: 'Hatchback',     fuel: 'Benzin', gear: 'Manuel', engine: '1.0 TCe · 90 PS', drive: 'Önden çekiş', colorName: 'Turuncu', color: '#c9622a', dealer: 'd4', equip: VM_EQUIP_BASIC },
 ];
-// Insurers are DEMO data (fictional); premiums are EXAMPLE figures
+// Kasko offers come from Allianz Türkiye. Package names follow Allianz's kasko packages (Eko, Kapsamlı);
+// coverage details, add-ons and premiums here are EXAMPLE figures.
 const VM_KASKO = [
-  { id: 'k1', ins: 'Kalkan Sigorta', tag: 'En uygun fiyat', premium: 46800, rating: 4.3, color: '#2F7D5B', cover: { kasko: true, ikame: '7 gün', mini: true, cam: true, yol: true, ferdi: '50.000 TL', hukuk: false, muafiyet: '%2' } },
-  { id: 'k2', ins: 'Pusula Sigorta', tag: 'Önerilen',       premium: 52300, rating: 4.6, color: '#5B4DB0', cover: { kasko: true, ikame: '15 gün', mini: true, cam: true, yol: true, ferdi: '100.000 TL', hukuk: true, muafiyet: 'Yok' } },
-  { id: 'k3', ins: 'Kıyı Sigorta',   tag: 'En geniş kapsam', premium: 61900, rating: 4.7, color: '#1D7A8A', cover: { kasko: true, ikame: '30 gün', mini: true, cam: true, yol: true, ferdi: '250.000 TL', hukuk: true, muafiyet: 'Yok' } },
+  { id: 'k1', ins: 'Allianz Türkiye', pkg: 'Eko Paket', short: 'Eko', tag: 'Uygun fiyatlı', premium: 44900, color: '#003781',
+    cover: { carpma: true, deprem: 'İsteğe bağlı', sel: true, cam: true, mini: true, yol: true, ikame: '7 gün', ferdi: true, hukuk: true, hasarsiz: false, yurtdisi: false } },
+  { id: 'k2', ins: 'Allianz Türkiye', pkg: 'Kapsamlı Paket', short: 'Kapsamlı', tag: 'Önerilen', premium: 52300, color: '#003781',
+    cover: { carpma: true, deprem: true, sel: true, cam: true, mini: true, yol: true, ikame: '15 gün', ferdi: true, hukuk: true, hasarsiz: false, yurtdisi: false } },
+  { id: 'k3', ins: 'Allianz Türkiye', pkg: 'Kapsamlı Paket + Ek Teminatlar', short: 'Kapsamlı +', tag: 'En geniş kapsam', premium: 61900, color: '#003781',
+    cover: { carpma: true, deprem: true, sel: true, cam: true, mini: true, yol: true, ikame: '30 gün', ferdi: true, hukuk: true, hasarsiz: true, yurtdisi: true } },
 ];
-const VM_COVERS = [['kasko', 'Tam kasko (çarpma, yanma, çalınma)'], ['ikame', 'İkame araç'], ['mini', 'Mini onarım (far, ayna, cam)'], ['cam', 'Cam kırılması'], ['yol', 'Yol yardım ve çekici'], ['ferdi', 'Ferdi kaza'], ['hukuk', 'Hukuksal koruma'], ['muafiyet', 'Muafiyet']];
+const VM_COVERS = [['carpma', 'Çarpma, çarpışma, hırsızlık'], ['deprem', 'Deprem'], ['sel', 'Sel ve su baskını'], ['cam', 'Cam kırılması'], ['mini', 'Mini onarım (kaporta, boya, döşeme)'], ['yol', 'Yol yardım ve çekici'], ['ikame', 'Yedek (ikame) araç'], ['ferdi', 'Ferdi kaza'], ['hukuk', 'Hukuksal koruma'], ['hasarsiz', 'Hasarsızlık koruma'], ['yurtdisi', 'Yurt dışı teminatı']];
 
 state.vm = {
   f: { cond: 'all', brand: null, model: null, pmin: null, pmax: null, types: [], year: null, km: null, city: null, seller: null },
@@ -5505,7 +5514,7 @@ function vmMatches(c, f = state.vm.f) {
   if (f.year && c.year < f.year) return false;
   if (f.km && c.km > f.km) return false;
   if (f.city && d.city !== f.city) return false;
-  if (f.seller && d.kind !== f.seller) return false;
+  if (f.seller && d.name !== f.seller) return false;
   return true;
 }
 function vmResults() {
@@ -5555,7 +5564,7 @@ function VmHome() {
     <div class="screen-scroll">
       <div class="vm-hero">
         <div class="vm-hero-t">Hayalindeki aracı bul,<br>finansmanını burada tamamla</div>
-        <div class="vm-hero-s">Arama, kredi, kasko ve teslim tek uygulamada</div>
+        <div class="vm-hero-s">Otokoç'tan sıfır ve ikinci el araçlar; kredi, kasko ve teslim tek akışta</div>
         <div class="vm-hero-car">${vmCarSVG({ ...vmCar('a4'), color: '#dfe5ec' }, 'side', 'none')}</div>
       </div>
       <div class="vm-search" id="vm-search">${vmSearchHTML()}</div>
@@ -5566,12 +5575,12 @@ function VmHome() {
       <div class="vm-feat">${feat.map((c, i) => vmFeatCardHTML(c, i)).join('')}</div>
       <div class="vm-sec-h"><span>Aracını tek uygulamada al</span></div>
       <div class="vm-journey">
-        <div><span class="n">1</span><b>Bul ve karşılaştır</b><em>Bayi ve galeri ilanları tek aramada</em></div>
+        <div><span class="n">1</span><b>Bul ve karşılaştır</b><em>Otokoç ilanları tek aramada</em></div>
         <div><span class="n">2</span><b>Ön onayını gör</b><em>Ödeme planını kendin kur</em></div>
         <div><span class="n">3</span><b>Kredi ve kasko</b><em>Başvuru ve poliçe aynı akışta</em></div>
         <div><span class="n">4</span><b>Teslim al</b><em>Her adımı buradan izle</em></div>
       </div>
-      <div class="vm-note">${I.info}<span>İlan, bayi ve kasko bilgileri demo verisidir; taksitler örnek hesaplamadır, gerçek kredi koşullarını yansıtmaz.</span></div>
+      <div class="vm-note">${I.info}<span>İlanlar, fiyatlar ve kasko primleri demo verisidir; taksitler örnek hesaplamadır, gerçek kredi koşullarını yansıtmaz.</span></div>
     </div>
   </div>`;
 }
@@ -5599,8 +5608,8 @@ function vmSearchHTML() {
       <div class="vm-chips">${chip('km', '', 'Tümü', !f.km)}${[20000, 50000, 100000].map(k => chip('km', k, (k / 1000) + ' bin km\'ye kadar', f.km === k)).join('')}</div>
       <div class="vm-adv-t">Konum</div>
       <div class="vm-chips">${chip('city', '', 'Tümü', !f.city)}${VM_CITIES.map(c => chip('city', c, c, f.city === c)).join('')}</div>
-      <div class="vm-adv-t">Satıcı</div>
-      <div class="vm-chips">${chip('seller', '', 'Tümü', !f.seller)}${['Yetkili bayi', 'Galeri'].map(s => chip('seller', s, s, f.seller === s)).join('')}</div>
+      <div class="vm-adv-t">Otokoç satış noktası</div>
+      <div class="vm-chips">${chip('seller', '', 'Tümü', !f.seller)}${[...new Set(Object.values(VM_DEALERS).map(d => d.name))].map(s => chip('seller', s, s, f.seller === s)).join('')}</div>
     </div>` : ''}
     <div class="vm-search-foot">
       <button class="vm-clear" data-action="vm-clear">Temizle</button>
@@ -5754,7 +5763,7 @@ function vmCardHTML(c) {
       <div class="vm-cspec">${c.year} · ${vmKm(c.km)} · ${c.fuel.split(' ')[0]} · ${c.gear.split(' ')[0]}</div>
       <div class="vm-cprice"><b>${vmTL(c.price)}</b><span>aylık ~${vmTL(vmEstimate(c))}</span></div>
       <div class="vm-cfoot">
-        <div class="vm-cdealer">${I.pin}<span>${d.name} · ${d.city}</span><em>${d.kind}</em></div>
+        <div class="vm-cdealer">${I.pin}<span>${d.name}</span><em>${d.district}, ${d.city}</em></div>
         <button class="vm-cmp ${cmp ? 'on' : ''}" data-action="vm-cmp" data-id="${c.id}"><span class="cbx">${I.check}</span>Karşılaştır</button>
       </div>
     </div>
@@ -5817,7 +5826,7 @@ function vmCompareSheet() {
         ${row('Vites', c => c.gear)}
         ${row('Motor', c => c.engine)}
         ${row('Kasa tipi', c => c.type)}
-        ${row('Satıcı', c => vmDealer(c).name + '<br><i>' + vmDealer(c).city + ' · ' + vmDealer(c).kind + '</i>')}
+        ${row('Satıcı', c => vmDealer(c).name + '<br><i>' + vmDealer(c).district + ', ' + vmDealer(c).city + '</i>')}
       </tbody>
     </table></div>
     <div class="vm-cmp-note">* %${VM_EST.downPct} peşinat, ${VM_EST.term} ay, örnek faiz. Yeşil: en avantajlı değer.</div>
@@ -5871,12 +5880,12 @@ function VmDetail() {
 }
 function vmDealerBoxHTML(d, title) {
   return `<div class="vm-box">
-    <div class="vm-box-h">${title || (d.kind === 'Yetkili bayi' ? 'Bayi' : 'Satıcı')}</div>
+    <div class="vm-box-h">${title || 'Satış noktası'}</div>
     <div class="vm-dealer">
       <div class="vm-dealer-ico">${d.name[0]}</div>
-      <div class="vm-dealer-mid"><b>${d.name}</b><span>${d.kind} · ★ ${vmPctStr(d.rating)}</span></div>
+      <div class="vm-dealer-mid"><b>${d.name}</b><span>${d.kind === '2. El' ? 'İkinci el satış noktası' : 'Yetkili bayi'} · Koç Topluluğu</span></div>
     </div>
-    <div class="vm-dealer-addr">${I.pin}<span>${d.addr}<br>${d.district} / ${d.city}</span></div>
+    <div class="vm-dealer-addr">${I.pin}<span>${d.district} / ${d.city}</span></div>
     <div class="vm-dealer-btns">
       <button data-action="toast" data-msg="Arama prototipte aktif değil">${VM_ICO.phone}Bayiyi ara</button>
       <button data-action="toast" data-msg="Yol tarifi prototipte aktif değil">${VM_ICO.route}Yol tarifi</button>
@@ -5902,7 +5911,7 @@ function vmFlowHTML(cur) {
 function vmMiniHTML(c, right) {
   return `<div class="vm-mini">
     <div class="vm-mini-img">${vmPicHTML(c, 'side', 'studio')}</div>
-    <div class="vm-mini-mid"><b>${c.brand} ${c.model}</b><span>${c.year} · ${vmKm(c.km)}</span><em>${vmDealer(c).name}</em></div>
+    <div class="vm-mini-mid"><b>${c.brand} ${c.model}</b><span>${c.year} · ${vmKm(c.km)}</span><em>${vmDealer(c).name} · ${vmDealer(c).district}</em></div>
     <div class="vm-mini-r">${right || `<span>Araç bedeli</span><b>${vmTL(c.price)}</b>`}</div>
   </div>`;
 }
@@ -6290,8 +6299,8 @@ function vmDocsFor(c) {
   return [
     ['Kimlik bilgileri', 'Nüfus kayıtlarından doğrulandı'],
     ['Gelir bilgisi', 'Beyanın ve hesap hareketlerinle doğrulandı'],
-    c.cond === 'new' ? ['Proforma fatura', 'Bayi tarafından iletildi'] : ['Satış sözleşmesi taslağı', 'Satıcı tarafından iletildi'],
-    c.cond === 'new' ? ['Araç bilgileri (şasi ve motor no)', 'Bayi tarafından iletildi'] : ['Ruhsat ve ekspertiz raporu', 'Satıcı tarafından iletildi'],
+    c.cond === 'new' ? ['Proforma fatura', 'Otokoç tarafından iletildi'] : ['Satış sözleşmesi taslağı', 'Otokoç tarafından iletildi'],
+    c.cond === 'new' ? ['Araç bilgileri (şasi ve motor no)', 'Otokoç tarafından iletildi'] : ['Ruhsat ve ekspertiz raporu', 'Otokoç 2. El tarafından iletildi'],
   ];
 }
 function VmApply() {
@@ -6312,7 +6321,7 @@ function VmApply() {
         <div class="vm-review-h"><span class="vm-spin"></span><div><b>Kesin değerlendirme sürüyor</b><span>Başvuru no ${a.ref} · Sonuç bildirim olarak da gelir</span></div></div>
         <div class="vm-chk">${VM_REVIEW.map((t, k) => vmChkRowHTML(t, k, a.step, 'vm-rv-')).join('')}</div>
       </div>`;
-  else if (v.disb) banner = `<div class="vm-okbar">${I.check}<span><b>Kredin kullandırıldı</b>${vmTL(q.loan)} ${d.name} hesabına aktarıldı · ${v.disb.at}</span></div>`;
+  else if (v.disb) banner = `<div class="vm-okbar">${I.check}<span><b>Kredin kullandırıldı</b>${vmTL(q.loan)} ${VM_PAYEE.short} hesabına aktarıldı · ${v.disb.at}</span></div>`;
   else if (approved) banner = `<div class="vm-okbar">${I.check}<span><b>Kredi başvurun onaylandı</b>Kullandırım için son adım kasko poliçen. Poliçe düzenlendiğinde kredi tutarı bayinin hesabına aktarılır.</span></div>`;
   const cta = !a ? `<button class="btn-primary vm-approve ${all ? '' : 'disabled'}" id="vm-submit" data-action="vm-submit">${I.faceid} Başvuruyu Tamamla</button>`
     : !approved ? '<button class="btn-primary disabled">Değerlendiriliyor…</button>'
@@ -6336,7 +6345,7 @@ function VmApply() {
         <div class="r-row"><span class="r-l">Toplam geri ödeme</span><span class="r-r">${vmTL(q.total)}</span></div>
         <div class="r-row"><span class="r-l">Aylık faiz oranı ${vmEx()}</span><span class="r-r">%${vmPctStr(VM_RATE.monthly)}</span></div>
         <div class="r-row"><span class="r-l">İlk taksit tarihi</span><span class="r-r">${a ? a.first : vmFirstDue()}</span></div>
-        <div class="r-row"><span class="r-l">Kullandırım</span><span class="r-r">${d.name} hesabına</span></div>
+        <div class="r-row"><span class="r-l">Kullandırım</span><span class="r-r">${VM_PAYEE.short} hesabına</span></div>
       </div>
       <div class="vm-sec-t">Kredi koşulları</div>
       <div class="vm-box vm-conds"><ul>${VM_CONDS.map(x => `<li>${x}</li>`).join('')}</ul></div>
@@ -6406,10 +6415,10 @@ function VmKasko() {
     <div class="screen-scroll">
       ${vmFlowHTML(3)}
       ${done
-        ? `<div class="vm-okbar">${I.check}<span><b>Poliçen düzenlendi</b>${sel.ins} · Poliçe no ${v.policy.no}</span></div>`
-        : `<div class="vm-infobar">${I.shield}<span>Kredinin kullandırılması için bankamızın <b>dain-i mürtehin</b> olarak yer aldığı bir kasko poliçesi gerekir. Teklifler aracının bilgilerine göre hazırlandı.</span></div>`}
+        ? `<div class="vm-okbar">${I.check}<span><b>Poliçen düzenlendi</b>${sel.ins} · ${sel.pkg} · Poliçe no ${v.policy.no}</span></div>`
+        : `<div class="vm-infobar">${I.shield}<span>Kredinin kullandırılması için bankamızın <b>dain-i mürtehin</b> olarak yer aldığı bir kasko poliçesi gerekir. Teklifler Allianz Türkiye'den, aracının bilgilerine göre hazırlandı.</span></div>`}
       ${vmMiniHTML(c, `<span>Kasko değeri ${vmEx()}</span><b>${vmTL(c.price)}</b>`)}
-      <div class="vm-sec-t vm-sec-row"><span>${VM_KASKO.length} kasko teklifi</span><button class="sp-link" data-action="vm-k-compare">Karşılaştır ${I.chevR}</button></div>
+      <div class="vm-sec-t vm-sec-row"><span>Allianz Türkiye · ${VM_KASKO.length} paket</span><button class="sp-link" data-action="vm-k-compare">Karşılaştır ${I.chevR}</button></div>
       <div class="vm-ks">${VM_KASKO.map(k => vmKCardHTML(k, done, sel)).join('')}</div>
       ${done ? '' : `
       <div class="vm-sec-t">Prim ödemesi</div>
@@ -6430,7 +6439,7 @@ function VmKasko() {
           <span class="contract-txt"><a data-action="vm-doc" data-doc="kasko">Kasko Bilgilendirme Formu</a>'nu okudum; poliçenin düzenlenmesini onaylıyorum.</span>
         </label>
       </div>`}
-      <div class="vm-note">${I.info}<span>Sigorta şirketleri, teminatlar ve primler demo verisidir; gerçek teklifleri yansıtmaz.</span></div>
+      <div class="vm-note">${I.info}<span>Paket adları Allianz Türkiye'nin kasko paketlerinden alınmıştır; teminat ayrıntıları ve primler örnektir.</span></div>
     </div>
     <div class="screen-cta">
       ${done ? '<button class="btn-primary" data-action="vm-track">Süreci Takip Et</button>'
@@ -6444,12 +6453,12 @@ function vmKCardHTML(k, done, sel) {
     <span class="vm-k-tag t-${k.id}">${k.tag}</span>
     <div class="vm-k-top">
       <span class="vm-k-logo" style="background:${k.color}">${k.ins[0]}</span>
-      <div class="vm-k-name"><b>${k.ins}</b><span>★ ${vmPctStr(k.rating)} · Genişletilmiş kasko</span></div>
+      <div class="vm-k-name"><b>${k.pkg}</b><span>${k.ins} · Kasko</span></div>
       <span class="vm-k-radio"></span>
     </div>
     <div class="vm-k-covs">
-      <span>İkame araç<b>${cv.ikame}</b></span><span>Muafiyet<b>${cv.muafiyet}</b></span>
-      <span>Ferdi kaza<b>${cv.ferdi}</b></span><span>Hukuksal koruma<b>${cv.hukuk ? 'Var' : 'Yok'}</b></span>
+      <span>Yedek araç<b>${cv.ikame}</b></span><span>Deprem<b>${cv.deprem === true ? 'Dahil' : cv.deprem}</b></span>
+      <span>Hasarsızlık koruma<b>${cv.hasarsiz ? 'Var' : 'Yok'}</b></span><span>Yurt dışı<b>${cv.yurtdisi ? 'Var' : 'Yok'}</b></span>
     </div>
     <div class="vm-k-foot">
       <div class="vm-k-price"><b>${vmTL(k.premium)}</b><span>yıllık · 9 taksitte aylık ${vmTL(k.premium / 9)}</span></div>
@@ -6488,7 +6497,7 @@ function vmKDetailSheet(id) {
   sheetEl.innerHTML = `
     <div class="sheet-handle"></div>
     <div class="sheet-bar"><h3>Teminatlar</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
-    <div class="vm-kd-head"><span class="vm-k-logo" style="background:${k.color}">${k.ins[0]}</span><div><b>${k.ins}</b><span>${k.tag} · ★ ${vmPctStr(k.rating)}</span></div><em>${vmTL(k.premium)}<i>yıllık</i></em></div>
+    <div class="vm-kd-head"><span class="vm-k-logo" style="background:${k.color}">${k.ins[0]}</span><div><b>${k.pkg}</b><span>${k.ins} · ${k.tag}</span></div><em>${vmTL(k.premium)}<i>yıllık</i></em></div>
     <div class="vm-covl">${VM_COVERS.map(([key, label]) => `<div><span>${label}</span>${vmCoverVal(k.cover[key])}</div>`).join('')}</div>
     <div class="vm-cmp-note">Teminat ve primler örnektir.</div>
     ${done ? '<button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>'
@@ -6502,7 +6511,7 @@ function vmKCompareSheet() {
     <div class="sheet-handle"></div>
     <div class="sheet-bar"><h3>Teklif karşılaştırma</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
     <div class="vm-cmp-scroll"><table class="vm-cmp-t vm-kcmp">
-      <thead><tr><th></th>${VM_KASKO.map(k => `<td><span class="vm-k-logo sm" style="background:${k.color}">${k.ins[0]}</span><b>${k.ins.replace(' Sigorta', '')}</b></td>`).join('')}</tr></thead>
+      <thead><tr><th></th>${VM_KASKO.map(k => `<td><span class="vm-k-logo sm" style="background:${k.color}">${k.ins[0]}</span><b>${k.short}</b></td>`).join('')}</tr></thead>
       <tbody>
         <tr><th>Yıllık prim</th>${VM_KASKO.map(k => `<td class="${k.premium === minP ? 'best' : ''}">${vmTL(k.premium)}</td>`).join('')}</tr>
         ${VM_COVERS.map(([key, label]) => `<tr><th>${label}</th>${VM_KASKO.map(k => `<td>${vmCoverVal(k.cover[key])}</td>`).join('')}</tr>`).join('')}
@@ -6520,8 +6529,8 @@ function vmKBuy() {
     <div class="sheet-handle"></div>
     <div class="sheet-amount-label">Kasko primi</div>
     <div class="sheet-amount">${vmTL(k.premium)}</div>
-    <div class="sheet-pay-row"><span>${k.ins} · Kasko</span><span class="spr-r">Worldcard **** 3333 · ${v.kInst === 1 ? 'Tek Çekim' : v.kInst + ' Taksit'}</span></div>
-    <div class="vm-sheet-note">${I.info}<span>Poliçe düzenlendiğinde ${vmTL(v.app.loan)} kredi tutarın ${d.name} hesabına aktarılır.</span></div>
+    <div class="sheet-pay-row"><span>${k.ins} · ${k.short}</span><span class="spr-r">Worldcard **** 3333 · ${v.kInst === 1 ? 'Tek Çekim' : v.kInst + ' Taksit'}</span></div>
+    <div class="vm-sheet-note">${I.info}<span>Poliçe düzenlendiğinde ${vmTL(v.app.loan)} kredi tutarın ${VM_PAYEE.short} hesabına aktarılır.</span></div>
     <button class="sheet-btn" id="vm-k-approve" data-action="vm-k-approve">${I.faceid} Yapı Kredi Mobil ile Onayla</button>
     <button class="sheet-btn ghost" data-action="close-sheet">Vazgeç</button>`;
   sheetEl.classList.add('open');
@@ -6581,7 +6590,7 @@ function VmTrack() {
     { t: 'Araç seçimi', d: `${c.brand} ${c.model} · ${d.name}`, s: 'done' },
     { t: 'Kredi ön onayı', d: pre ? `${vmTL(pre.amount)} ön onaylı tutar` : 'Tamamlandı', s: 'done' },
     { t: 'Kredi başvurusu', d: approved ? 'Kesin değerlendirme olumlu' : 'Kesin değerlendirme sürüyor', s: approved ? 'done' : 'active' },
-    { t: 'Kasko poliçesi', d: k ? `${k.ins} · ${v.policy.no}` : approved ? 'Teklif seçimini bekliyor' : 'Kredi onayından sonra', s: k ? 'done' : approved ? 'active' : 'todo' },
+    { t: 'Kasko poliçesi', d: k ? `${k.ins} · ${k.short} · ${v.policy.no}` : approved ? 'Teklif seçimini bekliyor' : 'Kredi onayından sonra', s: k ? 'done' : approved ? 'active' : 'todo' },
     { t: 'Kredi kullandırımı', d: v.disb ? `${vmTL(a.loan)} bayi hesabına aktarıldı` : 'Kasko poliçesinden sonra', s: v.disb ? 'done' : 'todo' },
     ...vmDelivSteps().map(([t, dn, on, wait], i) => {
       const s = !v.disb ? 'todo' : v.stage > i ? 'done' : v.stage === i ? 'active' : 'todo';
@@ -6613,7 +6622,7 @@ function VmTrack() {
           <div class="vm-prog-sub">${doneN}/${steps.length} adım tamamlandı${next ? ` · Sıradaki: ${next.t}` : ''}</div>
         </div>
       </div>
-      ${fresh ? `<div class="vm-okbar">${I.check}<span><b>Poliçen düzenlendi, kredin kullandırıldı</b>${vmTL(a.loan)} ${d.name} hesabına aktarıldı. Noter randevun ${v.disb.noter}.</span></div>` : ''}
+      ${fresh ? `<div class="vm-okbar">${I.check}<span><b>Poliçen düzenlendi, kredin kullandırıldı</b>${vmTL(a.loan)} ${VM_PAYEE.short} hesabına aktarıldı. Noter randevun ${v.disb.noter}.</span></div>` : ''}
       ${v.stage >= 3 ? `<div class="vm-okbar">${VM_ICO.key}<span><b>Aracın teslim edildi</b>İyi yolculuklar! İlk taksit tarihin ${a.first}.</span></div>` : ''}
       <div class="vm-tiles">${tiles.map(t => `<div class="vm-tile ${t.s} ${t.act ? 'tap' : ''}" ${t.act ? `data-action="${t.act}"` : ''}>
         <span class="vm-tile-ico">${t.ico}</span><span class="vm-tile-l">${t.l}</span><b>${t.val}</b>${t.act ? `<span class="vm-tile-chev">${I.chevR}</span>` : ''}
@@ -6639,7 +6648,7 @@ function VmTrack() {
       <div class="vm-sec-t">Belgeler</div>
       <div class="ru-info-card vm-links">
         <div class="ru-info-row tap" data-action="vm-plan-all"><span class="ru-info-ico">${I.doc}</span><span class="ru-info-k">Kredi ödeme planı</span><span class="ru-info-v">${a.term} taksit</span>${I.chevR}</div>
-        ${k ? `<div class="ru-info-row tap" data-action="vm-policy"><span class="ru-info-ico">${I.insurance}</span><span class="ru-info-k">Kasko poliçesi</span><span class="ru-info-v">${k.ins.replace(' Sigorta', '')}</span>${I.chevR}</div>` : ''}
+        ${k ? `<div class="ru-info-row tap" data-action="vm-policy"><span class="ru-info-ico">${I.insurance}</span><span class="ru-info-k">Kasko poliçesi</span><span class="ru-info-v">Allianz · ${k.short}</span>${I.chevR}</div>` : ''}
         ${v.disb ? `<div class="ru-info-row tap" data-action="vm-disb"><span class="ru-info-ico">${I.receipt}</span><span class="ru-info-k">Kullandırım dekontu</span><span class="ru-info-v">${vmShortDate(v.disb.at)}</span>${I.chevR}</div>` : ''}
       </div>
       <div class="vm-demo">
@@ -6679,7 +6688,7 @@ function vmPolicySheet() {
   sheetEl.innerHTML = `
     <div class="sheet-handle"></div>
     <div class="sheet-bar"><h3>Kasko poliçesi</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
-    <div class="vm-kd-head"><span class="vm-k-logo" style="background:${k.color}">${k.ins[0]}</span><div><b>${k.ins}</b><span>Poliçe no ${p.no}</span></div><span class="vm-pill ok sm">${I.check}Aktif</span></div>
+    <div class="vm-kd-head"><span class="vm-k-logo" style="background:${k.color}">${k.ins[0]}</span><div><b>${k.ins}</b><span>${k.pkg} · ${p.no}</span></div><span class="vm-pill ok sm">${I.check}Aktif</span></div>
     <div class="receipt vm-sh-receipt">
       <div class="r-row"><span class="r-l">Sigortalı araç</span><span class="r-r">${c.brand} ${c.model} · ${c.year}</span></div>
       <div class="r-row"><span class="r-l">Poliçe süresi</span><span class="r-r">${p.start} – ${p.end}</span></div>
@@ -6700,7 +6709,8 @@ function vmDisbSheet() {
     <div class="sheet-bar"><h3>Kullandırım dekontu</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
     <div class="vm-sh-head"><span class="vm-pill ok">${I.check}Bayiye ödendi</span><b>${vmTL(v.app.loan)}</b><span>${c.brand} ${c.model} taşıt kredisi kullandırımı</span></div>
     <div class="receipt vm-sh-receipt">
-      <div class="r-row"><span class="r-l">Alıcı</span><span class="r-r">${d.name}</span></div>
+      <div class="r-row"><span class="r-l">Alıcı</span><span class="r-r">${VM_PAYEE.legal}</span></div>
+      <div class="r-row"><span class="r-l">Satış noktası</span><span class="r-r">${d.name} · ${d.district}</span></div>
       <div class="r-row"><span class="r-l">Alıcı IBAN</span><span class="r-r">TR•• •••• •••• •••• 2034</span></div>
       <div class="r-row"><span class="r-l">Kredi başvuru no</span><span class="r-r">${v.app.ref}</span></div>
       <div class="r-row"><span class="r-l">İşlem tarihi</span><span class="r-r">${b.at}</span></div>
@@ -6731,7 +6741,7 @@ function vmDocSheet(kind) {
       <h4>1. Rehin</h4><p>${c.brand} ${c.model} aracı, noter satışı sırasında kredi borcu karşılığında bankamız lehine rehinlenir. Kredi kapandığında rehin kaldırılır.</p>
       <h4>2. Kasko</h4><p>Kredi süresince, bankamızın dain-i mürtehin olarak yer aldığı kasko poliçesinin her yıl yenilenmesini taahhüt edersin.</p>`],
     kasko: ['Kasko Bilgilendirme Formu', `
-      <h4>1. Poliçe</h4><p>Seçtiğin sigorta şirketi tarafından 1 yıl süreli genişletilmiş kasko poliçesi düzenlenir; bankamız dain-i mürtehindir.</p>
+      <h4>1. Poliçe</h4><p>Seçtiğin paketle Allianz Türkiye tarafından 1 yıl süreli kasko poliçesi düzenlenir; bankamız dain-i mürtehindir.</p>
       <h4>2. Prim ödemesi</h4><p>Prim, seçtiğin taksit sayısına göre Worldcard'ından tahsil edilir.</p>
       <h4>3. Hasar</h4><p>Hasar durumunda sigorta şirketinin hasar hattını araman yeterlidir; muafiyet tutarı teklifte belirtilir.</p>`],
   };

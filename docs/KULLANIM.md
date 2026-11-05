@@ -154,16 +154,16 @@ Maaş müşterisi, bu ayki net maaşının %25'ine (60.000 TL maaşta 15.000 TL)
 - **Özet → sonuç:** Face ID ikonlu onay, aktarılan tutar, işlem no, güncel limit. **İşlem geçmişi:** önceki erişimler, geri ödeme durumları (bekliyor / geri ödendi) ve işlem detayı.
 
 ### Taşıt Kredisi Marketplace (taslak)
-Araç aramadan kredi kullandırımına ve teslime kadar tek akış. Demo aracı: Audi A4, 2022, 45.000 km, 2.000.000 TL; peşinat 800.000 TL, kredi 1.200.000 TL, 36 ay. Ana sayfadaki aramadan ("araç", "araba", "taşıt", "kasko") ya da `#arac` ile açılır.
-- **Araç arama:** sıfır / ikinci el, marka, model, en az–en çok fiyat; detaylı filtrelerde araç tipi, model yılı, kilometre, konum ve satıcı tipi. Popüler markalar ve öne çıkan araçlar.
+Araç aramadan kredi kullandırımına ve teslime kadar tek akış; Koç Topluluğu şirketleri üzerinden kurgulandı. Tüm ilanlar Otokoç satış noktalarından gelir (sıfır araçlar Otokoç yetkili bayileri, ikinci el araçlar Otokoç 2. El); kasko teklifleri Allianz Türkiye'den. Demo aracı: Audi A4, 2022, 45.000 km, 2.000.000 TL; peşinat 800.000 TL, kredi 1.200.000 TL, 36 ay. Ana sayfadaki aramadan ("araç", "araba", "taşıt", "kasko", "otokoç") ya da `#arac` ile açılır.
+- **Araç arama:** sıfır / ikinci el, marka, model, en az–en çok fiyat; detaylı filtrelerde araç tipi, model yılı, kilometre, konum ve Otokoç satış noktası. Popüler markalar ve öne çıkan araçlar.
 - **İlanlar:** fotoğraf, yıl, km, fiyat, satıcı ve örnek aylık taksit; fiyat / yıl / km'ye göre sıralama, filtre sayfası, favoriler, 3 araca kadar yan yana karşılaştırma (en avantajlı değer yeşil).
 - **Araç detayı:** kaydırmalı galeri, özellikler, donanım, bayi bilgisi, favori, **Kredi Ön Onayı Başlat**.
 - **Kredi ön onayı:** peşinat (hızlı %20–50 seçimi), talep edilen kredi, vade, değerlendirmede kullanılan bilgiler ve KKB onayı → adım adım ön değerlendirme → ön onaylı tutar (1.250.000 TL). Ekranda açıkça **kesin onay olmadığı, kullandırımı garanti etmediği** yazar; talep ön onaylı tutarı aşarsa kısmi ön onay ve yeni asgari peşinat gösterilir.
 - **Kredi ve ödeme planı:** peşinat kaydırıcısı (ön onay ve asgari peşinat sınırlarıyla), vade seçimi; aylık taksit, toplam faiz, KKDF + BSMV ve toplam geri ödeme anlık güncellenir. Taksit/gelir oranı, en fazla 3 finansman senaryosunu kaydedip karşılaştırma, tam ödeme planı.
 - **Başvuru ve kullandırım:** ön onay → kesin değerlendirme → kullandırım ayrı aşamalar olarak gösterilir. Başvuru özeti, koşullar, gerekli belgeler, üç sözleşme onayı, **Başvuruyu Tamamla** → değerlendirme → onay; kullandırım kasko poliçesini bekler.
-- **Kasko:** üç teklif, teminat detayı ve karşılaştırma tablosu, Worldcard ile prim ödemesi (Tek Çekim varsayılan) → Face ID onayı → poliçe düzenlenir, kredi bayi hesabına aktarılır.
+- **Kasko:** Allianz Türkiye'nin Eko ve Kapsamlı paketleri (+ ek teminatlı seçenek), teminat detayı ve karşılaştırma tablosu, Worldcard ile prim ödemesi (Tek Çekim varsayılan) → Face ID onayı → poliçe düzenlenir, kredi Otokoç Otomotiv hesabına aktarılır.
 - **Teslim ve takip:** ilerleme çubuğu (8 adım), satın alma / kredi / kullandırım / kasko durum kartları, tahmini teslim tarihi, teslim noktası, bayi, belgeler. **Demo kontrolleri** ile noter → teslime hazırlık → teslim adımları ilerletilir ya da demo sıfırlanır.
-- Araçlar, bayiler ve sigorta şirketleri demo verisidir; faiz ve primler **örnektir** (`app.js` içinde `VM_RATE`, `VM_PRE_LIMIT`, `VM_KASKO`). Araç görselleri temsilî çizimlerdir; gerçek fotoğraf eklemek için görseller `app/assets/` içine konur ve ilgili araca `photos: ['assets/…']` yazılır.
+- İlanlar, satış noktalarının konumları, teminat ayrıntıları, faiz ve primler demo / **örnek** veridir (`app.js` içinde `VM_DEALERS`, `VM_CARS`, `VM_RATE`, `VM_PRE_LIMIT`, `VM_KASKO`). Araç görselleri temsilî çizimlerdir; gerçek fotoğraf eklemek için görseller `app/assets/` içine konur ve ilgili araca `photos: ['assets/…']` yazılır.
 
 ### Widget Galerisi
 Tüm YK widget çeşitleri tek ana-ekran yüzeyinde: karekod aksiyon kartı, bakiye, Worldpuan, aylık bütçe donut'u, Kartsız ATM, döviz & altın kurları. Karekodlu widget'lar dokununca ödeme akışını açar.
