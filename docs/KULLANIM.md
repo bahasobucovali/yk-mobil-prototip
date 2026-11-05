@@ -50,9 +50,9 @@ Bilinmesi gerekenler:
 6. **Worldcard ile öde** seç → **Öde** → **Yapı Kredi Mobil ile Onayla** (Face ID simülasyonu)
 7. Başarı ekranı + Worldpuan kazanımı
 
-Diğer uçtan uca akışlar: **Setur otonom senaryosu** (`#setur`), **Karekod ile Öde** (`#springboard`'dan başlar), **Birikim** (Yuvarla / Ekstreden / Maden), **Ödül Yolu**, **Harcama Bölüştür**, **Birlikte Kazan**, **Sky Limit** (taslak — menü → Krediler), **Toplu Borç Ödeme** (taslak — menü → Ödemeler).
+Diğer uçtan uca akışlar: **Setur otonom senaryosu** (`#setur`), **Karekod ile Öde** (`#springboard`'dan başlar), **Birikim** (Yuvarla / Ekstreden / Maden), **Ödül Yolu**, **Harcama Bölüştür**, **Birlikte Kazan**, **Sky Limit** (taslak — menü → Krediler), **Toplu Borç Ödeme** (taslak — menü → Ödemeler), **Erken Maaş Erişimi** (taslak — arama).
 
-Taslak özellikler ana sayfadaki **"Yapı Kredi Mobil'de Ara"** çubuğundan da açılır: arama ekranında **Önerilenler** altında "YENİ" etiketiyle görünürler; "sky", "limit", "borç", "toplu", "ekstre" gibi kelimelerle aranabilirler (Türkçe karakter yazmadan da eşleşir).
+Taslak özellikler ana sayfadaki **"Yapı Kredi Mobil'de Ara"** çubuğundan da açılır: arama ekranında **Önerilenler** altında "YENİ" etiketiyle görünürler; "sky", "limit", "borç", "toplu", "ekstre", "maaş", "avans" gibi kelimelerle aranabilirler (Türkçe karakter yazmadan da eşleşir).
 
 ## Bölümlere doğrudan erişim (hash linkleri)
 
@@ -96,6 +96,12 @@ Her bölüm, akışı baştan tekrarlamadan kendi hash linkiyle doğrudan açıl
 | Toplu Borç Ödeme — ödeme onayı | `#toplu-borc-onay` |
 | Toplu Borç Ödeme — işlem sonucu | `#toplu-borc-sonuc` |
 | Toplu Borç Ödeme — ödeme geçmişi | `#toplu-borc-gecmis` |
+| Erken Maaş Erişimi (taslak) — ana ekran | `#erken-maas` |
+| Erken Maaş Erişimi — tutar belirleme | `#erken-maas-tutar` |
+| Erken Maaş Erişimi — koşullar ve geri ödeme | `#erken-maas-kosullar` |
+| Erken Maaş Erişimi — başvuru özeti ve onay | `#erken-maas-onay` |
+| Erken Maaş Erişimi — işlem sonucu | `#erken-maas-sonuc` |
+| Erken Maaş Erişimi — işlem geçmişi ve geri ödemeler | `#erken-maas-gecmis` |
 | Harcama Bölüştür — hub | `#split` |
 | Harcama Bölüştür — harcama seç | `#split-pick` |
 | Harcama Bölüştür — tutar girerek istek | `#split-amount` |
@@ -131,6 +137,13 @@ Kredi kartı, esnek hesap (KMH), ihtiyaç, konut ve taşıt kredisi borçları a
 - **Toplu ödeme:** hesap seçimi ve bakiye. Vadesiz TL Hesabım (10.000 TL) yetersiz bakiye uyarısı verir; Maaş Hesabım ile devam edilir.
 - **Onay → sonuç:** hesap, dönem ve ürün özeti; Face ID simülasyonuyla onay, referans no ve güncel ekstre durumu (kalan borç 0).
 - **Ödeme geçmişi:** önceki toplu ödemeler (biri başarısız); satıra dokununca işlem detayı açılır.
+
+### Erken Maaş Erişimi (taslak)
+Maaş müşterisi, bu ayki net maaşının %25'ine (60.000 TL maaşta 15.000 TL) maaş gününü (30 Kasım) beklemeden erişir; tutar maaş günü maaştan otomatik geri ödenir. Ana sayfadaki aramadan ("maaş", "avans", "erken") ya da `#erken-maas` ile açılır.
+- **Ana ekran:** hemen erişilebilecek tutar, net maaş, oran, üst limit, kullanılan/kalan, maaş günü, kısa bilgilendirme, **Erken Erişimi Başlat**.
+- **Tutar belirleme:** kaydırma, +/−, tutar yazma ve hızlı tutarlar; talep sonrası kalan limit anlık güncellenir, limit üstü (ve 500 TL altı) talep kabul edilmez.
+- **Koşullar:** tahsis ücreti, faiz, KKDF + BSMV, toplam geri ödeme, tarih ve yöntem; ön bilgilendirme ve sözleşme onayı. **Değerler örnektir** (iş kuralları kesinleşmedi) ve `app.js` içindeki `EWA_TERMS` nesnesinden değiştirilir.
+- **Özet → sonuç:** Face ID ikonlu onay, aktarılan tutar, işlem no, güncel limit. **İşlem geçmişi:** önceki erişimler, geri ödeme durumları (bekliyor / geri ödendi) ve işlem detayı.
 
 ### Widget Galerisi
 Tüm YK widget çeşitleri tek ana-ekran yüzeyinde: karekod aksiyon kartı, bakiye, Worldpuan, aylık bütçe donut'u, Kartsız ATM, döviz & altın kurları. Karekodlu widget'lar dokununca ödeme akışını açar.

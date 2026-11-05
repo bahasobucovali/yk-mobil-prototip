@@ -76,6 +76,7 @@ const I = {
   ingot: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M2.5 18 6 11h12l3.5 7z"/><path d="M6.4 11 8.2 7.2h7.6L17.6 11"/></svg>',
   // Bağış — avuçta kalp (yardım)
   handHeart: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.4c1-1.3 3.3-.9 3.3 1 0 1.4-1.9 2.6-3.3 3.5-1.4-.9-3.3-2.1-3.3-3.5 0-1.9 2.3-2.3 3.3-1z"/><path d="M4 13.6c1.2-.7 2.5-.5 3.6.3l2 1.5c.5.4 1.2.6 1.9.6h3c.9 0 1.7.7 1.7 1.6S15.4 19 14.5 19H10M4 12.9V19.6"/></svg>',
+  salaryEarly: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5V12l3 2"/><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 3.5V8H16"/></svg>',   // early salary (clock + forward arrow)
 };
 
 /* ---------- Veri ---------- */
@@ -246,6 +247,9 @@ const SECTIONS = [
   { hash: 'toplu-borc', icon: 'payments', t: 'Taslak — Toplu Borç Ödeme', d: 'Kart, esnek hesap ve kredi borçları tek ekstrede: toplam borç, dağılım, toplu öde' },
   { hash: 'toplu-borc-ekstre', icon: 'doc', t: 'Taslak — Toplu Borç: Ekstre detayı', d: 'Ürün bazında borç, taksit ve son ödeme bilgileri' },
   { hash: 'toplu-borc-gecmis', icon: 'receipt', t: 'Taslak — Toplu Borç: Ödeme geçmişi', d: 'Önceki toplu ödemeler, durum ve işlem detayı' },
+  { hash: 'erken-maas', icon: 'salaryEarly', t: 'Taslak — Erken Maaş Erişimi', d: 'Maaşın %25\'ine maaş gününü beklemeden eriş: limit, tutar seçimi, koşullar' },
+  { hash: 'erken-maas-tutar', icon: 'wallet2', t: 'Taslak — Erken Maaş: Tutar belirle', d: 'Kaydırma + tutar girişi, limit üstü talep engeli' },
+  { hash: 'erken-maas-gecmis', icon: 'receipt', t: 'Taslak — Erken Maaş: İşlem geçmişi', d: 'Önceki erişimler ve geri ödeme durumları' },
   { hash: 'search',    icon: 'search',   t: 'Arama',               d: 'Arama ekranı' },
   { hash: 'settings',  icon: 'gear',     t: 'Ayarlar',             d: 'Tema ve bildirimler' },
 ];
@@ -823,6 +827,8 @@ const SEARCH_FEATURES = [
     keys: ['limit', 'kredi limiti', 'ortak limit', 'limit aktarımı', 'limit dağılımı', 'kredi', 'ihtiyaç kredisi', 'taşıt kredisi', 'esnek hesap', 'kmh'] },
   { hash: 'toplu-borc', name: 'Toplu Borç Ödeme', icon: I.payments, sub: 'Kart, esnek hesap ve kredi borçların tek ekstrede',
     keys: ['borç', 'borç öde', 'toplu ödeme', 'ekstre', 'kredi kartı borcu', 'kart borcu', 'esnek hesap', 'kmh', 'taksit', 'konut kredisi', 'taşıt kredisi', 'kredi borcu'] },
+  { hash: 'erken-maas', name: 'Erken Maaş Erişimi', icon: I.salaryEarly, sub: 'Maaşının %25\'ine maaş gününü beklemeden eriş',
+    keys: ['erken maaş', 'maaş', 'maaş avansı', 'avans', 'erken erişim', 'maaş kredisi', 'kredi', 'nakit'] },
 ];
 // Turkish-aware and accent-insensitive: "Borç", "borc" and "BORÇ" match alike (keeps string length)
 function searchNorm(s) {
@@ -4764,6 +4770,495 @@ function debtSeed(h) {
   if (h === 'toplu-borc-sonuc' && !s.paid) debtApplyPayment();
 }
 
+/* ======================================================================
+   ERKEN MAAŞ ERİŞİMİ (draft) — early wage access credit
+   Payroll customers draw up to 25% of this month's net salary before
+   payday; the amount is repaid automatically when the salary arrives.
+   Pricing below is NOT a final business rule: the reference document
+   leaves interest, fees and the repayment model open, so every value in
+   EWA_TERMS is an example and can be changed here. Mock data + local UI
+   state only.
+   ====================================================================== */
+
+const EWA_TERMS = {
+  ratio: 25,          // % of net salary available early (reference business model)
+  monthlyRate: 2.49,  // % monthly interest — EXAMPLE
+  taxRate: 30,        // KKDF 15% + BSMV 15% on interest — EXAMPLE
+  feeRate: 0.5,       // % allocation fee, deducted from the credited amount — EXAMPLE
+  min: 500,           // minimum request (TL) — EXAMPLE
+  step: 500,          // slider / stepper increment (TL)
+};
+const EWA_SALARY = 60000;   // net monthly salary (mock; paid into Maaş Hesabım)
+const EWA_PAYDAY = { label: '30 Kasım 2026', short: '30 Kasım', dotted: '30.11.2026', month: 'Kasım 2026', date: new Date(2026, 10, 30) };
+const EWA_ACCT = { name: 'Maaş Hesabım', no: 'Vadesiz TL · 8765 4321' };
+
+state.ewa = {
+  amount: 10000,        // amount being requested (TL)
+  agreePre: false,      // Ön Bilgilendirme Formu read
+  agreeContract: false, // Kredi Sözleşmesi accepted
+  last: null,           // last completed request
+  history: [            // previous months were repaid on payday (newest first)
+    { id: 'e10', month: 'Ekim 2026',   date: '12.10.2026 · 14:05', amount: 8000,  repay: '31.10.2026', days: 19, status: 'paid', ref: 'EMA20261012418205' },
+    { id: 'e09', month: 'Eylül 2026',  date: '18.09.2026 · 09:41', amount: 5000,  repay: '30.09.2026', days: 12, status: 'paid', ref: 'EMA20260918093317' },
+    { id: 'e07', month: 'Temmuz 2026', date: '09.07.2026 · 19:22', amount: 15000, repay: '31.07.2026', days: 22, status: 'paid', ref: 'EMA20260709772640' },
+  ],
+};
+let ewaWarnTimer = null;
+
+/* -------------------- helpers -------------------- */
+function ewaLimit() { return Math.round(EWA_SALARY * EWA_TERMS.ratio / 100); }
+function ewaUsed() { return state.ewa.history.filter(x => x.status === 'open').reduce((a, x) => a + x.amount, 0); }   // this month
+function ewaAvail() { return Math.max(0, ewaLimit() - ewaUsed()); }
+function ewaDaysToPayday() {
+  const t = new Date(); t.setHours(0, 0, 0, 0);
+  return Math.max(1, Math.round((EWA_PAYDAY.date - t) / 86400000));
+}
+function ewaRound(n) { return Math.round(n * 100) / 100; }
+function ewaPct(n) { return String(n).replace('.', ','); }
+/* Example quote: fee is deducted at disbursement, interest (+ taxes) accrues until payday */
+function ewaQuote(amount, days = ewaDaysToPayday()) {
+  const fee = ewaRound(amount * EWA_TERMS.feeRate / 100);
+  const interest = ewaRound(amount * EWA_TERMS.monthlyRate / 100 * days / 30);
+  const tax = ewaRound(interest * EWA_TERMS.taxRate / 100);
+  return { amount, fee, credited: ewaRound(amount - fee), interest, tax, total: ewaRound(amount + interest + tax), days };
+}
+function ewaNow() {
+  const d = new Date(), p2 = n => String(n).padStart(2, '0');
+  return {
+    full: `${p2(d.getDate())}.${p2(d.getMonth() + 1)}.${d.getFullYear()} · ${p2(d.getHours())}:${p2(d.getMinutes())}`,
+    ref: `EMA${d.getFullYear()}${p2(d.getMonth() + 1)}${p2(d.getDate())}${String(Math.floor(100000 + Math.random() * 900000))}`,
+  };
+}
+function ewaClampDefault() {   // keep the selected amount valid for the remaining limit
+  const s = state.ewa, avail = ewaAvail();
+  if (s.amount > avail) s.amount = Math.floor(avail / EWA_TERMS.step) * EWA_TERMS.step;
+  if (s.amount < EWA_TERMS.min) s.amount = Math.min(avail, EWA_TERMS.min);
+}
+function ewaExampleTag() { return '<span class="ewa-ex">Örnek</span>'; }
+
+/* -------------------- Screen 1 — dashboard -------------------- */
+function EwaHome() {
+  const used = ewaUsed(), limit = ewaLimit(), avail = ewaAvail(), pct = Math.round(used / limit * 100);
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head ru-nav-accent">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Erken Maaş Erişimi</div>
+      <button class="icon-btn" data-action="ewa-info" aria-label="Erken Maaş Erişimi nedir?">${I.info}</button>
+    </div>
+    <div class="screen-scroll">
+      <div class="ru-statcard ewa-hero">
+        <div class="ru-jar-label">${EWA_PAYDAY.month.split(' ')[0]} maaşından hemen erişebileceğin tutar</div>
+        <div class="ru-jar-amt">${fmtTL2(avail)}</div>
+        <div class="ewa-hero-meter" role="img" aria-label="Limitin yüzde ${pct} kısmı kullanıldı"><i style="width:${pct}%"></i></div>
+        <div class="ru-statrow">
+          <div class="ru-stat"><div class="ru-stat-l">Net maaş</div><div class="ru-stat-v">${fmtShortTL(EWA_SALARY)}</div></div>
+          <div class="ru-stat mid"><div class="ru-stat-l">Erişim oranı</div><div class="ru-stat-v">%${EWA_TERMS.ratio}</div></div>
+          <div class="ru-stat"><div class="ru-stat-l">Maaş günü</div><div class="ru-stat-v">${EWA_PAYDAY.short}</div></div>
+        </div>
+      </div>
+
+      <div class="ewa-card">
+        <div class="ewa-card-h"><span>Limit durumu</span><span class="ewa-ok">${I.shield} İşveren bilgin doğrulandı</span></div>
+        <div class="ewa-rows">
+          <div><span>Erken erişim üst limiti</span><b>${fmtTL2(limit)}</b></div>
+          <div><span>Kullanılan tutar</span><b>${fmtTL2(used)}</b></div>
+          <div class="hl"><span>Kalan kullanılabilir</span><b>${fmtTL2(avail)}</b></div>
+          <div><span>Beklenen maaş ödeme tarihi</span><b>${EWA_PAYDAY.label}</b></div>
+        </div>
+      </div>
+
+      <div class="ewa-card ewa-about">
+        <div class="ewa-card-h"><span>Erken Maaş Erişimi nedir?</span><button class="sp-link" data-action="ewa-info">Detaylı bilgi ${I.chevR}</button></div>
+        <p>Maaş günün gelmeden, bu ayki net maaşının %${EWA_TERMS.ratio}'ine kadarını ihtiyacın olduğu anda Maaş Hesabına aktarabilirsin.</p>
+        <div class="ewa-steps">
+          <div><span class="n">1</span>Tutarı seç</div>
+          <div><span class="n">2</span>Hesabına anında geçsin</div>
+          <div><span class="n">3</span>Maaş gününde otomatik ödensin</div>
+        </div>
+      </div>
+
+      <div class="ru-info-card ewa-links">
+        <div class="ru-info-row tap" data-action="ewa-history"><span class="ru-info-ico">${I.receipt}</span><span class="ru-info-k">İşlem geçmişi ve geri ödemeler</span><span class="ru-info-v">${state.ewa.history.length} işlem</span>${I.chevR}</div>
+      </div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary ${avail < EWA_TERMS.min ? 'disabled' : ''}" data-action="ewa-start">${avail < EWA_TERMS.min ? 'Bu ayki limitin doldu' : 'Erken Erişimi Başlat'}</button>
+    </div>
+  </div>`;
+}
+function ewaInfoSheet() {
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Erken Maaş Erişimi nedir?</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="ewa-how">
+      <div class="ewa-how-row"><span class="ewa-how-ico">${I.salaryEarly}</span><div><b>Maaşına ay sonunu beklemeden eriş</b><span>Bankamızdan maaş alıyorsan, bu ayki net maaşının %${EWA_TERMS.ratio}'ine kadarını istediğin an kullanabilirsin.</span></div></div>
+      <div class="ewa-how-row"><span class="ewa-how-ico">${I.shield}</span><div><b>İşverenle entegre</b><span>Kullanabileceğin tutar, işvereninden alınan maaş bilgine göre hesaplanır.</span></div></div>
+      <div class="ewa-how-row"><span class="ewa-how-ico">${I.calendar}</span><div><b>Maaş gününde otomatik geri ödeme</b><span>Toplam geri ödeme tutarı, maaşın Maaş Hesabına yattığı gün otomatik tahsil edilir.</span></div></div>
+    </div>
+    <div class="ewa-note">${I.info}<span>Erken Maaş Erişimi bir kredi ürünüdür; faiz, vergi ve masraf uygulanabilir. Prototipteki koşullar örnektir.</span></div>
+    <button class="sheet-btn" data-action="close-sheet">Anladım</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- Screen 2 — amount -------------------- */
+function EwaAmount() {
+  ewaClampDefault();
+  const s = state.ewa, avail = ewaAvail(), used = ewaUsed();
+  if (avail < EWA_TERMS.min) { state.screen = 'erken-maas'; return EwaHome(); }
+  const chips = [2500, 5000, 10000].filter(v => v < avail).concat([avail]);
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Tutar Belirle</div>
+    </div>
+    <div class="screen-scroll">
+      <div class="ewa-card ewa-lim3">
+        <div><span>Erken erişim limiti</span><b>${fmtShortTL(ewaLimit())}</b></div>
+        <div><span>Kullanılan</span><b>${fmtShortTL(used)}</b></div>
+        <div><span>Kalan limit</span><b>${fmtShortTL(avail)}</b></div>
+      </div>
+      <div class="ewa-card ewa-amt-card">
+        <div class="ewa-amt-lbl">Talep edilecek tutar</div>
+        <div class="ewa-amt-row">
+          <button class="ewa-step" data-action="ewa-step" data-dir="-1" aria-label="Tutarı azalt"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+          <label class="ewa-amt"><input id="ewa-input" class="ewa-amt-input" inputmode="numeric" enterkeyhint="done" autocomplete="off" value="${s.amount.toLocaleString('tr-TR')}" aria-label="Talep edilecek tutar"><span>TL</span></label>
+          <button class="ewa-step" data-action="ewa-step" data-dir="1" aria-label="Tutarı artır">${I.plus}</button>
+        </div>
+        <div class="ewa-slider" id="ewa-slider" style="--v:${ewaSliderPct(s.amount)}%">
+          <div class="ewa-track"><i></i></div>
+          <input type="range" class="ewa-range" id="ewa-range" min="${EWA_TERMS.min}" max="${avail}" step="${EWA_TERMS.step}" value="${s.amount}" aria-label="Talep edilecek tutar">
+        </div>
+        <div class="ewa-scale"><span>${fmtShortTL(EWA_TERMS.min)}</span><span>${fmtShortTL(avail)}</span></div>
+        <div class="ewa-chips">${chips.map(v => `<button class="ewa-chip ${v === s.amount ? 'on' : ''}" data-action="ewa-chip" data-v="${v}">${v === avail ? 'Tümü' : fmtShortTL(v)}</button>`).join('')}</div>
+        <div class="ewa-after"><span>Talep sonrası kalan limit</span><b id="ewa-left">${fmtTL2(avail - s.amount)}</b></div>
+        <div class="ewa-warn" id="ewa-warn" role="status" aria-live="polite"></div>
+      </div>
+      <div class="ewa-note">${I.info}<span>Tutar, onaydan sonra ${EWA_ACCT.name}'a aktarılır ve ${EWA_PAYDAY.label} tarihinde maaşından otomatik geri ödenir.</span></div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary" id="ewa-next" data-action="ewa-terms">Devam</button>
+    </div>
+  </div>`;
+}
+function ewaSliderPct(v) {
+  const lo = EWA_TERMS.min, hi = ewaAvail();
+  return hi > lo ? Math.max(0, Math.min(100, (v - lo) / (hi - lo) * 100)) : 100;
+}
+function ewaFitInput(inp) {
+  const v = inp.value || '0', digits = v.replace(/\D/g, '').length, dots = (v.match(/\./g) || []).length;
+  inp.style.width = (Math.max(1, digits) + dots * 0.45 + 0.4) + 'ch';
+}
+function ewaSetupAmount() {
+  const r = document.getElementById('ewa-range'), inp = document.getElementById('ewa-input');
+  if (r) r.addEventListener('input', () => ewaSetAmount(+r.value));
+  if (inp) {
+    ewaFitInput(inp);
+    inp.addEventListener('focus', () => inp.select());
+    inp.addEventListener('input', () => {
+      const d = inp.value.replace(/\D/g, '').slice(0, 7);
+      inp.value = d ? (+d).toLocaleString('tr-TR') : '';
+      ewaFitInput(inp);
+    });
+    inp.addEventListener('change', () => ewaSetAmount(+inp.value.replace(/\D/g, '')));
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+  }
+}
+/* Enforce min / remaining limit, then update the screen in place (no re-render while dragging) */
+function ewaSetAmount(raw) {
+  const s = state.ewa, avail = ewaAvail();
+  let v = Math.round(raw) || 0, warn = '';
+  if (v > avail) { v = avail; warn = `En fazla ${fmtTL2(avail)} talep edebilirsin; bu ayki erken erişim limitin bu kadar.`; }
+  else if (v < EWA_TERMS.min) { v = EWA_TERMS.min; warn = `En az ${fmtTL2(EWA_TERMS.min)} talep edebilirsin.`; }
+  s.amount = v;
+  const inp = document.getElementById('ewa-input');
+  if (inp && document.activeElement !== inp) { inp.value = v.toLocaleString('tr-TR'); ewaFitInput(inp); }
+  const r = document.getElementById('ewa-range'); if (r && +r.value !== v) r.value = v;
+  const sl = document.getElementById('ewa-slider'); if (sl) sl.style.setProperty('--v', ewaSliderPct(v) + '%');
+  const left = document.getElementById('ewa-left'); if (left) left.textContent = fmtTL2(avail - v);
+  document.querySelectorAll('.ewa-chip').forEach(c => c.classList.toggle('on', +c.dataset.v === v));
+  const w = document.getElementById('ewa-warn');
+  if (w) {
+    clearTimeout(ewaWarnTimer);
+    w.innerHTML = warn ? `${I.info}<span>${warn}</span>` : '';
+    w.classList.toggle('show', !!warn);
+    if (warn) ewaWarnTimer = setTimeout(() => w.classList.remove('show'), 3500);
+  }
+}
+function ewaStep(dir) {
+  const v = state.ewa.amount, st = EWA_TERMS.step;
+  ewaSetAmount(dir > 0 ? Math.floor(v / st) * st + st : Math.ceil(v / st) * st - st);
+}
+function ewaToTerms() {
+  const a = document.activeElement;
+  if (a && a.id === 'ewa-input') a.blur();   // commit a typed amount first
+  go('erken-maas-kosullar');
+}
+
+/* -------------------- Screen 3 — terms & repayment -------------------- */
+function EwaTerms() {
+  const s = state.ewa;
+  if (ewaAvail() < EWA_TERMS.min) { state.screen = 'erken-maas'; return EwaHome(); }
+  const q = ewaQuote(s.amount);
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Koşullar ve Geri Ödeme</div>
+    </div>
+    <div class="screen-scroll">
+      <div class="ewa-banner">${I.info}<span><b>Örnek koşullar.</b> Faiz, masraf ve geri ödeme modeli henüz kesinleşmedi; aşağıdaki değerler yapılandırılabilir örneklerdir.</span></div>
+
+      <div class="ewa-sec-t">Tutar</div>
+      <div class="receipt ewa-receipt">
+        <div class="r-row"><span class="r-l">Talep edilen tutar</span><span class="r-r">${fmtTL2(q.amount)}</span></div>
+        <div class="r-row"><span class="r-l">Tahsis ücreti ${ewaExampleTag()}<i class="ewa-sub">%${ewaPct(EWA_TERMS.feeRate)} · aktarımda kesilir</i></span><span class="r-r">−${fmtTL2(q.fee)}</span></div>
+        <div class="r-row hl"><span class="r-l">Hesaba aktarılacak tutar</span><span class="r-r">${fmtTL2(q.credited)}</span></div>
+      </div>
+
+      <div class="ewa-sec-t">Geri ödeme</div>
+      <div class="receipt ewa-receipt">
+        <div class="r-row"><span class="r-l">Anapara</span><span class="r-r">${fmtTL2(q.amount)}</span></div>
+        <div class="r-row"><span class="r-l">Faiz ${ewaExampleTag()}<i class="ewa-sub">Aylık %${ewaPct(EWA_TERMS.monthlyRate)} · ${q.days} gün</i></span><span class="r-r">${fmtTL2(q.interest)}</span></div>
+        <div class="r-row"><span class="r-l">KKDF + BSMV ${ewaExampleTag()}<i class="ewa-sub">Faiz üzerinden %${EWA_TERMS.taxRate}</i></span><span class="r-r">${fmtTL2(q.tax)}</span></div>
+        <div class="r-row hl"><span class="r-l">Toplam geri ödeme tutarı</span><span class="r-r">${fmtTL2(q.total)}</span></div>
+        <div class="r-row"><span class="r-l">Geri ödeme tarihi</span><span class="r-r">${EWA_PAYDAY.label}</span></div>
+        <div class="r-row"><span class="r-l">Geri ödeme yöntemi</span><span class="r-r">Maaşından otomatik tahsil<i class="ewa-sub r">${EWA_ACCT.name} · ${EWA_ACCT.no.split('· ')[1]}</i></span></div>
+      </div>
+
+      <div class="ewa-sec-t">Bilgilendirme ve sözleşme</div>
+      <div class="ewa-docs">
+        <label class="contract-row ${s.agreePre ? 'on' : ''}" data-action="ewa-agree" data-key="agreePre">
+          <span class="cbx">${I.check}</span>
+          <span class="contract-txt"><a data-action="ewa-doc" data-doc="pre">Ön Bilgilendirme Formu</a>'nu okudum.</span>
+        </label>
+        <label class="contract-row ${s.agreeContract ? 'on' : ''}" data-action="ewa-agree" data-key="agreeContract">
+          <span class="cbx">${I.check}</span>
+          <span class="contract-txt"><a data-action="ewa-doc" data-doc="contract">Erken Maaş Erişim Kredisi Sözleşmesi</a>'ni okudum, onaylıyorum.</span>
+        </label>
+      </div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary ${s.agreePre && s.agreeContract ? '' : 'disabled'}" id="ewa-terms-next" data-action="ewa-review">Devam</button>
+    </div>
+  </div>`;
+}
+function ewaToggleAgree(el) {
+  const s = state.ewa, k = el.dataset.key;
+  s[k] = !s[k];
+  el.classList.toggle('on', s[k]);
+  const b = document.getElementById('ewa-terms-next');
+  if (b) b.classList.toggle('disabled', !(s.agreePre && s.agreeContract));
+}
+function ewaDocSheet(kind) {
+  const q = ewaQuote(state.ewa.amount);
+  const title = kind === 'pre' ? 'Ön Bilgilendirme Formu' : 'Erken Maaş Erişim Kredisi Sözleşmesi';
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>${title}</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="legal-scroll">
+      <p>Bu metin prototip amaçlı örnek bir metindir; gerçek ürün koşullarını yansıtmaz.</p>
+      <h4>1. Kredinin konusu</h4>
+      <p>Banka, maaş müşterisine bu ayki net maaşının %${EWA_TERMS.ratio}'ine kadar kredi kullandırır. Talep edilen tutar <b>${fmtTL2(q.amount)}</b>, hesaba aktarılacak tutar <b>${fmtTL2(q.credited)}</b>.</p>
+      <h4>2. Maliyetler (örnek)</h4>
+      <p>Tahsis ücreti %${ewaPct(EWA_TERMS.feeRate)}, aylık faiz %${ewaPct(EWA_TERMS.monthlyRate)}; faiz üzerinden KKDF ve BSMV. Toplam geri ödeme <b>${fmtTL2(q.total)}</b>.</p>
+      <h4>3. Geri ödeme</h4>
+      <p>Toplam geri ödeme tutarı ${EWA_PAYDAY.label} tarihinde maaşın ${EWA_ACCT.name}'a yattığında otomatik tahsil edilir. Maaş yatmazsa ilgili tutar hesaptan tahsil edilir.</p>
+      <h4>4. Cayma hakkı</h4>
+      <p>Müşteri, sözleşmenin kurulduğu tarihten itibaren 14 gün içinde gerekçe göstermeksizin cayma hakkına sahiptir.</p>
+    </div>
+    <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- Screen 4 — summary & approval -------------------- */
+function EwaConfirm() {
+  const s = state.ewa;
+  if (ewaAvail() < EWA_TERMS.min || !(s.agreePre && s.agreeContract)) { state.screen = 'erken-maas'; return EwaHome(); }
+  const q = ewaQuote(s.amount);
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Başvuru Özeti</div>
+    </div>
+    <div class="screen-scroll">
+      <div class="ewa-confirm-amt">
+        <span>Erken maaş erişim tutarı</span>
+        <b>${fmtTL2(q.amount)}</b>
+        <em>${EWA_PAYDAY.month} maaşından</em>
+      </div>
+      <div class="receipt ewa-receipt">
+        <div class="r-row"><span class="r-l">Hesaba aktarılacak tutar</span><span class="r-r">${fmtTL2(q.credited)}<i class="ewa-sub r">${EWA_ACCT.name}</i></span></div>
+        <div class="r-row"><span class="r-l">Toplam geri ödeme tutarı</span><span class="r-r">${fmtTL2(q.total)}</span></div>
+        <div class="r-row"><span class="r-l">Geri ödeme tarihi</span><span class="r-r">${EWA_PAYDAY.label}</span></div>
+        <div class="r-row"><span class="r-l">Talep sonrası kalan limit</span><span class="r-r">${fmtTL2(ewaAvail() - q.amount)}</span></div>
+      </div>
+      <div class="ewa-card ewa-terms-sum">
+        <div class="ewa-card-h"><span>Ödeme koşulları</span>${ewaExampleTag()}</div>
+        <ul>
+          <li>Toplam geri ödeme tutarı, ${EWA_PAYDAY.label} tarihinde maaşın ${EWA_ACCT.name}'a yattığında otomatik tahsil edilir.</li>
+          <li>Tahsis ücreti (${fmtTL2(q.fee)}) aktarım sırasında kesilir; faiz ve vergiler (${fmtTL2(q.interest + q.tax)}) geri ödemeye eklenir.</li>
+          <li>Ön bilgilendirme formu ve kredi sözleşmesi onaylandı.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary ewa-approve" id="ewa-approve" data-action="ewa-approve">${I.faceid} Başvuruyu Onayla</button>
+      <button class="btn-ghost" data-action="ewa-cancel">Vazgeç</button>
+    </div>
+  </div>`;
+}
+function ewaApprove() {
+  const btn = document.getElementById('ewa-approve');
+  if (!btn) return;
+  btn.innerHTML = '<span class="spinner"></span> Başvuru Onaylanıyor…';
+  btn.style.pointerEvents = 'none';
+  setTimeout(() => { ewaApply(); go('erken-maas-sonuc'); }, 1500);
+}
+function ewaApply() {
+  const s = state.ewa, q = ewaQuote(s.amount), now = ewaNow();
+  const rec = { id: 'e' + Date.now(), month: EWA_PAYDAY.month, date: now.full, amount: q.amount, repay: EWA_PAYDAY.dotted, days: q.days, status: 'open', ref: now.ref, isNew: true };
+  s.history.forEach(x => { x.isNew = false; });
+  s.history.unshift(rec);
+  s.last = rec;
+  s.agreePre = false; s.agreeContract = false;
+  ewaClampDefault();
+}
+
+/* -------------------- Screen 5 — result -------------------- */
+function EwaResult() {
+  const s = state.ewa, r = s.last;
+  if (!r) { state.screen = 'erken-maas'; return EwaHome(); }
+  const q = ewaQuote(r.amount, r.days), limit = ewaLimit(), used = ewaUsed();
+  return `
+  <div class="screen anim-fade">
+    <div class="screen-scroll">
+      <div class="success ewa-success">
+        <div class="success-check"><div class="ring">${I.checkBig}</div></div>
+        <h2>Tutar Hesabına Aktarıldı</h2>
+        <div class="succ-date">${r.date}</div>
+        <div class="amt">${fmtTL2(q.credited)}</div>
+        <div class="prod">${EWA_ACCT.name} · ${EWA_ACCT.no.split('· ')[1]}</div>
+
+        <div class="ewa-card flat">
+          <div class="ewa-card-h"><span>Güncel erken erişim limitin</span></div>
+          <div class="ewa-left-big"><b>${fmtTL2(limit - used)}</b><span>kullanılabilir</span></div>
+          <div class="ewa-meter"><i style="width:${Math.round(used / limit * 100)}%"></i></div>
+          <div class="ewa-meter-l"><span>Kullanılan ${fmtTL2(used)}</span><span>Limit ${fmtTL2(limit)}</span></div>
+        </div>
+
+        <div class="receipt">
+          <div class="r-row"><span class="r-l">İşlem no</span><span class="r-r">${r.ref}</span></div>
+          <div class="r-row"><span class="r-l">İşlem tarihi</span><span class="r-r">${r.date}</span></div>
+          <div class="r-row"><span class="r-l">Talep edilen tutar</span><span class="r-r">${fmtTL2(q.amount)}</span></div>
+          <div class="r-row"><span class="r-l">Geri ödeme tarihi</span><span class="r-r">${EWA_PAYDAY.label}</span></div>
+          <div class="r-row"><span class="r-l">Toplam geri ödeme</span><span class="r-r">${fmtTL2(q.total)}</span></div>
+        </div>
+        <div class="success-actions">
+          <button class="btn-primary" data-action="ewa-home">Ana Ekrana Dön</button>
+          <button class="btn-outline" data-action="ewa-history-after">İşlem Geçmişi</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* -------------------- Screen 6 — history & repayment tracking -------------------- */
+function EwaHistory() {
+  const h = state.ewa.history, open = h.filter(x => x.status === 'open');
+  const openTotal = open.reduce((a, x) => a + ewaQuote(x.amount, x.days).total, 0);
+  return `
+  <div class="screen anim-right">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">İşlem Geçmişi</div>
+    </div>
+    <div class="screen-scroll">
+      <div class="ewa-card ewa-open">
+        ${open.length
+          ? `<div><span>Açık geri ödeme</span><b>${fmtTL2(openTotal)}</b><em>${EWA_PAYDAY.label} · maaşından otomatik tahsil edilecek</em></div><span class="ewa-status open big">${I.calendar}Bekliyor</span>`
+          : `<div><span>Açık geri ödemen yok</span><b>${fmtTL2(0)}</b><em>Önceki tüm erken erişimler maaş gününde geri ödendi</em></div><span class="ewa-status paid big">${I.check}Güncel</span>`}
+      </div>
+      <div class="ru-txn-title">İşlemler</div>
+      <div class="ewa-hist">${h.map(ewaHistRowHTML).join('')}</div>
+    </div>
+  </div>`;
+}
+function ewaHistRowHTML(x) {
+  const open = x.status === 'open';
+  return `<div class="ewa-h" data-action="ewa-hist-open" data-id="${x.id}">
+    <span class="ewa-h-ico ${open ? 'open' : 'paid'}">${I.salaryEarly}</span>
+    <div class="ewa-h-mid"><b>${x.month}${x.isNew ? ' <em class="ewa-new">Yeni</em>' : ''}</b><span>İşlem ${x.date.split(' · ')[0]}</span><span>Geri ödeme ${x.repay}</span></div>
+    <div class="ewa-h-r"><b>${fmtTL2(x.amount)}</b><span class="ewa-status ${open ? 'open' : 'paid'}">${open ? 'Geri ödeme bekliyor' : 'Geri ödendi'}</span></div>
+    <span class="ewa-h-chev">${I.chevR}</span>
+  </div>`;
+}
+function ewaHistSheet(id) {
+  const x = state.ewa.history.find(h => h.id === id);
+  if (!x) return;
+  const q = ewaQuote(x.amount, x.days), open = x.status === 'open';
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>İşlem Detayı</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="ewa-sh-head">
+      <span class="ewa-status big ${open ? 'open' : 'paid'}">${open ? I.calendar : I.check}${open ? 'Geri ödeme bekliyor' : 'Geri ödendi'}</span>
+      <b>${fmtTL2(q.amount)}</b>
+      <span>${x.month} maaşından erken erişim</span>
+    </div>
+    <div class="receipt ewa-sh-receipt">
+      <div class="r-row"><span class="r-l">İşlem tarihi</span><span class="r-r">${x.date}</span></div>
+      <div class="r-row"><span class="r-l">Hesaba aktarılan</span><span class="r-r">${fmtTL2(q.credited)}</span></div>
+      <div class="r-row"><span class="r-l">Faiz + vergiler (örnek)</span><span class="r-r">${fmtTL2(q.interest + q.tax)}</span></div>
+      <div class="r-row"><span class="r-l">Toplam geri ödeme</span><span class="r-r">${fmtTL2(q.total)}</span></div>
+      <div class="r-row"><span class="r-l">${open ? 'Geri ödeme tarihi' : 'Tahsil tarihi'}</span><span class="r-r">${x.repay}</span></div>
+      <div class="r-row"><span class="r-l">İşlem no</span><span class="r-r">${x.ref}</span></div>
+    </div>
+    <button class="sheet-btn ghost" data-action="toast" data-msg="Dekont paylaşımı prototipte aktif değil">Dekontu Paylaş</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- navigation -------------------- */
+// Drop the flow screens from the back stack so "back" lands where the feature was opened from
+function ewaUnwind() {
+  const i = state.nav.map(f => f.screen).lastIndexOf('erken-maas');
+  if (i >= 0) state.nav = state.nav.slice(0, i);
+}
+function ewaGoHome() {
+  ewaUnwind();
+  state.chatSeed = false;
+  state.screen = 'erken-maas';
+  render();
+}
+function ewaHistoryAfter() {
+  ewaUnwind();
+  state.nav.push({ screen: 'erken-maas', chatSeed: false });
+  state.screen = 'erken-maas-gecmis';
+  render();
+}
+function ewaStart() {
+  if (ewaAvail() < EWA_TERMS.min) return;
+  state.ewa.agreePre = false; state.ewa.agreeContract = false;
+  ewaClampDefault();
+  go('erken-maas-tutar');
+}
+function ewaCancel() {
+  state.ewa.agreePre = false; state.ewa.agreeContract = false;
+  ewaGoHome();
+  toast('Başvuru iptal edildi');
+}
+// Deep links (#erken-maas-…) prepare the state they need without replaying the flow
+function ewaSeed(h) {
+  const s = state.ewa;
+  ewaClampDefault();
+  if (h === 'erken-maas-onay') { s.agreePre = true; s.agreeContract = true; }
+  if (h === 'erken-maas-sonuc' && !s.last && ewaAvail() >= EWA_TERMS.min) ewaApply();
+}
+
 /* ===================================================================
    RENDER & NAVİGASYON
    =================================================================== */
@@ -7149,6 +7644,12 @@ function render() {
     case 'toplu-borc-onay': html = DebtConfirm(); break;
     case 'toplu-borc-sonuc': html = DebtResult(); break;
     case 'toplu-borc-gecmis': html = DebtHistory(); break;
+    case 'erken-maas': html = EwaHome(); break;
+    case 'erken-maas-tutar': html = EwaAmount(); break;
+    case 'erken-maas-kosullar': html = EwaTerms(); break;
+    case 'erken-maas-onay': html = EwaConfirm(); break;
+    case 'erken-maas-sonuc': html = EwaResult(); break;
+    case 'erken-maas-gecmis': html = EwaHistory(); break;
     case 'card-detail': html = CardDetailScreen(); break;
     case 'split': html = SplitHub(); break;
     case 'split-pick': html = SplitPick(); break;
@@ -7187,6 +7688,7 @@ function render() {
   if (state.screen === 'card-detail') setupDcvv();
   if (state.screen === 'sky-limit-manage') skySetupManage();
   if (state.screen === 'sky-limit-payment') skySetupPaid();
+  if (state.screen === 'erken-maas-tutar') ewaSetupAmount();
   if (state.screen === 'split-amount') setTimeout(() => { const i = document.getElementById('spl-amt-input'); i && i.focus(); }, 280);
 }
 
@@ -8491,6 +8993,22 @@ document.addEventListener('click', (e) => {
     case 'debt-history-after': return debtHistoryAfterPay();
     case 'debt-hist-open': return debtHistSheet(t.dataset.id);
 
+    // Erken Maaş Erişimi (draft)
+    case 'ewa-info': return ewaInfoSheet();
+    case 'ewa-start': return ewaStart();
+    case 'ewa-history': return go('erken-maas-gecmis');
+    case 'ewa-step': return ewaStep(+t.dataset.dir);
+    case 'ewa-chip': return ewaSetAmount(+t.dataset.v);
+    case 'ewa-terms': return ewaToTerms();
+    case 'ewa-agree': return ewaToggleAgree(t);
+    case 'ewa-doc': e.preventDefault(); return ewaDocSheet(t.dataset.doc);
+    case 'ewa-review': return go('erken-maas-onay');
+    case 'ewa-approve': return ewaApprove();
+    case 'ewa-cancel': return ewaCancel();
+    case 'ewa-home': return ewaGoHome();
+    case 'ewa-history-after': return ewaHistoryAfter();
+    case 'ewa-hist-open': return ewaHistSheet(t.dataset.id);
+
     case 'set-theme': return setTheme(t.dataset.theme);
     case 'toggle-switch': return t.classList.toggle('on');
 
@@ -8524,7 +9042,7 @@ function updateClock() {
    Her bölümün kendi hash linki var: #home #assistant #setur #chat #payment
    #success #tracking #search #settings #sections
    Link açıldığında ekran gereken state ile hazır gelir (akışı tekrarlamadan). */
-const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'sky-limit', 'sky-limit-manage', 'sky-limit-confirm', 'sky-limit-success', 'sky-limit-payment'];
+const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'sky-limit', 'sky-limit-manage', 'sky-limit-confirm', 'sky-limit-success', 'sky-limit-payment', 'toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis'];
 function routeTo(hash) {
   const h = (hash || '').replace('#', '') || 'home';
   if (!ROUTES.includes(h)) return false;
@@ -8540,6 +9058,7 @@ function routeTo(hash) {
   // Karekod ile Öde derin-linkleri — işyeri seçili değilse demo işyerini kur
   if (['qr-scan', 'qr-pay', 'qr-success'].includes(h)) qrSeed();
   if (h.startsWith('toplu-borc')) debtSeed(h);   // Toplu Borç Ödeme deep links
+  if (h.startsWith('erken-maas')) ewaSeed(h);    // Erken Maaş Erişimi deep links
   if (h === 'assistant') {            // Koçtaş sohbetini dolu göster
     state.chatStarted = true;
     state.chatSeed = true;
@@ -8634,8 +9153,6 @@ function routeTo(hash) {
   state.screen = h;
   return true;
 }
-// Toplu Borç Ödeme (draft) routes — kept on their own line so parallel draft branches merge without conflicts
-ROUTES.push('toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis');
 /* Bölüm linkine git: nereden geldiğimizi geri yığınına ekle (geri o ekrana dönsün),
    state'i kur, URL hash'ini güncelle (paylaşılabilir), çiz */
 function gotoSection(hash) {

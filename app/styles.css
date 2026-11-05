@@ -2448,6 +2448,150 @@ body[data-theme="light"] .hotel-rating { color: #d99800; }
 body[data-theme="light"] .debt-chip.warn { color: #8a6400; }
 
 /* ===================================================================
+   ERKEN MAAŞ ERİŞİMİ (draft) — early access to this month's salary
+   =================================================================== */
+.ewa-hero .ru-jar-amt { margin-bottom: 12px; }
+.ewa-hero-meter { height: 6px; margin: 0 6px 14px; border-radius: 99px; background: rgba(255,255,255,.22); overflow: hidden; }
+.ewa-hero-meter i { display: block; height: 100%; border-radius: 99px; background: #fff; }
+
+.ewa-card { margin: 0 16px 14px; padding: 15px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); text-align: left; }
+.ewa-card.flat { width: 100%; margin: 18px 0 0; }
+.ewa-card-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; font-size: 15px; font-weight: 700; color: var(--text); }
+.ewa-ok { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 99px; background: rgba(46,204,113,.14); color: var(--success); font-size: 11px; font-weight: 700; white-space: nowrap; }
+.ewa-ok svg { width: 12px; height: 12px; }
+.ewa-rows { display: flex; flex-direction: column; }
+.ewa-rows div { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid var(--border); font-size: 13px; }
+.ewa-rows div:first-child { border-top: none; padding-top: 2px; }
+.ewa-rows span { color: var(--text-dim); }
+.ewa-rows b { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ewa-rows .hl b { font-size: 15.5px; color: var(--primary); }
+.ewa-about p { font-size: 13px; line-height: 1.5; color: var(--text-dim); }
+.ewa-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.ewa-steps div { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 6px; border-radius: 12px; background: var(--card-2); font-size: 11.5px; font-weight: 600; line-height: 1.3; text-align: center; }
+.ewa-steps .n { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: var(--primary); color: #fff; font-size: 11px; font-weight: 800; }
+.ewa-links .ru-info-k { flex: 1; color: var(--text); font-weight: 600; }
+.ewa-links .ru-info-v { flex: 0 0 auto; font-size: 13px; font-weight: 500; color: var(--text-dim); }
+
+/* "Nedir?" sheet + notes */
+.ewa-how { display: flex; flex-direction: column; gap: 14px; margin: 4px 0 14px; }
+.ewa-how-row { display: flex; align-items: flex-start; gap: 12px; }
+.ewa-how-ico { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; flex-shrink: 0; background: rgba(0,152,203,.12); color: var(--primary); }
+.ewa-how-ico svg { width: 20px; height: 20px; }
+.ewa-how-row > div b { display: block; font-size: 14px; font-weight: 700; }
+.ewa-how-row > div span { display: block; margin-top: 2px; font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
+.ewa-note { display: flex; gap: 8px; margin: 0 18px 12px; font-size: 12px; line-height: 1.45; color: var(--text-dim); text-align: left; }
+.ewa-note svg { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; color: var(--primary); }
+.sheet .ewa-note { margin: 0 2px 16px; }
+
+/* Amount */
+.ewa-lim3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; padding: 13px 14px; }
+.ewa-lim3 div { display: flex; flex-direction: column; gap: 3px; }
+.ewa-lim3 div + div { padding-left: 10px; border-left: 1px solid var(--border); }
+.ewa-lim3 span { font-size: 11.5px; color: var(--text-dim); }
+.ewa-lim3 b { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.ewa-amt-card { padding-bottom: 13px; }
+.ewa-amt-lbl { font-size: 13px; font-weight: 600; color: var(--text-dim); text-align: center; }
+.ewa-amt-row { display: flex; align-items: center; gap: 10px; margin: 10px 0 4px; }
+.ewa-step { width: 42px; height: 42px; flex-shrink: 0; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 50%; background: var(--card-2); color: var(--text); cursor: pointer; }
+.ewa-step:active { background: var(--card-3); }
+.ewa-amt { flex: 1; min-width: 0; display: flex; align-items: baseline; justify-content: center; gap: 6px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 12px; background: var(--field); cursor: text; }
+.ewa-amt:focus-within { border-color: var(--primary); }
+.ewa-amt-input { min-width: 2ch; max-width: 100%; padding: 0; border: none; outline: none; background: transparent; color: var(--text); font-family: inherit; font-size: 28px; font-weight: 800; letter-spacing: -.4px; text-align: right; font-variant-numeric: tabular-nums; }
+.ewa-amt span { font-size: 16px; font-weight: 700; color: var(--text-dim); }
+/* Slider — track inset by the thumb radius so % positions match the thumb centre */
+.ewa-slider { position: relative; height: 38px; margin-top: 6px; }
+.ewa-track { position: absolute; left: 13px; right: 13px; top: 50%; height: 8px; margin-top: -4px; border-radius: 99px; background: var(--bg-lower); overflow: hidden; pointer-events: none; }
+.ewa-track i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--v); background: var(--primary); }
+.ewa-range { -webkit-appearance: none; appearance: none; position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; background: transparent; cursor: pointer; }
+.ewa-range:focus { outline: none; }
+.ewa-range::-webkit-slider-runnable-track { height: 100%; border: none; background: transparent; }
+.ewa-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 26px; height: 26px; margin-top: 6px; border: 3px solid var(--primary); border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.35); cursor: grab; }
+.ewa-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 5px rgba(0,152,203,.3), 0 2px 8px rgba(0,0,0,.35); }
+.ewa-range::-moz-range-track { height: 100%; border: none; background: transparent; }
+.ewa-range::-moz-range-thumb { width: 20px; height: 20px; border: 3px solid var(--primary); border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.35); cursor: grab; }
+.ewa-scale { display: flex; justify-content: space-between; padding: 0 2px; font-size: 11.5px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.ewa-chips { display: flex; gap: 8px; margin-top: 12px; }
+.ewa-chip { flex: 1; padding: 9px 4px; border: 1px solid var(--border); border-radius: 10px; background: var(--card-2); color: var(--text); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.ewa-chip.on { border-color: var(--primary); background: rgba(0,152,203,.14); color: var(--primary); }
+.ewa-after { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; padding: 11px 12px; border-radius: 12px; background: var(--card-2); font-size: 13px; }
+.ewa-after span { color: var(--text-dim); }
+.ewa-after b { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.ewa-warn { display: flex; align-items: flex-start; gap: 8px; max-height: 0; margin-top: 0; padding: 0 10px; overflow: hidden; opacity: 0; border-radius: 10px; background: rgba(242,183,5,.12); font-size: 12px; line-height: 1.4; color: var(--text); transition: max-height .25s, opacity .2s, margin .25s, padding .25s; }
+.ewa-warn.show { max-height: 80px; margin-top: 10px; padding: 9px 10px; opacity: 1; }
+.ewa-warn svg { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; color: var(--gold); }
+
+/* Terms */
+.ewa-banner { display: flex; gap: 9px; margin: 14px 16px 4px; padding: 11px 12px; border: 1px dashed rgba(242,183,5,.5); border-radius: 12px; background: rgba(242,183,5,.08); font-size: 12px; line-height: 1.45; color: var(--text-dim); }
+.ewa-banner svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; color: var(--gold); }
+.ewa-banner b { color: var(--text); }
+.ewa-sec-t { padding: 14px 18px 8px; font-size: 13px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; color: var(--text-dim); }
+.receipt.ewa-receipt { width: auto; margin: 0 16px; }
+.ewa-receipt .r-l { flex: 1 1 auto; }
+.ewa-receipt .r-row.hl .r-l { color: var(--text); font-weight: 700; }
+.ewa-receipt .r-row.hl .r-r { font-size: 15px; font-weight: 800; color: var(--primary); }
+.ewa-sub { display: block; margin-top: 2px; font-style: normal; font-size: 11px; font-weight: 500; color: var(--text-faint); }
+.ewa-sub.r { text-align: right; }
+.ewa-ex { display: inline-block; margin-left: 5px; padding: 1px 6px; border-radius: 6px; background: rgba(242,183,5,.16); color: var(--gold); font-size: 9.5px; font-weight: 800; letter-spacing: .3px; vertical-align: 1px; }
+.ewa-docs { margin: 0 18px 6px; }
+
+/* Summary & approval */
+.ewa-confirm-amt { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 22px 16px 16px; text-align: center; }
+.ewa-confirm-amt span { font-size: 13px; color: var(--text-dim); }
+.ewa-confirm-amt b { font-size: 34px; font-weight: 800; letter-spacing: -.6px; font-variant-numeric: tabular-nums; }
+.ewa-confirm-amt em { font-style: normal; font-size: 12.5px; color: var(--text-dim); }
+.ewa-terms-sum { margin-top: 14px; }
+.ewa-terms-sum ul { display: flex; flex-direction: column; gap: 8px; padding-left: 18px; }
+.ewa-terms-sum li { font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
+.btn-primary.ewa-approve { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.btn-primary.ewa-approve svg { width: 22px; height: 22px; }
+
+/* Result */
+.ewa-success { padding-top: calc(26px + env(safe-area-inset-top)); }
+.ewa-success .success-check { width: 88px; height: 88px; margin-bottom: 18px; }
+.ewa-success .success-check .ring { width: 68px; height: 68px; }
+.ewa-success .success-check .ring svg { width: 38px; height: 38px; }
+.ewa-left-big { display: flex; align-items: baseline; gap: 8px; }
+.ewa-left-big b { font-size: 24px; font-weight: 800; letter-spacing: -.4px; font-variant-numeric: tabular-nums; }
+.ewa-left-big span { font-size: 13px; color: var(--text-dim); }
+.ewa-meter { height: 8px; margin: 12px 0 8px; border-radius: 99px; background: rgba(0,152,203,.18); overflow: hidden; }
+.ewa-meter i { display: block; height: 100%; border-radius: 99px; background: var(--primary); }
+.ewa-meter-l { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+/* History & repayment tracking */
+.ewa-open { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
+.ewa-open span { display: block; font-size: 12.5px; color: var(--text-dim); }
+.ewa-open b { display: block; margin-top: 3px; font-size: 20px; font-weight: 800; letter-spacing: -.3px; font-variant-numeric: tabular-nums; }
+.ewa-open em { display: block; margin-top: 3px; font-style: normal; font-size: 11.5px; color: var(--text-dim); }
+.ewa-status { font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+.ewa-status.open { color: var(--primary); }
+.ewa-status.paid { color: var(--success); }
+.ewa-status.big { display: inline-flex !important; align-items: center; gap: 5px; margin: 0; padding: 4px 10px; border-radius: 99px; font-size: 12px; }
+.ewa-status.big svg { width: 13px; height: 13px; }
+.ewa-status.big.open { background: rgba(0,152,203,.14); }
+.ewa-status.big.paid { background: rgba(46,204,113,.14); }
+.ewa-hist { margin: 0 16px; }
+.ewa-h { display: flex; align-items: center; gap: 12px; padding: 12px 2px; border-bottom: 1px solid var(--border); cursor: pointer; }
+.ewa-h:active { background: var(--card); }
+.ewa-h-ico { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; }
+.ewa-h-ico svg { width: 18px; height: 18px; }
+.ewa-h-ico.open { background: rgba(0,152,203,.14); color: var(--primary); }
+.ewa-h-ico.paid { background: rgba(46,204,113,.14); color: var(--success); }
+.ewa-h-mid { flex: 1; min-width: 0; }
+.ewa-h-mid b { display: block; font-size: 14px; font-weight: 700; }
+.ewa-h-mid span { display: block; margin-top: 2px; font-size: 12px; color: var(--text-dim); }
+.ewa-new { margin-left: 6px; padding: 1px 7px; border-radius: 99px; background: rgba(0,152,203,.14); color: var(--primary); font-style: normal; font-size: 10.5px; font-weight: 700; vertical-align: 1px; }
+.ewa-h-r { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.ewa-h-r b { font-size: 14.5px; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ewa-h-chev { display: flex; color: var(--text-faint); }
+.ewa-h-chev svg { width: 16px; height: 16px; }
+.ewa-sh-head { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 2px 0 14px; text-align: center; }
+.ewa-sh-head > b { font-size: 30px; font-weight: 800; letter-spacing: -.5px; font-variant-numeric: tabular-nums; }
+.ewa-sh-head > span:last-child { font-size: 12.5px; color: var(--text-dim); }
+.receipt.ewa-sh-receipt { margin-top: 0; margin-bottom: 8px; }
+/* Light theme: amber text needs a darker step on white */
+body[data-theme="light"] .ewa-ex, body[data-theme="light"] .ewa-banner svg { color: #8a6400; }
+
+/* ===================================================================
    HARCAMA ANALİZİ & LİMİT  (Harcamalarım)
    =================================================================== */
 .sp-screen { display: flex; flex-direction: column; height: 100%; }
