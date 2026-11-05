@@ -77,6 +77,7 @@ const I = {
   // Bağış — avuçta kalp (yardım)
   handHeart: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.4c1-1.3 3.3-.9 3.3 1 0 1.4-1.9 2.6-3.3 3.5-1.4-.9-3.3-2.1-3.3-3.5 0-1.9 2.3-2.3 3.3-1z"/><path d="M4 13.6c1.2-.7 2.5-.5 3.6.3l2 1.5c.5.4 1.2.6 1.9.6h3c.9 0 1.7.7 1.7 1.6S15.4 19 14.5 19H10M4 12.9V19.6"/></svg>',
   salaryEarly: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5V12l3 2"/><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 3.5V8H16"/></svg>',   // early salary (clock + forward arrow)
+  car: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3.8a1 1 0 0 1-1-1v-3.4a2 2 0 0 1 .5-1.3L5 9.5l1.9-3.4A2 2 0 0 1 8.6 5h6.5a2 2 0 0 1 1.6.8L19.3 9.5l1.4.6a2 2 0 0 1 1.2 1.8V16a1 1 0 0 1-1 1H19"/><path d="M9 17h6M5 10h14"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>',   // car (side view)
 };
 
 /* ---------- Veri ---------- */
@@ -250,6 +251,14 @@ const SECTIONS = [
   { hash: 'erken-maas', icon: 'salaryEarly', t: 'Taslak — Erken Maaş Erişimi', d: 'Maaşın %25\'ine maaş gününü beklemeden eriş: limit, tutar seçimi, koşullar' },
   { hash: 'erken-maas-tutar', icon: 'wallet2', t: 'Taslak — Erken Maaş: Tutar belirle', d: 'Kaydırma + tutar girişi, limit üstü talep engeli' },
   { hash: 'erken-maas-gecmis', icon: 'receipt', t: 'Taslak — Erken Maaş: İşlem geçmişi', d: 'Önceki erişimler ve geri ödeme durumları' },
+  { hash: 'arac', icon: 'car', t: 'Taslak — Taşıt Kredisi Marketplace', d: 'Araç ara, karşılaştır, kredini ve kaskonu tek akışta tamamla, teslimi izle' },
+  { hash: 'arac-liste', icon: 'search', t: 'Taslak — Taşıt: İlanlar ve karşılaştırma', d: 'Filtre, sıralama, favoriler, 3 araca kadar yan yana karşılaştırma' },
+  { hash: 'arac-detay', icon: 'car', t: 'Taslak — Taşıt: Araç detayı', d: 'Galeri, özellikler, bayi bilgisi, kredi ön onayı başlangıcı' },
+  { hash: 'arac-on-onay', icon: 'shield', t: 'Taslak — Taşıt: Kredi ön onayı', d: 'Peşinat, vade, ön değerlendirme sonucu (kesin onay değildir)' },
+  { hash: 'arac-kredi', icon: 'loan', t: 'Taslak — Taşıt: Kredi ve ödeme planı', d: 'Peşinat ve vade değiştikçe canlı taksit, senaryo karşılaştırma' },
+  { hash: 'arac-basvuru', icon: 'doc', t: 'Taslak — Taşıt: Başvuru ve kullandırım', d: 'Özet, belgeler, sözleşmeler; kesin değerlendirme ve kullandırım ayrı adım' },
+  { hash: 'arac-kasko', icon: 'insurance', t: 'Taslak — Taşıt: Kasko teklifleri', d: 'Teklif ve teminat karşılaştırma, poliçe seçimi ve onayı' },
+  { hash: 'arac-takip', icon: 'truck', t: 'Taslak — Taşıt: Teslim ve süreç takibi', d: 'Kredi, kullandırım, kasko ve teslim durumu tek ekranda' },
   { hash: 'search',    icon: 'search',   t: 'Arama',               d: 'Arama ekranı' },
   { hash: 'settings',  icon: 'gear',     t: 'Ayarlar',             d: 'Tema ve bildirimler' },
 ];
@@ -829,6 +838,8 @@ const SEARCH_FEATURES = [
     keys: ['borç', 'borç öde', 'toplu ödeme', 'ekstre', 'kredi kartı borcu', 'kart borcu', 'esnek hesap', 'kmh', 'taksit', 'konut kredisi', 'taşıt kredisi', 'kredi borcu'] },
   { hash: 'erken-maas', name: 'Erken Maaş Erişimi', icon: I.salaryEarly, sub: 'Maaşının %25\'ine maaş gününü beklemeden eriş',
     keys: ['erken maaş', 'maaş', 'maaş avansı', 'avans', 'erken erişim', 'maaş kredisi', 'kredi', 'nakit'] },
+  { hash: 'arac', name: 'Taşıt Kredisi Marketplace', icon: I.car, sub: 'Aracını bul, kredini ve kaskonu tek akışta tamamla',
+    keys: ['araç', 'araba', 'otomobil', 'taşıt', 'taşıt kredisi', 'araç kredisi', 'oto kredi', 'kasko', 'galeri', 'bayi', 'ikinci el', 'sıfır araç', 'marketplace', 'kredi'] },
 ];
 // Turkish-aware and accent-insensitive: "Borç", "borc" and "BORÇ" match alike (keeps string length)
 function searchNorm(s) {
@@ -5259,6 +5270,1548 @@ function ewaSeed(h) {
   if (h === 'erken-maas-sonuc' && !s.last && ewaAvail() >= EWA_TERMS.min) ewaApply();
 }
 
+/* ======================================================================
+   TAŞIT KREDİSİ MARKETPLACE (draft)
+   Car search → listing & price comparison → details → loan pre-approval →
+   loan & payment plan → final application & disbursement → kasko →
+   delivery tracking, in one journey. Cars, dealers and insurers are demo
+   data; rates, instalments and premiums are EXAMPLE figures that do not
+   represent real banking terms. Car pictures are representative vector
+   illustrations (real photos can be added per car via `photos`).
+   ====================================================================== */
+
+const VM_RATE = { monthly: 2.19, tax: 30 };   // EXAMPLE: monthly interest %, KKDF + BSMV % on interest
+const VM_PRE_LIMIT = 1250000;                 // EXAMPLE pre-approved amount for the demo customer
+const VM_MIN_DOWN = 20;                       // EXAMPLE minimum down payment (% of price)
+const VM_MIN_LOAN = 100000;                   // EXAMPLE minimum loan amount (TL)
+const VM_TERMS = [12, 24, 36, 48];
+const VM_EST = { downPct: 40, term: 36 };     // basis of the "aylık ~" estimates on cards
+const VM_AY = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+const VM_TYPES = ['Sedan', 'Hatchback', 'SUV', 'Station Wagon'];
+const VM_CITIES = ['İstanbul', 'Ankara', 'İzmir', 'Bursa'];
+const VM_ICO = {
+  filter: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>',
+  sort: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16M3.5 16.5 7 20l3.5-3.5M17 20V4M13.5 7.5 17 4l3.5 3.5"/></svg>',
+  phone: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 12l5 2v3a2 2 0 0 1-2 2A15 15 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>',
+  route: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 21 3l-8 18-2-8z"/></svg>',
+  key: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/></svg>',
+  clock: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  compare: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="16" rx="2"/><rect x="14" y="4" width="7" height="16" rx="2"/><path d="M6.5 9h0M17.5 9h0"/></svg>',
+};
+// Mock customer data used in the pre-evaluation (masked; no real personal data)
+const VM_PROFILE = { name: 'Selçuk İmre', tckn: '•••••••••42', phone: '0 (5••) ••• •• 24', job: 'Özel sektör · Ücretli', income: 150000 };
+// Dealers and sellers are DEMO data (fictional businesses)
+const VM_DEALERS = {
+  d1: { name: 'Atlas Premium Otomotiv', kind: 'Yetkili bayi', city: 'İstanbul', district: 'Sarıyer', addr: 'Maslak Mah. Büyükdere Cad. No: 214', rating: 4.8 },
+  d2: { name: 'Boğaz Oto Galeri',        kind: 'Galeri',       city: 'İstanbul', district: 'Ataşehir', addr: 'Barbaros Mah. Kardelen Sok. No: 7', rating: 4.5 },
+  d3: { name: 'Başkent Motorlu Araçlar', kind: 'Yetkili bayi', city: 'Ankara',   district: 'Çankaya', addr: 'Kızılırmak Mah. Ufuk Ünv. Cad. No: 12', rating: 4.7 },
+  d4: { name: 'Ege Premium Oto',         kind: 'Galeri',       city: 'İzmir',    district: 'Bornova', addr: 'Kazımdirik Mah. 372. Sok. No: 9', rating: 4.6 },
+  d5: { name: 'Uludağ Otomotiv',         kind: 'Yetkili bayi', city: 'Bursa',    district: 'Nilüfer', addr: 'Odunluk Mah. Akademi Cad. No: 31', rating: 4.7 },
+};
+const VM_EQUIP_PREMIUM = ['Matrix LED farlar', 'Dijital gösterge paneli', 'Geri görüş kamerası', 'Adaptif hız sabitleyici', 'Kablosuz CarPlay / Android Auto', 'Çift bölgeli otomatik klima', 'Elektrikli bagaj kapağı', 'Isıtmalı ön koltuklar'];
+const VM_EQUIP_BASIC = ['LED gündüz farları', 'Geri görüş kamerası', 'Hız sabitleyici', 'CarPlay / Android Auto', 'Otomatik klima', 'Park sensörleri'];
+// Cars are DEMO listings. `photos: ['assets/arac/a4-1.jpg', …]` replaces the illustration when real photos are added.
+const VM_CARS = [
+  { id: 'a4',      brand: 'Audi',          model: 'A4',      trim: 'Sedan 40 TFSI Advanced',     year: 2022, km: 45000, price: 2000000, cond: 'used', type: 'Sedan',         fuel: 'Benzin', gear: 'Otomatik (S tronic)', engine: '2.0 TFSI · 204 PS', drive: 'Önden çekiş', colorName: 'Lacivert', color: '#22385f', dealer: 'd1', featured: true, equip: VM_EQUIP_PREMIUM },
+  { id: 'bmw3',    brand: 'BMW',           model: '3 Serisi', trim: '320i M Sport',              year: 2021, km: 62000, price: 2150000, cond: 'used', type: 'Sedan',         fuel: 'Benzin', gear: 'Otomatik (Steptronic)', engine: '1.6 · 170 PS', drive: 'Arkadan itiş', colorName: 'Siyah', color: '#1b1d22', dealer: 'd2', featured: true, equip: VM_EQUIP_PREMIUM },
+  { id: 'xc40',    brand: 'Volvo',         model: 'XC40',    trim: 'B4 Plus Dark',               year: 2022, km: 41000, price: 2280000, cond: 'used', type: 'SUV',           fuel: 'Benzin (hafif hibrit)', gear: 'Otomatik', engine: '2.0 · 197 PS', drive: 'Önden çekiş', colorName: 'Beyaz', color: '#e9ecef', dealer: 'd1', featured: true, equip: VM_EQUIP_PREMIUM },
+  { id: 'tucson',  brand: 'Hyundai',       model: 'Tucson',  trim: '1.6 T-GDI Elite Plus',       year: 2023, km: 25000, price: 1780000, cond: 'used', type: 'SUV',           fuel: 'Benzin', gear: 'Otomatik (DCT)', engine: '1.6 T-GDI · 180 PS', drive: 'Önden çekiş', colorName: 'Yeşil', color: '#3e5a4b', dealer: 'd3', featured: true, equip: VM_EQUIP_BASIC },
+  { id: 'c200',    brand: 'Mercedes-Benz', model: 'C 200',   trim: 'AMG',                        year: 2021, km: 58000, price: 2450000, cond: 'used', type: 'Sedan',         fuel: 'Benzin (hafif hibrit)', gear: 'Otomatik (9G-Tronic)', engine: '1.5 · 204 PS', drive: 'Arkadan itiş', colorName: 'Gri', color: '#7d858e', dealer: 'd3', equip: VM_EQUIP_PREMIUM },
+  { id: 'a3',      brand: 'Audi',          model: 'A3',      trim: 'Sportback 35 TFSI S line',   year: 2023, km: 21000, price: 1850000, cond: 'used', type: 'Hatchback',     fuel: 'Benzin', gear: 'Otomatik (S tronic)', engine: '1.5 TFSI · 150 PS', drive: 'Önden çekiş', colorName: 'Kırmızı', color: '#a8232c', dealer: 'd2', equip: VM_EQUIP_PREMIUM },
+  { id: 'octavia', brand: 'Skoda',         model: 'Octavia', trim: '1.5 TSI e-TEC Premium',      year: 2026, km: 0,     price: 1890000, cond: 'new',  type: 'Sedan',         fuel: 'Benzin (hafif hibrit)', gear: 'Otomatik (DSG)', engine: '1.5 TSI · 150 PS', drive: 'Önden çekiş', colorName: 'Gümüş', color: '#a9b0b8', dealer: 'd5', equip: VM_EQUIP_BASIC },
+  { id: 'passat',  brand: 'Volkswagen',    model: 'Passat',  trim: '1.5 TSI Elegance',           year: 2022, km: 38000, price: 1550000, cond: 'used', type: 'Sedan',         fuel: 'Benzin', gear: 'Otomatik (DSG)', engine: '1.5 TSI · 150 PS', drive: 'Önden çekiş', colorName: 'Mavi', color: '#2a4e86', dealer: 'd4', equip: VM_EQUIP_BASIC },
+  { id: 'p3008',   brand: 'Peugeot',       model: '3008',    trim: '1.2 PureTech GT',            year: 2022, km: 47000, price: 1420000, cond: 'used', type: 'SUV',           fuel: 'Benzin', gear: 'Otomatik (EAT8)', engine: '1.2 PureTech · 130 PS', drive: 'Önden çekiş', colorName: 'Gri', color: '#5f6873', dealer: 'd5', equip: VM_EQUIP_BASIC },
+  { id: 'corolla', brand: 'Toyota',        model: 'Corolla', trim: '1.5 Dream',                  year: 2023, km: 22000, price: 1120000, cond: 'used', type: 'Sedan',         fuel: 'Benzin', gear: 'Otomatik (Multidrive S)', engine: '1.5 · 125 PS', drive: 'Önden çekiş', colorName: 'Beyaz', color: '#eceff2', dealer: 'd4', equip: VM_EQUIP_BASIC },
+  { id: 'egea',    brand: 'Fiat',          model: 'Egea',    trim: 'SW 1.4 Fire Urban Plus',     year: 2026, km: 0,     price: 1090000, cond: 'new',  type: 'Station Wagon', fuel: 'Benzin', gear: 'Manuel', engine: '1.4 Fire · 95 PS', drive: 'Önden çekiş', colorName: 'Bordo', color: '#6e1f2b', dealer: 'd3', equip: VM_EQUIP_BASIC },
+  { id: 'clio',    brand: 'Renault',       model: 'Clio',    trim: '1.0 TCe Touch',              year: 2023, km: 18000, price: 890000,  cond: 'used', type: 'Hatchback',     fuel: 'Benzin', gear: 'Manuel', engine: '1.0 TCe · 90 PS', drive: 'Önden çekiş', colorName: 'Turuncu', color: '#c9622a', dealer: 'd4', equip: VM_EQUIP_BASIC },
+];
+// Insurers are DEMO data (fictional); premiums are EXAMPLE figures
+const VM_KASKO = [
+  { id: 'k1', ins: 'Kalkan Sigorta', tag: 'En uygun fiyat', premium: 46800, rating: 4.3, color: '#2F7D5B', cover: { kasko: true, ikame: '7 gün', mini: true, cam: true, yol: true, ferdi: '50.000 TL', hukuk: false, muafiyet: '%2' } },
+  { id: 'k2', ins: 'Pusula Sigorta', tag: 'Önerilen',       premium: 52300, rating: 4.6, color: '#5B4DB0', cover: { kasko: true, ikame: '15 gün', mini: true, cam: true, yol: true, ferdi: '100.000 TL', hukuk: true, muafiyet: 'Yok' } },
+  { id: 'k3', ins: 'Kıyı Sigorta',   tag: 'En geniş kapsam', premium: 61900, rating: 4.7, color: '#1D7A8A', cover: { kasko: true, ikame: '30 gün', mini: true, cam: true, yol: true, ferdi: '250.000 TL', hukuk: true, muafiyet: 'Yok' } },
+];
+const VM_COVERS = [['kasko', 'Tam kasko (çarpma, yanma, çalınma)'], ['ikame', 'İkame araç'], ['mini', 'Mini onarım (far, ayna, cam)'], ['cam', 'Cam kırılması'], ['yol', 'Yol yardım ve çekici'], ['ferdi', 'Ferdi kaza'], ['hukuk', 'Hukuksal koruma'], ['muafiyet', 'Muafiyet']];
+
+state.vm = {
+  f: { cond: 'all', brand: null, model: null, pmin: null, pmax: null, types: [], year: null, km: null, city: null, seller: null },
+  more: false,        // detailed filters open
+  sort: 'rec',
+  favs: [],
+  favOnly: false,
+  cmp: [],            // listing comparison (max 3)
+  car: 'a4',          // car being viewed (detail) and, before the application, financed
+  flowCar: 'a4',      // car the down payment / term below were set up for
+  down: 800000,       // down payment (TL)
+  term: 36,           // months
+  consent: false,     // KKB / KVKK consent for pre-evaluation
+  preBusy: false,     // pre-evaluation running
+  preStep: 0,         // completed pre-evaluation checks
+  pre: null,          // pre-approval { car, amount, req, at, until, ref }
+  scen: [],           // saved financing scenarios [{ label, down, term }] (max 3)
+  agree: { pre: false, contract: false, pledge: false },
+  app: null,          // final application { car, status: 'review' | 'approved', step, ref, at, down, term, loan, pay, total, first }
+  kasko: 'k2',        // selected kasko offer
+  kInst: 1,           // kasko premium instalments (1 = Tek Çekim, the default)
+  kAgree: false,      // kasko information form read
+  policy: null,       // { offer, no, at, inst, start, end }
+  disb: null,         // disbursement { at, ref, noter, eta }
+  stage: 0,           // after disbursement: 0 notary & pledge, 1 preparing for delivery, 2 ready, 3 delivered
+  justDone: false,    // tracking opened right after policy + disbursement
+};
+let vmSvgSeq = 0;
+let vmAnimNext = null;   // one-shot animation for in-place screen updates (mode switches)
+let vmWarnTimer = null;
+function vmAnim() { const a = vmAnimNext || 'anim-right'; vmAnimNext = null; return a; }
+function vmRerender(anim = 'anim-fade') { vmAnimNext = anim; render(); }
+
+/* -------------------- helpers -------------------- */
+function vmCar(id = state.vm.car) { return VM_CARS.find(c => c.id === id) || VM_CARS[0]; }
+function vmDealer(c) { return VM_DEALERS[c.dealer]; }
+function vmTL(n) { return Math.round(n).toLocaleString('tr-TR') + ' TL'; }
+function vmKm(n) { return n ? n.toLocaleString('tr-TR') + ' km' : '0 km'; }
+function vmCondLabel(c) { return c.cond === 'new' ? 'Sıfır' : 'İkinci el'; }
+function vmI() { return VM_RATE.monthly / 100 * (1 + VM_RATE.tax / 100); }   // monthly cost rate incl. taxes
+function vmPay(P, n) { const i = vmI(); return P <= 0 ? 0 : P * i / (1 - Math.pow(1 + i, -n)); }
+function vmEstimate(c) { return vmPay(c.price * (1 - VM_EST.downPct / 100), VM_EST.term); }
+function vmLoan() { return Math.max(0, vmCar().price - state.vm.down); }
+function vmPreFor(c = vmCar()) { const p = state.vm.pre; return p && p.car === c.id ? p : null; }
+function vmDownMinRule(c) { return Math.ceil(c.price * VM_MIN_DOWN / 100 / 10000) * 10000; }
+/* Lowest down payment: the minimum ratio, or what the pre-approved amount leaves uncovered */
+function vmDownMin(c = vmCar()) {
+  const pre = vmPreFor(c);
+  return pre ? Math.max(vmDownMinRule(c), Math.ceil((c.price - pre.amount) / 10000) * 10000) : vmDownMinRule(c);
+}
+function vmDownMax(c = vmCar()) { return Math.floor((c.price - VM_MIN_LOAN) / 10000) * 10000; }
+function vmPct(a, b) { return b ? Math.round(a / b * 100) : 0; }
+function vmPctStr(n) { return String(n).replace('.', ','); }
+function vmDateIn(days) { const d = new Date(); d.setDate(d.getDate() + days); return `${d.getDate()} ${VM_AY[d.getMonth()]} ${d.getFullYear()}`; }
+function vmFirstDue() { const d = new Date(); return `${Math.min(d.getDate(), 28)} ${VM_AY[(d.getMonth() + 1) % 12]} ${d.getFullYear() + (d.getMonth() === 11 ? 1 : 0)}`; }
+/* Example quote: KKDF + BSMV are charged on the interest part of every instalment */
+function vmQuote(loan = vmLoan(), n = state.vm.term) {
+  const pay = vmPay(loan, n), total = pay * n, cost = total - loan;
+  const interest = cost / (1 + VM_RATE.tax / 100);
+  return { loan, n, pay, total, interest, tax: cost - interest };
+}
+function vmNowStr() {
+  const d = new Date(), p2 = n => String(n).padStart(2, '0');
+  return `${p2(d.getDate())}.${p2(d.getMonth() + 1)}.${d.getFullYear()} · ${p2(d.getHours())}:${p2(d.getMinutes())}`;
+}
+function vmRef(prefix) { return prefix + String(Math.floor(100000000 + Math.random() * 900000000)); }
+function vmPlanRows(P, n) {
+  const i = vmI(), pay = vmPay(P, n), rows = [], now = new Date(), day = Math.min(now.getDate(), 28);
+  const p2 = x => String(x).padStart(2, '0');
+  let bal = P;
+  for (let k = 1; k <= n; k++) {
+    const cost = bal * i, princ = pay - cost;
+    bal = Math.max(0, bal - princ);
+    const d = new Date(now.getFullYear(), now.getMonth() + k, day);
+    rows.push({ k, date: `${p2(d.getDate())}.${p2(d.getMonth() + 1)}.${d.getFullYear()}`, pay, princ, cost, bal });
+  }
+  return rows;
+}
+function vmShade(hex, f) {   // f > 0 lighten, f < 0 darken
+  const n = parseInt(hex.slice(1), 16), ch = [n >> 16, (n >> 8) & 255, n & 255];
+  return '#' + ch.map(v => Math.round(f > 0 ? v + (255 - v) * f : v * (1 + f)).toString(16).padStart(2, '0')).join('');
+}
+
+/* -------------------- car illustration (side profile, studio look) -------------------- */
+const VM_BODY = {
+  Sedan: {
+    body: 'M34,146 C32,134 34,122 42,116 L58,108 L118,104 C140,84 162,70 196,66 L246,65 C268,66 288,80 308,96 L352,104 C366,107 372,116 372,128 L372,142 C372,148 368,150 362,150 L330,150 A30,30 0 0 0 270,150 L140,150 A30,30 0 0 0 80,150 L42,150 C37,150 34,149 34,146 Z',
+    win: 'M127,102 C146,86 167,74 197,71 L244,70 C262,71 278,82 294,96 Z', pillars: [[213, 71, 99, 6]],
+    doors: 'M213,100 L211,147 M293,97 C297,118 297,134 295,147 M132,103 C128,120 128,136 130,147', handles: [[186, 112], [264, 110]],
+    head: 'M350,108 L369,112 L368,119 L348,115 Z', tail: 'M37,120 L56,111 L59,117 L39,126 Z', wheels: [110, 300], wy: 150, wr: 27, mirror: [290, 94],
+  },
+  Hatchback: {
+    body: 'M56,146 C54,132 55,114 60,104 L68,82 C72,72 80,68 96,67 L232,64 C256,66 276,80 296,96 L340,104 C354,107 360,116 360,128 L360,142 C360,148 356,150 350,150 L326,150 A30,30 0 0 0 266,150 L150,150 A30,30 0 0 0 90,150 L64,150 C59,150 56,149 56,146 Z',
+    win: 'M74,100 C76,86 82,74 98,72 L230,69 C250,71 266,82 282,96 Z', pillars: [[112, 72, 99, 9], [190, 70, 98, 6]],
+    doors: 'M190,99 L188,147 M281,96 C285,118 285,134 283,147 M118,101 C115,120 115,136 117,147', handles: [[166, 112], [252, 110]],
+    head: 'M338,108 L357,112 L356,119 L336,115 Z', tail: 'M57,108 L66,104 L67,118 L58,122 Z', wheels: [120, 296], wy: 150, wr: 27, mirror: [278, 94],
+  },
+  SUV: {
+    body: 'M30,140 C28,124 30,104 36,96 L44,66 C48,56 56,51 70,50 L250,48 C270,49 290,64 310,84 L356,92 C368,95 374,104 374,118 L374,138 C374,145 370,148 364,148 L338,148 A34,34 0 0 0 270,148 L148,148 A34,34 0 0 0 80,148 L40,148 C34,148 30,146 30,140 Z',
+    win: 'M50,90 L57,63 C59,58 65,56 73,56 L248,54 C264,56 280,68 296,86 Z', pillars: [[100, 57, 89, 10], [178, 55, 88, 7]],
+    doors: 'M178,89 L177,145 M296,87 C300,110 300,128 298,145 M104,90 C101,110 101,128 103,145', handles: [[154, 102], [262, 100]],
+    head: 'M352,96 L372,101 L371,108 L350,104 Z', tail: 'M31,104 L42,100 L43,114 L32,118 Z', wheels: [114, 304], wy: 148, wr: 30, mirror: [290, 84], rails: 'M72,46 L246,44', clad: true,
+  },
+  'Station Wagon': {
+    body: 'M34,146 C32,132 34,112 40,104 L46,80 C49,72 56,68 70,67 L246,65 C268,66 288,80 308,96 L352,104 C366,107 372,116 372,128 L372,142 C372,148 368,150 362,150 L330,150 A30,30 0 0 0 270,150 L140,150 A30,30 0 0 0 80,150 L42,150 C37,150 34,149 34,146 Z',
+    win: 'M56,101 L60,82 C62,76 66,73 74,73 L244,70 C262,71 278,82 294,96 Z', pillars: [[96, 73, 100, 9], [205, 71, 99, 6]],
+    doors: 'M205,100 L203,147 M293,97 C297,118 297,134 295,147 M124,101 C121,120 121,136 123,147', handles: [[180, 112], [262, 110]],
+    head: 'M350,108 L369,112 L368,119 L348,115 Z', tail: 'M35,106 L45,102 L46,116 L36,120 Z', wheels: [110, 300], wy: 150, wr: 27, mirror: [290, 94], rails: 'M74,63 L240,61',
+  },
+};
+function vmWheelSVG(x, y, r, uid) {
+  const spokes = [0, 72, 144, 216, 288].map(a => `<rect x="-2.4" y="${-(r * 0.62).toFixed(1)}" width="4.8" height="${(r * 0.5).toFixed(1)}" rx="2.2" transform="rotate(${a})"/>`).join('');
+  return `<g transform="translate(${x},${y})"><circle r="${r}" fill="#111316"/><circle r="${r - 3}" fill="#1b1e22"/><circle r="${(r * 0.66).toFixed(1)}" fill="url(#rim${uid})"/>
+    <g fill="#5a626c">${spokes}</g><circle r="${(r * 0.17).toFixed(1)}" fill="#2a2f35"/><circle r="${(r * 0.66).toFixed(1)}" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1"/></g>`;
+}
+/* variant: side | front | rear | mirror; bg: studio | dark | none */
+function vmCarSVG(c, variant = 'side', bg = 'studio') {
+  const b = VM_BODY[c.type] || VM_BODY.Sedan, u = ++vmSvgSeq, col = c.color;
+  const light = parseInt(col.slice(1, 3), 16) > 200;
+  const vb = variant === 'front' ? '215 52 185 116' : variant === 'rear' ? '0 52 185 116' : '0 0 400 200';
+  const bgSvg = bg === 'none' ? '' : bg === 'dark'
+    ? `<rect width="400" height="200" fill="url(#bg${u})"/><rect y="150" width="400" height="50" fill="url(#fl${u})"/>`
+    : `<rect width="400" height="200" fill="url(#bg${u})"/><rect y="150" width="400" height="50" fill="url(#fl${u})"/>`;
+  const bgStops = bg === 'dark' ? ['#3a4553', '#1a2028', '#161b21', '#0f1318'] : ['#f3f6f9', '#d5dde6', '#cdd5de', '#eef1f5'];
+  const car = `
+    <ellipse cx="${(b.wheels[0] + b.wheels[1]) / 2}" cy="${b.wy + b.wr - 4}" rx="${(b.wheels[1] - b.wheels[0]) / 2 + 92}" ry="10" fill="url(#sh${u})"/>
+    ${b.rails ? `<path d="${b.rails}" stroke="${vmShade(col, -0.55)}" stroke-width="4" stroke-linecap="round"/>` : ''}
+    <path d="${b.body}" fill="url(#bd${u})" stroke="${light ? 'rgba(0,0,0,.28)' : 'rgba(0,0,0,.35)'}" stroke-width="1"/>
+    ${b.clad ? '<rect x="34" y="132" width="336" height="16" rx="6" fill="rgba(20,22,26,.55)"/>' : ''}
+    <path d="${b.win}" fill="url(#gl${u})"/>
+    <path d="${b.win}" fill="url(#rf${u})" opacity=".9"/>
+    ${b.pillars.map(([x, y1, y2, w]) => `<rect x="${x - w / 2}" y="${y1}" width="${w}" height="${y2 - y1}" fill="${vmShade(col, -0.25)}"/>`).join('')}
+    <path d="${b.doors}" fill="none" stroke="rgba(0,0,0,.32)" stroke-width="1.2"/>
+    ${b.handles.map(([x, y]) => `<rect x="${x - 8}" y="${y - 1.8}" width="16" height="3.6" rx="1.8" fill="${vmShade(col, -0.4)}"/>`).join('')}
+    <path d="M${b.mirror[0]},${b.mirror[1]} l13,-2 l2,8 l-13,2 z" fill="${vmShade(col, -0.2)}"/>
+    <path d="${b.head}" fill="url(#hl${u})"/>
+    <path d="${b.tail}" fill="#b3121e"/>
+    <path d="M40,${b.wy - 2} L370,${b.wy - 2}" stroke="rgba(0,0,0,.18)" stroke-width="3"/>
+    ${vmWheelSVG(b.wheels[0], b.wy, b.wr, u)}${vmWheelSVG(b.wheels[1], b.wy, b.wr, u)}`;
+  return `<svg class="vm-svg" viewBox="${vb}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${c.brand} ${c.model} (temsilî görsel)">
+    <defs>
+      <linearGradient id="bg${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${bgStops[0]}"/><stop offset="1" stop-color="${bgStops[1]}"/></linearGradient>
+      <linearGradient id="fl${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${bgStops[2]}"/><stop offset="1" stop-color="${bgStops[3]}"/></linearGradient>
+      <radialGradient id="sh${u}"><stop offset="0" stop-color="#000" stop-opacity=".5"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+      <linearGradient id="bd${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${vmShade(col, light ? -0.02 : 0.38)}"/><stop offset=".45" stop-color="${col}"/><stop offset="1" stop-color="${vmShade(col, light ? -0.28 : -0.45)}"/></linearGradient>
+      <linearGradient id="gl${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4757"/><stop offset="1" stop-color="#10161d"/></linearGradient>
+      <linearGradient id="rf${u}" x1="0" y1="0" x2="1" y2="1"><stop offset=".25" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#fff" stop-opacity=".22"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <radialGradient id="rim${u}" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#eef1f4"/><stop offset="1" stop-color="#7d868f"/></radialGradient>
+      <linearGradient id="hl${u}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfe9ff"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+    </defs>
+    ${bgSvg}
+    <g${variant === 'mirror' ? ' transform="translate(400,0) scale(-1,1)"' : ''}>${car}</g>
+  </svg>`;
+}
+/* One picture slot: a real photo when provided, otherwise the illustration */
+function vmPicHTML(c, variant = 'side', bg = 'studio', idx = 0) {
+  if (c.photos && c.photos[idx]) return `<img class="vm-photo" src="${c.photos[idx]}" alt="${c.brand} ${c.model}">`;
+  return vmCarSVG(c, variant, bg);
+}
+
+/* -------------------- filtering & sorting -------------------- */
+const VM_SORTS = [['rec', 'Önerilen'], ['price-asc', 'Fiyat (artan)'], ['price-desc', 'Fiyat (azalan)'], ['year-desc', 'Model yılı (yeni)'], ['km-asc', 'Kilometre (düşük)']];
+function vmMatches(c, f = state.vm.f) {
+  const d = vmDealer(c);
+  if (f.cond !== 'all' && c.cond !== f.cond) return false;
+  if (f.brand && c.brand !== f.brand) return false;
+  if (f.model && c.model !== f.model) return false;
+  if (f.pmin && c.price < f.pmin) return false;
+  if (f.pmax && c.price > f.pmax) return false;
+  if (f.types.length && !f.types.includes(c.type)) return false;
+  if (f.year && c.year < f.year) return false;
+  if (f.km && c.km > f.km) return false;
+  if (f.city && d.city !== f.city) return false;
+  if (f.seller && d.kind !== f.seller) return false;
+  return true;
+}
+function vmResults() {
+  const v = state.vm;
+  let r = VM_CARS.filter(c => vmMatches(c));
+  if (v.favOnly) r = r.filter(c => v.favs.includes(c.id));
+  const by = {
+    rec: (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || VM_CARS.indexOf(a) - VM_CARS.indexOf(b),
+    'price-asc': (a, b) => a.price - b.price, 'price-desc': (a, b) => b.price - a.price,
+    'year-desc': (a, b) => b.year - a.year || a.km - b.km, 'km-asc': (a, b) => a.km - b.km,
+  }[v.sort];
+  return r.slice().sort(by);
+}
+function vmActiveFilters() {
+  const f = state.vm.f, out = [];
+  if (f.cond !== 'all') out.push(['cond', f.cond === 'new' ? 'Sıfır' : 'İkinci el']);
+  if (f.brand) out.push(['brand', f.brand]);
+  if (f.model) out.push(['model', f.model]);
+  if (f.pmin) out.push(['pmin', 'En az ' + vmTL(f.pmin)]);
+  if (f.pmax) out.push(['pmax', 'En çok ' + vmTL(f.pmax)]);
+  f.types.forEach(t => out.push(['type:' + t, t]));
+  if (f.year) out.push(['year', f.year + ' ve sonrası']);
+  if (f.km) out.push(['km', vmKm(f.km) + '\'ye kadar']);
+  if (f.city) out.push(['city', f.city]);
+  if (f.seller) out.push(['seller', f.seller]);
+  return out;
+}
+function vmUnset(key) {
+  const f = state.vm.f;
+  if (key.startsWith('type:')) f.types = f.types.filter(t => t !== key.slice(5));
+  else if (key === 'cond') f.cond = 'all';
+  else if (key === 'brand') { f.brand = null; f.model = null; }
+  else f[key] = null;
+}
+
+/* -------------------- Screen 1 — search (marketplace home) -------------------- */
+function VmHome() {
+  const v = state.vm, feat = VM_CARS.filter(c => c.featured);
+  const brands = [...new Set(VM_CARS.map(c => c.brand))];
+  return `
+  <div class="screen ${vmAnim()} vm">
+    <div class="nav-head ru-nav-accent">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Taşıt Marketplace</div>
+      <button class="vm-favs-btn" data-action="vm-favs" aria-label="Favoriler">${I.heart}<span id="vm-fav-n">${v.favs.length}</span></button>
+    </div>
+    <div class="screen-scroll">
+      <div class="vm-hero">
+        <div class="vm-hero-t">Hayalindeki aracı bul,<br>finansmanını burada tamamla</div>
+        <div class="vm-hero-s">Arama, kredi, kasko ve teslim tek uygulamada</div>
+        <div class="vm-hero-car">${vmCarSVG({ ...vmCar('a4'), color: '#dfe5ec' }, 'side', 'none')}</div>
+      </div>
+      <div class="vm-search" id="vm-search">${vmSearchHTML()}</div>
+      ${v.app || v.pre ? vmOngoingHTML() : ''}
+      <div class="vm-sec-h"><span>Popüler markalar</span></div>
+      <div class="vm-brands">${brands.map(b => `<button class="vm-brand" data-action="vm-brand-go" data-v="${b}"><i>${b[0]}</i><span>${b}</span><em>${VM_CARS.filter(c => c.brand === b).length} ilan</em></button>`).join('')}</div>
+      <div class="vm-sec-h"><span>Öne çıkan araçlar</span><button class="sp-link" data-action="vm-show-all">Tümü ${I.chevR}</button></div>
+      <div class="vm-feat">${feat.map((c, i) => vmFeatCardHTML(c, i)).join('')}</div>
+      <div class="vm-sec-h"><span>Aracını tek uygulamada al</span></div>
+      <div class="vm-journey">
+        <div><span class="n">1</span><b>Bul ve karşılaştır</b><em>Bayi ve galeri ilanları tek aramada</em></div>
+        <div><span class="n">2</span><b>Ön onayını gör</b><em>Ödeme planını kendin kur</em></div>
+        <div><span class="n">3</span><b>Kredi ve kasko</b><em>Başvuru ve poliçe aynı akışta</em></div>
+        <div><span class="n">4</span><b>Teslim al</b><em>Her adımı buradan izle</em></div>
+      </div>
+      <div class="vm-note">${I.info}<span>İlan, bayi ve kasko bilgileri demo verisidir; taksitler örnek hesaplamadır, gerçek kredi koşullarını yansıtmaz.</span></div>
+    </div>
+  </div>`;
+}
+function vmSearchHTML() {
+  const v = state.vm, f = v.f, n = VM_CARS.filter(c => vmMatches(c)).length;
+  const adv = [f.types.length, f.year, f.km, f.city, f.seller].filter(Boolean).length;
+  const chip = (k, val, label, on) => `<button class="vm-chip ${on ? 'on' : ''}" data-action="vm-f" data-k="${k}" data-v="${val}">${label}</button>`;
+  return `
+    <div class="vm-seg">${[['all', 'Tümü'], ['new', 'Sıfır'], ['used', 'İkinci el']].map(([k, l]) => `<button class="${f.cond === k ? 'on' : ''}" data-action="vm-f" data-k="cond" data-v="${k}">${l}</button>`).join('')}</div>
+    <div class="vm-fields">
+      <button class="vm-field" data-action="vm-pick-brand"><span>Marka</span><b>${f.brand || 'Tüm markalar'}</b>${I.chevDown}</button>
+      <button class="vm-field ${f.brand ? '' : 'off'}" data-action="vm-pick-model"><span>Model</span><b>${f.model || 'Tüm modeller'}</b>${I.chevDown}</button>
+    </div>
+    <div class="vm-fields">
+      <label class="vm-in"><span>En az fiyat</span><input id="vm-pmin" inputmode="numeric" autocomplete="off" placeholder="0" value="${f.pmin ? f.pmin.toLocaleString('tr-TR') : ''}"><em>TL</em></label>
+      <label class="vm-in"><span>En çok fiyat</span><input id="vm-pmax" inputmode="numeric" autocomplete="off" placeholder="Sınırsız" value="${f.pmax ? f.pmax.toLocaleString('tr-TR') : ''}"><em>TL</em></label>
+    </div>
+    <button class="vm-more ${v.more ? 'open' : ''}" data-action="vm-more">${VM_ICO.filter}<span>Detaylı filtreler${adv ? ` · ${adv}` : ''}</span>${I.chevDown}</button>
+    ${v.more ? `<div class="vm-adv">
+      <div class="vm-adv-t">Araç tipi</div>
+      <div class="vm-chips">${VM_TYPES.map(t => `<button class="vm-chip ${f.types.includes(t) ? 'on' : ''}" data-action="vm-type" data-v="${t}">${t}</button>`).join('')}</div>
+      <div class="vm-adv-t">Model yılı</div>
+      <div class="vm-chips">${chip('year', '', 'Tümü', !f.year)}${[2021, 2022, 2023, 2025].map(y => chip('year', y, y + '+', f.year === y)).join('')}</div>
+      <div class="vm-adv-t">Kilometre</div>
+      <div class="vm-chips">${chip('km', '', 'Tümü', !f.km)}${[20000, 50000, 100000].map(k => chip('km', k, (k / 1000) + ' bin km\'ye kadar', f.km === k)).join('')}</div>
+      <div class="vm-adv-t">Konum</div>
+      <div class="vm-chips">${chip('city', '', 'Tümü', !f.city)}${VM_CITIES.map(c => chip('city', c, c, f.city === c)).join('')}</div>
+      <div class="vm-adv-t">Satıcı</div>
+      <div class="vm-chips">${chip('seller', '', 'Tümü', !f.seller)}${['Yetkili bayi', 'Galeri'].map(s => chip('seller', s, s, f.seller === s)).join('')}</div>
+    </div>` : ''}
+    <div class="vm-search-foot">
+      <button class="vm-clear" data-action="vm-clear">Temizle</button>
+      <button class="btn-primary vm-go ${n ? '' : 'disabled'}" id="vm-go" data-action="vm-show">${n ? `${n} aracı göster` : 'Uygun araç yok'}</button>
+    </div>`;
+}
+/* On the listing screen the filter sheet sits over the results: keep them in sync behind it */
+function vmRefreshSearch() {
+  const el = document.getElementById('vm-search');
+  if (el) { el.innerHTML = vmSearchHTML(); vmSetupSearch(); }
+  if (state.screen === 'arac-liste') vmRefreshList();
+}
+/* Price fields only update the result count: re-rendering the card here would swallow the click that blurred them */
+function vmRefreshCount() {
+  const n = VM_CARS.filter(c => vmMatches(c)).length, b = document.getElementById('vm-go');
+  if (b) { b.textContent = n ? `${n} aracı göster` : 'Uygun araç yok'; b.classList.toggle('disabled', !n); }
+  if (state.screen === 'arac-liste') vmRefreshList();
+}
+function vmSetupSearch() {
+  [['vm-pmin', 'pmin'], ['vm-pmax', 'pmax']].forEach(([id, k]) => {
+    const inp = document.getElementById(id);
+    if (!inp) return;
+    inp.addEventListener('input', () => { const d = inp.value.replace(/\D/g, '').slice(0, 9); inp.value = d ? (+d).toLocaleString('tr-TR') : ''; });
+    inp.addEventListener('change', () => {
+      const f = state.vm.f, d = +inp.value.replace(/\D/g, '');
+      f[k] = d || null;
+      if (f.pmin && f.pmax && f.pmin > f.pmax) [f.pmin, f.pmax] = [f.pmax, f.pmin];
+      ['pmin', 'pmax'].forEach(x => { const el = document.getElementById('vm-' + x); if (el) el.value = f[x] ? f[x].toLocaleString('tr-TR') : ''; });
+      vmRefreshCount();
+    });
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+  });
+}
+function vmCommitInputs() {   // commit a typed value before acting on a button
+  const a = document.activeElement;
+  if (a && a.tagName === 'INPUT' && a.closest('.vm')) a.blur();
+}
+/* Filters on the listing screen: the same search card, inside a sheet */
+function vmFilterSheet() {
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Filtrele</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-search in-sheet vm" id="vm-search">${vmSearchHTML()}</div>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+  vmSetupSearch();
+}
+function vmShow() {
+  vmCommitInputs();
+  if (!VM_CARS.some(c => vmMatches(c))) return;
+  state.vm.favOnly = false;
+  if (state.screen !== 'arac-liste') return go('arac-liste');
+  closeSheet();
+  vmRefreshList();
+  const sc = document.querySelector('#app .screen-scroll'); if (sc) sc.scrollTop = 0;
+}
+function vmPickDone() {   // brand / model chosen in its sheet
+  if (state.screen === 'arac-liste') { vmRefreshList(); return vmFilterSheet(); }
+  closeSheet();
+  vmRefreshSearch();
+}
+function vmClearFilters() {
+  state.vm.f = { cond: 'all', brand: null, model: null, pmin: null, pmax: null, types: [], year: null, km: null, city: null, seller: null };
+}
+function vmSetF(k, val) {
+  const f = state.vm.f;
+  if (k === 'cond') f.cond = val;
+  else f[k] = val === '' ? null : (isNaN(+val) ? val : +val);
+}
+function vmToggleType(t) { const f = state.vm.f; f.types = f.types.includes(t) ? f.types.filter(x => x !== t) : f.types.concat(t); }
+function vmChoiceSheet(title, opts, action) {
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>${title}</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-choices">${opts.map(o => `<button class="vm-choice ${o.on ? 'on' : ''}" data-action="${action}" data-v="${o.v}"><span>${o.label}</span>${o.sub ? `<em>${o.sub}</em>` : ''}${o.on ? `<i>${I.check}</i>` : ''}</button>`).join('')}</div>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+function vmBrandSheet() {
+  const f = state.vm.f, brands = [...new Set(VM_CARS.map(c => c.brand))].sort((a, b) => a.localeCompare(b, 'tr'));
+  vmChoiceSheet('Marka seç', [{ v: '', label: 'Tüm markalar', on: !f.brand }].concat(brands.map(b => ({ v: b, label: b, sub: VM_CARS.filter(c => c.brand === b).length + ' ilan', on: f.brand === b }))), 'vm-set-brand');
+}
+function vmModelSheet() {
+  const f = state.vm.f;
+  if (!f.brand) return toast('Önce marka seç');
+  const models = [...new Set(VM_CARS.filter(c => c.brand === f.brand).map(c => c.model))];
+  vmChoiceSheet(f.brand + ' modeli', [{ v: '', label: 'Tüm modeller', on: !f.model }].concat(models.map(m => ({ v: m, label: m, on: f.model === m }))), 'vm-set-model');
+}
+function vmFeatCardHTML(c, i) {
+  return `<div class="vm-fcard" data-action="vm-open" data-id="${c.id}">
+    <div class="vm-fimg">${vmPicHTML(c, i % 2 ? 'mirror' : 'side', i % 2 ? 'dark' : 'studio')}<span class="vm-badge ${c.cond}">${vmCondLabel(c)}</span></div>
+    <div class="vm-fbody"><b>${c.brand} ${c.model}</b><span>${c.year} · ${vmKm(c.km)}</span><div class="vm-fprice">${vmTL(c.price)}</div><em>aylık ~${vmTL(vmEstimate(c))}'den</em></div>
+  </div>`;
+}
+function vmOngoingHTML() {
+  const v = state.vm;
+  if (!v.app) {   // pre-approved but not applied yet
+    const c = vmCar(v.pre.car);
+    return `<div class="vm-ongoing" data-action="vm-continue">
+      <div class="vm-og-img">${vmPicHTML(c, 'side', 'studio')}</div>
+      <div class="vm-og-mid"><span>Ön onaylı aracın</span><b>${c.brand} ${c.model}</b><em>${vmTL(v.pre.amount)} · ${v.pre.until} tarihine kadar</em></div>
+      ${I.chevR}
+    </div>`;
+  }
+  const c = vmCar(v.app.car);
+  const step = v.disb ? (v.stage >= 3 ? 'Teslim edildi' : 'Teslim süreci') : v.app.status === 'approved' ? 'Kasko adımı bekleniyor' : 'Kredi değerlendiriliyor';
+  return `<div class="vm-ongoing" data-action="vm-track">
+    <div class="vm-og-img">${vmPicHTML(c, 'side', 'studio')}</div>
+    <div class="vm-og-mid"><span>Devam eden satın alman</span><b>${c.brand} ${c.model}</b><em>${step}</em></div>
+    ${I.chevR}
+  </div>`;
+}
+
+/* -------------------- Screen 2 — listing & price comparison -------------------- */
+function VmList() {
+  const v = state.vm, r = vmResults(), act = vmActiveFilters();
+  return `
+  <div class="screen ${vmAnim()} vm">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-head-titles"><div class="nav-title">Araçlar</div><div class="nav-sub vm-count" id="vm-count">${r.length} ilan</div></div>
+      <div class="nav-spacer"></div>
+    </div>
+    <div class="vm-listbar">
+      <button class="vm-lb" data-action="vm-filters">${VM_ICO.filter}Filtrele<i id="vm-fcount" ${act.length ? '' : 'hidden'}>${act.length}</i></button>
+      <button class="vm-lb" data-action="vm-sort">${VM_ICO.sort}<span id="vm-sort-l">${VM_SORTS.find(s => s[0] === v.sort)[1]}</span></button>
+      <button class="vm-lb ${v.favOnly ? 'on' : ''}" data-action="vm-favonly" id="vm-favonly">${I.heart}Favoriler</button>
+    </div>
+    <div id="vm-active-wrap">${vmActiveHTML()}</div>
+    <div class="screen-scroll">
+      <div id="vm-list">${vmListHTML(r)}</div>
+      <div class="vm-note">${I.info}<span>Aylık taksitler %${VM_EST.downPct} peşinat, ${VM_EST.term} ay vade ve örnek faiz oranıyla hesaplanmıştır; gerçek kredi koşullarını yansıtmaz.</span></div>
+    </div>
+    <div class="vm-cmpbar ${v.cmp.length ? 'show' : ''}" id="vm-cmpbar">${vmCmpBarHTML()}</div>
+  </div>`;
+}
+function vmListHTML(r) {
+  if (!r.length && state.vm.favOnly) return `<div class="vm-empty">${I.heart}<b>${state.vm.favs.length ? 'Bu filtrelerde favori aracın yok' : 'Henüz favori aracın yok'}</b><span>Beğendiğin ilanları kalp simgesiyle kaydet, burada topla.</span><button class="sp-link" data-action="vm-favonly">Tüm ilanları göster</button></div>`;
+  if (!r.length) return `<div class="vm-empty">${I.search}<b>Bu kriterlere uygun araç yok</b><span>Filtreleri değiştirerek tekrar dene.</span><button class="sp-link" data-action="vm-clear-list">Filtreleri temizle</button></div>`;
+  return r.map(c => vmCardHTML(c)).join('');
+}
+function vmCardHTML(c) {
+  const v = state.vm, d = vmDealer(c), fav = v.favs.includes(c.id), cmp = v.cmp.includes(c.id);
+  return `<div class="vm-card" data-action="vm-open" data-id="${c.id}">
+    <div class="vm-cimg">${vmPicHTML(c, 'side', VM_CARS.indexOf(c) % 3 === 1 ? 'dark' : 'studio')}
+      <span class="vm-badge ${c.cond}">${vmCondLabel(c)}</span>
+      <button class="vm-heart ${fav ? 'on' : ''}" data-action="vm-fav" data-id="${c.id}" aria-label="Favorilere ekle">${I.heart}</button>
+    </div>
+    <div class="vm-cbody">
+      <div class="vm-ctitle"><b>${c.brand} ${c.model}</b><span>${c.trim}</span></div>
+      <div class="vm-cspec">${c.year} · ${vmKm(c.km)} · ${c.fuel.split(' ')[0]} · ${c.gear.split(' ')[0]}</div>
+      <div class="vm-cprice"><b>${vmTL(c.price)}</b><span>aylık ~${vmTL(vmEstimate(c))}</span></div>
+      <div class="vm-cfoot">
+        <div class="vm-cdealer">${I.pin}<span>${d.name} · ${d.city}</span><em>${d.kind}</em></div>
+        <button class="vm-cmp ${cmp ? 'on' : ''}" data-action="vm-cmp" data-id="${c.id}"><span class="cbx">${I.check}</span>Karşılaştır</button>
+      </div>
+    </div>
+  </div>`;
+}
+function vmCmpBarHTML() {
+  const n = state.vm.cmp.length;
+  return `<span><b>${n}</b> araç seçildi${n < 2 ? ' · en az 2 seç' : ''}</span><button class="vm-cmp-go ${n < 2 ? 'off' : ''}" data-action="vm-compare">Karşılaştır</button>`;
+}
+function vmActiveHTML() {
+  const act = vmActiveFilters();
+  return act.length ? `<div class="vm-active">${act.map(([k, l]) => `<button class="vm-achip" data-action="vm-unset" data-k="${k}">${l}${I.close}</button>`).join('')}</div>` : '';
+}
+function vmRefreshList() {
+  const r = vmResults(), n = vmActiveFilters().length;
+  const list = document.getElementById('vm-list'); if (list) list.innerHTML = vmListHTML(r);
+  const cnt = document.getElementById('vm-count'); if (cnt) cnt.textContent = r.length + ' ilan';
+  const bar = document.getElementById('vm-cmpbar'); if (bar) { bar.innerHTML = vmCmpBarHTML(); bar.classList.toggle('show', state.vm.cmp.length > 0); }
+  const sl = document.getElementById('vm-sort-l'); if (sl) sl.textContent = VM_SORTS.find(s => s[0] === state.vm.sort)[1];
+  const fo = document.getElementById('vm-favonly'); if (fo) fo.classList.toggle('on', state.vm.favOnly);
+  const aw = document.getElementById('vm-active-wrap'); if (aw) aw.innerHTML = vmActiveHTML();
+  const fc = document.getElementById('vm-fcount'); if (fc) { fc.textContent = n; fc.hidden = !n; }
+}
+function vmToggleFav(id, btn) {
+  const v = state.vm;
+  v.favs = v.favs.includes(id) ? v.favs.filter(x => x !== id) : v.favs.concat(id);
+  const on = v.favs.includes(id);
+  document.querySelectorAll(`[data-action="vm-fav"][data-id="${id}"]`).forEach(b => b.classList.toggle('on', on));
+  const n = document.getElementById('vm-fav-n'); if (n) n.textContent = v.favs.length;
+  toast(on ? 'Favorilere eklendi' : 'Favorilerden çıkarıldı');
+  if (v.favOnly && state.screen === 'arac-liste') vmRefreshList();
+}
+function vmToggleCmp(id) {
+  const v = state.vm;
+  if (v.cmp.includes(id)) v.cmp = v.cmp.filter(x => x !== id);
+  else if (v.cmp.length >= 3) return toast('En fazla 3 aracı karşılaştırabilirsin');
+  else v.cmp = v.cmp.concat(id);
+  document.querySelectorAll('[data-action="vm-cmp"]').forEach(b => b.classList.toggle('on', v.cmp.includes(b.dataset.id)));
+  const bar = document.getElementById('vm-cmpbar'); if (bar) { bar.innerHTML = vmCmpBarHTML(); bar.classList.toggle('show', v.cmp.length > 0); }
+}
+function vmSortSheet() {
+  vmChoiceSheet('Sırala', VM_SORTS.map(([k, l]) => ({ v: k, label: l, on: state.vm.sort === k })), 'vm-set-sort');
+}
+function vmCompareSheet() {
+  const cars = state.vm.cmp.map(id => vmCar(id));
+  if (cars.length < 2) return toast('Karşılaştırmak için en az 2 araç seç');
+  const minPrice = Math.min(...cars.map(c => c.price)), minKm = Math.min(...cars.map(c => c.km)), maxYear = Math.max(...cars.map(c => c.year));
+  const row = (label, fn, best) => `<tr><th>${label}</th>${cars.map(c => `<td class="${best && best(c) ? 'best' : ''}">${fn(c)}</td>`).join('')}</tr>`;
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Araç karşılaştırma</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-cmp-scroll"><table class="vm-cmp-t">
+      <thead><tr><th></th>${cars.map(c => `<td><div class="vm-cmp-img">${vmPicHTML(c, 'side', 'studio')}</div><b>${c.brand} ${c.model}</b></td>`).join('')}</tr></thead>
+      <tbody>
+        ${row('Fiyat', c => vmTL(c.price), c => c.price === minPrice)}
+        ${row('Aylık taksit*', c => vmTL(vmEstimate(c)), c => c.price === minPrice)}
+        ${row('Model yılı', c => c.year, c => c.year === maxYear)}
+        ${row('Kilometre', c => vmKm(c.km), c => c.km === minKm)}
+        ${row('Yakıt', c => c.fuel)}
+        ${row('Vites', c => c.gear)}
+        ${row('Motor', c => c.engine)}
+        ${row('Kasa tipi', c => c.type)}
+        ${row('Satıcı', c => vmDealer(c).name + '<br><i>' + vmDealer(c).city + ' · ' + vmDealer(c).kind + '</i>')}
+      </tbody>
+    </table></div>
+    <div class="vm-cmp-note">* %${VM_EST.downPct} peşinat, ${VM_EST.term} ay, örnek faiz. Yeşil: en avantajlı değer.</div>
+    <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- Screen 3 — car details -------------------- */
+function VmDetail() {
+  const v = state.vm, c = vmCar(), d = vmDealer(c), fav = v.favs.includes(c.id);
+  const slides = [['side', 'studio'], ['mirror', 'dark'], ['front', 'studio'], ['rear', 'dark']];
+  return `
+  <div class="screen ${vmAnim()} vm">
+    <div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Araç Detayı</div>
+      <button class="vm-heart-nav ${fav ? 'on' : ''}" data-action="vm-fav" data-id="${c.id}" aria-label="Favorilere ekle">${I.heart}</button>
+    </div>
+    <div class="screen-scroll">
+      <div class="vm-gal-wrap">
+        <div class="vm-gal" id="vm-gal">${slides.map(([va, bg], i) => `<div class="vm-slide">${vmPicHTML(c, va, bg, i)}</div>`).join('')}</div>
+        <span class="vm-gal-n" id="vm-gal-n">1 / ${slides.length}</span>
+        ${c.photos ? '' : '<span class="vm-gal-tag">Temsilî görsel</span>'}
+        <div class="vm-dots" id="vm-dots">${slides.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>
+      </div>
+      <div class="vm-d-head">
+        <div class="vm-d-badges"><span class="vm-badge inline ${c.cond}">${vmCondLabel(c)}</span><span class="vm-d-loc">${I.pin}${d.district}, ${d.city}</span></div>
+        <h2>${c.brand} ${c.model}</h2>
+        <div class="vm-d-trim">${c.trim}</div>
+        <div class="vm-d-price"><b>${vmTL(c.price)}</b><span>${c.year} · ${vmKm(c.km)}</span></div>
+        <button class="vm-d-fin" data-action="vm-start-pre"><span>aylık <b>~${vmTL(vmEstimate(c))}</b>'den</span><em>%${VM_EST.downPct} peşinat · ${VM_EST.term} ay · örnek</em>${I.chevR}</button>
+      </div>
+      <div class="vm-box">
+        <div class="vm-box-h">Araç özellikleri</div>
+        <div class="vm-specs">
+          ${[['Model yılı', c.year], ['Kilometre', vmKm(c.km)], ['Yakıt', c.fuel], ['Vites', c.gear], ['Motor', c.engine], ['Kasa tipi', c.type], ['Renk', c.colorName], ['Çekiş', c.drive]].map(([k, val]) => `<div><span>${k}</span><b>${val}</b></div>`).join('')}
+        </div>
+      </div>
+      <div class="vm-box">
+        <div class="vm-box-h">Donanım paketi · ${c.trim.split(' ').slice(-1)[0]}</div>
+        <div class="vm-equip">${c.equip.map(e => `<span>${I.check}${e}</span>`).join('')}</div>
+      </div>
+      ${vmDealerBoxHTML(d)}
+    </div>
+    <div class="screen-cta vm-d-cta">
+      <button class="vm-heart-lg ${fav ? 'on' : ''}" data-action="vm-fav" data-id="${c.id}" aria-label="Favorilere ekle">${I.heart}</button>
+      <button class="btn-primary" data-action="vm-start-pre">${v.app && v.app.car === c.id ? 'Satın Alma Sürecini Gör' : vmPreFor(c) ? 'Ön Onayına Devam Et' : 'Kredi Ön Onayı Başlat'}</button>
+    </div>
+  </div>`;
+}
+function vmDealerBoxHTML(d, title) {
+  return `<div class="vm-box">
+    <div class="vm-box-h">${title || (d.kind === 'Yetkili bayi' ? 'Bayi' : 'Satıcı')}</div>
+    <div class="vm-dealer">
+      <div class="vm-dealer-ico">${d.name[0]}</div>
+      <div class="vm-dealer-mid"><b>${d.name}</b><span>${d.kind} · ★ ${vmPctStr(d.rating)}</span></div>
+    </div>
+    <div class="vm-dealer-addr">${I.pin}<span>${d.addr}<br>${d.district} / ${d.city}</span></div>
+    <div class="vm-dealer-btns">
+      <button data-action="toast" data-msg="Arama prototipte aktif değil">${VM_ICO.phone}Bayiyi ara</button>
+      <button data-action="toast" data-msg="Yol tarifi prototipte aktif değil">${VM_ICO.route}Yol tarifi</button>
+    </div>
+  </div>`;
+}
+function vmSetupDetail() {
+  const g = document.getElementById('vm-gal');
+  if (!g) return;
+  g.addEventListener('scroll', () => {
+    const i = Math.round(g.scrollLeft / g.clientWidth), n = g.children.length;
+    const lbl = document.getElementById('vm-gal-n'); if (lbl) lbl.textContent = `${i + 1} / ${n}`;
+    document.querySelectorAll('#vm-dots i').forEach((d, k) => d.classList.toggle('on', k === i));
+  }, { passive: true });
+}
+
+/* -------------------- shared: flow steps, car strip, stages, checks -------------------- */
+const VM_FLOW = ['Ön onay', 'Ödeme planı', 'Başvuru', 'Kasko', 'Teslim'];
+function vmFlowHTML(cur) {
+  return `<div class="vm-flow" role="list" aria-label="Satın alma adımları">${VM_FLOW.map((t, i) =>
+    `<div class="vm-flow-s ${i < cur ? 'done' : i === cur ? 'on' : ''}" role="listitem"><i>${i < cur ? I.check : i + 1}</i><span>${t}</span></div>`).join('<b></b>')}</div>`;
+}
+function vmMiniHTML(c, right) {
+  return `<div class="vm-mini">
+    <div class="vm-mini-img">${vmPicHTML(c, 'side', 'studio')}</div>
+    <div class="vm-mini-mid"><b>${c.brand} ${c.model}</b><span>${c.year} · ${vmKm(c.km)}</span><em>${vmDealer(c).name}</em></div>
+    <div class="vm-mini-r">${right || `<span>Araç bedeli</span><b>${vmTL(c.price)}</b>`}</div>
+  </div>`;
+}
+/* st: [{ t, d, s: 'done' | 'on' | 'wait' | 'todo' }] — final evaluation and disbursement stay separate stages */
+function vmStagesHTML(st) {
+  const ico = (x, i) => x.s === 'done' ? I.check : x.s === 'on' ? '<span class="vm-spin"></span>' : x.s === 'wait' ? VM_ICO.clock : i + 1;
+  return `<div class="vm-stages">${st.map((x, i) => `<div class="vm-stg ${x.s}"><i>${ico(x, i)}</i><b>${x.t}</b><span>${x.d}</span></div>`).join('')}</div>`;
+}
+function vmChkRowHTML(t, k, step, pfx) {
+  return `<div class="vm-chk-r ${k < step ? 'done' : k === step ? 'run' : ''}" id="${pfx}${k}"><i><span class="vm-spin"></span>${I.check}</i><span>${t}</span></div>`;
+}
+/* Runs a check list row by row (unequal durations), updating rows in place; obj[key] keeps progress across re-renders */
+function vmRunChecks(obj, key, n, pfx, durs, done) {
+  const next = () => {
+    if (obj[key] >= n) return setTimeout(done, 380);
+    setTimeout(() => {
+      const k = obj[key];
+      const row = document.getElementById(pfx + k);
+      if (row) { row.classList.remove('run'); row.classList.add('done'); }
+      obj[key] = k + 1;
+      const nx = document.getElementById(pfx + (k + 1));
+      if (nx) nx.classList.add('run');
+      next();
+    }, durs[obj[key]] || 800);
+  };
+  next();
+}
+function vmEx() { return '<i class="vm-ex">Örnek</i>'; }
+/* Inline amber warning under an input (auto hides) */
+function vmWarn(id, msg) {
+  const w = document.getElementById(id);
+  if (!w) return;
+  clearTimeout(vmWarnTimer);
+  w.innerHTML = msg ? `${I.info}<span>${msg}</span>` : '';
+  w.classList.toggle('show', !!msg);
+  if (msg) vmWarnTimer = setTimeout(() => w.classList.remove('show'), 4000);
+}
+function vmNav(title) {
+  return `<div class="nav-head">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">${title}</div>
+    </div>`;
+}
+/* Down payment & term set-up for a car (kept while the same car is being financed) */
+function vmInitFlow(c) {
+  const v = state.vm;
+  if (v.flowCar === c.id) return;
+  v.flowCar = c.id;
+  v.down = Math.min(vmDownMax(c), Math.max(vmDownMinRule(c), Math.round(c.price * VM_EST.downPct / 100 / 10000) * 10000));
+  v.term = VM_EST.term;
+  v.consent = false; v.preBusy = false; v.scen = [];
+  v.agree = { pre: false, contract: false, pledge: false };
+}
+function vmSetDown(raw) {
+  const v = state.vm, c = vmCar(), lo = vmDownMin(c), hi = vmDownMax(c), pre = vmPreFor(c);
+  let d = Math.round(raw) || 0, warn = '';
+  if (d < lo) {
+    d = lo;
+    warn = pre && lo > vmDownMinRule(c)
+      ? `Ön onaylı tutarın ${vmTL(pre.amount)} olduğu için peşinat en az ${vmTL(lo)} olmalı.`
+      : `Peşinat en az ${vmTL(lo)} olabilir; asgari peşinat oranı %${VM_MIN_DOWN}.`;
+  } else if (d > hi) {
+    d = hi;
+    warn = `Peşinat en fazla ${vmTL(hi)} olabilir; en düşük kredi tutarı ${vmTL(VM_MIN_LOAN)}.`;
+  }
+  v.down = d;
+  if (state.screen === 'arac-kredi') { vmPlanUpdate(); vmWarn('vm-down-warn', warn); }
+  else { vmPreUpdate(); vmWarn('vm-pre-warn', warn); }
+}
+function vmSetTerm(n) {
+  state.vm.term = n;
+  if (state.screen === 'arac-kredi') return vmPlanUpdate();
+  document.querySelectorAll('#vm-pre-terms .vm-pct').forEach(b => b.classList.toggle('on', +b.dataset.v === n));
+}
+function vmPrePct(p) { const c = vmCar(); vmSetDown(Math.ceil(c.price * p / 100 / 10000) * 10000); }
+function vmMoneyInput(inp, onCommit) {
+  inp.addEventListener('focus', () => inp.select());
+  inp.addEventListener('input', () => { const d = inp.value.replace(/\D/g, '').slice(0, 9); inp.value = d ? (+d).toLocaleString('tr-TR') : ''; });
+  inp.addEventListener('change', () => onCommit(+inp.value.replace(/\D/g, '')));
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+}
+
+/* -------------------- Screen 4 — loan pre-approval -------------------- */
+const VM_CHECKS = ['Kimlik ve iletişim bilgilerin doğrulanıyor', 'Gelir bilgin kontrol ediliyor', 'Kredi geçmişin (KKB) inceleniyor', 'Araç değeri ve kredi oranı hesaplanıyor'];
+function VmPre() {
+  const v = state.vm, c = vmCar();
+  if (v.app) { state.screen = 'arac-basvuru'; return VmApply(); }
+  vmInitFlow(c);
+  if (v.preBusy) return vmPreChecking(c);
+  const pre = vmPreFor(c);
+  return pre ? vmPreResult(c, pre) : vmPreForm(c);
+}
+function vmPreForm(c) {
+  const v = state.vm, p = VM_PROFILE;
+  return `
+  <div class="screen ${vmAnim()} vm">
+    ${vmNav('Kredi Ön Onayı')}
+    <div class="screen-scroll">
+      ${vmFlowHTML(0)}
+      ${vmMiniHTML(c)}
+      <div class="vm-sec-t">Kredi talebin</div>
+      <div class="vm-box vm-form">
+        <label class="vm-money"><span>Peşinat</span><input id="vm-pre-down" inputmode="numeric" enterkeyhint="done" autocomplete="off" value="${v.down.toLocaleString('tr-TR')}" aria-label="Peşinat"><em>TL</em></label>
+        <div class="vm-pcts" id="vm-pre-pcts">${[20, 30, 40, 50].map(x => `<button class="vm-pct ${vmPct(v.down, c.price) === x ? 'on' : ''}" data-action="vm-pre-pct" data-v="${x}">%${x}</button>`).join('')}</div>
+        <div class="vm-warn-inline" id="vm-pre-warn" role="status" aria-live="polite"></div>
+        <div class="vm-frow hl"><span>Talep edilen kredi</span><b id="vm-pre-loan">${vmTL(c.price - v.down)}</b></div>
+        <div class="vm-frow"><span>Kredi / araç bedeli oranı</span><b id="vm-pre-ltv">%${vmPct(c.price - v.down, c.price)}</b></div>
+        <div class="vm-flabel">Vade</div>
+        <div class="vm-pcts" id="vm-pre-terms">${VM_TERMS.map(n => `<button class="vm-pct ${v.term === n ? 'on' : ''}" data-action="vm-term" data-v="${n}">${n} ay</button>`).join('')}</div>
+        <div class="vm-hint">Peşinatı ve vadeyi ödeme planı adımında da değiştirebilirsin.</div>
+      </div>
+      <div class="vm-sec-t">Değerlendirmede kullanılacak bilgiler</div>
+      <div class="vm-box vm-prof">
+        <div class="vm-frow"><span>Ad soyad</span><b>${p.name}</b></div>
+        <div class="vm-frow"><span>T.C. kimlik no</span><b>${p.tckn}</b></div>
+        <div class="vm-frow"><span>Cep telefonu</span><b>${p.phone}</b></div>
+        <div class="vm-frow"><span>Çalışma durumu</span><b>${p.job}</b></div>
+        <div class="vm-frow"><span>Aylık net gelir (beyan)</span><b>${vmTL(p.income)}</b></div>
+        <button class="sp-link vm-prof-edit" data-action="toast" data-msg="Bilgi güncelleme prototipte aktif değil">Bilgilerimi güncelle ${I.chevR}</button>
+      </div>
+      <div class="vm-docs">
+        <label class="contract-row ${v.consent ? 'on' : ''}" data-action="vm-consent">
+          <span class="cbx">${I.check}</span>
+          <span class="contract-txt"><a data-action="vm-doc" data-doc="kvkk">Aydınlatma Metni</a>'ni okudum; ön değerlendirme için KKB sorgusu yapılmasını onaylıyorum.</span>
+        </label>
+      </div>
+      <div class="vm-note">${I.info}<span>Ön değerlendirme bağlayıcı değildir; kesin kredi kararı başvurunu tamamladıktan sonra verilir.</span></div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary ${v.consent ? '' : 'disabled'}" id="vm-pre-go" data-action="vm-pre-run">Ön Değerlendirme Yap</button>
+    </div>
+  </div>`;
+}
+function vmSetupPre() {
+  const inp = document.getElementById('vm-pre-down');
+  if (inp) vmMoneyInput(inp, vmSetDown);
+}
+function vmPreUpdate() {
+  const v = state.vm, c = vmCar();
+  const inp = document.getElementById('vm-pre-down');
+  if (inp && document.activeElement !== inp) inp.value = v.down.toLocaleString('tr-TR');
+  const loan = document.getElementById('vm-pre-loan'); if (loan) loan.textContent = vmTL(c.price - v.down);
+  const ltv = document.getElementById('vm-pre-ltv'); if (ltv) ltv.textContent = '%' + vmPct(c.price - v.down, c.price);
+  document.querySelectorAll('#vm-pre-pcts .vm-pct').forEach(b => b.classList.toggle('on', +b.dataset.v === vmPct(v.down, c.price)));
+}
+function vmToggleConsent(el) {
+  const v = state.vm;
+  v.consent = !v.consent;
+  el.classList.toggle('on', v.consent);
+  const b = document.getElementById('vm-pre-go'); if (b) b.classList.toggle('disabled', !v.consent);
+}
+function vmPreRun() {
+  const v = state.vm, c = vmCar();
+  vmCommitInputs();
+  if (!v.consent || v.preBusy) return;
+  v.preBusy = true; v.preStep = 0;
+  vmRerender();
+  vmRunChecks(v, 'preStep', VM_CHECKS.length, 'vm-chk-', [800, 1000, 1300, 900], () => {
+    v.preBusy = false;
+    v.pre = vmMakePre(c);
+    if (state.screen === 'arac-on-onay') return vmRerender();
+    toast('Ön değerlendirmen tamamlandı');   // finished while the customer browsed elsewhere
+    const cta = document.querySelector('.vm-d-cta .btn-primary');
+    if (cta && state.screen === 'arac-detay' && state.vm.car === c.id) cta.textContent = 'Ön Onayına Devam Et';
+  });
+}
+/* EXAMPLE decision: the customer's pre-approved limit, capped by the car's maximum loan */
+function vmMakePre(c) {
+  const v = state.vm, amount = Math.min(VM_PRE_LIMIT, c.price - vmDownMinRule(c)), req = c.price - v.down;
+  if (req > amount) v.down = Math.ceil((c.price - amount) / 10000) * 10000;
+  return { car: c.id, amount, req, at: vmNowStr(), until: vmDateIn(30), ref: vmRef('ON') };
+}
+function vmPreChecking(c) {
+  const v = state.vm;
+  return `
+  <div class="screen ${vmAnim()} vm">
+    ${vmNav('Kredi Ön Onayı')}
+    <div class="screen-scroll">
+      ${vmFlowHTML(0)}
+      <div class="vm-checking">
+        <div class="vm-check-ico"><span class="vm-ring"></span>${I.shield}</div>
+        <h3>Ön değerlendirme yapılıyor</h3>
+        <p>${c.brand} ${c.model} için ${vmTL(c.price - v.down)} kredi talebin inceleniyor.</p>
+        <div class="vm-chk">${VM_CHECKS.map((t, k) => vmChkRowHTML(t, k, v.preStep, 'vm-chk-')).join('')}</div>
+      </div>
+    </div>
+    <div class="screen-cta"><button class="btn-primary disabled">Lütfen bekle…</button></div>
+  </div>`;
+}
+function vmPreResult(c, pre) {
+  const v = state.vm, partial = pre.req > pre.amount, loan = c.price - v.down;
+  return `
+  <div class="screen ${vmAnim()} vm">
+    ${vmNav('Kredi Ön Onayı')}
+    <div class="screen-scroll">
+      ${vmFlowHTML(0)}
+      <div class="vm-pre-res">
+        <span class="vm-pill ok">${I.check}Ön değerlendirme ${partial ? 'kısmen ' : ''}olumlu</span>
+        <span class="vm-pre-l">${c.brand} ${c.model} için ön onaylı kredi tutarın</span>
+        <b>${vmTL(pre.amount)}</b>
+        <em>${pre.until} tarihine kadar geçerli</em>
+      </div>
+      ${partial ? `<div class="vm-warn">${I.info}<span><b>Talebinin bir kısmı için ön onay verildi.</b> İstediğin ${vmTL(pre.req)} yerine en fazla ${vmTL(pre.amount)} kredi kullanabilirsin; peşinatın bu yüzden ${vmTL(v.down)} olarak güncellendi.</span></div>` : ''}
+      <div class="vm-warn">${I.info}<span><b>Bu bir kesin kredi onayı değildir.</b> Ön onay, beyan ettiğin bilgiler ve kredi geçmişine göre yapılan bir ön değerlendirmedir. Kesin karar başvurunu tamamladıktan sonra belgeler ve aracın değeri incelenerek verilir; kredinin kullandırılacağını garanti etmez.</span></div>
+      <div class="vm-sec-t">Ön değerlendirme özeti</div>
+      <div class="receipt vm-receipt">
+        <div class="r-row"><span class="r-l">Talep edilen kredi</span><span class="r-r">${vmTL(pre.req)}</span></div>
+        <div class="r-row"><span class="r-l">Peşinat</span><span class="r-r">${vmTL(v.down)}</span></div>
+        ${partial ? `<div class="r-row"><span class="r-l">Kullanılacak kredi</span><span class="r-r">${vmTL(loan)}</span></div>` : ''}
+        <div class="r-row"><span class="r-l">Vade</span><span class="r-r">${v.term} ay</span></div>
+        <div class="r-row"><span class="r-l">Tahmini aylık taksit ${vmEx()}</span><span class="r-r">~${vmTL(vmPay(loan, v.term))}</span></div>
+        <div class="r-row"><span class="r-l">Değerlendirme tarihi</span><span class="r-r">${pre.at}</span></div>
+        <div class="r-row"><span class="r-l">Referans no</span><span class="r-r">${pre.ref}</span></div>
+      </div>
+      <div class="vm-sec-t">Sonraki adımlar</div>
+      ${vmStagesHTML([
+        { t: 'Ön onay', d: 'Tamamlandı', s: 'done' },
+        { t: 'Kesin değerlendirme', d: 'Başvurundan sonra', s: 'todo' },
+        { t: 'Kullandırım', d: 'Sözleşme ve kasko sonrası', s: 'todo' },
+      ])}
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary" data-action="vm-to-plan">Ödeme Planını Oluştur</button>
+      <button class="btn-ghost" data-action="vm-pre-edit">Talebi Düzenle</button>
+    </div>
+  </div>`;
+}
+
+/* -------------------- Screen 5 — loan & payment plan -------------------- */
+function VmPlan() {
+  const v = state.vm, c = vmCar(), pre = vmPreFor(c);
+  if (v.app) { state.screen = 'arac-basvuru'; return VmApply(); }
+  if (!pre) { state.screen = 'arac-on-onay'; return VmPre(); }
+  const lo = vmDownMin(c), hi = vmDownMax(c);
+  v.down = Math.min(hi, Math.max(lo, v.down));
+  const use = vmPct(vmLoan(), pre.amount);
+  return `
+  <div class="screen ${vmAnim()} vm">
+    ${vmNav('Kredi ve Ödeme Planı')}
+    <div class="screen-scroll">
+      ${vmFlowHTML(1)}
+      ${vmMiniHTML(c)}
+      <div class="vm-box vm-calc">
+        <div class="vm-calc-h"><span>Peşinat</span><b id="vm-down-pct">Araç bedelinin %${vmPct(v.down, c.price)}</b></div>
+        <label class="vm-money lg"><input id="vm-down-in" inputmode="numeric" enterkeyhint="done" autocomplete="off" value="${v.down.toLocaleString('tr-TR')}" aria-label="Peşinat"><em>TL</em></label>
+        <div class="vm-slider" id="vm-down-sl" style="--v:${vmSlPct(v.down, lo, hi)}%">
+          <div class="vm-track"><i></i></div>
+          <input type="range" class="vm-range" id="vm-down-range" min="${lo}" max="${hi}" step="10000" value="${v.down}" aria-label="Peşinat">
+        </div>
+        <div class="vm-scale"><span>${vmTL(lo)}</span><span>${vmTL(hi)}</span></div>
+        <div class="vm-warn-inline" id="vm-down-warn" role="status" aria-live="polite"></div>
+        <div class="vm-loanrow"><span>Kredi tutarı</span><b id="vm-loan-v">${vmTL(vmLoan())}</b></div>
+        <div class="vm-preuse">
+          <div class="vm-preuse-bar"><i id="vm-preuse-i" style="width:${Math.min(100, use)}%"></i></div>
+          <div class="vm-preuse-l"><span>Ön onay kullanımı <b id="vm-preuse-p">%${use}</b></span><span>Ön onaylı tutar ${vmTL(pre.amount)}</span></div>
+        </div>
+      </div>
+      <div class="vm-sec-t">Vade</div>
+      <div class="vm-terms" id="vm-terms">${vmTermsHTML()}</div>
+      <div class="vm-box vm-res" id="vm-res">${vmResHTML()}</div>
+      <div class="vm-sec-t vm-sec-row"><span>Finansman senaryoları</span><button class="sp-link" data-action="vm-scen-save">${I.plus}Bu planı kaydet</button></div>
+      <div id="vm-scen">${vmScenHTML()}</div>
+      <div class="vm-sec-t">Ödeme planı</div>
+      <div class="vm-box vm-plan" id="vm-plan-prev">${vmPlanPrevHTML()}</div>
+      <div class="vm-note">${I.info}<span>Hesaplamalar örnek faiz oranıyla (aylık %${vmPctStr(VM_RATE.monthly)}, faiz üzerinden KKDF ve BSMV) yapılmıştır; gerçek kredi koşullarını yansıtmaz.</span></div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary" data-action="vm-to-apply">Kredi Başvurusuna Geç</button>
+    </div>
+  </div>`;
+}
+function vmSlPct(x, lo, hi) { return hi > lo ? Math.max(0, Math.min(100, (x - lo) / (hi - lo) * 100)) : 100; }
+function vmTermsHTML() {
+  const v = state.vm, loan = vmLoan();
+  return VM_TERMS.map(n => `<button class="vm-term ${v.term === n ? 'on' : ''}" data-action="vm-term" data-v="${n}"><b>${n} ay</b><span>${vmTL(vmPay(loan, n))}</span></button>`).join('');
+}
+function vmResHTML() {
+  const v = state.vm, q = vmQuote(), dti = vmPct(q.pay, VM_PROFILE.income);
+  return `
+    <div class="vm-res-top"><span>Aylık taksit</span><b>${vmTL(q.pay)}</b><em>${v.term} ay · ilk taksit ${vmFirstDue()}</em></div>
+    <div class="vm-rows">
+      <div><span>Kredi tutarı</span><b>${vmTL(q.loan)}</b></div>
+      <div><span>Aylık faiz oranı ${vmEx()}</span><b>%${vmPctStr(VM_RATE.monthly)}</b></div>
+      <div><span>Toplam faiz</span><b>${vmTL(q.interest)}</b></div>
+      <div><span>KKDF + BSMV</span><b>${vmTL(q.tax)}</b></div>
+      <div class="hl"><span>Toplam geri ödeme</span><b>${vmTL(q.total)}</b></div>
+      <div><span>Araç için toplam ödeme<i class="vm-sub">Peşinat + toplam geri ödeme</i></span><b>${vmTL(v.down + q.total)}</b></div>
+    </div>
+    <div class="vm-dti ${dti > 50 ? 'bad' : ''}">${I.info}<span>Taksit / gelir oranı <b>%${dti}</b> · beyan ettiğin aylık net gelire göre.${dti > 50 ? ' Gelirinin yarısını aştığı için kesin değerlendirmede onay alamayabilirsin.' : ''}</span></div>`;
+}
+function vmScenHTML() {
+  const v = state.vm, c = vmCar();
+  if (!v.scen.length) return `<div class="vm-box vm-scen-empty">${VM_ICO.compare}<span>Farklı peşinat ve vade seçeneklerini kaydet; en fazla 3 senaryoyu yan yana karşılaştır.</span></div>`;
+  const qs = v.scen.map(s => ({ ...s, q: vmQuote(c.price - s.down, s.term) }));
+  const minPay = Math.min(...qs.map(x => x.q.pay)), minAll = Math.min(...qs.map(x => x.down + x.q.total));
+  const cur = s => s.down === v.down && s.term === v.term;
+  const row = (label, fn, best) => `<tr><th>${label}</th>${qs.map(s => `<td class="${best && best(s) && qs.length > 1 ? 'best' : ''}">${fn(s)}</td>`).join('')}</tr>`;
+  return `<div class="vm-box vm-scen"><table class="vm-scen-t">
+    <thead><tr><th></th>${qs.map(s => `<td class="${cur(s) ? 'cur' : ''}"><span class="vm-scen-n">${s.label}</span><button class="vm-scen-x" data-action="vm-scen-del" data-v="${s.label}" aria-label="Senaryoyu kaldır: ${s.label}">${I.close}</button></td>`).join('')}</tr></thead>
+    <tbody>
+      ${row('Peşinat', s => vmTL(s.down))}
+      ${row('Vade', s => s.term + ' ay')}
+      ${row('Aylık taksit', s => vmTL(s.q.pay), s => s.q.pay === minPay)}
+      ${row('Toplam geri ödeme', s => vmTL(s.q.total))}
+      ${row('Araç için toplam', s => vmTL(s.down + s.q.total), s => s.down + s.q.total === minAll)}
+    </tbody>
+    <tfoot><tr><th></th>${qs.map(s => `<td>${cur(s) ? '<span class="vm-scen-cur">Seçili plan</span>' : `<button class="vm-scen-ap" data-action="vm-scen-apply" data-v="${s.label}">Uygula</button>`}</td>`).join('')}</tr></tfoot>
+  </table>${qs.length > 1 ? '<div class="vm-scen-note">Yeşil: en düşük aylık taksit ve en düşük toplam ödeme.</div>' : ''}</div>`;
+}
+function vmPlanPrevHTML() {
+  const v = state.vm, rows = vmPlanRows(vmLoan(), v.term), show = rows.slice(0, 3).concat(rows.slice(-1));
+  return `<div class="vm-pt">
+      <div class="vm-pt-h"><span>No</span><span>Tarih</span><span>Taksit</span><span>Kalan anapara</span></div>
+      ${show.map((r, i) => `${i === 3 ? '<div class="vm-pt-gap">···</div>' : ''}<div class="vm-pt-r"><span>${r.k}</span><span>${r.date}</span><span>${vmTL(r.pay)}</span><span>${vmTL(r.bal)}</span></div>`).join('')}
+    </div>
+    <button class="vm-pt-all" data-action="vm-plan-all">Tüm ödeme planını gör · ${v.term} taksit ${I.chevR}</button>`;
+}
+function vmSetupPlan() {
+  const r = document.getElementById('vm-down-range'), inp = document.getElementById('vm-down-in');
+  if (r) r.addEventListener('input', () => vmSetDown(+r.value));
+  if (inp) vmMoneyInput(inp, vmSetDown);
+}
+/* Live update without re-rendering the screen (slider keeps its drag) */
+function vmPlanUpdate() {
+  const v = state.vm, c = vmCar(), pre = vmPreFor(c), lo = vmDownMin(c), hi = vmDownMax(c);
+  if (!pre) return;
+  const set = (id, h) => { const el = document.getElementById(id); if (el) el.innerHTML = h; };
+  const inp = document.getElementById('vm-down-in');
+  if (inp && document.activeElement !== inp) inp.value = v.down.toLocaleString('tr-TR');
+  const r = document.getElementById('vm-down-range'); if (r && +r.value !== v.down) r.value = v.down;
+  const sl = document.getElementById('vm-down-sl'); if (sl) sl.style.setProperty('--v', vmSlPct(v.down, lo, hi) + '%');
+  const use = vmPct(vmLoan(), pre.amount);
+  const bar = document.getElementById('vm-preuse-i'); if (bar) bar.style.width = Math.min(100, use) + '%';
+  set('vm-down-pct', `Araç bedelinin %${vmPct(v.down, c.price)}`);
+  set('vm-loan-v', vmTL(vmLoan()));
+  set('vm-preuse-p', '%' + use);
+  set('vm-terms', vmTermsHTML());
+  set('vm-res', vmResHTML());
+  set('vm-scen', vmScenHTML());
+  set('vm-plan-prev', vmPlanPrevHTML());
+}
+function vmSaveScen() {
+  const v = state.vm;
+  if (v.scen.some(s => s.down === v.down && s.term === v.term)) return toast('Bu plan zaten kayıtlı');
+  if (v.scen.length >= 3) return toast('En fazla 3 senaryo kaydedebilirsin');
+  const label = ['A', 'B', 'C'].find(l => !v.scen.some(s => s.label === l));
+  v.scen = v.scen.concat({ label, down: v.down, term: v.term }).sort((a, b) => a.label.localeCompare(b.label));
+  const el = document.getElementById('vm-scen'); if (el) el.innerHTML = vmScenHTML();
+  toast(`Senaryo ${label} kaydedildi`);
+}
+function vmApplyScen(label) {
+  const v = state.vm, s = v.scen.find(x => x.label === label);
+  if (!s) return;
+  v.term = s.term;
+  vmSetDown(s.down);
+  toast(`Senaryo ${label} uygulandı`);
+}
+function vmDelScen(label) {
+  const v = state.vm;
+  v.scen = v.scen.filter(x => x.label !== label);
+  const el = document.getElementById('vm-scen'); if (el) el.innerHTML = vmScenHTML();
+}
+function vmPlanSheet() {
+  const v = state.vm, a = v.app, loan = a ? a.loan : vmLoan(), n = a ? a.term : v.term, rows = vmPlanRows(loan, n), q = vmQuote(loan, n);
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Ödeme planı</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-ps-sum"><div><span>Kredi tutarı</span><b>${vmTL(loan)}</b></div><div><span>Aylık taksit</span><b>${vmTL(q.pay)}</b></div><div><span>Toplam geri ödeme</span><b>${vmTL(q.total)}</b></div></div>
+    <div class="vm-ps">${rows.map(r => `<div class="vm-ps-r"><span class="vm-ps-n">${r.k}</span><div><b>${r.date}</b><span>Anapara ${vmTL(r.princ)}</span><span>Faiz ve vergi ${vmTL(r.cost)}</span></div><div class="vm-ps-amt"><b>${vmTL(r.pay)}</b><span>Kalan ${vmTL(r.bal)}</span></div></div>`).join('')}</div>
+    <div class="vm-cmp-note">Örnek faiz oranıyla hesaplanmıştır.</div>
+    <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- Screen 6 — application & disbursement -------------------- */
+const VM_REVIEW = ['Belgelerin kontrol ediliyor', 'Araç değeri ve rehin uygunluğu doğrulanıyor', 'Kredi kararı veriliyor'];
+const VM_CONDS = [
+  'Kredi tutarı doğrudan satıcının hesabına aktarılır; nakit olarak ödenmez.',
+  'Araç, noter satışında bankamız lehine rehinlenir; rehin kredi kapanınca kaldırılır.',
+  'Kredi süresince bankamızın dain-i mürtehin olarak yer aldığı kasko poliçesi gerekir.',
+  'Kredini vadesinden önce kapatabilirsin; erken ödeme koşulları sözleşmede yer alır.',
+];
+function vmDocsFor(c) {
+  return [
+    ['Kimlik bilgileri', 'Nüfus kayıtlarından doğrulandı'],
+    ['Gelir bilgisi', 'Beyanın ve hesap hareketlerinle doğrulandı'],
+    c.cond === 'new' ? ['Proforma fatura', 'Bayi tarafından iletildi'] : ['Satış sözleşmesi taslağı', 'Satıcı tarafından iletildi'],
+    c.cond === 'new' ? ['Araç bilgileri (şasi ve motor no)', 'Bayi tarafından iletildi'] : ['Ruhsat ve ekspertiz raporu', 'Satıcı tarafından iletildi'],
+  ];
+}
+function VmApply() {
+  const v = state.vm, a = v.app;
+  const c = a ? vmCar(a.car) : vmCar(), pre = a ? v.pre : vmPreFor(c), d = vmDealer(c);
+  if (!a && !pre) { state.screen = 'arac-on-onay'; return VmPre(); }
+  const q = a ? { loan: a.loan, pay: a.pay, total: a.total, n: a.term } : vmQuote();
+  const down = a ? a.down : v.down, term = a ? a.term : v.term, approved = a && a.status === 'approved';
+  const ag = v.agree, all = ag.pre && ag.contract && ag.pledge;
+  const stages = [
+    { t: 'Ön onay', d: pre ? pre.at.split(' · ')[0] : 'Tamamlandı', s: 'done' },
+    { t: 'Kesin değerlendirme', d: !a ? 'Başvurundan sonra' : approved ? 'Onaylandı' : 'İnceleniyor', s: !a ? 'todo' : approved ? 'done' : 'on' },
+    { t: 'Kullandırım', d: v.disb ? 'Bayiye ödendi' : approved ? 'Kasko poliçesi bekleniyor' : 'Onaydan sonra', s: v.disb ? 'done' : approved ? 'wait' : 'todo' },
+  ];
+  let banner = '';
+  if (a && !approved) banner = `
+      <div class="vm-box vm-review">
+        <div class="vm-review-h"><span class="vm-spin"></span><div><b>Kesin değerlendirme sürüyor</b><span>Başvuru no ${a.ref} · Sonuç bildirim olarak da gelir</span></div></div>
+        <div class="vm-chk">${VM_REVIEW.map((t, k) => vmChkRowHTML(t, k, a.step, 'vm-rv-')).join('')}</div>
+      </div>`;
+  else if (v.disb) banner = `<div class="vm-okbar">${I.check}<span><b>Kredin kullandırıldı</b>${vmTL(q.loan)} ${d.name} hesabına aktarıldı · ${v.disb.at}</span></div>`;
+  else if (approved) banner = `<div class="vm-okbar">${I.check}<span><b>Kredi başvurun onaylandı</b>Kullandırım için son adım kasko poliçen. Poliçe düzenlendiğinde kredi tutarı bayinin hesabına aktarılır.</span></div>`;
+  const cta = !a ? `<button class="btn-primary vm-approve ${all ? '' : 'disabled'}" id="vm-submit" data-action="vm-submit">${I.faceid} Başvuruyu Tamamla</button>`
+    : !approved ? '<button class="btn-primary disabled">Değerlendiriliyor…</button>'
+    : v.disb ? '<button class="btn-primary" data-action="vm-track">Süreci Takip Et</button>'
+    : '<button class="btn-primary" data-action="vm-to-kasko">Kasko Tekliflerine Geç</button>';
+  return `
+  <div class="screen ${vmAnim()} vm">
+    ${vmNav('Kredi Başvurusu')}
+    <div class="screen-scroll">
+      ${vmFlowHTML(2)}
+      ${vmStagesHTML(stages)}
+      ${banner}
+      ${vmMiniHTML(c)}
+      <div class="vm-sec-t vm-sec-row"><span>Başvuru özeti</span>${a ? `<span class="vm-sec-ref">No ${a.ref}</span>` : '<button class="sp-link" data-action="vm-edit-plan">Planı düzenle</button>'}</div>
+      <div class="receipt vm-receipt">
+        <div class="r-row"><span class="r-l">Araç bedeli</span><span class="r-r">${vmTL(c.price)}</span></div>
+        <div class="r-row"><span class="r-l">Peşinat<i class="vm-sub">Bayiye senin tarafından ödenir</i></span><span class="r-r">${vmTL(down)}</span></div>
+        <div class="r-row hl"><span class="r-l">Kredi tutarı</span><span class="r-r">${vmTL(q.loan)}</span></div>
+        <div class="r-row"><span class="r-l">Vade</span><span class="r-r">${term} ay</span></div>
+        <div class="r-row"><span class="r-l">Aylık taksit ${vmEx()}</span><span class="r-r">${vmTL(q.pay)}</span></div>
+        <div class="r-row"><span class="r-l">Toplam geri ödeme</span><span class="r-r">${vmTL(q.total)}</span></div>
+        <div class="r-row"><span class="r-l">Aylık faiz oranı ${vmEx()}</span><span class="r-r">%${vmPctStr(VM_RATE.monthly)}</span></div>
+        <div class="r-row"><span class="r-l">İlk taksit tarihi</span><span class="r-r">${a ? a.first : vmFirstDue()}</span></div>
+        <div class="r-row"><span class="r-l">Kullandırım</span><span class="r-r">${d.name} hesabına</span></div>
+      </div>
+      <div class="vm-sec-t">Kredi koşulları</div>
+      <div class="vm-box vm-conds"><ul>${VM_CONDS.map(x => `<li>${x}</li>`).join('')}</ul></div>
+      <div class="vm-sec-t">Gerekli belgeler</div>
+      <div class="vm-box vm-docl">${vmDocsFor(c).map(([t, s]) => `<div><span class="vm-docl-ico">${I.doc}</span><div><b>${t}</b><span>${s}</span></div><span class="vm-pill ok sm">${I.check}Hazır</span></div>`).join('')}</div>
+      <div class="vm-sec-t">Sözleşmeler</div>
+      <div class="vm-docs ${a ? 'locked' : ''}">
+        ${[['pre', 'Kredi Ön Bilgilendirme Formu', '\'nu okudum.'], ['contract', 'Taşıt Kredisi Sözleşmesi', '\'ni okudum, onaylıyorum.'], ['pledge', 'Araç Rehni ve Kasko Taahhütnamesi', '\'ni kabul ediyorum.']].map(([k, t, tail]) => `
+        <label class="contract-row ${a || ag[k] ? 'on' : ''}" ${a ? '' : `data-action="vm-agree" data-key="${k}"`}>
+          <span class="cbx">${I.check}</span>
+          <span class="contract-txt"><a data-action="vm-doc" data-doc="${k}">${t}</a>${tail}</span>
+        </label>`).join('')}
+      </div>
+      ${a ? '' : `<div class="vm-note">${I.info}<span>Başvurunu tamamladığında kesin değerlendirme başlar; kredi, onay ve kasko poliçesinden sonra kullandırılır.</span></div>`}
+    </div>
+    <div class="screen-cta">${cta}</div>
+  </div>`;
+}
+function vmToggleAgree(el) {
+  const v = state.vm, k = el.dataset.key;
+  v.agree[k] = !v.agree[k];
+  el.classList.toggle('on', v.agree[k]);
+  const b = document.getElementById('vm-submit');
+  if (b) b.classList.toggle('disabled', !(v.agree.pre && v.agree.contract && v.agree.pledge));
+}
+function vmEditPlan() {
+  const prev = state.nav[state.nav.length - 1];
+  if (prev && prev.screen === 'arac-kredi') return navBack();
+  go('arac-kredi');
+}
+function vmSubmit() {
+  const v = state.vm, g = v.agree, btn = document.getElementById('vm-submit');
+  if (!btn || v.app || !(g.pre && g.contract && g.pledge)) return;
+  btn.innerHTML = '<span class="spinner"></span> Başvurun gönderiliyor…';
+  btn.style.pointerEvents = 'none';
+  setTimeout(() => {
+    const c = vmCar(), q = vmQuote();
+    v.app = { car: c.id, status: 'review', step: 0, ref: vmRef('TK'), at: vmNowStr(), down: v.down, term: v.term, loan: q.loan, pay: q.pay, total: q.total, first: vmFirstDue() };
+    if (state.screen === 'arac-basvuru') { vmUnwind(); vmRerender(); }
+    vmStartReview();
+  }, 1300);
+}
+function vmStartReview() {
+  const a = state.vm.app;
+  if (!a || a.status !== 'review' || a.running) return;
+  a.running = true;
+  vmRunChecks(a, 'step', VM_REVIEW.length, 'vm-rv-', [1200, 1500, 1100], () => {
+    a.running = false;
+    if (state.vm.app !== a) return;   // demo was reset meanwhile
+    a.status = 'approved';
+    a.approvedAt = vmNowStr();
+    if (state.screen === 'arac-basvuru') vmRerender();
+    toast('Kredi başvurun onaylandı');
+  });
+}
+/* -------------------- Screen 7 — kasko offers -------------------- */
+const VM_K_INSTS = [1, 3, 6, 9];
+function vmK() { return VM_KASKO.find(k => k.id === state.vm.kasko) || VM_KASKO[1]; }
+function vmCoverVal(x) { return x === true ? `<span class="vm-yes">${I.check}</span>` : x === false ? '<span class="vm-no">Yok</span>' : x; }
+function VmKasko() {
+  const v = state.vm, a = v.app;
+  if (!a || a.status !== 'approved') { state.screen = 'arac-basvuru'; return VmApply(); }
+  const c = vmCar(a.car), done = !!v.policy, sel = done ? VM_KASKO.find(k => k.id === v.policy.offer) : vmK();
+  return `
+  <div class="screen ${vmAnim()} vm">
+    ${vmNav('Kasko Teklifleri')}
+    <div class="screen-scroll">
+      ${vmFlowHTML(3)}
+      ${done
+        ? `<div class="vm-okbar">${I.check}<span><b>Poliçen düzenlendi</b>${sel.ins} · Poliçe no ${v.policy.no}</span></div>`
+        : `<div class="vm-infobar">${I.shield}<span>Kredinin kullandırılması için bankamızın <b>dain-i mürtehin</b> olarak yer aldığı bir kasko poliçesi gerekir. Teklifler aracının bilgilerine göre hazırlandı.</span></div>`}
+      ${vmMiniHTML(c, `<span>Kasko değeri ${vmEx()}</span><b>${vmTL(c.price)}</b>`)}
+      <div class="vm-sec-t vm-sec-row"><span>${VM_KASKO.length} kasko teklifi</span><button class="sp-link" data-action="vm-k-compare">Karşılaştır ${I.chevR}</button></div>
+      <div class="vm-ks">${VM_KASKO.map(k => vmKCardHTML(k, done, sel)).join('')}</div>
+      ${done ? '' : `
+      <div class="vm-sec-t">Prim ödemesi</div>
+      <div class="method selected vm-k-method">
+        <div class="m-ico card-ico">${imgOrFallback(WORLDCARD_IMG, '💳', 'm-cardimg')}</div>
+        <div><div class="m-name">Worldcard ile öde</div><div class="m-sub">**** 3333 · 9 taksite kadar · Worldpuan kazan</div></div>
+        <div class="m-check">${I.check}</div>
+      </div>
+      <div class="vm-box vm-k-inst" id="vm-k-inst">${vmKInstHTML()}</div>
+      <div class="receipt vm-receipt">
+        <div class="r-row"><span class="r-l">Sigortalı</span><span class="r-r">${VM_PROFILE.name}</span></div>
+        <div class="r-row"><span class="r-l">Poliçe süresi</span><span class="r-r">1 yıl · kullandırım gününden</span></div>
+        <div class="r-row"><span class="r-l">Dain-i mürtehin</span><span class="r-r">Yapı Kredi Bankası A.Ş.</span></div>
+      </div>
+      <div class="vm-docs">
+        <label class="contract-row ${v.kAgree ? 'on' : ''}" data-action="vm-k-agree">
+          <span class="cbx">${I.check}</span>
+          <span class="contract-txt"><a data-action="vm-doc" data-doc="kasko">Kasko Bilgilendirme Formu</a>'nu okudum; poliçenin düzenlenmesini onaylıyorum.</span>
+        </label>
+      </div>`}
+      <div class="vm-note">${I.info}<span>Sigorta şirketleri, teminatlar ve primler demo verisidir; gerçek teklifleri yansıtmaz.</span></div>
+    </div>
+    <div class="screen-cta">
+      ${done ? '<button class="btn-primary" data-action="vm-track">Süreci Takip Et</button>'
+        : `<button class="btn-primary ${v.kAgree ? '' : 'disabled'}" id="vm-k-buy" data-action="vm-k-buy">Poliçeyi Onayla · <span id="vm-k-amt">${vmTL(sel.premium)}</span></button>`}
+    </div>
+  </div>`;
+}
+function vmKCardHTML(k, done, sel) {
+  const on = sel.id === k.id, cv = k.cover;
+  return `<div class="vm-k ${on ? 'on' : ''} ${done && !on ? 'dim' : ''}" data-id="${k.id}" ${done ? '' : `data-action="vm-k-pick"`}>
+    <span class="vm-k-tag t-${k.id}">${k.tag}</span>
+    <div class="vm-k-top">
+      <span class="vm-k-logo" style="background:${k.color}">${k.ins[0]}</span>
+      <div class="vm-k-name"><b>${k.ins}</b><span>★ ${vmPctStr(k.rating)} · Genişletilmiş kasko</span></div>
+      <span class="vm-k-radio"></span>
+    </div>
+    <div class="vm-k-covs">
+      <span>İkame araç<b>${cv.ikame}</b></span><span>Muafiyet<b>${cv.muafiyet}</b></span>
+      <span>Ferdi kaza<b>${cv.ferdi}</b></span><span>Hukuksal koruma<b>${cv.hukuk ? 'Var' : 'Yok'}</b></span>
+    </div>
+    <div class="vm-k-foot">
+      <div class="vm-k-price"><b>${vmTL(k.premium)}</b><span>yıllık · 9 taksitte aylık ${vmTL(k.premium / 9)}</span></div>
+      <button class="sp-link" data-action="vm-k-detail" data-id="${k.id}">Teminatlar ${I.chevR}</button>
+    </div>
+  </div>`;
+}
+function vmKInstHTML() {
+  const v = state.vm, p = vmK().premium;
+  return VM_K_INSTS.map(n => `<div class="inst-opt ${v.kInst === n ? 'active' : ''}" data-action="vm-k-inst" data-n="${n}">
+      <span class="io-l"><span class="io-radio"></span><span class="io-text"><span class="io-name">${n === 1 ? 'Tek Çekim' : n + ' Taksit'}</span></span></span>
+      <span class="io-r">${n === 1 ? vmTL(p) : `${n} × ${vmTL(p / n)}`}</span>
+    </div>`).join('');
+}
+function vmKPick(id) {
+  const v = state.vm;
+  if (v.policy) return;
+  v.kasko = id;
+  document.querySelectorAll('.vm-k').forEach(el => el.classList.toggle('on', el.dataset.id === id));
+  const ins = document.getElementById('vm-k-inst'); if (ins) ins.innerHTML = vmKInstHTML();
+  const amt = document.getElementById('vm-k-amt'); if (amt) amt.textContent = vmTL(vmK().premium);
+}
+function vmKInst(n) {
+  state.vm.kInst = n;
+  const ins = document.getElementById('vm-k-inst'); if (ins) ins.innerHTML = vmKInstHTML();
+}
+function vmKAgree(el) {
+  const v = state.vm;
+  v.kAgree = !v.kAgree;
+  el.classList.toggle('on', v.kAgree);
+  const b = document.getElementById('vm-k-buy'); if (b) b.classList.toggle('disabled', !v.kAgree);
+}
+function vmKDetailSheet(id) {
+  const k = VM_KASKO.find(x => x.id === id), done = !!state.vm.policy;
+  if (!k) return;
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Teminatlar</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-kd-head"><span class="vm-k-logo" style="background:${k.color}">${k.ins[0]}</span><div><b>${k.ins}</b><span>${k.tag} · ★ ${vmPctStr(k.rating)}</span></div><em>${vmTL(k.premium)}<i>yıllık</i></em></div>
+    <div class="vm-covl">${VM_COVERS.map(([key, label]) => `<div><span>${label}</span>${vmCoverVal(k.cover[key])}</div>`).join('')}</div>
+    <div class="vm-cmp-note">Teminat ve primler örnektir.</div>
+    ${done ? '<button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>'
+      : `<button class="sheet-btn" data-action="vm-k-choose" data-id="${k.id}">Bu Teklifi Seç</button><button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`}`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+function vmKCompareSheet() {
+  const minP = Math.min(...VM_KASKO.map(k => k.premium));
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Teklif karşılaştırma</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-cmp-scroll"><table class="vm-cmp-t vm-kcmp">
+      <thead><tr><th></th>${VM_KASKO.map(k => `<td><span class="vm-k-logo sm" style="background:${k.color}">${k.ins[0]}</span><b>${k.ins.replace(' Sigorta', '')}</b></td>`).join('')}</tr></thead>
+      <tbody>
+        <tr><th>Yıllık prim</th>${VM_KASKO.map(k => `<td class="${k.premium === minP ? 'best' : ''}">${vmTL(k.premium)}</td>`).join('')}</tr>
+        ${VM_COVERS.map(([key, label]) => `<tr><th>${label}</th>${VM_KASKO.map(k => `<td>${vmCoverVal(k.cover[key])}</td>`).join('')}</tr>`).join('')}
+      </tbody>
+    </table></div>
+    <div class="vm-cmp-note">Yeşil: en düşük prim. Teminat ve primler örnektir.</div>
+    <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+function vmKBuy() {
+  const v = state.vm, k = vmK(), c = vmCar(v.app.car), d = vmDealer(c);
+  if (!v.kAgree || v.policy) return;
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-amount-label">Kasko primi</div>
+    <div class="sheet-amount">${vmTL(k.premium)}</div>
+    <div class="sheet-pay-row"><span>${k.ins} · Kasko</span><span class="spr-r">Worldcard **** 3333 · ${v.kInst === 1 ? 'Tek Çekim' : v.kInst + ' Taksit'}</span></div>
+    <div class="vm-sheet-note">${I.info}<span>Poliçe düzenlendiğinde ${vmTL(v.app.loan)} kredi tutarın ${d.name} hesabına aktarılır.</span></div>
+    <button class="sheet-btn" id="vm-k-approve" data-action="vm-k-approve">${I.faceid} Yapı Kredi Mobil ile Onayla</button>
+    <button class="sheet-btn ghost" data-action="close-sheet">Vazgeç</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+function vmKApprove() {
+  const btn = document.getElementById('vm-k-approve');
+  if (!btn || btn.dataset.busy) return;
+  btn.dataset.busy = '1';
+  btn.style.pointerEvents = 'none';
+  btn.innerHTML = '<span class="spinner"></span> Poliçe düzenleniyor…';
+  setTimeout(() => { btn.innerHTML = '<span class="spinner"></span> Kredi kullandırılıyor…'; }, 1300);
+  setTimeout(() => {
+    vmIssuePolicy();
+    closeSheet();
+    setTimeout(() => {
+      if (state.screen !== 'arac-kasko') return;
+      vmUnwind();
+      state.chatSeed = false;
+      state.screen = 'arac-takip';
+      vmRerender('anim-right');
+    }, 250);
+  }, 2700);
+}
+function vmIssuePolicy() {
+  const v = state.vm, k = vmK();
+  v.policy = { offer: k.id, no: vmRef('KSK'), at: vmNowStr(), inst: v.kInst, start: vmDateIn(0), end: vmDateIn(365) };
+  v.disb = { at: vmNowStr(), ref: vmRef('KLD'), noter: vmDateIn(2), eta: vmDateIn(6), done: null };
+  v.stage = 0;
+  v.justDone = true;
+}
+
+/* -------------------- Screen 8 — delivery & process tracking -------------------- */
+/* Delivery steps after disbursement: [title, done, active, waiting] */
+function vmDelivSteps() {
+  const b = state.vm.disb;
+  return [
+    ['Noter satışı ve rehin', `Satış ve rehin tescili tamamlandı · ${b ? b.noter : ''}`, `Noter randevusu ${b ? b.noter : ''}`, 'Kullandırımdan sonra'],
+    ['Teslime hazırlık', 'Plaka ve ruhsat hazır', 'Plaka, ruhsat ve son kontroller yapılıyor', 'Noter işlemlerinden sonra'],
+    ['Teslim', `Teslim edildi · ${b && b.done ? b.done : ''}`, 'Aracın hazır · bayiden teslim alabilirsin', b ? `Tahmini ${b.eta}` : 'Tarih kullandırımdan sonra netleşir'],
+  ];
+}
+function vmDelivStatus() {
+  const v = state.vm;
+  if (!v.disb) return ['Kullandırım bekleniyor', 'wait'];
+  return [['Noter işlemleri sürüyor', 'on'], ['Teslime hazırlanıyor', 'on'], ['Teslime hazır', 'ok'], ['Teslim edildi', 'ok']][v.stage];
+}
+function VmTrack() {
+  const v = state.vm, a = v.app;
+  if (!a) return vmTrackEmpty();
+  const c = vmCar(a.car), d = vmDealer(c), pre = v.pre, approved = a.status === 'approved';
+  const k = v.policy ? VM_KASKO.find(x => x.id === v.policy.offer) : null;
+  const fresh = v.justDone; v.justDone = false;
+  const [dst, dcls] = vmDelivStatus();
+  const eta = v.disb ? (v.stage >= 3 ? v.disb.done : v.disb.eta) : null;
+  const steps = [
+    { t: 'Araç seçimi', d: `${c.brand} ${c.model} · ${d.name}`, s: 'done' },
+    { t: 'Kredi ön onayı', d: pre ? `${vmTL(pre.amount)} ön onaylı tutar` : 'Tamamlandı', s: 'done' },
+    { t: 'Kredi başvurusu', d: approved ? 'Kesin değerlendirme olumlu' : 'Kesin değerlendirme sürüyor', s: approved ? 'done' : 'active' },
+    { t: 'Kasko poliçesi', d: k ? `${k.ins} · ${v.policy.no}` : approved ? 'Teklif seçimini bekliyor' : 'Kredi onayından sonra', s: k ? 'done' : approved ? 'active' : 'todo' },
+    { t: 'Kredi kullandırımı', d: v.disb ? `${vmTL(a.loan)} bayi hesabına aktarıldı` : 'Kasko poliçesinden sonra', s: v.disb ? 'done' : 'todo' },
+    ...vmDelivSteps().map(([t, dn, on, wait], i) => {
+      const s = !v.disb ? 'todo' : v.stage > i ? 'done' : v.stage === i ? 'active' : 'todo';
+      return { t, d: s === 'done' ? dn : s === 'active' ? on : wait, s };
+    }),
+  ];
+  const doneN = steps.filter(s => s.s === 'done').length, pct = vmPct(doneN, steps.length), next = steps.find(s => s.s !== 'done');
+  const tiles = [
+    { ico: I.car, l: 'Satın alma', val: !v.disb ? 'Ödeme bekleniyor' : v.stage >= 1 ? 'Satış tamamlandı' : 'Noter satışı bekleniyor', s: v.disb && v.stage >= 1 ? 'ok' : 'wait' },
+    { ico: I.doc, l: 'Kredi başvurusu', val: approved ? 'Onaylandı' : 'Değerlendiriliyor', s: approved ? 'ok' : 'wait', act: 'vm-open-apply' },
+    { ico: I.bank, l: 'Kullandırım', val: v.disb ? 'Bayiye ödendi' : 'Kasko bekleniyor', s: v.disb ? 'ok' : 'wait', act: v.disb ? 'vm-disb' : '' },
+    { ico: I.insurance, l: 'Kasko', val: k ? 'Poliçe aktif' : approved ? 'Teklif seç' : 'Onaydan sonra', s: k ? 'ok' : approved ? 'act' : 'todo', act: k ? 'vm-policy' : approved ? 'vm-to-kasko' : '' },
+  ];
+  const cta = approved && !k ? '<button class="btn-primary" data-action="vm-to-kasko">Kasko Tekliflerine Geç</button>'
+    : v.stage >= 3 ? '<button class="btn-primary" data-action="vm-home">Marketplace\'e Dön</button>' : '';
+  return `
+  <div class="screen ${vmAnim()} vm">
+    ${vmNav('Satın Alma Takibi')}
+    <div class="screen-scroll">
+      <div class="vm-trk-hero">
+        <div class="vm-trk-img">${vmPicHTML(c, 'side', 'dark')}${c.photos ? '' : '<span class="vm-gal-tag">Temsilî görsel</span>'}</div>
+        <div class="vm-trk-hd">
+          <div><b>${c.brand} ${c.model}</b><span>${c.trim} · ${c.year}</span></div>
+          <span class="vm-pill ${dcls}">${dst}</span>
+        </div>
+        <div class="vm-prog">
+          <div class="vm-prog-top"><span>Süreç ilerlemesi</span><b>%${pct}</b></div>
+          <div class="vm-prog-bar" role="img" aria-label="${steps.length} adımdan ${doneN} tanesi tamamlandı">${steps.map(s => `<i class="${s.s}"></i>`).join('')}</div>
+          <div class="vm-prog-sub">${doneN}/${steps.length} adım tamamlandı${next ? ` · Sıradaki: ${next.t}` : ''}</div>
+        </div>
+      </div>
+      ${fresh ? `<div class="vm-okbar">${I.check}<span><b>Poliçen düzenlendi, kredin kullandırıldı</b>${vmTL(a.loan)} ${d.name} hesabına aktarıldı. Noter randevun ${v.disb.noter}.</span></div>` : ''}
+      ${v.stage >= 3 ? `<div class="vm-okbar">${VM_ICO.key}<span><b>Aracın teslim edildi</b>İyi yolculuklar! İlk taksit tarihin ${a.first}.</span></div>` : ''}
+      <div class="vm-tiles">${tiles.map(t => `<div class="vm-tile ${t.s} ${t.act ? 'tap' : ''}" ${t.act ? `data-action="${t.act}"` : ''}>
+        <span class="vm-tile-ico">${t.ico}</span><span class="vm-tile-l">${t.l}</span><b>${t.val}</b>${t.act ? `<span class="vm-tile-chev">${I.chevR}</span>` : ''}
+      </div>`).join('')}</div>
+      <div class="vm-box vm-deliv">
+        <div class="vm-deliv-top">
+          <span class="vm-deliv-ico">${VM_ICO.key}</span>
+          <div><span>${v.stage >= 3 ? 'Teslim tarihi' : 'Tahmini teslim tarihi'}</span><b>${eta || 'Kullandırımdan sonra netleşir'}</b></div>
+        </div>
+        <div class="vm-deliv-pt">${I.pin}<span><b>Teslim noktası</b>${d.name}, ${d.district} / ${d.city}</span></div>
+        <div class="vm-hint">${v.stage >= 3 ? 'Ruhsatın ve poliçe belgelerin teslimde sana verildi.' : 'Teslimde kimliğini yanında bulundur; ruhsat ve poliçe belgelerin bayide hazır olacak.'}</div>
+      </div>
+      <div class="vm-sec-t">Süreç adımları</div>
+      <div class="stepper vm-stepper">
+        ${steps.map((st, i) => `
+          <div class="step ${st.s}">
+            <div class="step-dot">${st.s === 'done' ? I.check : ''}</div>
+            ${i < steps.length - 1 ? '<div class="step-line"></div>' : ''}
+            <div class="step-body"><div class="step-t">${st.t}</div><div class="step-d">${st.d}</div></div>
+          </div>`).join('')}
+      </div>
+      ${vmDealerBoxHTML(d)}
+      <div class="vm-sec-t">Belgeler</div>
+      <div class="ru-info-card vm-links">
+        <div class="ru-info-row tap" data-action="vm-plan-all"><span class="ru-info-ico">${I.doc}</span><span class="ru-info-k">Kredi ödeme planı</span><span class="ru-info-v">${a.term} taksit</span>${I.chevR}</div>
+        ${k ? `<div class="ru-info-row tap" data-action="vm-policy"><span class="ru-info-ico">${I.insurance}</span><span class="ru-info-k">Kasko poliçesi</span><span class="ru-info-v">${k.ins.replace(' Sigorta', '')}</span>${I.chevR}</div>` : ''}
+        ${v.disb ? `<div class="ru-info-row tap" data-action="vm-disb"><span class="ru-info-ico">${I.receipt}</span><span class="ru-info-k">Kullandırım dekontu</span><span class="ru-info-v">${vmShortDate(v.disb.at)}</span>${I.chevR}</div>` : ''}
+      </div>
+      <div class="vm-demo">
+        <div class="vm-demo-h">${I.info}<span>Demo kontrolleri · Gerçek süreçte bu adımlar bayi ve noterden gelen bilgilerle güncellenir.</span></div>
+        <div class="vm-demo-btns">
+          ${v.disb && v.stage < 3 ? '<button class="vm-demo-btn main" data-action="vm-adv">Sonraki adıma geç</button>' : ''}
+          <button class="vm-demo-btn" data-action="vm-reset">Demoyu sıfırla</button>
+        </div>
+      </div>
+    </div>
+    ${cta ? `<div class="screen-cta">${cta}</div>` : ''}
+  </div>`;
+}
+function vmShortDate(s) { return s.split(' · ')[0]; }
+function vmTrackEmpty() {
+  return `
+  <div class="screen ${vmAnim()} vm">
+    ${vmNav('Satın Alma Takibi')}
+    <div class="screen-scroll">
+      <div class="vm-empty big">${I.car}<b>Devam eden satın alman yok</b><span>Bir araç seçip kredi başvurunu tamamladığında kredi, kasko ve teslim adımlarını buradan takip edebilirsin.</span>
+        <button class="btn-primary" data-action="vm-home">Araç Ara</button></div>
+    </div>
+  </div>`;
+}
+function vmAdvance() {
+  const v = state.vm;
+  if (!v.disb || v.stage >= 3) return;
+  v.stage += 1;
+  if (v.stage === 3) v.disb.done = v.disb.eta;   // demo fast-forwards to the planned date
+  vmRerender();
+  toast(['', 'Noter satışı tamamlandı, rehin tescil edildi', 'Aracın teslime hazır', 'Aracın teslim edildi'][v.stage]);
+}
+function vmPolicySheet() {
+  const v = state.vm, p = v.policy;
+  if (!p) return;
+  const k = VM_KASKO.find(x => x.id === p.offer), c = vmCar(v.app.car);
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Kasko poliçesi</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-kd-head"><span class="vm-k-logo" style="background:${k.color}">${k.ins[0]}</span><div><b>${k.ins}</b><span>Poliçe no ${p.no}</span></div><span class="vm-pill ok sm">${I.check}Aktif</span></div>
+    <div class="receipt vm-sh-receipt">
+      <div class="r-row"><span class="r-l">Sigortalı araç</span><span class="r-r">${c.brand} ${c.model} · ${c.year}</span></div>
+      <div class="r-row"><span class="r-l">Poliçe süresi</span><span class="r-r">${p.start} – ${p.end}</span></div>
+      <div class="r-row"><span class="r-l">Yıllık prim</span><span class="r-r">${vmTL(k.premium)} · ${p.inst === 1 ? 'Tek Çekim' : p.inst + ' Taksit'}</span></div>
+      <div class="r-row"><span class="r-l">Dain-i mürtehin</span><span class="r-r">Yapı Kredi Bankası A.Ş.</span></div>
+    </div>
+    <div class="vm-covl compact">${VM_COVERS.map(([key, label]) => `<div><span>${label}</span>${vmCoverVal(k.cover[key])}</div>`).join('')}</div>
+    <button class="sheet-btn ghost" data-action="toast" data-msg="Poliçe paylaşımı prototipte aktif değil">Poliçeyi Paylaş</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+function vmDisbSheet() {
+  const v = state.vm, b = v.disb;
+  if (!b) return;
+  const c = vmCar(v.app.car), d = vmDealer(c);
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Kullandırım dekontu</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-sh-head"><span class="vm-pill ok">${I.check}Bayiye ödendi</span><b>${vmTL(v.app.loan)}</b><span>${c.brand} ${c.model} taşıt kredisi kullandırımı</span></div>
+    <div class="receipt vm-sh-receipt">
+      <div class="r-row"><span class="r-l">Alıcı</span><span class="r-r">${d.name}</span></div>
+      <div class="r-row"><span class="r-l">Alıcı IBAN</span><span class="r-r">TR•• •••• •••• •••• 2034</span></div>
+      <div class="r-row"><span class="r-l">Kredi başvuru no</span><span class="r-r">${v.app.ref}</span></div>
+      <div class="r-row"><span class="r-l">İşlem tarihi</span><span class="r-r">${b.at}</span></div>
+      <div class="r-row"><span class="r-l">İşlem no</span><span class="r-r">${b.ref}</span></div>
+    </div>
+    <button class="sheet-btn ghost" data-action="toast" data-msg="Dekont paylaşımı prototipte aktif değil">Dekontu Paylaş</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- legal texts (example copy) -------------------- */
+function vmDocSheet(kind) {
+  const v = state.vm, a = v.app, c = a ? vmCar(a.car) : vmCar(), q = a ? { loan: a.loan, pay: a.pay, total: a.total } : vmQuote(), term = a ? a.term : v.term;
+  const docs = {
+    kvkk: ['Aydınlatma Metni', `
+      <h4>Hangi verileri işliyoruz?</h4><p>Kimlik, iletişim, gelir ve kredi geçmişi bilgilerin, taşıt kredisi ön değerlendirmesi için işlenir.</p>
+      <h4>KKB sorgusu</h4><p>Ön değerlendirme sırasında Kredi Kayıt Bürosu üzerinden kredi geçmişin sorgulanır.</p>
+      <h4>Hakların</h4><p>Verilerinin işlenip işlenmediğini öğrenme, düzeltilmesini ve silinmesini isteme hakkına sahipsin.</p>`],
+    pre: ['Kredi Ön Bilgilendirme Formu', `
+      <h4>1. Kredinin konusu</h4><p>${c.brand} ${c.model} (${c.year}) aracının alımı için <b>${vmTL(q.loan)}</b> taşıt kredisi, ${term} ay vade.</p>
+      <h4>2. Maliyetler (örnek)</h4><p>Aylık faiz %${vmPctStr(VM_RATE.monthly)}; faiz üzerinden KKDF ve BSMV. Aylık taksit <b>${vmTL(q.pay)}</b>, toplam geri ödeme <b>${vmTL(q.total)}</b>.</p>
+      <h4>3. Teminat</h4><p>Araç üzerinde banka lehine rehin ve bankanın dain-i mürtehin olduğu kasko poliçesi.</p>`],
+    contract: ['Taşıt Kredisi Sözleşmesi', `
+      <h4>1. Kullandırım</h4><p>Kredi tutarı, kesin onay ve kasko poliçesinin düzenlenmesinden sonra doğrudan satıcının hesabına aktarılır.</p>
+      <h4>2. Geri ödeme</h4><p>Taksitler ödeme planındaki tarihlerde hesabından tahsil edilir. Gecikmede sözleşmedeki gecikme faizi uygulanır.</p>
+      <h4>3. Erken ödeme ve cayma</h4><p>Krediyi vadesinden önce kapatabilirsin. Sözleşmenin kurulmasından itibaren 14 gün içinde cayma hakkın vardır.</p>`],
+    pledge: ['Araç Rehni ve Kasko Taahhütnamesi', `
+      <h4>1. Rehin</h4><p>${c.brand} ${c.model} aracı, noter satışı sırasında kredi borcu karşılığında bankamız lehine rehinlenir. Kredi kapandığında rehin kaldırılır.</p>
+      <h4>2. Kasko</h4><p>Kredi süresince, bankamızın dain-i mürtehin olarak yer aldığı kasko poliçesinin her yıl yenilenmesini taahhüt edersin.</p>`],
+    kasko: ['Kasko Bilgilendirme Formu', `
+      <h4>1. Poliçe</h4><p>Seçtiğin sigorta şirketi tarafından 1 yıl süreli genişletilmiş kasko poliçesi düzenlenir; bankamız dain-i mürtehindir.</p>
+      <h4>2. Prim ödemesi</h4><p>Prim, seçtiğin taksit sayısına göre Worldcard'ından tahsil edilir.</p>
+      <h4>3. Hasar</h4><p>Hasar durumunda sigorta şirketinin hasar hattını araman yeterlidir; muafiyet tutarı teklifte belirtilir.</p>`],
+  };
+  const [title, body] = docs[kind] || docs.kvkk;
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>${title}</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="legal-scroll"><p>Bu metin prototip amaçlı örnek bir metindir; gerçek ürün koşullarını yansıtmaz.</p>${body}</div>
+    <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- navigation -------------------- */
+// After submitting / paying, "back" should land on the marketplace, not on screens that can no longer change
+function vmUnwind() {
+  const i = state.nav.map(f => f.screen).lastIndexOf('arac');
+  if (i >= 0) state.nav = state.nav.slice(0, i);
+  else while (state.nav.length && state.nav[state.nav.length - 1].screen.startsWith('arac')) state.nav.pop();
+  state.nav.push({ screen: 'arac', chatSeed: false });
+}
+function vmGoMarket() {
+  const i = state.nav.map(f => f.screen).lastIndexOf('arac');
+  if (i >= 0) state.nav = state.nav.slice(0, i);
+  closeSheet();
+  state.chatSeed = false;
+  state.screen = 'arac';
+  vmRerender();
+}
+function vmGoTrack() {
+  closeSheet();
+  if (state.screen !== 'arac-takip') go('arac-takip');
+}
+function vmOpen(id) { state.vm.car = id; go('arac-detay'); }
+function vmOpenFavs() { state.vm.favOnly = true; go('arac-liste'); }
+function vmContinue() { const v = state.vm; if (!v.pre) return; v.car = v.pre.car; go('arac-on-onay'); }
+function vmStartPre() {
+  const v = state.vm, c = vmCar();
+  if (v.app) return v.app.car === c.id ? vmGoTrack() : vmBusySheet(c);
+  vmInitFlow(c);
+  go('arac-on-onay');
+}
+function vmBusySheet(c) {
+  const cur = vmCar(state.vm.app.car);
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-ico vm-sheet-ico">${I.car}</div>
+    <h3>Devam eden satın alman var</h3>
+    <p>${cur.brand} ${cur.model} için kredi ve teslim sürecin devam ediyor. ${c.brand} ${c.model} için yeni bir ön onay başlatırsan bu demo süreci sıfırlanır.</p>
+    <button class="sheet-btn" data-action="vm-track">Mevcut Süreci Gör</button>
+    <button class="sheet-btn ghost" data-action="vm-reset-start" data-id="${c.id}">Yeni Süreç Başlat</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+function vmResetPurchase() {
+  Object.assign(state.vm, { pre: null, preBusy: false, preStep: 0, app: null, policy: null, disb: null, stage: 0, kasko: 'k2', kInst: 1, kAgree: false, justDone: false, flowCar: null });
+}
+function vmResetStart(id) { vmResetPurchase(); closeSheet(); state.vm.car = id; vmStartPre(); }
+function vmReset() { vmResetPurchase(); vmGoMarket(); toast('Demo süreci sıfırlandı'); }
+function vmMakeApp(status) {
+  const v = state.vm, c = vmCar(), q = vmQuote();
+  return { car: c.id, status, step: status === 'approved' ? VM_REVIEW.length : 0, ref: vmRef('TK'), at: vmNowStr(), approvedAt: status === 'approved' ? vmNowStr() : null, down: v.down, term: v.term, loan: q.loan, pay: q.pay, total: q.total, first: vmFirstDue() };
+}
+// Deep links (#arac-…) prepare the state they need without replaying the flow
+function vmSeed(h) {
+  const v = state.vm;
+  if (!VM_CARS.some(c => c.id === v.car)) v.car = 'a4';
+  if (v.app) return;   // an ongoing purchase keeps its own state
+  if (['arac-on-onay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-takip'].includes(h)) vmInitFlow(vmCar());
+  if (['arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-takip'].includes(h) && !vmPreFor()) {
+    v.consent = true; v.preBusy = false;
+    v.pre = vmMakePre(vmCar());
+  }
+  if (h === 'arac-kasko' || h === 'arac-takip') {
+    v.agree = { pre: true, contract: true, pledge: true };
+    v.app = vmMakeApp('approved');
+  }
+  if (h === 'arac-takip') { v.kAgree = true; vmIssuePolicy(); v.justDone = false; }
+}
+
 /* ===================================================================
    RENDER & NAVİGASYON
    =================================================================== */
@@ -7650,6 +9203,14 @@ function render() {
     case 'erken-maas-onay': html = EwaConfirm(); break;
     case 'erken-maas-sonuc': html = EwaResult(); break;
     case 'erken-maas-gecmis': html = EwaHistory(); break;
+    case 'arac': html = VmHome(); break;
+    case 'arac-liste': html = VmList(); break;
+    case 'arac-detay': html = VmDetail(); break;
+    case 'arac-on-onay': html = VmPre(); break;
+    case 'arac-kredi': html = VmPlan(); break;
+    case 'arac-basvuru': html = VmApply(); break;
+    case 'arac-kasko': html = VmKasko(); break;
+    case 'arac-takip': html = VmTrack(); break;
     case 'card-detail': html = CardDetailScreen(); break;
     case 'split': html = SplitHub(); break;
     case 'split-pick': html = SplitPick(); break;
@@ -7689,6 +9250,10 @@ function render() {
   if (state.screen === 'sky-limit-manage') skySetupManage();
   if (state.screen === 'sky-limit-payment') skySetupPaid();
   if (state.screen === 'erken-maas-tutar') ewaSetupAmount();
+  if (state.screen === 'arac') vmSetupSearch();
+  if (state.screen === 'arac-detay') vmSetupDetail();
+  if (state.screen === 'arac-on-onay') vmSetupPre();
+  if (state.screen === 'arac-kredi') vmSetupPlan();
   if (state.screen === 'split-amount') setTimeout(() => { const i = document.getElementById('spl-amt-input'); i && i.focus(); }, 280);
 }
 
@@ -9009,6 +10574,64 @@ document.addEventListener('click', (e) => {
     case 'ewa-history-after': return ewaHistoryAfter();
     case 'ewa-hist-open': return ewaHistSheet(t.dataset.id);
 
+    // Taşıt Kredisi Marketplace (draft)
+    case 'vm-favs': return vmOpenFavs();
+    case 'vm-f': vmSetF(t.dataset.k, t.dataset.v); return vmRefreshSearch();
+    case 'vm-type': vmToggleType(t.dataset.v); return vmRefreshSearch();
+    case 'vm-more': state.vm.more = !state.vm.more; return vmRefreshSearch();
+    case 'vm-clear': vmClearFilters(); return vmRefreshSearch();
+    case 'vm-pick-brand': vmCommitInputs(); return vmBrandSheet();
+    case 'vm-pick-model': vmCommitInputs(); return vmModelSheet();
+    case 'vm-set-brand': state.vm.f.brand = t.dataset.v || null; state.vm.f.model = null; return vmPickDone();
+    case 'vm-set-model': state.vm.f.model = t.dataset.v || null; return vmPickDone();
+    case 'vm-show': return vmShow();
+    case 'vm-brand-go': vmClearFilters(); state.vm.f.brand = t.dataset.v; state.vm.favOnly = false; return go('arac-liste');
+    case 'vm-show-all': vmClearFilters(); state.vm.favOnly = false; return go('arac-liste');
+    case 'vm-filters': return vmFilterSheet();
+    case 'vm-unset': vmUnset(t.dataset.k); return vmRefreshList();
+    case 'vm-clear-list': vmClearFilters(); return vmRefreshList();
+    case 'vm-sort': return vmSortSheet();
+    case 'vm-set-sort': state.vm.sort = t.dataset.v; closeSheet(); return vmRefreshList();
+    case 'vm-favonly': state.vm.favOnly = !state.vm.favOnly; return vmRefreshList();
+    case 'vm-fav': return vmToggleFav(t.dataset.id);
+    case 'vm-cmp': return vmToggleCmp(t.dataset.id);
+    case 'vm-compare': return vmCompareSheet();
+    case 'vm-open': return vmOpen(t.dataset.id);
+    case 'vm-start-pre': return vmStartPre();
+    case 'vm-continue': return vmContinue();
+    case 'vm-pre-pct': return vmPrePct(+t.dataset.v);
+    case 'vm-term': return vmSetTerm(+t.dataset.v);
+    case 'vm-consent': return vmToggleConsent(t);
+    case 'vm-doc': e.preventDefault(); return vmDocSheet(t.dataset.doc);
+    case 'vm-pre-run': return vmPreRun();
+    case 'vm-pre-edit': state.vm.pre = null; return vmRerender();
+    case 'vm-to-plan': return go('arac-kredi');
+    case 'vm-scen-save': vmCommitInputs(); return vmSaveScen();
+    case 'vm-scen-apply': return vmApplyScen(t.dataset.v);
+    case 'vm-scen-del': return vmDelScen(t.dataset.v);
+    case 'vm-plan-all': return vmPlanSheet();
+    case 'vm-to-apply': vmCommitInputs(); return go('arac-basvuru');
+    case 'vm-agree': return vmToggleAgree(t);
+    case 'vm-edit-plan': return vmEditPlan();
+    case 'vm-submit': return vmSubmit();
+    case 'vm-to-kasko': return go('arac-kasko');
+    case 'vm-open-apply': return go('arac-basvuru');
+    case 'vm-k-pick': return vmKPick(t.dataset.id);
+    case 'vm-k-choose': vmKPick(t.dataset.id); return closeSheet();
+    case 'vm-k-detail': return vmKDetailSheet(t.dataset.id);
+    case 'vm-k-compare': return vmKCompareSheet();
+    case 'vm-k-inst': return vmKInst(+t.dataset.n);
+    case 'vm-k-agree': return vmKAgree(t);
+    case 'vm-k-buy': return vmKBuy();
+    case 'vm-k-approve': return vmKApprove();
+    case 'vm-track': return vmGoTrack();
+    case 'vm-policy': return vmPolicySheet();
+    case 'vm-disb': return vmDisbSheet();
+    case 'vm-adv': return vmAdvance();
+    case 'vm-reset': return vmReset();
+    case 'vm-reset-start': return vmResetStart(t.dataset.id);
+    case 'vm-home': return vmGoMarket();
+
     case 'set-theme': return setTheme(t.dataset.theme);
     case 'toggle-switch': return t.classList.toggle('on');
 
@@ -9042,7 +10665,7 @@ function updateClock() {
    Her bölümün kendi hash linki var: #home #assistant #setur #chat #payment
    #success #tracking #search #settings #sections
    Link açıldığında ekran gereken state ile hazır gelir (akışı tekrarlamadan). */
-const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'sky-limit', 'sky-limit-manage', 'sky-limit-confirm', 'sky-limit-success', 'sky-limit-payment', 'toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis'];
+const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'sky-limit', 'sky-limit-manage', 'sky-limit-confirm', 'sky-limit-success', 'sky-limit-payment', 'toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis', 'arac', 'arac-liste', 'arac-detay', 'arac-on-onay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-takip'];
 function routeTo(hash) {
   const h = (hash || '').replace('#', '') || 'home';
   if (!ROUTES.includes(h)) return false;
@@ -9059,6 +10682,7 @@ function routeTo(hash) {
   if (['qr-scan', 'qr-pay', 'qr-success'].includes(h)) qrSeed();
   if (h.startsWith('toplu-borc')) debtSeed(h);   // Toplu Borç Ödeme deep links
   if (h.startsWith('erken-maas')) ewaSeed(h);    // Erken Maaş Erişimi deep links
+  if (h.startsWith('arac')) vmSeed(h);          // Taşıt Kredisi Marketplace deep links
   if (h === 'assistant') {            // Koçtaş sohbetini dolu göster
     state.chatStarted = true;
     state.chatSeed = true;
