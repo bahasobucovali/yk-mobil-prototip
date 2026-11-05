@@ -820,7 +820,7 @@ function AssistantResult(query) {
 /* Draft features reachable from search (also listed under "Önerilenler") */
 const SEARCH_FEATURES = [
   { hash: 'sky-limit', name: 'Sky Limit', icon: I.loan, sub: 'Kredi limitlerini tek ortak limitte yönet',
-    keys: ['limit', 'kredi limiti', 'ortak limit', 'limit aktarımı', 'limit dağılımı', 'kredi', 'ihtiyaç kredisi', 'ticari kredi', 'kredili hesap'] },
+    keys: ['limit', 'kredi limiti', 'ortak limit', 'limit aktarımı', 'limit dağılımı', 'kredi', 'ihtiyaç kredisi', 'taşıt kredisi', 'esnek hesap', 'kmh'] },
   { hash: 'toplu-borc', name: 'Toplu Borç Ödeme', icon: I.payments, sub: 'Kart, esnek hesap ve kredi borçların tek ekstrede',
     keys: ['borç', 'borç öde', 'toplu ödeme', 'ekstre', 'kredi kartı borcu', 'kart borcu', 'esnek hesap', 'kmh', 'taksit', 'konut kredisi', 'taşıt kredisi', 'kredi borcu'] },
 ];
@@ -6542,30 +6542,31 @@ function svCreditRoundup(spent) {
 
 const SKY_TOTAL = 500000;   // total Sky Limit (TL)
 const SKY_STEP = 5000;      // slider / stepper increment (TL)
-const SKY_ICO_BRIEFCASE = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3 12.5h18"/></svg>';
+const SKY_ICO_CAR = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3.6a1 1 0 0 1-1-1v-3.1a2 2 0 0 1 .6-1.4L5 9.7l1.6-3.4A2 2 0 0 1 8.4 5.2h7.2a2 2 0 0 1 1.8 1.1L19 9.7l1.8 1.8a2 2 0 0 1 .6 1.4V16a1 1 0 0 1-1 1H19M9 17h6M5 9.7h14"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>';
 const SKY_ICO_MINUS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg>';
 const SKY_ICO_UNLOCK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.6-1.7"/></svg>';
 const SKY_ICO_ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
 // Product hues: checked as a categorical set (colour-blind separation + contrast)
 // on both theme card surfaces (#1c1c1f dark, #ffffff light). Order = bar order.
+// Same hue per product as in Toplu Borç Ödeme (İhtiyaç blue, Taşıt gold, Esnek Hesap violet).
 const SKY_PRODUCTS = [
   { id: 'personal',   name: 'İhtiyaç Kredisi',       sub: 'Bireysel · Taksitli', color: '#0098cb', icon: I.loan },
-  { id: 'commercial', name: 'Taksitli Ticari Kredi', sub: 'Ticari · Taksitli',   color: '#D9772F', icon: SKY_ICO_BRIEFCASE },
-  { id: 'overdraft',  name: 'Kredili Hesap',         sub: 'Hesaba bağlı',        color: '#8B7FD6', icon: I.wallet },
+  { id: 'auto',       name: 'Taşıt Kredisi',         sub: 'Araç · Taksitli',     color: '#C08A1E', icon: SKY_ICO_CAR },
+  { id: 'flex',       name: 'Esnek Hesap (KMH)',     sub: 'Hesaba bağlı',        color: '#7B61C9', icon: I.bank },
 ];
 
 state.sky = {
-  limits: { personal: 200000, commercial: 200000, overdraft: 100000 },   // allocated limit per product
-  used:   { personal: 100000, commercial: 150000, overdraft: 50000 },    // used (outstanding) per product
+  limits: { personal: 200000, auto: 200000, flex: 100000 },   // allocated limit per product
+  used:   { personal: 100000, auto: 150000, flex: 50000 },    // used (outstanding) per product
   draft: null,        // limits being edited on the management screen
   change: null,       // last confirmed re-distribution { before, after, no, date }
   payment: null,      // last installment payment that re-opened limit
   nextInst: { product: 'personal', amount: 20000, dates: ['10 Kasım', '10 Aralık', '10 Ocak', '10 Şubat'], i: 0 },
   history: [          // recent repayments that re-opened limit (newest first)
-    { product: 'overdraft',  title: 'Kredili Hesap ödemesi',         amount: 8000,  date: '28 Ekim 2026' },
+    { product: 'flex',       title: 'Esnek Hesap (KMH) ödemesi',     amount: 8000,  date: '28 Ekim 2026' },
     { product: 'personal',   title: 'İhtiyaç Kredisi taksiti',       amount: 20000, date: '10 Ekim 2026' },
-    { product: 'commercial', title: 'Taksitli Ticari Kredi taksiti', amount: 25000, date: '5 Ekim 2026' },
+    { product: 'auto',       title: 'Taşıt Kredisi taksiti',         amount: 25000, date: '5 Ekim 2026' },
   ],
 };
 let skyWarnTimers = {};
@@ -6681,9 +6682,9 @@ function skyInfoSheet() {
     <div class="sheet-handle"></div>
     <div class="sheet-bar"><h3>Sky Limit nasıl çalışır?</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
     <div class="sky-how">
-      <div class="sky-how-row"><span class="sky-how-ico">${I.grid}</span><div><b>Tek limit, birden fazla ürün</b><span>İhtiyaç kredisi, taksitli ticari kredi ve kredili hesap limitlerin tek bir Sky Limit altında toplanır.</span></div></div>
+      <div class="sky-how-row"><span class="sky-how-ico">${I.grid}</span><div><b>Tek limit, birden fazla ürün</b><span>İhtiyaç kredisi, taşıt kredisi ve esnek hesap (KMH) limitlerin tek bir Sky Limit altında toplanır.</span></div></div>
       <div class="sky-how-row"><span class="sky-how-ico">${I.transfer}</span><div><b>Dağılımı sen belirle</b><span>Tahsis koşulların çerçevesinde limitini uygun ürünler arasında dilediğin zaman aktarabilirsin.</span></div></div>
-      <div class="sky-how-row"><span class="sky-how-ico">${I.refresh}</span><div><b>Ödedikçe limitin açılır</b><span>Taksit ve kredili hesap ödemelerin kadar limitin yeniden açılır; bu limiti uygun başka bir üründe de kullanabilirsin.</span></div></div>
+      <div class="sky-how-row"><span class="sky-how-ico">${I.refresh}</span><div><b>Ödedikçe limitin açılır</b><span>Taksit ve esnek hesap ödemelerin kadar limitin yeniden açılır; bu limiti uygun başka bir üründe de kullanabilirsin.</span></div></div>
     </div>
     ${skyRulesHTML('in')}
     <button class="sheet-btn" data-action="close-sheet">Anladım</button>`;
@@ -6870,7 +6871,6 @@ function SkyConfirm() {
           ${freeAfter > 0 ? `<div class="r-row"><span class="r-l">Dağıtılmamış kalacak limit</span><span class="r-r">${skyTL(freeAfter)}</span></div>` : ''}
           <div class="r-row"><span class="r-l">Kullanılan limit</span><span class="r-r">${skyTL(skyUsedTotal())} <i class="sky-same">değişmez</i></span></div>
           <div class="r-row"><span class="r-l">Toplam kullanılabilir limit</span><span class="r-r">${skyTL(skyAvailTotal())}</span></div>
-          <div class="r-row"><span class="r-l">Geçerlilik</span><span class="r-r">Onaydan hemen sonra</span></div>
         </div>
       </div>
       <div class="sky-note">${I.info}<span>Kullandığın krediler ve taksitlerin bu değişiklikten etkilenmez; yalnızca ürünlere ayrılan limitler güncellenir.${freeAfter > 0 ? ' Dağıtılmamış limit Sky Limit\'inde bekler, istediğin zaman bir ürüne verebilirsin.' : ''}</span></div>
@@ -7087,10 +7087,10 @@ function skyCancel() {
   toast('Limit değişikliği iptal edildi');
 }
 // Deep links (#sky-limit-…) prepare the state they need without replaying the flow
-function skyDemoDraft() {      // demo change: move 50.000 TL from İhtiyaç Kredisi to Kredili Hesap
+function skyDemoDraft() {      // demo change: move 50.000 TL from İhtiyaç Kredisi to Esnek Hesap (KMH)
   const s = state.sky, d = { ...s.limits };
   const amt = Math.min(50000, d.personal - s.used.personal);
-  d.personal -= amt; d.overdraft += amt;
+  d.personal -= amt; d.flex += amt;
   return d;
 }
 function skySeed(h) {

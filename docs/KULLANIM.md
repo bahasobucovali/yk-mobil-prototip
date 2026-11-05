@@ -142,7 +142,7 @@ Tek "Birikim" girişi altında 4 birikim türü × 3 yöntem matrisi (Harcama Yu
 Benim Dünyam altında level haritalı görev-ödül yolculuğu; FAST tabanlı harcama bölüştürme istekleri; ortak hedefle biriktirip TL ödül kazanılan Birlikte Kazan.
 
 ### Sky Limit (taslak)
-500.000 TL'lik tek ortak kredi limiti İhtiyaç Kredisi, Taksitli Ticari Kredi ve Kredili Hesap arasında dağıtılır. Soldaki menü → **Krediler**'den ya da ana sayfadaki aramadan ("sky", "limit") açılır.
+500.000 TL'lik tek ortak kredi limiti İhtiyaç Kredisi, Taşıt Kredisi ve Esnek Hesap (KMH) arasında dağıtılır. Soldaki menü → **Krediler**'den ya da ana sayfadaki aramadan ("sky", "limit") açılır.
 - **Ana ekran:** toplam / kullanılan / kullanılabilir limit, ürün bazında dağılım çubuğu (koyu: kullanılan, açık: kullanılabilir), yaklaşan taksit, son ödemeler ve açılan limitler.
 - **Limit dağılımı:** kaydırarak, +/− ile ya da tutar yazarak ürünler arası aktarım. Bir ürünün limiti kullanılan tutarın altına inemez, ürünlere dağıtılan toplam 500.000 TL'yi aşamaz; sınır zorlanınca kart içinde uyarı çıkar.
 - **Onay → sonuç:** önceki/yeni dağılım, ürün bazında değişiklikler, işlem özeti; Vazgeç değişikliği iptal eder.
