@@ -5565,7 +5565,7 @@ function VmHome() {
       <div class="vm-hero">
         <div class="vm-hero-t">Hayalindeki aracı bul,<br>finansmanını burada tamamla</div>
         <div class="vm-hero-s">Otokoç'tan sıfır ve ikinci el araçlar; kredi, kasko ve teslim tek akışta</div>
-        <div class="vm-hero-car">${vmCarSVG({ ...vmCar('a4'), color: '#dfe5ec' }, 'side', 'none')}</div>
+        <div class="vm-hero-car" id="vm-hero-anim" role="img" aria-label="Yolda ilerleyen araç animasyonu"></div>
       </div>
       <div class="vm-search" id="vm-search">${vmSearchHTML()}</div>
       ${v.app || v.pre ? vmOngoingHTML() : ''}
@@ -5621,6 +5621,47 @@ function vmRefreshSearch() {
   const el = document.getElementById('vm-search');
   if (el) { el.innerHTML = vmSearchHTML(); vmSetupSearch(); }
   if (state.screen === 'arac-liste') vmRefreshList();
+}
+/* Hero animation (Lottie, assets/arac-hero.json). lottie-web is loaded on first use, and the
+   animation only runs while the marketplace home is on screen (vmHeroSync runs after every render). */
+const VM_HERO_ANIM = { path: 'assets/arac-hero.json', lib: 'vendor/lottie_light.min.js', viewBox: '18 92 364 158' };   // viewBox crops the empty sky above the car
+let vmHeroAnim = null, vmLottieP = null;
+function vmLoadLottie() {
+  if (window.lottie) return Promise.resolve(window.lottie);
+  vmLottieP = vmLottieP || new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = VM_HERO_ANIM.lib;
+    s.onload = () => (window.lottie ? resolve(window.lottie) : reject(new Error('lottie')));
+    s.onerror = () => reject(new Error('lottie'));
+    document.head.appendChild(s);
+  }).catch(err => { vmLottieP = null; throw err; });
+  return vmLottieP;
+}
+function vmHeroStatic(box) {   // fallback when the animation cannot load: the vector illustration
+  if (!box.isConnected) return;
+  box.innerHTML = vmCarSVG({ ...vmCar('a4'), color: '#dfe5ec' }, 'side', 'none');
+  box.classList.add('ready', 'static');
+}
+function vmHeroSync() {
+  const box = state.screen === 'arac' ? document.getElementById('vm-hero-anim') : null;
+  if (vmHeroAnim && (!box || !box.contains(vmHeroAnim.wrapper))) { vmHeroAnim.destroy(); vmHeroAnim = null; }
+  if (!box || vmHeroAnim || box.dataset.started) return;
+  box.dataset.started = '1';
+  vmLoadLottie().then(lottie => {
+    if (!box.isConnected) return;
+    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const anim = lottie.loadAnimation({
+      container: box, renderer: 'svg', loop: !still, autoplay: !still, path: VM_HERO_ANIM.path,
+      rendererSettings: { viewBoxSize: VM_HERO_ANIM.viewBox, preserveAspectRatio: 'xMidYMid meet' },
+    });
+    vmHeroAnim = anim;
+    anim.addEventListener('DOMLoaded', () => box.classList.add('ready'));
+    anim.addEventListener('data_failed', () => {
+      anim.destroy();
+      if (vmHeroAnim === anim) vmHeroAnim = null;
+      vmHeroStatic(box);
+    });
+  }).catch(() => vmHeroStatic(box));
 }
 /* Price fields only update the result count: re-rendering the card here would swallow the click that blurred them */
 function vmRefreshCount() {
@@ -9261,6 +9302,7 @@ function render() {
   if (state.screen === 'sky-limit-payment') skySetupPaid();
   if (state.screen === 'erken-maas-tutar') ewaSetupAmount();
   if (state.screen === 'arac') vmSetupSearch();
+  vmHeroSync();   // Taşıt Marketplace hero animation: starts on its screen, stops everywhere else
   if (state.screen === 'arac-detay') vmSetupDetail();
   if (state.screen === 'arac-on-onay') vmSetupPre();
   if (state.screen === 'arac-kredi') vmSetupPlan();

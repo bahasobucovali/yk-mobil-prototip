@@ -2625,7 +2625,10 @@ body[data-theme="light"] .ewa-ex, body[data-theme="light"] .ewa-banner svg { col
 .vm-hero { position: relative; padding: 8px 20px 26px; background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%); border-radius: 0 0 26px 26px; color: #fff; overflow: hidden; }
 .vm-hero-t { font-size: 21px; font-weight: 800; line-height: 1.25; letter-spacing: -.3px; }
 .vm-hero-s { margin-top: 6px; font-size: 13px; color: rgba(255,255,255,.78); }
-.vm-hero-car { width: 86%; max-width: 330px; aspect-ratio: 2 / 1; margin: 4px auto -10px; }
+.vm-hero-car { position: relative; width: 94%; max-width: 360px; aspect-ratio: 364 / 158; margin: 10px auto -6px; opacity: 0; transition: opacity .35s ease; }
+.vm-hero-car.ready { opacity: 1; }
+.vm-hero-car::before { content: ''; position: absolute; left: 2%; right: 2%; bottom: -6%; height: 62%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.3), rgba(255,255,255,.08) 60%, rgba(255,255,255,0)); pointer-events: none; }
+.vm-hero-car > svg { position: relative; display: block; }
 .vm-search { position: relative; z-index: 1; margin: -18px 16px 0; padding: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 18px; box-shadow: 0 10px 28px rgba(0,0,0,.28); }
 .vm-search.in-sheet { max-height: 64vh; margin: 0; padding: 0 2px 2px; overflow-y: auto; background: transparent; border: none; border-radius: 0; box-shadow: none; }
 .vm-seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 12px; padding: 4px; border-radius: 12px; background: var(--card-2); }

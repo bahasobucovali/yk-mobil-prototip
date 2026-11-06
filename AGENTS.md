@@ -19,6 +19,7 @@ app/                  Uygulamanın kendisi (yayınlanan klasör)
   app.js              Tüm uygulama: mock veriler, state, ekran component'leri, aksiyon dispatcher, hash router (~7.500 satır)
   styles.css          Tüm stiller: tema değişkenleri (koyu varsayılan + açık), bölüm başlıklı yorumlarla (~3.600 satır)
   assets/             Ürün, kart ve logo görselleri
+  vendor/             Üçüncü taraf kütüphaneler: lottie-web light (MIT, lisansı yanında) — Lottie animasyonlarını oynatır
   baslat.command      Lokal sunucu (çift tık; python3 http.server 8080, telefon erişimi için IP gösterir)
 docs/
   KULLANIM.md         Demo akışları + tüm bölümlerin hash linkleri
@@ -86,6 +87,8 @@ Not: Uzun listeli veya animasyonlu ekranlarda tam `render()` yerine kısmi DOM g
   Açılış karşılama mesajıyla olur, boş durumla değil.
 - **Ödeme:** taksit varsayılanı Tek Çekim; kullanıcı değiştirebilir. Onayda Face ID "başarılı" simülasyonu.
 - Yeni görsel gerekirse kullanıcıdan istenir (indirip `app/assets/` içine atar).
+- Lottie animasyonu (`.lottie` / `.json`) gelirse animasyon JSON'u `app/assets/` içine konur ve `app/vendor/lottie_light.min.js` ile oynatılır;
+  kütüphane yalnızca ilgili ekran açılınca yüklenir (örnek: Taşıt Marketplace ana ekranı, `vmHeroSync`).
 
 ## Kullanıcıdan gelen girdiler (AI üretimi görsel ve akışlar)
 
