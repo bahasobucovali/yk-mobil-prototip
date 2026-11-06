@@ -88,7 +88,7 @@ Not: Uzun listeli veya animasyonlu ekranlarda tam `render()` yerine kısmi DOM g
 - **Ödeme:** taksit varsayılanı Tek Çekim; kullanıcı değiştirebilir. Onayda Face ID "başarılı" simülasyonu.
 - Yeni görsel gerekirse kullanıcıdan istenir (indirip `app/assets/` içine atar).
 - Lottie animasyonu (`.lottie` / `.json`) gelirse animasyon JSON'u `app/assets/` içine konur ve `app/vendor/lottie_light.min.js` ile oynatılır;
-  kütüphane yalnızca ilgili ekran açılınca yüklenir (örnek: Taşıt Marketplace ana ekranı, `vmHeroSync`).
+  kütüphane yalnızca ilgili ekran açılınca yüklenir (örnek: Marketplace Taşıt ana ekranı, `vmHeroSync`).
 
 ## Kullanıcıdan gelen girdiler (AI üretimi görsel ve akışlar)
 

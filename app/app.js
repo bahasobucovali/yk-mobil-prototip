@@ -251,14 +251,14 @@ const SECTIONS = [
   { hash: 'erken-maas', icon: 'salaryEarly', t: 'Taslak — Erken Maaş Erişimi', d: 'Maaşın %25\'ine maaş gününü beklemeden eriş: limit, tutar seçimi, koşullar' },
   { hash: 'erken-maas-tutar', icon: 'wallet2', t: 'Taslak — Erken Maaş: Tutar belirle', d: 'Kaydırma + tutar girişi, limit üstü talep engeli' },
   { hash: 'erken-maas-gecmis', icon: 'receipt', t: 'Taslak — Erken Maaş: İşlem geçmişi', d: 'Önceki erişimler ve geri ödeme durumları' },
-  { hash: 'arac', icon: 'car', t: 'Taslak — Taşıt Kredisi Marketplace', d: 'Otokoç araçları: ara, karşılaştır, kredini ve kaskonu tek akışta tamamla, teslimi izle' },
-  { hash: 'arac-liste', icon: 'search', t: 'Taslak — Taşıt: İlanlar ve karşılaştırma', d: 'Filtre, sıralama, favoriler, 3 araca kadar yan yana karşılaştırma' },
-  { hash: 'arac-detay', icon: 'car', t: 'Taslak — Taşıt: Araç detayı', d: 'Galeri, özellikler, bayi bilgisi, kredi ön onayı başlangıcı' },
-  { hash: 'arac-on-onay', icon: 'shield', t: 'Taslak — Taşıt: Kredi ön onayı', d: 'Peşinat, vade, ön değerlendirme sonucu (kesin onay değildir)' },
-  { hash: 'arac-kredi', icon: 'loan', t: 'Taslak — Taşıt: Kredi ve ödeme planı', d: 'Peşinat ve vade değiştikçe canlı taksit, senaryo karşılaştırma' },
-  { hash: 'arac-basvuru', icon: 'doc', t: 'Taslak — Taşıt: Başvuru ve kullandırım', d: 'Özet, belgeler, sözleşmeler; kesin değerlendirme ve kullandırım ayrı adım' },
-  { hash: 'arac-kasko', icon: 'insurance', t: 'Taslak — Taşıt: Kasko teklifleri', d: 'Allianz Türkiye kasko paketleri: teminat karşılaştırma, poliçe onayı' },
-  { hash: 'arac-takip', icon: 'truck', t: 'Taslak — Taşıt: Teslim ve süreç takibi', d: 'Kredi, kullandırım, kasko ve teslim durumu tek ekranda' },
+  { hash: 'arac', icon: 'car', t: 'Taslak — Marketplace Taşıt', d: 'Otokoç araçları: ara, karşılaştır, kredini ve kaskonu tek akışta tamamla, teslimi izle' },
+  { hash: 'arac-liste', icon: 'search', t: 'Taslak — Marketplace Taşıt: İlanlar ve karşılaştırma', d: 'Filtre, sıralama, favoriler, 3 araca kadar yan yana karşılaştırma' },
+  { hash: 'arac-detay', icon: 'car', t: 'Taslak — Marketplace Taşıt: Araç detayı', d: 'Galeri, özellikler, bayi bilgisi, kredi ön onayı başlangıcı' },
+  { hash: 'arac-on-onay', icon: 'shield', t: 'Taslak — Marketplace Taşıt: Kredi ön onayı', d: 'Peşinat, vade, ön değerlendirme sonucu (kesin onay değildir)' },
+  { hash: 'arac-kredi', icon: 'loan', t: 'Taslak — Marketplace Taşıt: Kredi ve ödeme planı', d: 'Peşinat ve vade değiştikçe canlı taksit, senaryo karşılaştırma' },
+  { hash: 'arac-basvuru', icon: 'doc', t: 'Taslak — Marketplace Taşıt: Başvuru ve kullandırım', d: 'Özet, belgeler, sözleşmeler; kesin değerlendirme ve kullandırım ayrı adım' },
+  { hash: 'arac-kasko', icon: 'insurance', t: 'Taslak — Marketplace Taşıt: Kasko teklifleri', d: 'Allianz Türkiye kasko paketleri: teminat karşılaştırma, poliçe onayı' },
+  { hash: 'arac-takip', icon: 'truck', t: 'Taslak — Marketplace Taşıt: Teslim ve süreç takibi', d: 'Kredi, kullandırım, kasko ve teslim durumu tek ekranda' },
   { hash: 'search',    icon: 'search',   t: 'Arama',               d: 'Arama ekranı' },
   { hash: 'settings',  icon: 'gear',     t: 'Ayarlar',             d: 'Tema ve bildirimler' },
 ];
@@ -838,7 +838,7 @@ const SEARCH_FEATURES = [
     keys: ['borç', 'borç öde', 'toplu ödeme', 'ekstre', 'kredi kartı borcu', 'kart borcu', 'esnek hesap', 'kmh', 'taksit', 'konut kredisi', 'taşıt kredisi', 'kredi borcu'] },
   { hash: 'erken-maas', name: 'Erken Maaş Erişimi', icon: I.salaryEarly, sub: 'Maaşının %25\'ine maaş gününü beklemeden eriş',
     keys: ['erken maaş', 'maaş', 'maaş avansı', 'avans', 'erken erişim', 'maaş kredisi', 'kredi', 'nakit'] },
-  { hash: 'arac', name: 'Taşıt Kredisi Marketplace', icon: I.car, sub: 'Aracını bul, kredini ve kaskonu tek akışta tamamla',
+  { hash: 'arac', name: 'Marketplace Taşıt', icon: I.car, sub: 'Aracını bul, kredini ve kaskonu tek akışta tamamla',
     keys: ['araç', 'araba', 'otomobil', 'taşıt', 'taşıt kredisi', 'araç kredisi', 'oto kredi', 'kasko', 'galeri', 'bayi', 'ikinci el', 'sıfır araç', 'marketplace', 'otokoç', 'allianz', 'kredi'] },
 ];
 // Turkish-aware and accent-insensitive: "Borç", "borc" and "BORÇ" match alike (keeps string length)
@@ -5271,7 +5271,7 @@ function ewaSeed(h) {
 }
 
 /* ======================================================================
-   TAŞIT KREDİSİ MARKETPLACE (draft)
+   MARKETPLACE TAŞIT (draft) — vehicle loan marketplace
    Car search → listing & price comparison → details → loan pre-approval →
    loan & payment plan → final application & disbursement → kasko →
    delivery tracking, in one journey. Sellers are Otokoç Otomotiv (Koç
@@ -5558,7 +5558,7 @@ function VmHome() {
   <div class="screen ${vmAnim()} vm">
     <div class="nav-head ru-nav-accent">
       <button class="icon-btn" data-action="nav-back">${I.back}</button>
-      <div class="nav-title">Taşıt Marketplace</div>
+      <div class="nav-title">Marketplace Taşıt</div>
       <button class="vm-favs-btn" data-action="vm-favs" aria-label="Favoriler">${I.heart}<span id="vm-fav-n">${v.favs.length}</span></button>
     </div>
     <div class="screen-scroll">
@@ -9302,7 +9302,7 @@ function render() {
   if (state.screen === 'sky-limit-payment') skySetupPaid();
   if (state.screen === 'erken-maas-tutar') ewaSetupAmount();
   if (state.screen === 'arac') vmSetupSearch();
-  vmHeroSync();   // Taşıt Marketplace hero animation: starts on its screen, stops everywhere else
+  vmHeroSync();   // Marketplace Taşıt hero animation: starts on its screen, stops everywhere else
   if (state.screen === 'arac-detay') vmSetupDetail();
   if (state.screen === 'arac-on-onay') vmSetupPre();
   if (state.screen === 'arac-kredi') vmSetupPlan();
@@ -10626,7 +10626,7 @@ document.addEventListener('click', (e) => {
     case 'ewa-history-after': return ewaHistoryAfter();
     case 'ewa-hist-open': return ewaHistSheet(t.dataset.id);
 
-    // Taşıt Kredisi Marketplace (draft)
+    // Marketplace Taşıt (draft)
     case 'vm-favs': return vmOpenFavs();
     case 'vm-f': vmSetF(t.dataset.k, t.dataset.v); return vmRefreshSearch();
     case 'vm-type': vmToggleType(t.dataset.v); return vmRefreshSearch();
@@ -10734,7 +10734,7 @@ function routeTo(hash) {
   if (['qr-scan', 'qr-pay', 'qr-success'].includes(h)) qrSeed();
   if (h.startsWith('toplu-borc')) debtSeed(h);   // Toplu Borç Ödeme deep links
   if (h.startsWith('erken-maas')) ewaSeed(h);    // Erken Maaş Erişimi deep links
-  if (h.startsWith('arac')) vmSeed(h);          // Taşıt Kredisi Marketplace deep links
+  if (h.startsWith('arac')) vmSeed(h);          // Marketplace Taşıt deep links
   if (h === 'assistant') {            // Koçtaş sohbetini dolu göster
     state.chatStarted = true;
     state.chatSeed = true;

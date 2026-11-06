@@ -50,7 +50,7 @@ Bilinmesi gerekenler:
 6. **Worldcard ile öde** seç → **Öde** → **Yapı Kredi Mobil ile Onayla** (Face ID simülasyonu)
 7. Başarı ekranı + Worldpuan kazanımı
 
-Diğer uçtan uca akışlar: **Setur otonom senaryosu** (`#setur`), **Karekod ile Öde** (`#springboard`'dan başlar), **Birikim** (Yuvarla / Ekstreden / Maden), **Ödül Yolu**, **Harcama Bölüştür**, **Birlikte Kazan**, **Sky Limit** (taslak — menü → Krediler), **Toplu Borç Ödeme** (taslak — menü → Ödemeler), **Erken Maaş Erişimi** (taslak — arama), **Taşıt Kredisi Marketplace** (taslak — arama).
+Diğer uçtan uca akışlar: **Setur otonom senaryosu** (`#setur`), **Karekod ile Öde** (`#springboard`'dan başlar), **Birikim** (Yuvarla / Ekstreden / Maden), **Ödül Yolu**, **Harcama Bölüştür**, **Birlikte Kazan**, **Sky Limit** (taslak — menü → Krediler), **Toplu Borç Ödeme** (taslak — menü → Ödemeler), **Erken Maaş Erişimi** (taslak — arama), **Marketplace Taşıt** (taslak — arama).
 
 Taslak özellikler ana sayfadaki **"Yapı Kredi Mobil'de Ara"** çubuğundan da açılır: arama ekranında **Önerilenler** altında "YENİ" etiketiyle görünürler; "sky", "limit", "borç", "toplu", "ekstre", "maaş", "avans", "araç", "kasko" gibi kelimelerle aranabilirler (Türkçe karakter yazmadan da eşleşir).
 
@@ -102,14 +102,14 @@ Her bölüm, akışı baştan tekrarlamadan kendi hash linkiyle doğrudan açıl
 | Erken Maaş Erişimi — başvuru özeti ve onay | `#erken-maas-onay` |
 | Erken Maaş Erişimi — işlem sonucu | `#erken-maas-sonuc` |
 | Erken Maaş Erişimi — işlem geçmişi ve geri ödemeler | `#erken-maas-gecmis` |
-| Taşıt Kredisi Marketplace (taslak) — araç arama | `#arac` |
-| Taşıt Marketplace — ilanlar, fiyat karşılaştırma | `#arac-liste` |
-| Taşıt Marketplace — araç detayı | `#arac-detay` |
-| Taşıt Marketplace — kredi ön onayı | `#arac-on-onay` |
-| Taşıt Marketplace — kredi ve ödeme planı | `#arac-kredi` |
-| Taşıt Marketplace — kredi başvurusu ve kullandırım | `#arac-basvuru` |
-| Taşıt Marketplace — kasko teklifleri | `#arac-kasko` |
-| Taşıt Marketplace — teslim ve süreç takibi | `#arac-takip` |
+| Marketplace Taşıt (taslak) — araç arama | `#arac` |
+| Marketplace Taşıt — ilanlar, fiyat karşılaştırma | `#arac-liste` |
+| Marketplace Taşıt — araç detayı | `#arac-detay` |
+| Marketplace Taşıt — kredi ön onayı | `#arac-on-onay` |
+| Marketplace Taşıt — kredi ve ödeme planı | `#arac-kredi` |
+| Marketplace Taşıt — kredi başvurusu ve kullandırım | `#arac-basvuru` |
+| Marketplace Taşıt — kasko teklifleri | `#arac-kasko` |
+| Marketplace Taşıt — teslim ve süreç takibi | `#arac-takip` |
 | Harcama Bölüştür — hub | `#split` |
 | Harcama Bölüştür — harcama seç | `#split-pick` |
 | Harcama Bölüştür — tutar girerek istek | `#split-amount` |
@@ -153,7 +153,7 @@ Maaş müşterisi, bu ayki net maaşının %25'ine (60.000 TL maaşta 15.000 TL)
 - **Koşullar:** tahsis ücreti, faiz, KKDF + BSMV, toplam geri ödeme, tarih ve yöntem; ön bilgilendirme ve sözleşme onayı. **Değerler örnektir** (iş kuralları kesinleşmedi) ve `app.js` içindeki `EWA_TERMS` nesnesinden değiştirilir.
 - **Özet → sonuç:** Face ID ikonlu onay, aktarılan tutar, işlem no, güncel limit. **İşlem geçmişi:** önceki erişimler, geri ödeme durumları (bekliyor / geri ödendi) ve işlem detayı.
 
-### Taşıt Kredisi Marketplace (taslak)
+### Marketplace Taşıt (taslak)
 Araç aramadan kredi kullandırımına ve teslime kadar tek akış; Koç Topluluğu şirketleri üzerinden kurgulandı. Tüm ilanlar Otokoç satış noktalarından gelir (sıfır araçlar Otokoç yetkili bayileri, ikinci el araçlar Otokoç 2. El); kasko teklifleri Allianz Türkiye'den. Demo aracı: Audi A4, 2022, 45.000 km, 2.000.000 TL; peşinat 800.000 TL, kredi 1.200.000 TL, 36 ay. Ana sayfadaki aramadan ("araç", "araba", "taşıt", "kasko", "otokoç") ya da `#arac` ile açılır.
 - **Araç arama:** sıfır / ikinci el, marka, model, en az–en çok fiyat; detaylı filtrelerde araç tipi, model yılı, kilometre, konum ve Otokoç satış noktası. Popüler markalar ve öne çıkan araçlar. Üstteki araç animasyonu bir Lottie animasyonudur (`app/assets/arac-hero.json`): yalnızca bu ekran açıkken oynar, cihazda hareket azaltma açıksa durağan görünür, yüklenemezse araç çizimi gösterilir.
 - **İlanlar:** fotoğraf, yıl, km, fiyat, satıcı ve örnek aylık taksit; fiyat / yıl / km'ye göre sıralama, filtre sayfası, favoriler, 3 araca kadar yan yana karşılaştırma (en avantajlı değer yeşil).
