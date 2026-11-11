@@ -110,14 +110,18 @@ Her bölüm, akışı baştan tekrarlamadan kendi hash linkiyle doğrudan açıl
 | Marketplace Taşıt — kredi başvurusu ve kullandırım | `#arac-basvuru` |
 | Marketplace Taşıt — kasko teklifleri | `#arac-kasko` |
 | Marketplace Taşıt — teslim ve süreç takibi | `#arac-takip` |
-| Marketplace Konut (taslak) — ev arama | `#konut` |
+| Marketplace Konut (taslak) — ev arama (ilk girişte önce tanıtım açılır) | `#konut` |
+| Marketplace Konut — ilk giriş tanıtımı (tanıtımı yeniden gösterir) | `#konut-tanitim` |
+| Marketplace Konut — tahsis bilgileri | `#konut-tahsis` |
+| Marketplace Konut — TAKBİS bilgileri | `#konut-takbis` |
 | Marketplace Konut — ilanlar, fiyat karşılaştırma | `#konut-liste` |
 | Marketplace Konut — konut detayı | `#konut-detay` |
 | Marketplace Konut — konut kredisi simülasyonu | `#konut-kredi` |
 | Marketplace Konut — kredi başvurusu | `#konut-basvuru` |
-| Marketplace Konut — onay ve başvuru takibi (eksik belge durumuyla açılır) | `#konut-takip` |
-| Marketplace Konut — ekspertiz | `#konut-ekspertiz` |
-| Marketplace Konut — şubeden kullandırım ve ipotek | `#konut-ipotek` |
+| Marketplace Konut — başvuru takibi ve nihai onay (ilk değerlendirme sürerken açılır) | `#konut-takip` |
+| Marketplace Konut — ekspertiz (randevusu belirlenmiş, devam ediyor) | `#konut-ekspertiz` |
+| Marketplace Konut — tapu ve ipotek (nihai onaylı başvuruyla açılır) | `#konut-ipotek` |
+| Marketplace Konut — kredi kullandırıldı (süreç tamamlandı) | `#konut-tamam` |
 | Harcama Bölüştür — hub | `#split` |
 | Harcama Bölüştür — harcama seç | `#split-pick` |
 | Harcama Bölüştür — tutar girerek istek | `#split-amount` |
@@ -174,17 +178,33 @@ Araç aramadan kredi kullandırımına ve teslime kadar tek akış; Koç Toplulu
 - İlanlar, satış noktalarının konumları, teminat ayrıntıları, faiz ve primler demo / **örnek** veridir (`app.js` içinde `VM_DEALERS`, `VM_CARS`, `VM_RATE`, `VM_PRE_LIMIT`, `VM_KASKO`). Araç görselleri temsilî çizimlerdir; gerçek fotoğraf eklemek için görseller `app/assets/` içine konur ve ilgili araca `photos: ['assets/…']` yazılır.
 
 ### Marketplace Konut (taslak)
-Ev aramadan tapuda ipotek tesisine ve kredinin satıcıya ödenmesine kadar tek akış. Test senaryosu: İstanbul Kadıköy, daire, 3+1, 2020 yapımı, brüt 135 / net 115 m², 8.000.000 TL; peşinat 3.000.000 TL, kredi 5.000.000 TL, 120 ay. Ana sayfadaki aramadan ("konut", "ev al", "daire", "ipotek", "ekspertiz", "tapu") ya da `#konut` ile açılır.
+Ev aramadan tapuda ipotek tesisine ve kredinin satıcıya ödenmesine kadar tek akış. Test senaryosu: İstanbul Kadıköy, daire, 3+1, 2020 yapımı, brüt 135 / net 115 m², 8.000.000 TL; peşinat 3.000.000 TL, kredi 5.000.000 TL, 120 ay. Tahsis: özel sektör çalışanı, aylık net gelir 150.000 TL. TAKBİS: kendi evi yok, eşinin / çocuğunun 1 adet, hisse %40 → BSMV yok, LTV yüksek, sorgu herkese. Ana sayfadaki aramadan ("konut", "ev al", "daire", "ipotek", "ekspertiz", "tapu", "tahsis", "takbis") ya da `#konut` ile açılır.
+- **İlk giriş:** Marketplace Konut ilk açıldığında ana ekrandan önce kısa bir tanıtım gelir: ev arama, konut karşılaştırma, kredi simülasyonu, başvuru ve değerlendirme takibi; başlamadan önce tahsis bilgilerinin güncelleneceği ve TAKBİS bilgilerinin ilk kez alınacağı anlatılır. **Başla** → Tahsis → TAKBİS → Marketplace ana ekranı. Sonraki girişlerde doğrudan ana ekran açılır. İlk giriş bilgisi yalnızca bellekte tutulur: sayfa yenilenince ya da `#konut-tanitim` açılınca (başvuru yoksa) tanıtım yeniden gösterilir.
+- **Tahsis bilgileri:** kimlik ve temel bilgiler (ad soyad, T.C. kimlik no, doğum tarihi ve yeri, medeni durum, uyruk, telefon, e-posta, adres) salt okunurdur. Meslek ve gelir bilgileri (meslek, unvan, çalışma durumu, işveren, sektör, çalışma süresi, aylık net gelir, eşin geliri, diğer gelir) **Düzenle** ile güncellenir; kaydedilince güncellenen alanlar eski değerleriyle birlikte üstte özetlenir ve **Onayla** ile onaylanır. Test verisinde eşin geliri de 150.000 TL'dir; hane geliri (300.000 TL) simülasyona ve başvuruya taşınır.
+- **TAKBİS bilgileri:** sorular tek tek ve cevaba göre sorulur: (1) ‘Hasarlı’ tipi dışında bir evin var mı? (2) Eşinin ya da çocuğunun var mı? (3) Evin hisse oranı (yalnızca gerektiğinde). Cevaplar Yok / 1 adet / 2 ve üzeri; hisse oranı yüzde olarak yazılır ya da hızlı seçilir. Bir cevap değişince artık geçerli olmayan cevaplar silinir ve sonuç yeniden hesaplanır. Sonuç ekranı cevapları, BSMV, LTV ve TAKBİS sorgu kapsamını gösterir; **Marketplace'e Geç** ile ana ekrana gidilir, bilgiler başvuruda tekrar sorulmaz.
+
+  | # | Kendi evi | Eş / çocuk | Hisse | BSMV | LTV | TAKBİS sorgusu |
+  |---|---|---|---|---|---|---|
+  | 1 | Yok | Yok | – | Yok | Yüksek | Herkese |
+  | 2 | Yok | 1 adet | %50 altı | Yok | Yüksek | Herkese |
+  | 3 | Yok | 1 adet | %50 üstü | Yok | Düşük | Müşteriye |
+  | 4 | Yok | 2 ve üzeri | – | Yok | Düşük | Müşteriye |
+  | 5 | 1 adet | Yok | %50 altı | Var | Yüksek | Herkese |
+  | 6 | 1 adet | Yok | %50 üstü | Var | Düşük | N/A |
+  | 7 | 1 adet | 1 adet | – | Var | Düşük | N/A |
+  | 8 | 2 ve üzeri | – | – | Var | Düşük | N/A |
+
+  Kurallar: müşterinin kendi evi varsa BSMV var. Hanede ev yoksa ya da tek ev ve hisse %50'nin altındaysa LTV yüksek, diğer durumlarda düşük. LTV yüksekse sorgu herkese; BSMV yok ve LTV düşükse müşteriye; BSMV var ve LTV düşükse N/A. Tabloda olmayan "kendi evi 1 adet, eşinin / çocuğunun 2 ve üzeri" durumu bu kurallarla sonuçlanır (BSMV var, LTV düşük, N/A). **Hisse tam %50** için otomatik sonuç üretilmez, "manuel değerlendirme gerekiyor" gösterilir; hesaplamalarda temkinli olarak düşük LTV kullanılır.
 - **Ev arama:** sıfır / ikinci el, şehir ve ilçe, en az–en çok fiyat, oda sayısı; detaylı filtrelerde konut tipi, brüt m² aralığı ve bina yaşı. Popüler lokasyonlar (ilan sayısı, ortalama m² fiyatı), öne çıkan konutlar, yeni ilanlar.
 - **İlanlar:** fotoğraf ve fiyat öne çıkar; başlık, konum, m², oda, bina yaşı, kat, satıcı / emlak ofisi ve örnek aylık taksit. m² fiyatı bölge ortalamasıyla karşılaştırılır. Fiyat, metrekare, m² fiyatı, konum ve yeniliğe göre sıralama, filtre sayfası, favoriler, 3 konuta kadar yan yana karşılaştırma.
 - **Konut detayı:** geniş galeri ve küçük resimler (dış görünüm, salon, mutfak, yatak odası, kat planı), fiyat ve m² fiyatı, brüt / net m², oda, bina yaşı, kat, ısıtma ve diğer özellikler, temsilî konum haritası ve yakın çevre, satıcı / emlak ofisi, favori, **Kredi Simülasyonu Yap**.
-- **Kredi simülasyonu:** peşinat kaydırıcısı ve hızlı %25–50 seçimi (asgari peşinat %25), vade 36 / 60 / 96 / 120 ay; aylık taksit, toplam faiz ve toplam geri ödeme anlık güncellenir (konut kredisinde KKDF ve BSMV alınmaz). Gelir ve mevcut taksitlerle **ödeme kapasitesi** (borç / gelir oranı, örnek üst sınır %50; aşılırsa başvuru yerine önerilen plan gösterilir), en fazla 3 senaryo karşılaştırması, ödeme planı ve tahmini masraflar (tahsis ücreti, ekspertiz, tapu harcı, DASK).
-- **Kredi başvurusu:** müşteri, meslek ve gelir, konut ve başvuru özeti; gerekli belgeler (tapu fotokopisi hemen ya da başvurudan sonra yüklenebilir), üç onay, **Başvuruyu Tamamla**.
-- **Onay ve başvuru takibi:** başvuru no, tarih, durum ve değerlendirme aşaması; başvuru → değerlendirme → onay → ekspertiz göstergesi. Tapu fotokopisi eksikse değerlendirme bu adımda bekler ve **eksik belge bildirimi** çıkar; belge yüklenince kaldığı yerden devam eder. Onaylanan tutar, sonraki adım, belgeler ve bildirim akışı.
-- **Ekspertiz:** talep durumu, uygun gün ve saatten randevu seçimi (ücret onayı; randevu değiştirilebilir), değerleme kuruluşu ve uzmanı, değerleme süreci adımları, rapor durumu; rapor hazır olunca ekspertiz değeri (8.150.000 TL), kredi / değer oranı ve rapor özeti.
-- **Şubeden kullandırım ve ipotek:** onaylanan tutar, kullandırım durumu ve tamamlanacak işlemler: şube randevusu ve sözleşme imzası → DASK poliçesi (Allianz Türkiye, Tek Çekim varsayılan) ve tapu harcı ödemesi → tapu randevusu → tapuda satış ve ipotek tesisi → kredinin satıcıya aktarılması → **süreç tamamlandı** bildirimi. Şube ve tapu müdürlüğü bilgileri, yanında getirilecek belgeler, ipotek durumu ve kullandırım dekontu.
-- **Demo kontrolleri** (takip, ekspertiz ve ipotek ekranlarında) zamana bağlı adımları ilerletir ya da demoyu sıfırlar; tarihler seçilen randevu günlerine göre ilerler. `#konut-takip` eksik belge durumuyla, `#konut-ekspertiz` onaylanmış başvuruyla, `#konut-ipotek` tamamlanmış ekspertizle açılır.
-- İlanlar, emlak ofisleri, değerleme kuruluşu, bölge ortalamaları, faiz, masraflar ve ekspertiz değeri demo / **örnek** veridir (`app.js` içinde `KN_HOMES`, `KN_SELLERS`, `KN_AVG_M2`, `KN_RATE`, `KN_FEES`, `KN_VALUER`). Konut görselleri temsilî çizimlerdir; gerçek fotoğraf eklemek için görseller `app/assets/` içine konur ve ilgili ilana `photos: ['assets/…']` yazılır (galeri sırası: dış görünüm, salon, mutfak, yatak odası, kat planı).
+- **Kredi simülasyonu:** peşinat kaydırıcısı ve hızlı peşinat seçimi, vade 36 / 60 / 96 / 120 ay; aylık taksit, toplam faiz ve toplam geri ödeme anlık güncellenir. Asgari peşinat ve kredi / değer sınırı TAKBİS'teki LTV'ye göre belirlenir (yüksek → en az %25 peşinat, düşük → en az %50); BSMV varsa faize eklenir, KKDF alınmaz. Gelir tahsis bilgilerinden gelir (simülasyonda değiştirilebilir); **ödeme kapasitesi** (borç / gelir oranı, örnek üst sınır %50; aşılırsa başvuru yerine önerilen plan gösterilir), en fazla 3 senaryo karşılaştırması, ödeme planı ve tahmini masraflar (tahsis ücreti, ekspertiz, tapu harcı, DASK).
+- **Kredi başvurusu:** onaylanan tahsis bilgileri ve TAKBİS cevapları / sonuçları otomatik gelir, tekrar sorulmaz (tahsis buradan da düzenlenebilir). Başvuru güvenli kanaldan yapıldığı için müşteri bilgileri maskelenmez; ad soyad ve T.C. kimlik no açık görünür (kurgusal kişi, geçersiz T.C. kimlik no). **Tapu fotokopisini satıcı önceden yüklemiştir:** müşteri belge yüklemez, belge "sistemde mevcut" görünür ve **Görüntüle** ile açılır (yükleyen, tarih, banka kontrolü). Konut ve başvuru özeti, üç onay, **Başvuruyu Tamamla**.
+- **Başvuru takibi ve nihai onay:** başvuru no, tarih, durum, aşama göstergesi (başvuru → değerlendirme → ekspertiz → nihai onay). İlk kredi değerlendirmesi adım adım ilerler; olumlu sonuçlanınca banka ekspertizi başlatır. Ekspertiz raporu yüklenip bankaca onaylanınca **nihai kredi onayı** gösterilir: onaylanan tutar, vade, faiz, BSMV, aylık taksit, toplam geri ödeme, onay durumu ve geçerlilik tarihi. **Tapu ve İpotek Adımlarına Geç** ile devam edilir.
+- **Ekspertiz:** ekspertizi banka başlatır; müşteriye firma seçimi ya da randevu oluşturma adımı gösterilmez. İlk girişte bankanın oluşturduğu talep, atanan değerleme kuruluşu ve uzmanı, randevu tarihi ve saati, "ekspertiz devam ediyor" durumu. Ekrandan çıkıp başvuru takibine (ya da tekrar ekspertize) girildiğinde rapor yüklenmiş ve bankaca onaylanmış görünür: ekspertiz değeri (8.150.000 TL), rapor tarihi, krediye uygunluk, onay durumu ve rapor özeti.
+- **Tapu ve ipotek:** nihai onaydan sonra açılır. Tapu durumu, ipotek tesis durumu, şube ve şube randevusu, gerekli belgeler, kullandırım durumu ve tamamlanacak işlemler: şube randevusu ve sözleşme imzası → DASK poliçesi (Allianz Türkiye, Tek Çekim varsayılan) ve tapu harcı ödemesi → tapu randevusu → tapu devri ve ipotek tesisi → kredinin satıcıya aktarılması → **Konut kredin kullandırıldı** başarı ekranı.
+- **Demo kontrolleri:** ipotek ekranında zamana bağlı adımları ilerletir; takip, ekspertiz ve ipotek ekranlarında demoyu sıfırlar (tanıtım, tahsis ve TAKBİS bilgileri korunur). Doğrudan hash ile açılan ekranlarda tanıtım atlanır, tahsis ve TAKBİS test verileriyle dolar: `#konut-takip` ilk değerlendirme sürerken, `#konut-ekspertiz` randevusu belirlenmiş ekspertizle, `#konut-ipotek` nihai onaylı başvuruyla, `#konut-tamam` tamamlanmış süreçle açılır.
+- İlanlar, emlak ofisleri, değerleme kuruluşu, bölge ortalamaları, faiz, LTV ve BSMV oranları, masraflar, müşteri ve tahsis bilgileri ile ekspertiz değeri demo / **örnek** veridir (`app.js` içinde `KN_HOMES`, `KN_SELLERS`, `KN_AVG_M2`, `KN_RATE`, `KN_LTV` — yüksek %75, düşük %50, `KN_BSMV` — %15, `KN_FEES`, `KN_VALUER`, `KN_PROFILE`, `KN_TAHSIS0`). Konut görselleri temsilî çizimlerdir; gerçek fotoğraf eklemek için görseller `app/assets/` içine konur ve ilgili ilana `photos: ['assets/…']` yazılır (galeri sırası: dış görünüm, salon, mutfak, yatak odası, kat planı).
 
 ### Widget Galerisi
 Tüm YK widget çeşitleri tek ana-ekran yüzeyinde: karekod aksiyon kartı, bakiye, Worldpuan, aylık bütçe donut'u, Kartsız ATM, döviz & altın kurları. Karekodlu widget'lar dokununca ödeme akışını açar.

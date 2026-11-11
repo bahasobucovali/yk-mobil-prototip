@@ -260,13 +260,17 @@ const SECTIONS = [
   { hash: 'arac-kasko', icon: 'insurance', t: 'Taslak — Marketplace Taşıt: Kasko teklifleri', d: 'Allianz Türkiye kasko paketleri: teminat karşılaştırma, poliçe onayı' },
   { hash: 'arac-takip', icon: 'truck', t: 'Taslak — Marketplace Taşıt: Teslim ve süreç takibi', d: 'Kredi, kullandırım, kasko ve teslim durumu tek ekranda' },
   { hash: 'konut', icon: 'home', t: 'Taslak — Marketplace Konut', d: 'Satılık konut ara ve karşılaştır; kredini planla, başvuru, ekspertiz ve tapuyu tek akışta izle' },
+  { hash: 'konut-tanitim', icon: 'spark', t: 'Taslak — Marketplace Konut: İlk giriş tanıtımı', d: 'Hizmet tanıtımı; tahsis ve TAKBİS adımlarından önce (yalnızca ilk girişte)' },
+  { hash: 'konut-tahsis', icon: 'user', t: 'Taslak — Marketplace Konut: Tahsis bilgileri', d: 'Salt okunur kimlik bilgileri; meslek ve gelir bilgisini onayla ya da düzenle' },
+  { hash: 'konut-takbis', icon: 'shield', t: 'Taslak — Marketplace Konut: TAKBİS bilgileri', d: 'Adım adım konut sahipliği soruları; BSMV, LTV ve TAKBİS sorgu kapsamı' },
   { hash: 'konut-liste', icon: 'search', t: 'Taslak — Marketplace Konut: İlanlar ve karşılaştırma', d: 'Filtre, sıralama (fiyat, m², konum), favoriler, bölge ortalamasıyla fiyat karşılaştırma' },
   { hash: 'konut-detay', icon: 'home', t: 'Taslak — Marketplace Konut: Konut detayı', d: 'Geniş galeri, brüt/net m², kat, ısıtma, konum haritası, emlak ofisi' },
   { hash: 'konut-kredi', icon: 'loan', t: 'Taslak — Marketplace Konut: Kredi simülasyonu', d: 'Peşinat ve vadeyle canlı taksit, ödeme kapasitesi, senaryo karşılaştırma, masraflar' },
   { hash: 'konut-basvuru', icon: 'doc', t: 'Taslak — Marketplace Konut: Kredi başvurusu', d: 'Müşteri, gelir, konut ve kredi özeti; gerekli belgeler ve sözleşmeler' },
-  { hash: 'konut-takip', icon: 'shield', t: 'Taslak — Marketplace Konut: Onay ve başvuru takibi', d: 'Değerlendirme aşamaları, eksik belge bildirimi, onaylanan tutar' },
-  { hash: 'konut-ekspertiz', icon: 'pin', t: 'Taslak — Marketplace Konut: Ekspertiz', d: 'Randevu, değerleme uzmanı, rapor durumu, değerleme sonucu ve rapor özeti' },
-  { hash: 'konut-ipotek', icon: 'bank', t: 'Taslak — Marketplace Konut: Kullandırım ve ipotek', d: 'Şube randevusu, DASK ve tapu harcı, tapu devri, ipotek tesisi ve kullandırım' },
+  { hash: 'konut-takip', icon: 'doc', t: 'Taslak — Marketplace Konut: Başvuru takibi ve nihai onay', d: 'İlk değerlendirme, ekspertiz durumu, ekspertiz raporu ve nihai kredi onayı' },
+  { hash: 'konut-ekspertiz', icon: 'pin', t: 'Taslak — Marketplace Konut: Ekspertiz', d: 'Bankanın başlattığı ekspertiz: atanan kuruluş, randevu; sonraki girişte onaylı rapor' },
+  { hash: 'konut-ipotek', icon: 'bank', t: 'Taslak — Marketplace Konut: Tapu ve ipotek', d: 'Şube randevusu, DASK ve tapu harcı, tapu devri, ipotek tesisi ve kullandırım' },
+  { hash: 'konut-tamam', icon: 'check', t: 'Taslak — Marketplace Konut: Kredi kullandırıldı', d: 'Süreç tamamlandı ekranı' },
   { hash: 'search',    icon: 'search',   t: 'Arama',               d: 'Arama ekranı' },
   { hash: 'settings',  icon: 'gear',     t: 'Ayarlar',             d: 'Tema ve bildirimler' },
 ];
@@ -849,7 +853,7 @@ const SEARCH_FEATURES = [
   { hash: 'arac', name: 'Marketplace Taşıt', icon: I.car, sub: 'Aracını bul, kredini ve kaskonu tek akışta tamamla',
     keys: ['araç', 'araba', 'otomobil', 'taşıt', 'taşıt kredisi', 'araç kredisi', 'oto kredi', 'kasko', 'galeri', 'bayi', 'ikinci el', 'sıfır araç', 'marketplace', 'otokoç', 'allianz', 'kredi'] },
   { hash: 'konut', name: 'Marketplace Konut', icon: I.home, sub: 'Evini bul, konut kredini planla; ekspertiz ve tapuyu takip et',
-    keys: ['konut', 'ev al', 'ev kredisi', 'satılık ev', 'satılık daire', 'daire', 'konut kredisi', 'mortgage', 'ipotek', 'ekspertiz', 'emlak', 'tapu', 'dask', 'marketplace', 'kredi'] },
+    keys: ['konut', 'ev al', 'ev kredisi', 'satılık ev', 'satılık daire', 'daire', 'konut kredisi', 'mortgage', 'ipotek', 'ekspertiz', 'emlak', 'tapu', 'dask', 'takbis', 'tahsis', 'marketplace', 'kredi'] },
 ];
 // Turkish-aware and accent-insensitive: "Borç", "borc" and "BORÇ" match alike (keeps string length)
 function searchNorm(s) {
@@ -6885,13 +6889,12 @@ function vmSeed(h) {
    (real photos can be added per listing via `photos`).
    ====================================================================== */
 const KN_RATE = { monthly: 2.29 };      // EXAMPLE monthly interest %; KKDF and BSMV do not apply to housing loans
-const KN_MIN_DOWN = 25;                 // EXAMPLE minimum down payment (% of price)
 const KN_MIN_LOAN = 250000;             // EXAMPLE minimum loan (TL)
 const KN_TERMS = [36, 60, 96, 120];
 const KN_EST = { downPct: 40, term: 120 };   // basis of the "aylık ~" estimates on cards
 const KN_CAP = 50;                      // EXAMPLE: total monthly debt payments should stay under this % of income
 const KN_FEES = { alloc: 0.5, expertise: 4750, deedPct: 2, dask: 2150 };   // EXAMPLE costs: tahsis %, ekspertiz TL, tapu harcı alıcı %, DASK TL
-const KN_FLOW = ['Simülasyon', 'Başvuru', 'Onay', 'Ekspertiz', 'Tapu'];
+const KN_FLOW = ['Simülasyon', 'Başvuru', 'Ekspertiz', 'Onay', 'Tapu'];
 const KN_TYPES = ['Daire', 'Rezidans', 'Müstakil ev', 'Villa'];
 const KN_ROOMS = ['1+1', '2+1', '3+1', '4+1'];   // "4+1" = 4+1 and larger
 const KN_AGES = [['0-5', '0–5 yıl', 0, 5], ['5-10', '6–10 yıl', 6, 10], ['10-20', '11–20 yıl', 11, 20], ['20+', '20 yıl üzeri', 21, 999]];
@@ -6950,8 +6953,11 @@ const KN_HOMES = [
     desc: 'Bağdat Caddesi\'ne yakın, 2022 yapımı binada 1+1. İlk ev ve yatırım için uygun.',
     near: [['Metro', '500 m'], ['Bağdat Cd.', '600 m'], ['Okul', '450 m'], ['Hastane', '1,5 km']] },
 ];
-// Mock customer (masked; matches the mock user elsewhere in the app)
-const KN_PROFILE = { name: 'Selçuk İmre', tckn: '•••••••••42', phone: '0 (5••) ••• •• 24', email: 's•••••@posta.com', address: 'Şişli / İstanbul', job: 'Yazılım mühendisi', work: 'Özel sektör · 8 yıl', account: 'Vadesiz TL Hesabım · TR•••• 4521' };
+// Mock customer shown unmasked inside the bank's secure channel. Fictional data: the T.C. number fails the
+// official checksum and the phone prefix / e-mail domain are not in use, so none of it can belong to a real person.
+const KN_PROFILE = { name: 'Selçuk İmre', tckn: '26419837542', birth: '14.03.1992', birthPlace: 'İstanbul', marital: 'Evli', nationality: 'T.C.', phone: '0 (500) 000 12 24', email: 'selcuk.imre@example.com', address: 'Zincirlidere Cad. No:1 Daire:1 Kat:1, Şişli / İstanbul', account: 'Vadesiz TL Hesabım · TR•••• 4521' };
+// Tahsis (credit allocation) data registered at the bank — editable part (test data: özel sektör, 150.000 TL)
+const KN_TAHSIS0 = { job: 'Özel sektör çalışanı', title: 'Yazılım mühendisi', work: 'Ücretli · tam zamanlı', employer: 'Mavi Bulut Yazılım A.Ş.', sector: 'Bilişim ve teknoloji', tenure: '5 yıldan fazla', income: 150000, spouse: 150000, other: 0 };
 const KN_BRANCH = { name: 'Yapı Kredi Kadıköy Şubesi', district: 'Kadıköy', city: 'İstanbul' };
 const KN_VALUER = { firm: 'Anadolu Gayrimenkul Değerleme A.Ş.', kind: 'SPK lisanslı değerleme kuruluşu', expert: 'Murat Aksoy', title: 'Gayrimenkul değerleme uzmanı' };   // DEMO
 
@@ -6966,14 +6972,17 @@ state.kn = {
   flowHome: 'h1',
   down: 3000000,
   term: 120,
-  income: 300000,      // monthly net household income (editable, simulation)
+  income: 300000,      // monthly net household income in the simulation (from tahsis; editable there)
+  incomeEdited: false, // simulation income typed by hand → tahsis changes no longer overwrite it
   debts: 10000,        // existing monthly loan / card instalments (editable, simulation)
   scen: [],            // saved scenarios [{ label, down, term }]
   agree: { pre: false, contract: false, kvkk: false },
-  tapu: false,         // tapu (title deed) copy uploaded
-  uploading: false,
-  app: null,           // { home, ref, at, status: 'review' | 'docs' | 'approved', step, down, term, loan, pay, total, first, events }
-  eks: null,           // ekspertiz { stage 0 randevu, 1 inspection, 2 report, 3 bank review, 4 done; slot, at, reportNo }
+  ob: { done: false },                     // first-entry onboarding (tanıtım → tahsis → TAKBİS) completed
+  tahsis: { ...KN_TAHSIS0 }, tahsisAt: null, // confirmed tahsis data and time
+  thEdit: false, thDraft: null, thChanged: [], thPrev: null, thPickKey: null,
+  tk: { s1: null, s2: null, s3: null, cur: 's1', at: null, shareDraft: null },   // TAKBİS answers (S3 = share %)
+  app: null,           // { home, ref, at, status: 'review' | 'pre' (first evaluation passed) | 'approved' (final), step, down, term, loan, pay, total, first, events }
+  eks: null,           // ekspertiz, started by the bank { stage 1 appointment set, 4 report uploaded & approved; slot, seen, away, reportNo }
   ipt: null,           // ipotek { stage 0 sign, 1 tapu appointment, 2 tapu & ipotek, 3 disbursement, 4 done; slot, dask, harc, done }
   clock: null,         // demo clock (ms): steps jump to their appointment dates; null = real time
 };
@@ -6993,15 +7002,18 @@ function knVsHTML(h, cls = '') {
   return d < 0 ? `<span class="kn-vs good ${cls}">Bölge ortalamasının %${-d} altında</span>` : `<span class="kn-vs high ${cls}">Bölge ortalamasının %${d} üstünde</span>`;
 }
 function knMn(n) { return (n / 1e6).toLocaleString('tr-TR', { maximumFractionDigits: 2 }) + ' Mn TL'; }
-function knI() { return KN_RATE.monthly / 100; }
+function knI() { const r = KN_RATE.monthly / 100; return knTkEff().bsmv ? r * (1 + KN_BSMV / 100) : r; }   // monthly cost incl. BSMV when TAKBİS applies it
+function knLtvMax() { return knTkEff().ltvMax; }
+function knEstDown() { return Math.max(KN_EST.downPct, 100 - knLtvMax()); }
 function knPay(P, n) { const i = knI(); return P <= 0 ? 0 : P * i / (1 - Math.pow(1 + i, -n)); }
-function knEstimate(h) { return knPay(h.price * (1 - KN_EST.downPct / 100), KN_EST.term); }
+function knEstimate(h) { return knPay(h.price * (1 - knEstDown() / 100), KN_EST.term); }
 function knLoan() { return Math.max(0, knHome().price - state.kn.down); }
-function knDownMin(h = knHome()) { return Math.ceil(h.price * KN_MIN_DOWN / 100 / 10000) * 10000; }
+function knDownMin(h = knHome()) { return Math.ceil(h.price * (100 - knLtvMax()) / 100 / 10000) * 10000; }
 function knDownMax(h = knHome()) { return Math.floor((h.price - KN_MIN_LOAN) / 10000) * 10000; }
 function knQuote(loan = knLoan(), n = state.kn.term) {
-  const pay = knPay(loan, n), total = pay * n;
-  return { loan, n, pay, total, interest: total - loan };
+  const pay = knPay(loan, n), total = pay * n, cost = total - loan;
+  const tax = knTkEff().bsmv ? cost - cost / (1 + KN_BSMV / 100) : 0;   // BSMV is charged on the interest part
+  return { loan, n, pay, total, interest: cost - tax, tax };
 }
 function knPlanRows(P, n, first) {   // first: Date of the first instalment (default: a month from today)
   const i = knI(), pay = knPay(P, n), rows = [], now = new Date(), day = Math.min((first || now).getDate(), 28);
@@ -7316,6 +7328,7 @@ function knSkylineSVG() {
 
 /* -------------------- Screen 1 — home search (marketplace home) -------------------- */
 function KnHome() {
+  if (!state.kn.ob.done) { state.screen = 'konut-tanitim'; return KnIntro(); }   // first entry: onboarding first
   const v = state.kn, feat = KN_HOMES.filter(h => h.featured);
   const newest = KN_HOMES.slice().sort((a, b) => a.days - b.days).slice(0, 3);
   return `
@@ -7461,10 +7474,9 @@ function knRowHTML(h) {
 function knStageLabel() {
   const v = state.kn, a = v.app;
   if (!a) return '';
-  if (a.status === 'docs') return 'Eksik belge bekleniyor';
-  if (a.status !== 'approved') return 'Başvurun değerlendiriliyor';
-  if (!v.eks || v.eks.stage < 4) return 'Ekspertiz süreci';
-  if (!v.ipt || v.ipt.stage < 4) return 'Tapu ve ipotek süreci';
+  if (a.status === 'review') return 'Başvurun değerlendiriliyor';
+  if (a.status === 'pre') return v.eks && v.eks.seen ? 'Ekspertiz raporun yüklendi' : 'Ekspertiz devam ediyor';
+  if (!v.ipt || v.ipt.stage < 4) return 'Nihai onay verildi · tapu ve ipotek süreci';
   return 'Süreç tamamlandı';
 }
 function knOngoingHTML() {
@@ -7494,7 +7506,7 @@ function KnList() {
     <div id="kn-active-wrap">${knActiveHTML()}</div>
     <div class="screen-scroll">
       <div id="kn-list">${knListHTML(r)}</div>
-      <div class="vm-note">${I.info}<span>Aylık taksitler %${KN_EST.downPct} peşinat, ${KN_EST.term} ay vade ve örnek faiz oranıyla hesaplanmıştır. Bölge ortalamaları brüt m² fiyatına göre demo verisidir.</span></div>
+      <div class="vm-note">${I.info}<span>Aylık taksitler %${knEstDown()} peşinat, ${KN_EST.term} ay vade ve örnek faiz oranıyla hesaplanmıştır. Bölge ortalamaları brüt m² fiyatına göre demo verisidir.</span></div>
     </div>
     <div class="vm-cmpbar ${v.cmp.length ? 'show' : ''}" id="kn-cmpbar">${knCmpBarHTML()}</div>
   </div>`;
@@ -7585,7 +7597,7 @@ function knCompareSheet() {
         ${row('Satıcı', h => knSeller(h).name + '<br><i>' + knSeller(h).kind + '</i>')}
       </tbody>
     </table></div>
-    <div class="vm-cmp-note">* %${KN_EST.downPct} peşinat, ${KN_EST.term} ay, örnek faiz. Yeşil: en avantajlı değer.</div>
+    <div class="vm-cmp-note">* %${knEstDown()} peşinat, ${KN_EST.term} ay, örnek faiz. Yeşil: en avantajlı değer.</div>
     <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`;
   sheetEl.classList.add('open');
   sheetScrimEl.classList.add('open');
@@ -7627,7 +7639,7 @@ function KnDetail() {
           <div><span>Oda</span><b>${h.rooms}</b></div>
           <div><span>Bina yaşı</span><b>${knAge(h) || 'Sıfır'}</b></div>
         </div>
-        <button class="vm-d-fin" data-action="kn-start-sim"><span>Konut kredisiyle aylık <b>~${vmTL(knEstimate(h))}</b>'den</span><em>%${KN_EST.downPct} peşinat · ${KN_EST.term} ay · örnek</em>${I.chevR}</button>
+        <button class="vm-d-fin" data-action="kn-start-sim"><span>Konut kredisiyle aylık <b>~${vmTL(knEstimate(h))}</b>'den</span><em>%${knEstDown()} peşinat · ${KN_EST.term} ay · örnek</em>${I.chevR}</button>
       </div>
       <div class="vm-box">
         <div class="vm-box-h">Konut bilgileri</div>
@@ -7713,11 +7725,10 @@ function knInitFlow(h) {
   if (v.flowHome === h.id) return;
   v.flowHome = h.id;
   const demo = h.id === KN_DEMO.home;
-  v.down = demo ? KN_DEMO.down : Math.min(knDownMax(h), Math.max(knDownMin(h), Math.round(h.price * KN_EST.downPct / 100 / 10000) * 10000));
+  v.down = Math.min(knDownMax(h), Math.max(knDownMin(h), demo ? KN_DEMO.down : Math.round(h.price * knEstDown() / 100 / 10000) * 10000));
   v.term = demo ? KN_DEMO.term : KN_EST.term;
   v.scen = [];
   v.agree = { pre: false, contract: false, kvkk: false };
-  v.tapu = false;
 }
 /* Highest loan the stated income carries over n months (EXAMPLE rule, see KN_CAP) */
 function knMaxLoan(n = state.kn.term) {
@@ -7767,6 +7778,7 @@ function KnSim() {
       <div class="vm-sec-t">Ödeme kapasiten</div>
       <div class="vm-box kn-cap">
         <div class="kn-cap-in">${money('kn-inc', 'Aylık net hane geliri', v.income)}${money('kn-debt', 'Mevcut aylık kredi ve kart taksitleri', v.debts)}</div>
+        <div class="kn-cap-src" id="kn-cap-src">${knCapSrcHTML()}</div>
         <div id="kn-cap-res" aria-live="polite">${knCapHTML()}</div>
       </div>
       <div class="vm-sec-t vm-sec-row"><span>Senaryo karşılaştırma</span><button class="sp-link" data-action="kn-scen-save">${I.plus}Bu planı kaydet</button></div>
@@ -7775,7 +7787,7 @@ function KnSim() {
       <div class="vm-box vm-plan" id="kn-plan-prev">${knPlanPrevHTML()}</div>
       <div class="vm-sec-t">Tahmini masraflar</div>
       <div class="vm-box kn-fees" id="kn-fees">${knFeesHTML()}</div>
-      <div class="vm-note">${I.info}<span>Hesaplamalar örnek faiz oranıyla (aylık %${vmPctStr(KN_RATE.monthly)}) yapılmıştır; konut kredilerinde KKDF ve BSMV alınmaz. Sonuçlar gerçek kredi koşullarını yansıtmaz.</span></div>
+      <div class="vm-note">${I.info}<span>Hesaplamalar örnek faiz oranıyla (aylık %${vmPctStr(KN_RATE.monthly)}) yapılmıştır; konut kredilerinde KKDF alınmaz, BSMV ve kredi / değer sınırı TAKBİS sonucuna göre belirlenir. Sonuçlar gerçek kredi koşullarını yansıtmaz.</span></div>
     </div>
     <div class="screen-cta">
       <button class="btn-primary" data-action="kn-to-apply">Kredi Başvurusuna Geç</button>
@@ -7784,12 +7796,13 @@ function KnSim() {
 }
 function knPctsHTML() {
   const v = state.kn, h = knHome();
-  return [25, 30, 40, 50].map(x => `<button class="vm-pct ${vmPct(v.down, h.price) === x ? 'on' : ''}" data-action="kn-pct" data-v="${x}">%${x}</button>`).join('');
+  const m = 100 - knLtvMax();
+  return [m, m + 5, m + 15, m + 25].map(x => `<button class="vm-pct ${vmPct(v.down, h.price) === x ? 'on' : ''}" data-action="kn-pct" data-v="${x}">%${x}</button>`).join('');
 }
 function knLtvHTML() {
-  const h = knHome(), ltv = vmPct(knLoan(), h.price), max = 100 - KN_MIN_DOWN;
+  const h = knHome(), ltv = vmPct(knLoan(), h.price), max = knLtvMax(), eff = knTkEff();
   return `<div class="kn-meter"><i style="width:${Math.min(100, ltv)}%"></i><b style="left:${max}%"></b></div>
-    <div class="kn-meter-l"><span>Kredi / konut fiyatı <b>%${ltv}</b></span><span>En fazla %${max} ${vmEx()}</span></div>`;
+    <div class="kn-meter-l"><span>Kredi / konut fiyatı <b>%${ltv}</b></span><span>En fazla %${max} · LTV ${eff.manual ? 'manuel' : eff.ltv.toLocaleLowerCase('tr')} ${vmEx()}</span></div>`;
 }
 function knTermsHTML() {
   const v = state.kn, loan = knLoan();
@@ -7805,7 +7818,8 @@ function knResHTML() {
       <div><span>Kredi tutarı</span><b>${vmTL(q.loan)}</b></div>
       <div><span>Aylık faiz oranı ${vmEx()}</span><b>%${vmPctStr(KN_RATE.monthly)}</b></div>
       <div><span>Toplam faiz</span><b>${vmTL(q.interest)}</b></div>
-      <div><span>KKDF ve BSMV</span><b>Alınmaz</b></div>
+      <div><span>KKDF</span><b>Alınmaz</b></div>
+      <div><span>BSMV<i class="vm-sub">TAKBİS sonucu${knTkEff().manual ? ' · manuel değerlendirme' : ''}</i></span><b>${q.tax ? vmTL(q.tax) : 'Alınmaz'}</b></div>
       <div class="hl"><span>Toplam geri ödeme</span><b>${vmTL(q.total)}</b></div>
       <div><span>Konut için toplam ödeme<i class="vm-sub">Peşinat + toplam geri ödeme</i></span><b>${vmTL(v.down + q.total)}</b></div>
     </div>`;
@@ -7827,6 +7841,12 @@ function knCapHTML() {
       <div><span>Önerilen en yüksek yeni taksit</span><b>${vmTL(c.room)}</b></div>
       <div><span>Bu gelirle en yüksek kredi · ${v.term} ay</span><b>${vmTL(knMaxLoan())}</b></div>
     </div>`;
+}
+/* Where the household income comes from: the confirmed tahsis data (unless typed here) */
+function knCapSrcHTML() {
+  const v = state.kn, t = v.tahsis;
+  if (v.incomeEdited) return `${I.info}<span>Hane gelirini bu simülasyon için değiştirdin; tahsis bilgilerine göre ${vmTL(knHouseIncome())}.</span>`;
+  return `${I.info}<span>Tahsis bilgilerinden: gelirin ${vmTL(t.income)}${t.spouse ? ` + eşinin geliri ${vmTL(t.spouse)}` : ''}${t.other ? ` + diğer gelir ${vmTL(t.other)}` : ''}.</span>`;
 }
 function knScenHTML() {
   const v = state.kn, h = knHome();
@@ -7873,6 +7893,7 @@ function knSetupSim() {
     if (!el) return;
     vmMoneyInput(el, val => {
       state.kn[k] = val;
+      if (k === 'income') state.kn.incomeEdited = val !== knHouseIncome();
       el.value = val ? val.toLocaleString('tr-TR') : (k === 'debts' ? '0' : '');
       knSimUpdate();
     });
@@ -7881,7 +7902,7 @@ function knSetupSim() {
 function knSetDown(raw) {
   const v = state.kn, h = knHome(), lo = knDownMin(h), hi = knDownMax(h);
   let d = Math.round(raw) || 0, warn = '';
-  if (d < lo) { d = lo; warn = `Peşinat en az ${vmTL(lo)} olabilir; asgari peşinat oranı %${KN_MIN_DOWN}.`; }
+  if (d < lo) { d = lo; warn = `Peşinat en az ${vmTL(lo)} olabilir; TAKBİS sonucuna göre asgari peşinat oranı %${100 - knLtvMax()}.`; }
   else if (d > hi) { d = hi; warn = `Peşinat en fazla ${vmTL(hi)} olabilir; en düşük kredi tutarı ${vmTL(KN_MIN_LOAN)}.`; }
   v.down = d;
   knSimUpdate();
@@ -7905,6 +7926,7 @@ function knSimUpdate() {
   set('kn-terms', knTermsHTML());
   set('kn-res', knResHTML());
   set('kn-cap-res', knCapHTML());
+  set('kn-cap-src', knCapSrcHTML());
   set('kn-scen', knScenHTML());
   set('kn-plan-prev', knPlanPrevHTML());
   set('kn-fees', knFeesHTML());
@@ -7937,8 +7959,8 @@ function knPlanSheet() {
     <div class="sheet-handle"></div>
     <div class="sheet-bar"><h3>Ödeme planı</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
     <div class="vm-ps-sum"><div><span>Kredi tutarı</span><b>${vmTL(loan)}</b></div><div><span>Aylık taksit</span><b>${vmTL(q.pay)}</b></div><div><span>Toplam geri ödeme</span><b>${vmTL(q.total)}</b></div></div>
-    <div class="vm-ps">${rows.map(r => `<div class="vm-ps-r"><span class="vm-ps-n">${r.k}</span><div><b>${r.date}</b><span>Anapara ${vmTL(r.princ)}</span><span>Faiz ${vmTL(r.cost)}</span></div><div class="vm-ps-amt"><b>${vmTL(r.pay)}</b><span>Kalan ${vmTL(r.bal)}</span></div></div>`).join('')}</div>
-    <div class="vm-cmp-note">Örnek faiz oranıyla hesaplanmıştır; konut kredilerinde KKDF ve BSMV alınmaz. ${a && a.first ? `İlk taksit ${a.first}.` : 'Tarihler kullandırım gününe göre kesinleşir.'}</div>
+    <div class="vm-ps">${rows.map(r => `<div class="vm-ps-r"><span class="vm-ps-n">${r.k}</span><div><b>${r.date}</b><span>Anapara ${vmTL(r.princ)}</span><span>Faiz${knTkEff().bsmv ? ' ve BSMV' : ''} ${vmTL(r.cost)}</span></div><div class="vm-ps-amt"><b>${vmTL(r.pay)}</b><span>Kalan ${vmTL(r.bal)}</span></div></div>`).join('')}</div>
+    <div class="vm-cmp-note">Örnek faiz oranıyla hesaplanmıştır; konut kredilerinde KKDF alınmaz${knTkEff().bsmv ? `, faize %${KN_BSMV} BSMV eklenir (TAKBİS)` : ', BSMV alınmaz (TAKBİS)'}. ${a && a.first ? `İlk taksit ${a.first}.` : 'Tarihler kullandırım gününe göre kesinleşir.'}</div>
     <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`;
   sheetEl.classList.add('open');
   sheetScrimEl.classList.add('open');
@@ -7973,13 +7995,15 @@ function knSugApply(down, term) {
 const KN_AGREE = [
   ['pre', 'Konut Kredisi Ön Bilgilendirme Formu', '\'nu okudum.'],
   ['contract', 'Konut Kredisi Sözleşmesi', '\'ni okudum, onaylıyorum.'],
-  ['kvkk', 'Aydınlatma Metni', '\'ni okudum; değerlendirme için KKB sorgusu yapılmasını onaylıyorum.'],
+  ['kvkk', 'Aydınlatma Metni', '\'ni okudum; değerlendirme için KKB ve TAKBİS sorgusu yapılmasını onaylıyorum.'],
 ];
 function KnApply() {
-  const v = state.kn, h = knHome(), p = KN_PROFILE, s = knSeller(h);
+  const v = state.kn, h = knHome(), p = KN_PROFILE, s = knSeller(h), t = v.tahsis;
   if (v.app) { state.screen = 'konut-takip'; return KnTrack(); }
+  if (!v.ob.done) { state.screen = 'konut-tanitim'; return KnIntro(); }
   knInitFlow(h);
-  const q = knQuote(), g = v.agree, all = g.pre && g.contract && g.kvkk;
+  const q = knQuote(), g = v.agree, all = g.pre && g.contract && g.kvkk, r = knTkResult(), eff = knTkEff();
+  const ro = [['Ad soyad', p.name], ['T.C. kimlik no', p.tckn], ['Doğum tarihi', p.birth], ['Medeni durum', p.marital], ['Cep telefonu', p.phone], ['E-posta', p.email], ['İkamet adresi', p.address]];
   return `
   <div class="screen ${vmAnim()} vm kn">
     ${vmNav('Konut Kredisi Başvurusu')}
@@ -7987,20 +8011,23 @@ function KnApply() {
       ${knFlowHTML(1)}
       ${knMiniHTML(h)}
       <div class="vm-sec-t">Müşteri bilgileri</div>
+      <div class="kn-secure">${I.lock}<span>Yapı Kredi Mobil'in güvenli kanalındasın; bilgilerin maskelenmeden gösterilir.</span></div>
+      <div class="vm-box vm-prof">${ro.map(([k, val]) => `<div class="vm-frow"><span>${k}</span><b>${val}</b></div>`).join('')}</div>
+      <div class="vm-sec-t vm-sec-row"><span>Tahsis bilgileri</span><button class="sp-link" data-action="kn-th-open-edit">Düzenle</button></div>
       <div class="vm-box vm-prof">
-        <div class="vm-frow"><span>Ad soyad</span><b>${p.name}</b></div>
-        <div class="vm-frow"><span>T.C. kimlik no</span><b>${p.tckn}</b></div>
-        <div class="vm-frow"><span>Cep telefonu</span><b>${p.phone}</b></div>
-        <div class="vm-frow"><span>E-posta</span><b>${p.email}</b></div>
-        <div class="vm-frow"><span>İkamet adresi</span><b>${p.address}</b></div>
+        <div class="kn-src">${I.check}<span>Onayladığın bilgiler${v.tahsisAt ? ` · ${v.tahsisAt}` : ''}</span></div>
+        ${KN_TH_FIELDS.map(([k, label]) => `<div class="vm-frow"><span>${label}</span><b>${knThVal(k, t[k])}</b></div>`).join('')}
+        <div class="vm-frow kn-th-sum"><span>Aylık net hane geliri</span><b>${vmTL(knHouseIncome(t))}</b></div>
+        <div class="vm-frow"><span>Mevcut aylık taksitler<i class="vm-sub">Simülasyonda belirttiğin</i></span><b>${vmTL(v.debts)}</b></div>
       </div>
-      <div class="vm-sec-t">Meslek ve gelir</div>
-      <div class="vm-box vm-prof">
-        <div class="vm-frow"><span>Meslek</span><b>${p.job}</b></div>
-        <div class="vm-frow"><span>Çalışma durumu</span><b>${p.work}</b></div>
-        <div class="vm-frow"><span>Aylık net hane geliri (beyan)</span><b>${vmTL(v.income)}</b></div>
-        <div class="vm-frow"><span>Mevcut aylık taksitler</span><b>${vmTL(v.debts)}</b></div>
-        <button class="sp-link vm-prof-edit" data-action="kn-edit-plan">Gelir bilgini düzenle ${I.chevR}</button>
+      <div class="vm-sec-t">TAKBİS bilgileri</div>
+      <div class="vm-box vm-prof kn-tk-app">
+        <div class="kn-src">${I.check}<span>İlk girişte alındı${v.tk.at ? ` · ${v.tk.at}` : ''} · tekrar sorulmaz</span></div>
+        <div class="vm-frow"><span>Kendi konut sahipliği<i class="vm-sub">‘Hasarlı’ tipi dışındaki evler</i></span><b>${knTkAns('s1')}</b></div>
+        <div class="vm-frow"><span>Eş / çocuk konut sahipliği</span><b>${knTkAns('s2')}</b></div>
+        <div class="vm-frow"><span>Hisse oranı</span><b>${knTkAns('s3')}</b></div>
+        ${knTkResultRows(r).map(([k, val]) => `<div class="vm-frow ${r && r.manual ? 'kn-man' : 'kn-res-row'}"><span>${k}</span><b>${val}</b></div>`).join('')}
+        ${r && r.manual ? `<div class="kn-cap-v edge">${I.info}<span><b>TAKBİS sonucu manuel değerlendirmede.</b> Başvurun bu bilgiyle değerlendirmeye alınır; simülasyon düşük LTV varsayımıyla yapıldı.</span></div>` : ''}
       </div>
       <div class="vm-sec-t">Konut bilgileri</div>
       <div class="vm-box vm-prof">
@@ -8016,46 +8043,47 @@ function KnApply() {
         <div class="r-row"><span class="r-l">Konut fiyatı</span><span class="r-r">${vmTL(h.price)}</span></div>
         <div class="r-row"><span class="r-l">Peşinat<i class="vm-sub">Satıcıya senin tarafından ödenir</i></span><span class="r-r">${vmTL(v.down)}</span></div>
         <div class="r-row hl"><span class="r-l">Kredi tutarı</span><span class="r-r">${vmTL(q.loan)}</span></div>
-        <div class="r-row"><span class="r-l">Kredi / konut fiyatı</span><span class="r-r">%${vmPct(q.loan, h.price)}</span></div>
+        <div class="r-row"><span class="r-l">Kredi / konut fiyatı</span><span class="r-r">%${vmPct(q.loan, h.price)} · en fazla %${eff.ltvMax}</span></div>
         <div class="r-row"><span class="r-l">Vade</span><span class="r-r">${v.term} ay</span></div>
         <div class="r-row"><span class="r-l">Aylık taksit ${vmEx()}</span><span class="r-r">${vmTL(q.pay)}</span></div>
         <div class="r-row"><span class="r-l">Toplam geri ödeme</span><span class="r-r">${vmTL(q.total)}</span></div>
         <div class="r-row"><span class="r-l">Aylık faiz oranı ${vmEx()}</span><span class="r-r">%${vmPctStr(KN_RATE.monthly)}</span></div>
+        <div class="r-row"><span class="r-l">BSMV</span><span class="r-r">${eff.bsmv ? `Uygulanır · %${KN_BSMV}` : 'Alınmaz'}</span></div>
         <div class="r-row"><span class="r-l">Taksit ödemesi</span><span class="r-r">Vadesiz TL Hesabım'dan otomatik</span></div>
         <div class="r-row"><span class="r-l">Kullandırım</span><span class="r-r">Tapuda ipotek tesisinden sonra satıcıya</span></div>
       </div>
       <div class="vm-sec-t">Gerekli belgeler</div>
       <div class="vm-box vm-docl" id="kn-docs">${knDocsHTML()}</div>
       <div class="vm-sec-t">Sözleşmeler ve onaylar</div>
-      <div class="vm-docs">${KN_AGREE.map(([k, t, tail]) => `
+      <div class="vm-docs">${KN_AGREE.map(([k, tt, tail]) => `
         <label class="contract-row ${g[k] ? 'on' : ''}" data-action="kn-agree" data-key="${k}">
           <span class="cbx">${I.check}</span>
-          <span class="contract-txt"><a data-action="kn-doc" data-doc="${k}">${t}</a>${tail}</span>
+          <span class="contract-txt"><a data-action="kn-doc" data-doc="${k}">${tt}</a>${tail}</span>
         </label>`).join('')}</div>
-      <div class="vm-note">${I.info}<span>Başvurunu tamamladığında kredi değerlendirmesi başlar. Onaydan sonra ekspertiz yapılır; kredi, şubede sözleşme imzası ve tapuda ipotek tesisinden sonra satıcıya ödenir.</span></div>
+      <div class="vm-note">${I.info}<span>Başvurunu tamamladığında ilk kredi değerlendirmesi başlar. Olumlu sonuçlanırsa bankamız ekspertizi başlatır; nihai onay ekspertiz raporundan sonra verilir. Kredi, şubede sözleşme imzası ve tapuda ipotek tesisinden sonra satıcıya ödenir.</span></div>
     </div>
     <div class="screen-cta">
       <button class="btn-primary vm-approve ${all ? '' : 'disabled'}" id="kn-submit" data-action="kn-submit">${I.faceid} Başvuruyu Tamamla</button>
     </div>
   </div>`;
 }
-/* Documents of the journey with their state: ok · up (can upload) · miss (blocking) · req (requested) · later */
+/* Documents of the journey with their state: ok · seller (uploaded by the seller, viewable) · req (requested) · later */
 function knDocs() {
-  const v = state.kn, a = v.app, e = v.eks, p = v.ipt;
+  const v = state.kn, a = v.app, e = v.eks, p = v.ipt, h = a ? knHome(a.home) : knHome();
   return [
     { k: 'id', t: 'Kimlik bilgileri', d: 'Nüfus kayıtlarından doğrulandı', s: 'ok' },
-    { k: 'inc', t: 'Gelir belgesi', d: 'e-Devlet SGK kaydı ve maaş hareketlerinle doğrulandı', s: 'ok' },
-    { k: 'tapu', t: 'Tapu fotokopisi', d: v.tapu ? 'Yüklendi · satıcıdan alınan tapu' : a ? 'Değerlendirmenin sürmesi için gerekli' : 'Satıcıdan alıp yükle; başvurudan sonra da ekleyebilirsin', s: v.tapu ? 'ok' : a ? 'miss' : 'up' },
-    { k: 'eks', t: 'Ekspertiz raporu', d: e && e.stage >= 3 ? `Bankaya iletildi · ${e.reportNo}` : e ? 'Banka tarafından talep edildi' : 'Onaydan sonra banka talep eder', s: e && e.stage >= 3 ? 'ok' : e ? 'req' : 'later' },
+    { k: 'inc', t: 'Gelir bilgisi', d: 'Onayladığın tahsis bilgileri · SGK kaydıyla doğrulanır', s: 'ok' },
+    { k: 'tapu', t: 'Tapu fotokopisi', d: `Satıcı tarafından yüklendi · ${knTapuDoc(h).at}`, s: 'seller' },
+    { k: 'eks', t: 'Ekspertiz raporu', d: e && e.stage >= 4 ? `Yüklendi, bankamızca onaylandı · ${e.reportNo}` : e ? 'Değerleme kuruluşu hazırlıyor' : 'İlk değerlendirmeden sonra bankamız talep eder', s: e && e.stage >= 4 ? 'ok' : e ? 'req' : 'later' },
     { k: 'dask', t: 'DASK poliçesi', d: p && p.dask ? `Allianz Türkiye · ${p.dask.no}` : 'Tapu işleminden önce gerekir', s: p && p.dask ? 'ok' : 'later' },
   ];
 }
 function knDocsHTML() {
   const pill = x => x.s === 'ok' ? `<span class="vm-pill ok sm">${I.check}Hazır</span>`
+    : x.s === 'seller' ? '<button class="kn-view" data-action="kn-tapu-doc">Görüntüle</button>'
     : x.s === 'req' ? '<span class="vm-pill on sm">Talep edildi</span>'
-    : x.s === 'later' ? '<span class="vm-pill sm kn-later">Sonra</span>'
-    : `<button class="kn-up ${x.s === 'miss' ? 'miss' : ''}" data-action="kn-upload">${state.kn.uploading ? '<span class="vm-spin"></span>Yükleniyor' : KN_ICO.upload + 'Yükle'}</button>`;
-  return knDocs().map(x => `<div class="${x.s === 'miss' ? 'miss' : ''}"><span class="vm-docl-ico">${I.doc}</span><div><b>${x.t}</b><span>${x.d}</span></div>${pill(x)}</div>`).join('');
+    : '<span class="vm-pill sm kn-later">Sonra</span>';
+  return knDocs().map(x => `<div><span class="vm-docl-ico">${I.doc}</span><div><b>${x.t}${x.s === 'seller' ? '<em class="kn-insys">Sistemde mevcut</em>' : ''}</b><span>${x.d}</span></div>${pill(x)}</div>`).join('');
 }
 function knToggleAgree(el) {
   const v = state.kn, k = el.dataset.key;
@@ -8070,9 +8098,11 @@ function knEditPlan() {
   go('konut-kredi');
 }
 function knEvent(a, t, d, kind = 'info') { a.events.unshift({ t, d, kind, at: knStamp() }); }
+/* The application keeps a copy of the confirmed tahsis data and the TAKBİS answers and results */
 function knMakeApp(status) {
   const v = state.kn, h = knHome(), q = knQuote();
-  const a = { home: h.id, status, step: 0, ref: vmRef('KK'), at: knStamp(), approvedAt: null, until: null, first: null, firstTs: null, down: v.down, term: v.term, loan: q.loan, pay: q.pay, total: q.total, income: v.income, missing: !v.tapu, events: [] };
+  const a = { home: h.id, status, step: 0, ref: vmRef('KK'), at: knStamp(), preAt: null, approvedAt: null, until: null, first: null, firstTs: null, finalSeen: false,
+    down: v.down, term: v.term, loan: q.loan, pay: q.pay, total: q.total, tax: q.tax, tahsis: { ...v.tahsis }, tk: { s1: v.tk.s1, s2: v.tk.s2, s3: v.tk.s3 }, tkResult: knTkResult(), events: [] };
   knEvent(a, 'Başvurun alındı', `Konut kredisi başvurusu · ${a.ref}`);
   return a;
 }
@@ -8092,123 +8122,149 @@ function knSubmit() {
     knStartReview();
   }, 1300);
 }
-/* Upload simulation for the tapu copy; a waiting evaluation continues where it stopped */
-function knUpload() {
-  const v = state.kn;
-  if (v.tapu || v.uploading) return;
-  v.uploading = true;
-  document.querySelectorAll('[data-action="kn-upload"]').forEach(b => {
-    b.innerHTML = '<span class="vm-spin"></span>Yükleniyor';
-    b.classList.add('busy');
-  });
-  setTimeout(() => {
-    v.uploading = false;
-    v.tapu = true;
-    const a = v.app;
-    if (a) {
-      a.missing = false;
-      knEvent(a, 'Belge alındı: Tapu fotokopisi', a.status === 'docs' ? 'Değerlendirmen kaldığı yerden devam ediyor' : 'Değerlendirmede kullanılacak', 'ok');
-      if (a.status === 'docs') a.status = 'review';
-    }
-    toast('Tapu fotokopisi yüklendi');
-    if (state.screen === 'konut-basvuru') { const el = document.getElementById('kn-docs'); if (el) el.innerHTML = knDocsHTML(); }
-    knRefresh();
-    if (a) knStartReview();
-  }, 1300);
-}
-/* -------------------- Screen 6 — approval & application tracking -------------------- */
-const KN_REVIEW = ['Kimlik ve gelir bilgilerin doğrulanıyor', 'Kredi geçmişin (KKB) inceleniyor', 'Konut ve tapu bilgileri kontrol ediliyor', 'Kredi kararı veriliyor'];
-const KN_PHASES = ['Kimlik ve gelir kontrolü', 'Kredi geçmişi (KKB)', 'Konut ve tapu kontrolü', 'Kredi kararı'];
+/* -------------------- Screen 6 — evaluation, ekspertiz status, final approval (application tracking) -------------------- */
+const KN_REVIEW = ['Kimlik ve tahsis bilgilerin doğrulanıyor', 'Kredi geçmişin (KKB) inceleniyor', 'Konut, tapu ve TAKBİS bilgileri kontrol ediliyor', 'İlk kredi değerlendirmesi yapılıyor'];
+const KN_PHASES = ['Kimlik ve tahsis kontrolü', 'Kredi geçmişi (KKB)', 'Konut, tapu ve TAKBİS', 'İlk kredi değerlendirmesi'];
 const KN_REVIEW_MS = [1100, 1500, 1300, 1200];
-const KN_TAPU_STEP = 2;   // the tapu check waits for the tapu copy
 function knStartReview() {
   const a = state.kn.app;
   if (!a || a.status !== 'review' || a.running) return;
   a.running = true;
-  const gate = a.missing ? KN_TAPU_STEP : KN_REVIEW.length;
-  vmRunChecks(a, 'step', gate, 'kn-rv-', KN_REVIEW_MS, () => {
+  vmRunChecks(a, 'step', KN_REVIEW.length, 'kn-rv-', KN_REVIEW_MS, () => {
     a.running = false;
-    if (state.kn.app !== a) return;             // demo was reset meanwhile
-    if (a.step < KN_REVIEW.length) {
-      if (!a.missing) return knStartReview();   // the document arrived meanwhile
-      a.status = 'docs';
-      knEvent(a, 'Eksik belge: Tapu fotokopisi', 'Değerlendirmenin devam etmesi için tapu fotokopisini yükle', 'warn');
-      knRefresh();
-      return toast('Başvurun için eksik belge var');
-    }
-    knApprove(a);
+    if (state.kn.app !== a) return;   // demo was reset meanwhile
+    knPreApprove(a);
   }, () => { const el = document.getElementById('kn-phase'); if (el) el.textContent = knPhase(); });
 }
-function knNewEks() { return { stage: 0, ref: vmRef('EKS'), at: knStamp(), slot: null, slotTs: null, pick: null, pickTs: null, edit: false, paidAt: null, eta: null, etaTs: null, reportNo: null, reportAt: null }; }
+/* The bank creates the ekspertiz request itself: valuer assigned, appointment set (no choice for the customer) */
+function knNewEks() {
+  const slot = knAt(knBizDays(1, 2)[0], '10:30');
+  return { stage: 1, ref: vmRef('EKS'), at: knStamp(), slot: knSlotLabel(slot, '10:30'), slotTs: slot.getTime(), seen: false, away: false, fresh: false, reportNo: null, reportAt: null, okAt: null };
+}
 function knNewIpt() { return { stage: 0, slot: null, slotTs: null, pick: null, pickTs: null, signedAt: null, dask: null, daskInst: 1, harc: null, tslot: null, tslotTs: null, tpick: null, tpickTs: null, tapuAt: null, disbAt: null, disbRef: null }; }
-function knApprove(a) {
+function knPreApprove(a, quiet) {
+  a.status = 'pre';
+  a.preAt = knStamp();
+  knEvent(a, 'İlk kredi değerlendirmen olumlu', `${vmTL(a.loan)} · ${a.term} ay · nihai onay ekspertizden sonra verilir`, 'ok');
+  knAddMin(20);
+  const e = state.kn.eks = knNewEks();
+  knEvent(a, 'Ekspertiz talebin oluşturuldu', `Bankamız talebi değerleme kuruluşuna iletti: ${KN_VALUER.firm}`);
+  knEvent(a, 'Ekspertiz randevun belirlendi', `${e.slot} · ${KN_VALUER.expert}`);
+  if (quiet) return;
+  knRefresh();
+  toast('İlk değerlendirmen olumlu, ekspertiz başlatıldı');
+}
+/* "Later": once the customer has seen the appointment and left, the report arrives — uploaded, approved by the bank —
+   and the final credit approval follows. The demo clock moves to those dates. */
+function knEksComplete() {
+  const v = state.kn, e = v.eks, a = v.app;
+  if (!e || e.stage >= 4 || !a) return;
+  const slot = new Date(e.slotTs), h = knHome(a.home);
+  knSetClock(slot); knAddMin(80);
+  knEvent(a, 'Yerinde inceleme yapıldı', `${KN_VALUER.expert} · ${KN_VALUER.firm}`);
+  knSetClock(knAt(knAddBiz(slot, 2), '11:00'));
+  e.reportNo = knReportNo(); e.reportAt = knStamp();
+  knEvent(a, 'Ekspertiz raporun yüklendi', `Ekspertiz değeri ${vmTL(knValue(h))} · ${e.reportNo}`, 'ok');
+  knAddMin(150);
+  e.okAt = knStamp();
+  knEvent(a, 'Ekspertiz raporun bankamızca onaylandı', knEksFit(h, a) ? 'Konut krediye uygun bulundu' : 'Kredi tutarı ekspertiz değerine göre sınırlandı', 'ok');
+  knAddMin(40);
   a.status = 'approved';
   a.approvedAt = knStamp();
   a.until = knDay(new Date(knClock().getTime() + 90 * 864e5));
-  knEvent(a, 'Kredi başvurun onaylandı', `${vmTL(a.loan)} · ${a.term} ay · aylık ${vmTL(a.pay)}`, 'ok');
-  state.kn.eks = knNewEks();
-  knEvent(a, 'Ekspertiz talebin oluşturuldu', 'Değerleme uzmanının randevusu için uygun zamanı seç');
-  knRefresh();
-  toast('Konut kredisi başvurun onaylandı');
+  knEvent(a, 'Nihai kredi onayın verildi', `${vmTL(a.loan)} · ${a.term} ay · aylık ${vmTL(a.pay)}`, 'ok');
+  e.stage = 4; e.fresh = true;
+  v.ipt = v.ipt || knNewIpt();
 }
+function knEksFit(h, a) { return a.loan <= knEksMaxLoan(h); }
+function knEksMaxLoan(h) { return Math.floor(Math.min(knValue(h), h.price) * knLtvMax() / 100 / 10000) * 10000; }
 function knPhase() {
   const a = state.kn.app;
-  if (a.status === 'approved') return 'Tamamlandı';
-  if (a.status === 'docs') return 'Konut ve tapu kontrolü · belge bekleniyor';
+  if (a.status === 'pre') return 'Ekspertiz';
+  if (a.status === 'approved') return 'Tamamlandı · nihai onay';
   return KN_PHASES[Math.min(a.step, KN_PHASES.length - 1)];
 }
 function knStatus() {
   const v = state.kn, a = v.app;
   if (a.status === 'review') return ['Değerlendiriliyor', 'on'];
-  if (a.status === 'docs') return ['Eksik belge', 'wait'];
-  return v.ipt && v.ipt.stage >= 4 ? ['Kullandırıldı', 'ok'] : ['Onaylandı', 'ok'];
+  if (a.status === 'pre') return ['Ekspertiz sürüyor', 'on'];
+  return v.ipt && v.ipt.stage >= 4 ? ['Kullandırıldı', 'ok'] : ['Nihai onay', 'ok'];
 }
+function knShortSlot(ts) { const d = new Date(ts); return `${d.getDate()} ${VM_AY[d.getMonth()].slice(0, 3)} · ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
 function KnTrack() {
   const v = state.kn, a = v.app;
   if (!a) return knTrackEmpty();
+  if (v.eks && v.eks.stage === 1 && v.eks.seen) knEksComplete();   // re-entry after seeing the appointment
   const h = knHome(a.home), e = v.eks, p = v.ipt, [st, cls] = knStatus();
-  const appr = a.status === 'approved', docs = a.status === 'docs', done = p && p.stage >= 4;
+  const rev = a.status === 'review', pre = a.status === 'pre', appr = a.status === 'approved', done = p && p.stage >= 4;
+  const fresh = e && e.fresh; if (fresh) e.fresh = false;
+  if (appr) a.finalSeen = true;
   const stages = [
     { t: 'Başvuru', d: vmShortDate(a.at), s: 'done' },
-    { t: 'Değer&shy;lendirme', d: appr ? 'Tamamlandı' : docs ? 'Belge bekleniyor' : 'Sürüyor', s: appr ? 'done' : docs ? 'wait' : 'on' },
-    { t: 'Onay', d: appr ? vmShortDate(a.approvedAt) : 'Değerlendirme sonrası', s: appr ? 'done' : 'todo' },
-    { t: 'Ekspertiz', d: !appr ? 'Onaydan sonra' : e.stage >= 4 ? 'Tamamlandı' : e.stage === 0 ? 'Randevu bekleniyor' : 'Sürüyor', s: !appr ? 'todo' : e.stage >= 4 ? 'done' : e.stage === 0 ? 'wait' : 'on' },
+    { t: 'Değer&shy;lendirme', d: rev ? 'Sürüyor' : 'Olumlu', s: rev ? 'on' : 'done' },
+    { t: 'Ekspertiz', d: rev ? 'Değerlendirmeden sonra' : appr ? 'Rapor onaylandı' : `Randevu ${knShortSlot(e.slotTs).split(' · ')[0]}`, s: rev ? 'todo' : appr ? 'done' : 'on' },
+    { t: 'Nihai onay', d: appr ? vmShortDate(a.approvedAt) : 'Ekspertizden sonra', s: appr ? 'done' : 'todo' },
   ];
-  const next = !appr ? (docs
-      ? { ico: KN_ICO.upload, t: 'Tapu fotokopisini yükle', d: 'Satıcıdan aldığın tapu fotokopisini yüklediğinde değerlendirme kaldığı yerden devam eder.' }
-      : { ico: VM_ICO.clock, t: 'Değerlendirme sonucunu bekle', d: 'Sonuç bildirim olarak da gelir; gerçek süreçte genellikle 1–2 iş günü sürer.' })
-    : e.stage < 4 ? { ico: KN_ICO.clip, t: e.stage === 0 ? 'Ekspertiz randevunu planla' : 'Ekspertiz sürüyor', d: e.stage === 0 ? 'Değerleme uzmanının konutu yerinde incelemesi için uygun zamanı seç.' : 'Randevu, inceleme ve rapor adımlarını Ekspertiz ekranından izleyebilirsin.', act: 'kn-to-eks' }
+  const next = rev ? { ico: VM_ICO.clock, t: 'Değerlendirme sonucunu bekle', d: 'Sonuç bildirim olarak da gelir; gerçek süreçte genellikle 1–2 iş günü sürer.' }
+    : pre ? { ico: VM_ICO.clock, t: 'Ekspertiz raporunu bekle', d: 'Rapor bankamıza ulaşıp onaylandığında burada görünür ve nihai onay verilir; senin bir işlem yapman gerekmiyor.' }
     : done ? { ico: VM_ICO.key, t: 'Süreç tamamlandı', d: 'Tapu devri ve ipotek tesisi tamamlandı, kredin satıcıya aktarıldı.', act: 'kn-to-ipt' }
-    : { ico: I.bank, t: 'Şube ve tapu işlemleri', d: 'Sözleşme imzası, DASK, tapu harcı ve tapu randevusu adımlarını tamamla.', act: 'kn-to-ipt' };
-  const cta = docs ? `<button class="btn-primary" data-action="kn-upload">${v.uploading ? '<span class="spinner"></span> Yükleniyor…' : 'Tapu Fotokopisini Yükle'}</button>`
-    : !appr ? '<button class="btn-primary disabled">Değerlendiriliyor…</button>'
-    : e.stage < 4 ? `<button class="btn-primary" data-action="kn-to-eks">${e.stage === 0 ? 'Ekspertiz Randevusu Planla' : 'Ekspertiz Adımına Geç'}</button>`
+    : { ico: I.bank, t: 'Tapu ve ipotek işlemleri', d: 'Şube randevusu ve sözleşme imzası, DASK, tapu harcı ve tapu randevusu.', act: 'kn-to-ipt' };
+  const cta = rev ? '<button class="btn-primary disabled">Değerlendiriliyor…</button>'
+    : pre ? '<button class="btn-primary" data-action="kn-to-eks">Ekspertiz Detaylarını Gör</button>'
     : done ? '<button class="btn-primary" data-action="kn-home">Marketplace Konut\'a Dön</button>'
-    : '<button class="btn-primary" data-action="kn-to-ipt">Şube ve Tapu Adımlarına Geç</button>';
+    : '<button class="btn-primary" data-action="kn-to-ipt">Tapu ve İpotek Adımlarına Geç</button>';
+  const tr = a.tkResult;
   return `
   <div class="screen ${vmAnim()} vm kn">
     ${vmNav('Başvuru Takibi')}
     <div class="screen-scroll">
-      ${knFlowHTML(appr ? 3 : 2)}
+      ${knFlowHTML(rev ? 1 : pre ? 2 : done ? 5 : 4)}
       <div class="vm-box kn-ahead">
         <div class="kn-ahead-top"><div><span>Konut kredisi başvurusu</span><b>No ${a.ref}</b></div><span class="vm-pill ${cls}">${st}</span></div>
         <div class="vm-frow"><span>Başvuru tarihi</span><b>${a.at}</b></div>
         <div class="vm-frow"><span>Değerlendirme aşaması</span><b id="kn-phase">${knPhase()}</b></div>
-        <div class="vm-frow"><span>Talep edilen kredi</span><b>${vmTL(a.loan)}</b></div>
+        <div class="vm-frow"><span>${appr ? 'Onaylanan kredi' : 'Talep edilen kredi'}</span><b>${vmTL(a.loan)}</b></div>
       </div>
       <div class="kn-st4">${vmStagesHTML(stages)}</div>
-      ${docs ? `<div class="kn-miss" role="alert"><span class="kn-miss-ico">${I.info}</span><div><b>Eksik belge: Tapu fotokopisi</b><span>Konut ve tapu kontrolü bu belge için bekliyor. Yüklediğinde değerlendirme kaldığı yerden devam eder.</span></div></div>` : ''}
-      ${!appr ? `<div class="vm-box vm-review">
-        <div class="vm-review-h">${docs ? `<span class="kn-hold">${VM_ICO.clock}</span>` : '<span class="vm-spin"></span>'}<div><b>${docs ? 'Değerlendirme beklemede' : 'Değerlendirme sürüyor'}</b><span>Sonuç bildirim olarak da gelir</span></div></div>
-        <div class="vm-chk">${KN_REVIEW.map((t, k) => docs && k === a.step
-          ? `<div class="vm-chk-r hold" id="kn-rv-${k}"><i>${VM_ICO.clock}</i><span>${KN_PHASES[k]} · belge bekleniyor</span></div>`
-          : vmChkRowHTML(t, k, a.step, 'kn-rv-')).join('')}</div>
-      </div>` : `<div class="vm-pre-res kn-appr">
-        <span class="vm-pill ok">${I.check}Kredin onaylandı</span>
+      ${fresh ? `<div class="vm-okbar kn-fresh">${I.check}<span><b>Ekspertiz raporun yüklendi ve onaylandı</b>Değerleme raporu bankamıza iletildi, incelenip onaylandı; nihai kredi onayın verildi.</span></div>` : ''}
+      ${rev ? `<div class="vm-box vm-review">
+        <div class="vm-review-h"><span class="vm-spin"></span><div><b>İlk kredi değerlendirmesi sürüyor</b><span>Sonuç bildirim olarak da gelir</span></div></div>
+        <div class="vm-chk">${KN_REVIEW.map((t, k) => vmChkRowHTML(t, k, a.step, 'kn-rv-')).join('')}</div>
+      </div>` : ''}
+      ${pre ? `<div class="vm-pre-res kn-appr">
+        <span class="vm-pill ok">${I.check}İlk değerlendirme olumlu</span>
+        <span class="vm-pre-l">Talep edilen kredi tutarı</span>
+        <b>${vmTL(a.loan)}</b>
+        <em>Nihai onay, ekspertiz raporu bankamızca onaylandıktan sonra verilir</em>
+      </div>
+      <div class="vm-box kn-eks-card tap" data-action="kn-to-eks">
+        <span class="kn-next-ico">${KN_ICO.clip}</span>
+        <div><span>Ekspertiz devam ediyor</span><b>${e.slot}</b><em>${KN_VALUER.firm} · ${KN_VALUER.expert}</em></div>
+        <span class="kn-next-chev">${I.chevR}</span>
+      </div>` : ''}
+      ${appr ? `<div class="vm-sec-t vm-sec-row"><span>Ekspertiz raporu</span><button class="sp-link" data-action="kn-to-eks">Ekspertiz detayı</button></div>
+      <div class="vm-box vm-prof kn-eks-sum">
+        <div class="vm-frow"><span>Ekspertiz değeri</span><b>${vmTL(knValue(h))}</b></div>
+        <div class="vm-frow"><span>Rapor tarihi</span><b>${vmShortDate(e.reportAt)}</b></div>
+        <div class="vm-frow"><span>Krediye uygunluk</span><b class="kn-okv">${knEksFit(h, a) ? 'Uygun' : 'Sınırlı uygun'}</b></div>
+        <div class="vm-frow"><span>Rapor onay durumu</span><b class="kn-okv">Onaylandı · ${vmShortDate(e.okAt)}</b></div>
+        <button class="vm-pt-all" data-action="kn-report">Rapor özetini gör ${I.chevR}</button>
+      </div>
+      <div class="vm-sec-t">Nihai kredi onayı</div>
+      <div class="vm-pre-res kn-appr">
+        <span class="vm-pill ok">${I.check}Nihai onay verildi</span>
         <span class="vm-pre-l">Onaylanan kredi tutarı</span>
         <b>${vmTL(a.loan)}</b>
-        <em>${a.term} ay · aylık ${vmTL(a.pay)} · onay ${a.until} tarihine kadar geçerli</em>
-      </div>`}
+        <em>Onay ${a.until} tarihine kadar geçerli</em>
+      </div>
+      <div class="vm-box vm-prof kn-final">
+        <div class="vm-frow"><span>Kredi vadesi</span><b>${a.term} ay</b></div>
+        <div class="vm-frow"><span>Faiz oranı ${vmEx()}</span><b>Aylık %${vmPctStr(KN_RATE.monthly)}</b></div>
+        <div class="vm-frow"><span>BSMV</span><b>${a.tax ? `Uygulanır · %${KN_BSMV}` : 'Alınmaz'}</b></div>
+        <div class="vm-frow"><span>Aylık taksit</span><b>${vmTL(a.pay)}</b></div>
+        <div class="vm-frow"><span>Toplam geri ödeme</span><b>${vmTL(a.total)}</b></div>
+        <div class="vm-frow"><span>Nihai onay durumu</span><b class="kn-okv">Onaylandı · ${vmShortDate(a.approvedAt)}</b></div>
+      </div>` : ''}
       <div class="vm-box kn-next ${next.act ? 'tap' : ''}" ${next.act ? `data-action="${next.act}"` : ''}>
         <span class="kn-next-ico">${next.ico}</span>
         <div><span>Sonraki adım</span><b>${next.t}</b><em>${next.d}</em></div>
@@ -8224,6 +8280,8 @@ function KnTrack() {
         <div class="r-row"><span class="r-l">Aylık taksit ${vmEx()}</span><span class="r-r">${vmTL(a.pay)}</span></div>
         <div class="r-row"><span class="r-l">Toplam geri ödeme</span><span class="r-r">${vmTL(a.total)}</span></div>
         <div class="r-row"><span class="r-l">İlk taksit</span><span class="r-r">${a.first || 'Kullandırımdan 1 ay sonra'}</span></div>
+        <div class="r-row"><span class="r-l">Tahsis bilgileri</span><span class="r-r">${a.tahsis.job} · ${vmTL(a.tahsis.income)}</span></div>
+        <div class="r-row"><span class="r-l">TAKBİS</span><span class="r-r">${tr && !tr.manual ? `BSMV ${tr.bsmv} · LTV ${tr.ltv} · ${tr.scope}` : 'Manuel değerlendirme'}</span></div>
       </div>
       <div class="vm-sec-t">Belgeler</div>
       <div class="vm-box vm-docl" id="kn-docs">${knDocsHTML()}</div>
@@ -8233,7 +8291,7 @@ function KnTrack() {
         <div class="ru-info-row tap" data-action="kn-plan-all"><span class="ru-info-ico">${I.doc}</span><span class="ru-info-k">Kredi ödeme planı</span><span class="ru-info-v">${a.term} taksit</span>${I.chevR}</div>
         <div class="ru-info-row tap" data-action="kn-open" data-id="${h.id}"><span class="ru-info-ico">${I.home}</span><span class="ru-info-k">Konut ilanı</span><span class="ru-info-v">İlan no ${knNo(h)}</span>${I.chevR}</div>
       </div>
-      ${knDemoHTML(false)}
+      ${knDemoHTML(false, pre ? (e.seen ? 'Ekspertiz raporu bu ekrana bir sonraki girişinde görünür.' : 'Ekspertiz detaylarını açıp bu ekrana geri döndüğünde rapor yüklenmiş ve onaylanmış görünür.') : '')}
     </div>
     <div class="screen-cta">${cta}</div>
   </div>`;
@@ -8242,9 +8300,9 @@ function knEventsHTML(a) {
   const ico = { ok: I.check, warn: I.info, info: I.bell };
   return `<div class="vm-box kn-evs">${a.events.map(ev => `<div class="kn-ev ${ev.kind}"><i>${ico[ev.kind] || I.bell}</i><div><b>${ev.t}</b><span>${ev.d}</span><em>${ev.at}</em></div></div>`).join('')}</div>`;
 }
-function knDemoHTML(adv) {
+function knDemoHTML(adv, tip) {
   return `<div class="vm-demo">
-    <div class="vm-demo-h">${I.info}<span>Demo kontrolleri · Gerçek süreçte bu adımlar değerleme kuruluşu, şube ve tapu müdürlüğünden gelen bilgilerle güncellenir.</span></div>
+    <div class="vm-demo-h">${I.info}<span>Demo kontrolleri · ${tip || 'Gerçek süreçte bu adımlar değerleme kuruluşu, şube ve tapu müdürlüğünden gelen bilgilerle güncellenir.'}</span></div>
     <div class="vm-demo-btns">
       ${adv ? '<button class="vm-demo-btn main" data-action="kn-adv">Sonraki adıma geç</button>' : ''}
       <button class="vm-demo-btn" data-action="kn-reset">Demoyu sıfırla</button>
@@ -8263,7 +8321,6 @@ function knTrackEmpty() {
 }
 
 /* -------------------- appointments (business days, offered slots) -------------------- */
-const KN_EKS_TIMES = ['10:00', '13:30', '16:00'];
 const KN_BRANCH_TIMES = ['09:30', '11:00', '14:30'];
 const KN_TAPU_TIMES = ['10:30', '13:00', '15:30'];
 function knBizDays(n, from) {
@@ -8282,7 +8339,7 @@ function knPickedHTML(val) {
   return val ? `${KN_ICO.cal}<span>Seçilen randevu <b>${val}</b></span>` : `${KN_ICO.cal}<span>Uygun gün ve saati seç</span>`;
 }
 function knPickSlot(kind, val, ts) {
-  const v = state.kn, o = kind === 'eks' ? v.eks : v.ipt, k = kind === 'tapu' ? 'tpick' : 'pick';
+  const v = state.kn, o = v.ipt, k = kind === 'tapu' ? 'tpick' : 'pick';
   if (!o) return;
   o[k] = val;
   o[k + 'Ts'] = ts;
@@ -8291,65 +8348,58 @@ function knPickSlot(kind, val, ts) {
   const cta = document.getElementById('kn-cta'); if (cta) cta.classList.toggle('disabled', !knCtaReady());
 }
 function knCtaReady() {
-  const v = state.kn, e = v.eks, p = v.ipt;
-  if (state.screen === 'konut-ekspertiz') return e.stage === 0 ? !!e.pick : e.edit ? !!e.pick && e.pick !== e.slot : true;
+  const p = state.kn.ipt;
   if (state.screen === 'konut-ipotek') return p.stage === 0 ? !!p.pick : p.stage === 1 ? !!(p.dask && p.harc && p.tpick) : true;
   return true;
 }
 
-/* -------------------- Screen 7 — ekspertiz (valuation) -------------------- */
+/* -------------------- Screen 7 — ekspertiz (started by the bank) -------------------- */
+function knEksAway() {   // render hook: leaving the ekspertiz screen after seeing the appointment
+  const e = state.kn.eks;
+  if (e && e.stage === 1 && e.seen && state.screen !== 'konut-ekspertiz') e.away = true;
+}
 function KnEks() {
   const v = state.kn, a = v.app;
-  if (!a || a.status !== 'approved' || !v.eks) { state.screen = 'konut-takip'; return KnTrack(); }
-  const e = v.eks, h = knHome(a.home), s = knSeller(h), st = e.stage, picking = st === 0 || e.edit;
-  const [pl, pc] = [['Randevu bekleniyor', 'wait'], ['Randevu planlandı', 'on'], ['Rapor hazırlanıyor', 'on'], ['Rapor hazır', 'ok'], ['Tamamlandı', 'ok']][st];
-  const banner = [
-    `<div class="vm-infobar">${KN_ICO.cal}<span><b>Randevu zamanını seç.</b> Bankan ekspertiz talebini oluşturdu; SPK lisanslı değerleme uzmanı konutu yerinde inceleyecek.</span></div>`,
-    `<div class="vm-infobar">${KN_ICO.cal}<span><b>Randevun planlandı: ${e.slot}.</b> Uzman konutu randevu saatinde inceleyecek; konutta satıcının ya da emlak ofisi yetkilisinin bulunması yeterli.</span></div>`,
-    `<div class="vm-infobar">${KN_ICO.clip}<span><b>Yerinde inceleme tamamlandı.</b> Değerleme raporu hazırlanıyor; tahmini teslim ${e.eta}.</span></div>`,
-    `<div class="vm-okbar">${I.check}<span><b>Değerleme raporun hazır</b>Rapor bankana iletildi; kredi tutarının teyidi için inceleniyor.</span></div>`,
-    `<div class="vm-okbar">${I.check}<span><b>Ekspertiz tamamlandı</b>Kredi tutarın teyit edildi. Sıradaki adımlar şubede sözleşme imzası ve tapu işlemleri.</span></div>`,
-  ][st];
-  const steps = [
-    { t: 'Ekspertiz talebi', d: `Banka tarafından oluşturuldu · ${vmShortDate(e.at)}`, s: 'done' },
-    { t: 'Randevu', d: e.slot || 'Uygun gün ve saati seç', s: e.slot ? 'done' : 'active' },
-    { t: 'Yerinde inceleme', d: st >= 2 ? 'Ölçüm, fotoğraf ve yapı kalitesi incelendi' : st === 1 ? 'Uzman konutu randevu günü inceleyecek' : 'Randevudan sonra', s: st >= 2 ? 'done' : st === 1 ? 'active' : 'todo' },
-    { t: 'Değerleme raporu', d: st >= 3 ? `Hazır · ${e.reportNo}` : st === 2 ? `Hazırlanıyor · tahmini ${e.eta}` : 'Tapu, imar ve emsal satış kontrolleriyle hazırlanır', s: st >= 3 ? 'done' : st === 2 ? 'active' : 'todo' },
-    { t: 'Banka onayı', d: st >= 4 ? 'Kredi tutarı teyit edildi' : st === 3 ? 'Rapor bankada inceleniyor' : 'Rapordan sonra', s: st >= 4 ? 'done' : st === 3 ? 'active' : 'todo' },
-  ];
+  if (!a || a.status === 'review' || !v.eks) { state.screen = 'konut-takip'; return KnTrack(); }
+  const e = v.eks;
+  if (e.stage === 1 && e.away) knEksComplete();   // back on this screen later: the report has arrived
+  e.seen = true;
+  const h = knHome(a.home), s = knSeller(h), done = e.stage >= 4;
+  const fresh = e.fresh; if (fresh) e.fresh = false;
   const who = s.kind === 'Ev sahibi' ? `${s.name} · ev sahibi` : `${s.agent} · ${s.name}`;
-  const cta = st === 0 ? `<button class="btn-primary ${e.pick ? '' : 'disabled'}" id="kn-cta" data-action="kn-eks-book">Randevuyu Onayla</button>`
-    : e.edit ? `<button class="btn-primary ${knCtaReady() ? '' : 'disabled'}" id="kn-cta" data-action="kn-eks-update">Randevuyu Güncelle</button>`
-    : st >= 4 ? '<button class="btn-primary" data-action="kn-to-ipt">Şube ve Tapu Adımlarına Geç</button>' : '';
+  const steps = [
+    { t: 'Ekspertiz talebi', d: `Bankamız tarafından oluşturuldu · ${vmShortDate(e.at)}`, s: 'done' },
+    { t: 'Değerleme kuruluşu ve randevu', d: `${KN_VALUER.firm} · ${e.slot}`, s: 'done' },
+    { t: 'Yerinde inceleme', d: done ? 'Konut incelendi; ölçüm ve fotoğraflar alındı' : 'Uzman konutu randevu günü yerinde inceleyecek', s: done ? 'done' : 'active' },
+    { t: 'Kayıt kontrolü ve piyasa değeri', d: done ? 'Tapu, imar ve iskân kayıtları kontrol edildi; emsallerle değer belirlendi' : 'Tapu, imar ve iskân kayıtları; bölgedeki emsal satışlar', s: done ? 'done' : 'todo' },
+    { t: 'Krediye uygunluk ve rapor', d: done ? `Rapor bankamıza iletildi · ${e.reportNo}` : 'Rapor hazırlanıp bankamıza iletilir', s: done ? 'done' : 'todo' },
+    { t: 'Bankamızın onayı', d: done ? `Rapor onaylandı · ${vmShortDate(e.okAt)}` : 'Rapor incelenip onaylanır', s: done ? 'done' : 'todo' },
+  ];
   return `
   <div class="screen ${vmAnim()} vm kn">
     ${vmNav('Ekspertiz')}
     <div class="screen-scroll">
-      ${knFlowHTML(st >= 4 ? 4 : 3)}
+      ${knFlowHTML(done ? 4 : 2)}
       <div class="vm-box kn-ahead">
-        <div class="kn-ahead-top"><div><span>Ekspertiz talebi</span><b>No ${e.ref}</b></div><span class="vm-pill ${pc}">${pl}</span></div>
-        <div class="vm-frow"><span>Talep tarihi</span><b>${e.at}</b></div>
+        <div class="kn-ahead-top"><div><span>Ekspertiz talebi</span><b>No ${e.ref}</b></div><span class="vm-pill ${done ? 'ok' : 'on'}">${done ? 'Tamamlandı' : 'Devam ediyor'}</span></div>
+        <div class="vm-frow"><span>Talebi oluşturan</span><b>Yapı Kredi · ${vmShortDate(e.at)}</b></div>
         <div class="vm-frow"><span>Konut</span><b>${h.hood}, ${h.district}</b></div>
-        <div class="vm-frow"><span>Ekspertiz ücreti</span><b>${vmTL(KN_FEES.expertise)} · ${e.paidAt ? 'Ödendi' : 'Randevu onayında'}</b></div>
+        <div class="vm-frow"><span>Ekspertiz ücreti</span><b>${vmTL(KN_FEES.expertise)} · hesabından tahsil edildi</b></div>
       </div>
-      ${banner}
+      ${done ? `<div class="vm-okbar ${fresh ? 'kn-fresh' : ''}">${I.check}<span><b>Ekspertiz tamamlandı</b>Raporun yüklendi ve bankamız tarafından onaylandı; nihai kredi onayın verildi.</span></div>`
+        : `<div class="vm-infobar">${KN_ICO.clip}<span><b>Ekspertizin devam ediyor.</b> Bankamız ekspertiz talebini değerleme kuruluşuna iletti ve randevunu belirledi; senin bir işlem yapman gerekmiyor.</span></div>`}
       <div class="vm-sec-t">Randevu</div>
-      ${picking ? `<div class="vm-box">
-        <div class="vm-box-h">${e.edit ? 'Yeni randevu zamanı' : 'İnceleme için gün ve saat seç'}</div>
-        ${knSlotsHTML('eks', e.pick, 1, KN_EKS_TIMES)}
-        <div class="kn-picked ${e.pick ? 'on' : ''}" id="kn-pick-eks">${knPickedHTML(e.pick)}</div>
-        ${e.edit ? '<button class="sp-link kn-link" data-action="kn-eks-edit">Vazgeç, mevcut randevu kalsın</button>' : ''}
-      </div>` : `<div class="vm-box">
-        <div class="vm-deliv-top"><span class="vm-deliv-ico">${KN_ICO.cal}</span><div><span>${st >= 2 ? 'İnceleme yapıldı' : 'Randevu'}</span><b>${e.slot}</b></div></div>
+      <div class="vm-box">
+        <div class="vm-deliv-top"><span class="vm-deliv-ico">${KN_ICO.cal}</span><div><span>${done ? 'İnceleme yapıldı' : 'Ekspertiz randevun'}</span><b>${e.slot}</b></div></div>
         <div class="vm-deliv-pt">${I.pin}<span><b>İnceleme adresi</b>${h.hood}, ${h.district} / ${h.city}</span></div>
         <div class="vm-deliv-pt">${KN_ICO.person}<span><b>Konutta bulunacak kişi</b>${who}</span></div>
-        ${st === 1 ? '<button class="sp-link kn-link" data-action="kn-eks-edit">Randevuyu değiştir</button>' : ''}
-      </div>`}
-      <div class="vm-sec-t">Değerleme uzmanı</div>
+        ${done ? '' : '<div class="vm-hint">Randevu bankamız ve değerleme kuruluşu tarafından belirlendi. Değişiklik gerekirse değerleme uzmanı seninle ve satıcıyla iletişime geçer.</div>'}
+      </div>
+      <div class="vm-sec-t">Atanan değerleme kuruluşu</div>
       <div class="vm-box">
         <div class="vm-dealer"><div class="vm-dealer-ico">${KN_ICO.clip}</div><div class="vm-dealer-mid"><b>${KN_VALUER.firm}</b><span>${KN_VALUER.kind}</span></div></div>
-        <div class="vm-deliv-pt">${KN_ICO.person}<span>${st >= 1 ? `<b>${KN_VALUER.expert}</b>${KN_VALUER.title}` : '<b>Uzman ataması</b>Randevu onaylandığında değerleme uzmanın atanır'}</span></div>
-        ${st >= 1 ? `<div class="vm-dealer-btns"><button data-action="toast" data-msg="Arama prototipte aktif değil">${VM_ICO.phone}Uzmanı ara</button><button data-action="toast" data-msg="Mesajlaşma prototipte aktif değil">${I.mail}Mesaj gönder</button></div>` : ''}
+        <div class="vm-deliv-pt">${KN_ICO.person}<span><b>${KN_VALUER.expert}</b>${KN_VALUER.title}</span></div>
+        <div class="vm-dealer-btns"><button data-action="toast" data-msg="Arama prototipte aktif değil">${VM_ICO.phone}Uzmanı ara</button><button data-action="toast" data-msg="Mesajlaşma prototipte aktif değil">${I.mail}Mesaj gönder</button></div>
       </div>
       <div class="vm-sec-t">Değerleme süreci</div>
       <div class="stepper vm-stepper">${steps.map((x, i) => `
@@ -8360,34 +8410,30 @@ function KnEks() {
         </div>`).join('')}</div>
       <div class="vm-sec-t">Rapor durumu</div>
       <div class="vm-box kn-rep">
-        <div class="kn-rep-top"><span class="vm-docl-ico">${I.doc}</span><div><b>Değerleme raporu</b><span>${st >= 3 ? `${e.reportNo} · ${vmShortDate(e.reportAt)}` : st === 2 ? `Hazırlanıyor · tahmini teslim ${e.eta}` : 'Yerinde incelemeden sonra hazırlanır'}</span></div>
-          <span class="vm-pill sm ${st >= 3 ? 'ok' : st === 2 ? 'on' : 'kn-later'}">${st >= 3 ? 'Hazır' : st === 2 ? 'Hazırlanıyor' : 'Bekleniyor'}</span></div>
+        <div class="kn-rep-top"><span class="vm-docl-ico">${I.doc}</span><div><b>Ekspertiz raporu</b><span>${done ? `${e.reportNo} · yüklendi ${vmShortDate(e.reportAt)}` : 'Yerinde incelemeden sonra hazırlanır'}</span></div>
+          <span class="vm-pill sm ${done ? 'ok' : 'kn-later'}">${done ? 'Onaylandı' : 'Bekleniyor'}</span></div>
       </div>
-      ${st >= 3 ? `
+      ${done ? `
       <div class="vm-sec-t">Değerleme sonucu</div>
       ${knValHTML(h, a)}
       <div class="vm-sec-t vm-sec-row"><span>Rapor özeti</span><button class="sp-link" data-action="kn-report">Tamamını gör</button></div>
       <div class="receipt vm-receipt">${knReportRows(h, e).slice(4, 10).map(([k, val]) => `<div class="r-row"><span class="r-l">${k}</span><span class="r-r">${val}</span></div>`).join('')}</div>` : ''}
-      <div class="ru-info-card vm-links kn-gap">
-        <div class="ru-info-row tap" data-action="kn-open-track"><span class="ru-info-ico">${I.doc}</span><span class="ru-info-k">Başvuru takibi</span><span class="ru-info-v">No ${a.ref}</span>${I.chevR}</div>
-      </div>
-      ${knDemoHTML(st >= 1 && st <= 3 && !e.edit)}
+      ${knDemoHTML(false, done ? '' : 'Bu ekrandan çıkıp başvuru takibine döndüğünde ekspertiz raporu yüklenmiş ve bankamızca onaylanmış görünür.')}
     </div>
-    ${cta ? `<div class="screen-cta">${cta}</div>` : ''}
+    <div class="screen-cta"><button class="btn-primary" data-action="kn-open-track">Başvuru Takibine Dön</button></div>
   </div>`;
 }
 function knValHTML(h, a) {
-  const val = knValue(h), diff = Math.round((val / h.price - 1) * 100), base = Math.min(val, h.price);
-  const maxL = Math.floor(base * (100 - KN_MIN_DOWN) / 100 / 10000) * 10000, ok = a.loan <= maxL;
+  const val = knValue(h), diff = Math.round((val / h.price - 1) * 100), maxL = knEksMaxLoan(h), ok = a.loan <= maxL;
   return `<div class="vm-box kn-val">
     <div class="kn-val-top"><span>Ekspertiz değeri</span><b>${vmTL(val)}</b>${diff === 0 ? '<em class="kn-vs eq">Satış fiyatıyla aynı</em>' : diff > 0 ? `<em class="kn-vs good">Satış fiyatının %${diff} üzerinde</em>` : `<em class="kn-vs high">Satış fiyatının %${-diff} altında</em>`}</div>
     <div class="kn-val-grid">
       <div><span>Satış fiyatı</span><b>${vmTL(h.price)}</b></div>
       <div><span>Kredi tutarı</span><b>${vmTL(a.loan)}</b></div>
       <div><span>Kredi / ekspertiz değeri</span><b>%${vmPct(a.loan, val)}</b></div>
-      <div><span>En yüksek kredi ${vmEx()}</span><b>${vmTL(maxL)}</b></div>
+      <div><span>Krediye uygunluk</span><b class="kn-okv">${ok ? 'Uygun' : 'Sınırlı uygun'}</b></div>
     </div>
-    <div class="kn-cap-v ${ok ? 'ok' : 'edge'}">${ok ? I.check : I.info}<span>${ok ? `<b>Kredi tutarın değişmedi.</b> Kredi, değerin %${100 - KN_MIN_DOWN} sınırı içinde kalıyor.` : `<b>Kredi tutarın en fazla ${vmTL(maxL)} olabilir.</b> Fark peşinata eklenir.`}</span></div>
+    <div class="kn-cap-v ${ok ? 'ok' : 'edge'}">${ok ? I.check : I.info}<span>${ok ? `<b>Kredi tutarın değişmedi.</b> Kredi, değerin %${knLtvMax()} sınırı içinde kalıyor.` : `<b>Kredi tutarın en fazla ${vmTL(maxL)} olabilir.</b> Fark peşinata eklenir.`}</span></div>
   </div>`;
 }
 function knReportRows(h, e) {
@@ -8406,28 +8452,16 @@ function knReportRows(h, e) {
 }
 function knReportSheet() {
   const v = state.kn, e = v.eks;
-  if (!e || e.stage < 3) return;
+  if (!e || e.stage < 4) return;
   const h = knHome(v.app.home);
   sheetEl.innerHTML = `
     <div class="sheet-handle"></div>
-    <div class="sheet-bar"><h3>Değerleme raporu özeti</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
-    <div class="receipt vm-sh-receipt kn-sh-scroll">${knReportRows(h, e).map(([k, val]) => `<div class="r-row"><span class="r-l">${k}</span><span class="r-r">${val}</span></div>`).join('')}</div>
+    <div class="sheet-bar"><h3>Ekspertiz raporu özeti</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="receipt vm-sh-receipt kn-sh-scroll">${knReportRows(h, e).map(([k, val]) => `<div class="r-row"><span class="r-l">${k}</span><span class="r-r">${val}</span></div>`).join('')}
+      <div class="r-row"><span class="r-l">Krediye uygunluk</span><span class="r-r">${knEksFit(h, v.app) ? 'Uygun' : 'Sınırlı uygun'}</span></div>
+      <div class="r-row"><span class="r-l">Rapor onay durumu</span><span class="r-r">Bankamızca onaylandı · ${vmShortDate(e.okAt)}</span></div></div>
     <div class="vm-cmp-note">Örnek rapor özetidir. Gerçek süreçte rapor, SPK lisanslı değerleme kuruluşu tarafından hazırlanır ve bankaya elektronik olarak iletilir.</div>
     <button class="sheet-btn ghost" data-action="toast" data-msg="Rapor paylaşımı prototipte aktif değil">Raporu Paylaş</button>`;
-  sheetEl.classList.add('open');
-  sheetScrimEl.classList.add('open');
-}
-function knEksBook() {
-  const v = state.kn, e = v.eks;
-  if (!e || e.stage !== 0 || !e.pick) return;
-  sheetEl.innerHTML = `
-    <div class="sheet-handle"></div>
-    <div class="sheet-amount-label">Ekspertiz ücreti</div>
-    <div class="sheet-amount">${vmTL(KN_FEES.expertise)}</div>
-    <div class="sheet-pay-row"><span>Ödeme hesabı</span><span class="spr-r">Vadesiz TL Hesabım</span></div>
-    <div class="vm-sheet-note">${KN_ICO.cal}<span><b>${e.pick}</b> · ${knHome(v.app.home).hood}, ${knHome(v.app.home).district}. Ücret randevu onayında hesabından tahsil edilir; rapor SPK lisanslı değerleme kuruluşu tarafından hazırlanır.</span></div>
-    <button class="sheet-btn" id="kn-eks-ok" data-action="kn-eks-approve">${I.faceid} Yapı Kredi Mobil ile Onayla</button>
-    <button class="sheet-btn ghost" data-action="close-sheet">Vazgeç</button>`;
   sheetEl.classList.add('open');
   sheetScrimEl.classList.add('open');
 }
@@ -8439,55 +8473,13 @@ function knBusyBtn(id, text) {
   b.innerHTML = `<span class="spinner"></span> ${text}`;
   return b;
 }
-function knEksApprove() {
-  const v = state.kn, e = v.eks;
-  if (!knBusyBtn('kn-eks-ok', 'Randevu oluşturuluyor…')) return;
-  setTimeout(() => {
-    if (state.kn.eks !== e) return closeSheet();
-    e.slot = e.pick; e.slotTs = e.pickTs; e.stage = 1; e.paidAt = knStamp();
-    knEvent(v.app, 'Ekspertiz randevun planlandı', `${e.slot} · ${KN_VALUER.expert}`);
-    closeSheet();
-    knRefresh();
-    toast('Ekspertiz randevun oluşturuldu');
-  }, 1500);
-}
-function knEksEdit() {
-  const e = state.kn.eks;
-  if (!e || e.stage !== 1) return;
-  e.edit = !e.edit;
-  e.pick = e.slot; e.pickTs = e.slotTs;
-  knRefresh();
-}
-function knEksUpdate() {
-  const v = state.kn, e = v.eks;
-  if (!e || !e.edit || !e.pick || e.pick === e.slot) return;
-  e.slot = e.pick; e.slotTs = e.pickTs; e.edit = false;
-  knEvent(v.app, 'Ekspertiz randevun güncellendi', e.slot);
-  knRefresh();
-  toast('Randevun güncellendi');
-}
-function knEksAdvance() {
-  const v = state.kn, e = v.eks, a = v.app;
-  if (!e || e.stage < 1 || e.stage > 3 || e.edit) return;
-  e.stage += 1;
-  if (e.stage === 2) {   // the demo moves to the appointment day
-    const slot = new Date(e.slotTs);
-    knSetClock(slot); knAddMin(75);
-    e.etaTs = knAt(knAddBiz(slot, 2), '11:00').getTime(); e.eta = knDay(new Date(e.etaTs));
-    knEvent(a, 'Yerinde inceleme tamamlandı', 'Değerleme raporu hazırlanıyor');
-  }
-  if (e.stage === 3) { knSetClock(new Date(e.etaTs)); e.reportNo = knReportNo(); e.reportAt = knStamp(); knEvent(a, 'Değerleme raporun hazır', `Ekspertiz değeri ${vmTL(knValue(knHome(a.home)))}`, 'ok'); }
-  if (e.stage === 4) { knAddMin(120); v.ipt = v.ipt || knNewIpt(); knEvent(a, 'Ekspertiz tamamlandı', 'Kredi tutarın teyit edildi; şube ve tapu adımlarına geçebilirsin', 'ok'); }
-  knRefresh();
-  toast(['', '', 'Yerinde inceleme tamamlandı', 'Değerleme raporun hazır', 'Ekspertiz tamamlandı, kredi tutarın teyit edildi'][e.stage]);
-}
 function knReportNo() { return `DR-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`; }
 
 /* -------------------- Screen 8 — branch disbursement & ipotek -------------------- */
 function KnIpotek() {
   const v = state.kn, a = v.app;
   if (!a || a.status !== 'approved') { state.screen = 'konut-takip'; return KnTrack(); }
-  if (!v.eks || v.eks.stage < 4 || !v.ipt) { state.screen = 'konut-ekspertiz'; return KnEks(); }
+  if (!v.eks || v.eks.stage < 4 || !v.ipt) { state.screen = 'konut-takip'; return KnTrack(); }
   const p = v.ipt, h = knHome(a.home), st = p.stage, done = st >= 4, harc = Math.round(h.price * KN_FEES.deedPct / 100), ready = p.dask && p.harc;
   const pill = ['Sözleşme imzası bekleniyor', 'Tapu hazırlığı', 'Tapu randevusu planlandı', 'Kullandırılıyor'][st];
   const sg = i => st > i ? 'done' : st < i ? 'todo' : (i === 0 && !p.slot) || i === 1 ? 'wait' : 'on';
@@ -8512,7 +8504,8 @@ function KnIpotek() {
     ['Vesikalık fotoğraf (2 adet)', 'Tapu işlemi için, son 6 ay içinde çekilmiş', 'bring'],
     ['DASK poliçesi', p.dask ? `Poliçe no ${p.dask.no}` : 'Tapu randevusundan önce düzenlenmeli', p.dask ? 'ok' : 'miss'],
     ['Tapu harcı ödemesi', p.harc ? `Dekont no ${p.harc.ref}` : 'Tapu randevusundan önce ödenmeli', p.harc ? 'ok' : 'miss'],
-    ['Ekspertiz raporu', `Bankaya iletildi · ${v.eks.reportNo}`, 'ok'],
+    ['Tapu fotokopisi', 'Satıcı tarafından yüklendi · sistemde mevcut', 'ok'],
+    ['Ekspertiz raporu', `Bankamızca onaylandı · ${v.eks.reportNo}`, 'ok'],
   ];
   const needPill = s => s === 'ok' ? `<span class="vm-pill ok sm">${I.check}Hazır</span>` : s === 'miss' ? '<span class="vm-pill wait sm">Gerekli</span>' : '<span class="vm-pill sm kn-later">Yanında getir</span>';
   const cta = st === 0 && !p.slot ? `<button class="btn-primary ${p.pick ? '' : 'disabled'}" id="kn-cta" data-action="kn-ipt-book">Şube Randevusunu Onayla</button>`
@@ -8528,6 +8521,7 @@ function KnIpotek() {
         <span class="vm-pre-l">Onaylanan kredi tutarı</span>
         <b>${vmTL(a.loan)}</b>
         <em>${a.term} ay · aylık ${vmTL(a.pay)} · ${done ? `ilk taksit ${a.first}` : 'tapuda ipotek tesisinden sonra satıcıya ödenir'}</em>
+        <span class="kn-hero-note">${I.check}Nihai kredi onayı · ${vmShortDate(a.approvedAt)}</span>
       </div>
       ${done ? `<div class="kn-done" role="status">
         <span class="kn-done-ico">${VM_ICO.key}</span>
@@ -8693,7 +8687,7 @@ function knIptAdvance() {
     setTimeout(() => knIptFinish(p), 2600);
   }
 }
-function knIptFinish(p) {
+function knIptFinish(p, quiet) {
   const v = state.kn, a = v.app;
   if (v.ipt !== p || p.stage !== 3) return;   // demo was reset meanwhile
   knAddMin(70);
@@ -8703,13 +8697,12 @@ function knIptFinish(p) {
   a.first = knDay(new Date(a.firstTs));
   knEvent(a, 'Kredin kullandırıldı', `${vmTL(a.loan)} satıcının hesabına aktarıldı`, 'ok');
   knEvent(a, 'Süreç tamamlandı', 'Yeni evin hayırlı olsun!', 'ok');
+  if (quiet) return;
+  if (state.screen === 'konut-ipotek') { closeSheet(); return go('konut-tamam'); }   // success screen
   knRefresh();
   toast('Kredin kullandırıldı, süreç tamamlandı');
 }
-function knAdvance() {
-  if (state.screen === 'konut-ekspertiz') return knEksAdvance();
-  if (state.screen === 'konut-ipotek') return knIptAdvance();
-}
+function knAdvance() { if (state.screen === 'konut-ipotek') knIptAdvance(); }
 function knDisbSheet() {
   const v = state.kn, p = v.ipt;
   if (!p || !p.disbAt) return;
@@ -8741,7 +8734,7 @@ function knDocSheet(kind) {
       <h4>Paylaşım</h4><p>Konut bilgileri ekspertiz için değerleme kuruluşuyla, tapu işlemleri için ilgili tapu müdürlüğüyle paylaşılır.</p>`],
     pre: ['Konut Kredisi Ön Bilgilendirme Formu', `
       <h4>1. Kredinin konusu</h4><p>${h.hood}, ${h.district} adresindeki ${h.rooms} konutun alımı için <b>${vmTL(q.loan)}</b> konut kredisi, ${term} ay vade.</p>
-      <h4>2. Maliyetler (örnek)</h4><p>Aylık faiz %${vmPctStr(KN_RATE.monthly)}; konut kredilerinde KKDF ve BSMV alınmaz. Aylık taksit <b>${vmTL(q.pay)}</b>, toplam geri ödeme <b>${vmTL(q.total)}</b>. Kredi tahsis ücreti binde ${vmPctStr(KN_FEES.alloc * 10)}, ekspertiz ücreti ${vmTL(KN_FEES.expertise)}.</p>
+      <h4>2. Maliyetler (örnek)</h4><p>Aylık faiz %${vmPctStr(KN_RATE.monthly)}; konut kredilerinde KKDF alınmaz, BSMV ${knTkEff().bsmv ? `faiz üzerinden %${KN_BSMV} uygulanır` : 'alınmaz'} (TAKBİS sonucu). Aylık taksit <b>${vmTL(q.pay)}</b>, toplam geri ödeme <b>${vmTL(q.total)}</b>. Kredi tahsis ücreti binde ${vmPctStr(KN_FEES.alloc * 10)}, ekspertiz ücreti ${vmTL(KN_FEES.expertise)}.</p>
       <h4>3. Teminat</h4><p>Konut üzerinde bankamız lehine 1. derece ipotek tesis edilir; DASK poliçesi zorunludur.</p>`],
     contract: ['Konut Kredisi Sözleşmesi', `
       <h4>1. Kullandırım</h4><p>Kredi tutarı; ekspertiz raporu, şubede sözleşme imzası ve tapuda ipotek tesisinden sonra satıcının hesabına aktarılır.</p>
@@ -8779,10 +8772,17 @@ function knGoMarket() {
 function knGoTrack() {
   closeSheet();
   const v = state.kn, a = v.app;
-  const to = !a || a.status !== 'approved' ? 'konut-takip' : v.eks && v.eks.stage < 4 ? 'konut-ekspertiz' : 'konut-ipotek';
+  const to = !a || a.status === 'review' ? 'konut-takip'
+    : a.status === 'pre' ? (v.eks && !v.eks.seen ? 'konut-ekspertiz' : 'konut-takip')
+    : !a.finalSeen ? 'konut-takip' : 'konut-ipotek';
   if (state.screen !== to) go(to);
 }
-function knOpenTrack() { if (state.screen !== 'konut-takip') go('konut-takip'); }
+function knOpenTrack() {
+  const prev = state.nav[state.nav.length - 1];
+  if (state.screen === 'konut-takip') return;
+  if (prev && prev.screen === 'konut-takip') return navBack();
+  go('konut-takip');
+}
 function knOpen(id) { closeSheet(); state.kn.home = id; go('konut-detay'); }
 function knOpenFavs() { state.kn.favOnly = true; go('konut-liste'); }
 function knGalGo(i) {
@@ -8822,8 +8822,9 @@ function knRefresh() {
   const sc2 = document.querySelector('#app .screen-scroll');
   if (sc2) sc2.scrollTop = y;
 }
+/* Demo reset clears the loan journey; onboarding answers (tahsis, TAKBİS) stay */
 function knResetFlow() {
-  Object.assign(state.kn, { app: null, eks: null, ipt: null, tapu: false, uploading: false, flowHome: null, scen: [], clock: null, agree: { pre: false, contract: false, kvkk: false } });
+  Object.assign(state.kn, { app: null, eks: null, ipt: null, flowHome: null, scen: [], clock: null, agree: { pre: false, contract: false, kvkk: false } });
 }
 function knResetStart(id) { knResetFlow(); closeSheet(); state.kn.home = id; knStartSim(); }
 function knReset() { knResetFlow(); knGoMarket(); toast('Demo süreci sıfırlandı'); }
@@ -8837,43 +8838,443 @@ function knPastBizDay(n) {
 function knSeed(hash) {
   const v = state.kn;
   if (!KN_HOMES.some(x => x.id === v.home)) v.home = 'h1';
-  if (v.app) return;   // an ongoing journey keeps its own state
-  if (['konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek'].includes(hash)) knInitFlow(knHome());
-  if (!['konut-takip', 'konut-ekspertiz', 'konut-ipotek'].includes(hash)) return;
+  if (hash === 'konut-tanitim') { if (!v.app) knResetOnboarding(); return; }   // the first entry again (demo)
+  if (hash === 'konut-tahsis') { if (!v.ob.done) v.tk = { s1: null, s2: null, s3: null, cur: 's1', at: null, shareDraft: null }; return; }
+  if (hash === 'konut-takbis' || hash === 'konut') return;   // #konut shows the onboarding on the first entry
+  const past = ['konut-ipotek', 'konut-tamam'].includes(hash) && !v.app;
+  if (past) knSetClock(knAt(knPastBizDay(12), '09:40'));   // a past timeline that ends before today
+  if (!v.ob.done) knSeedOnboarding();
+  if (v.app) { v.clock = null; return; }   // an ongoing journey keeps its own state
+  if (['konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek', 'konut-tamam'].includes(hash)) knInitFlow(knHome());
+  if (!['konut-takip', 'konut-ekspertiz', 'konut-ipotek', 'konut-tamam'].includes(hash)) return;
   v.agree = { pre: true, contract: true, kvkk: true };
-  if (hash === 'konut-takip') {   // evaluation waits for the missing tapu copy
-    v.tapu = false;
-    const a = knMakeApp('docs');
-    a.step = KN_TAPU_STEP;
-    knEvent(a, 'Eksik belge: Tapu fotokopisi', 'Değerlendirmenin devam etmesi için tapu fotokopisini yükle', 'warn');
-    v.app = a;
-    return;
+  if (past) knAddMin(25);
+  const a = v.app = knMakeApp('review');
+  if (hash === 'konut-takip') { setTimeout(knStartReview, 400); return; }   // shows the first evaluation running
+  a.step = KN_REVIEW.length;
+  if (past) knAddMin(300);
+  knPreApprove(a, true);
+  if (hash === 'konut-ekspertiz') return;
+  knEksComplete();
+  v.eks.fresh = false;
+  a.finalSeen = true;
+  if (hash === 'konut-tamam') {   // the whole tapu & ipotek part, in the past
+    const p = v.ipt, sign = knAt(knAddBiz(knClock(), 1), '09:30'), tapu = knAt(knAddBiz(sign, 2), '10:30');
+    Object.assign(p, { slot: knSlotLabel(sign, '09:30'), slotTs: sign.getTime() });
+    knEvent(a, 'Şube randevun oluşturuldu', `${KN_BRANCH.name} · ${p.slot}`);
+    knSetClock(sign); knAddMin(40); p.stage = 1; p.signedAt = knStamp();
+    knEvent(a, 'Kredi sözleşmen imzalandı', KN_BRANCH.name, 'ok');
+    knAddMin(15); p.dask = { no: vmRef('DSK'), at: knStamp(), inst: 1 };
+    knEvent(a, 'DASK poliçen düzenlendi', `Allianz Türkiye · ${p.dask.no}`, 'ok');
+    knAddMin(15); p.harc = { ref: vmRef('HRC'), at: knStamp(), amount: Math.round(knHome().price * KN_FEES.deedPct / 100) };
+    knEvent(a, 'Tapu harcın ödendi', `${vmTL(p.harc.amount)} · dekont ${p.harc.ref}`, 'ok');
+    Object.assign(p, { tslot: knSlotLabel(tapu, '10:30'), tslotTs: tapu.getTime(), stage: 3 });
+    knEvent(a, 'Tapu randevun oluşturuldu', `${knHome().district} Tapu Müdürlüğü · ${p.tslot}`);
+    knSetClock(tapu); knAddMin(50); p.tapuAt = knStamp();
+    knEvent(a, 'Tapu devri yapıldı, ipotek tesis edildi', `${knHome().district} Tapu Müdürlüğü`, 'ok');
+    knIptFinish(p, true);
   }
-  v.tapu = true;
-  const ipt = hash === 'konut-ipotek';
-  if (ipt) knSetClock(knAt(knPastBizDay(7), '10:05'));   // a past timeline that ends with the ekspertiz
-  const a = knMakeApp('approved');
-  if (ipt) knAddMin(300);
-  Object.assign(a, { step: KN_REVIEW.length, missing: false, approvedAt: knStamp(), until: knDay(new Date(knClock().getTime() + 90 * 864e5)) });
-  knEvent(a, 'Kredi başvurun onaylandı', `${vmTL(a.loan)} · ${a.term} ay · aylık ${vmTL(a.pay)}`, 'ok');
-  v.app = a;
-  v.eks = knNewEks();
-  knEvent(a, 'Ekspertiz talebin oluşturuldu', 'Değerleme uzmanının randevusu için uygun zamanı seç');
-  if (ipt) {
-    const e = v.eks, slot = knAt(knAddBiz(knClock(), 2), '10:00'), eta = knAt(knAddBiz(slot, 2), '11:00');
-    knAddMin(30);
-    Object.assign(e, { stage: 4, slot: knSlotLabel(slot, '10:00'), slotTs: slot.getTime(), paidAt: knStamp(), eta: knDay(eta), etaTs: eta.getTime(), reportNo: knReportNo() });
-    knEvent(a, 'Ekspertiz randevun planlandı', `${e.slot} · ${KN_VALUER.expert}`);
-    knSetClock(slot); knAddMin(75);
-    knEvent(a, 'Yerinde inceleme tamamlandı', 'Değerleme raporu hazırlanıyor');
-    knSetClock(eta);
-    e.reportAt = knStamp();
-    knEvent(a, 'Değerleme raporun hazır', `Ekspertiz değeri ${vmTL(knValue(knHome()))}`, 'ok');
-    knAddMin(120);
-    knEvent(a, 'Ekspertiz tamamlandı', 'Kredi tutarın teyit edildi; şube ve tapu adımlarına geçebilirsin', 'ok');
-    v.ipt = knNewIpt();
-    v.clock = null;   // from here on the demo runs on real time again
-  }
+  v.clock = null;   // from here on the demo runs on real time again
+}
+/* -------------------- first entry: onboarding → tahsis → TAKBİS -------------------- */
+const KN_OB_FLOW = ['Tanıtım', 'Tahsis', 'TAKBİS'];
+function knObFlowHTML(cur) {
+  return `<div class="vm-flow kn-flow kn-obflow" role="list" aria-label="İlk giriş adımları">${KN_OB_FLOW.map((t, i) =>
+    `<div class="vm-flow-s ${i < cur ? 'done' : i === cur ? 'on' : ''}" role="listitem"><i>${i < cur ? I.check : i + 1}</i><span>${t}</span></div>`).join('<b></b>')}</div>`;
+}
+/* Onboarding — shown once, before the marketplace home */
+function KnIntro() {
+  const feats = [
+    [I.search, 'Ev ara', 'Şehir, ilçe, fiyat, oda sayısı ve metrekareye göre satılık konutları incele.'],
+    [VM_ICO.compare, 'Konutları karşılaştır', 'Fiyatı, m² fiyatını ve bölge ortalamasını yan yana gör.'],
+    [I.loan, 'Kredi simülasyonu yap', 'Peşinat ve vadeye göre taksitini ve ödeme kapasiteni hesapla.'],
+    [KN_ICO.clip, 'Başvurunu takip et', 'Kredi değerlendirmesini, ekspertizi ve tapu sürecini adım adım izle.'],
+  ];
+  return `
+  <div class="screen ${vmAnim()} vm kn">
+    <div class="nav-head ru-nav-accent">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Marketplace Konut</div>
+    </div>
+    <div class="screen-scroll">
+      <div class="vm-hero kn-hero kn-intro-hero">
+        ${knSkylineSVG()}
+        <div class="vm-hero-t">Marketplace Konut'a<br>hoş geldin</div>
+        <div class="vm-hero-s">Evini bul, konut kredini planla; başvurunu ve tapu sürecini tek yerden takip et.</div>
+      </div>
+      <div class="vm-sec-h"><span>Neler yapabilirsin?</span></div>
+      <div class="vm-box kn-feats">${feats.map(([ico, t, d]) => `<div><span class="kn-feat-ico">${ico}</span><div><b>${t}</b><em>${d}</em></div></div>`).join('')}</div>
+      <div class="vm-sec-h"><span>Başlamadan önce</span></div>
+      <div class="vm-box kn-pre">
+        <p>Konut kredisi başvurundan önce iki kısa adımı birlikte tamamlayacağız:</p>
+        <div class="kn-pre-step"><span class="n">1</span><div><b>Tahsis bilgilerin güncellenecek</b><em>Bankamızda kayıtlı meslek ve gelir bilgilerini kontrol edip onaylayacak ya da düzenleyeceksin.</em></div></div>
+        <div class="kn-pre-step"><span class="n">2</span><div><b>TAKBİS bilgilerin ilk kez alınacak</b><em>Sahip olduğun konutlarla ilgili 2–3 kısa soru. Cevaplarına göre BSMV, kredi / değer oranı (LTV) ve TAKBİS sorgu kapsamın belirlenir.</em></div></div>
+        <div class="kn-pre-time">${VM_ICO.clock}<span>Yaklaşık 2 dakika sürer · yalnızca ilk girişte gösterilir</span></div>
+      </div>
+    </div>
+    <div class="screen-cta"><button class="btn-primary" data-action="kn-ob-start">Başla</button></div>
+  </div>`;
+}
+
+/* -------------------- tahsis (allocation) information -------------------- */
+// Editable employment & income fields: [key, label, options | 'text' | 'money']
+const KN_TH_FIELDS = [
+  ['job', 'Meslek', ['Özel sektör çalışanı', 'Kamu çalışanı', 'Serbest meslek', 'Şirket sahibi / esnaf', 'Emekli']],
+  ['title', 'Unvan / pozisyon', 'text'],
+  ['work', 'Çalışma durumu', ['Ücretli · tam zamanlı', 'Ücretli · yarı zamanlı', 'Kendi işi', 'Emekli']],
+  ['employer', 'İşveren', 'text'],
+  ['sector', 'Sektör', ['Bilişim ve teknoloji', 'Finans', 'Üretim', 'Sağlık', 'Eğitim', 'Ticaret ve hizmet', 'Kamu']],
+  ['tenure', 'Bu işyerinde çalışma süresi', ['1 yıldan az', '1–3 yıl', '3–5 yıl', '5 yıldan fazla']],
+  ['income', 'Aylık net gelir', 'money'],
+  ['spouse', 'Eşinin aylık net geliri', 'money'],
+  ['other', 'Diğer aylık gelir (kira vb.)', 'money'],
+];
+function knThVal(k, x) { return KN_TH_FIELDS.find(f => f[0] === k)[2] === 'money' ? vmTL(x || 0) : (x || '—'); }
+function knHouseIncome(t = state.kn.tahsis) { return (t.income || 0) + (t.spouse || 0) + (t.other || 0); }
+function KnTahsis() {
+  const v = state.kn, p = KN_PROFILE, t = v.tahsis, ed = v.thEdit, ob = !v.ob.done;
+  const ro = [['Ad soyad', p.name], ['T.C. kimlik no', p.tckn], ['Doğum tarihi', p.birth], ['Doğum yeri', p.birthPlace], ['Medeni durum', p.marital], ['Uyruk', p.nationality], ['Cep telefonu', p.phone], ['E-posta', p.email], ['İkamet adresi', p.address]];
+  const changed = !ed && v.thChanged.length;
+  const cta = ed
+    ? `<button class="btn-outline" data-action="kn-th-cancel">Vazgeç</button><button class="btn-primary" data-action="kn-th-save">Kaydet</button>`
+    : `<button class="btn-outline" data-action="kn-th-edit">Düzenle</button><button class="btn-primary" id="kn-th-ok" data-action="kn-th-confirm">Onayla</button>`;
+  return `
+  <div class="screen ${vmAnim()} vm kn">
+    ${vmNav('Tahsis Bilgileri')}
+    <div class="screen-scroll">
+      ${ob ? knObFlowHTML(1) : ''}
+      ${changed ? `<div class="vm-okbar">${I.check}<span><b>Bilgilerin güncellendi</b>Güncel bilgilerini aşağıda kontrol et; doğruysa onayla.</span></div>`
+        : `<div class="vm-infobar">${I.info}<span>${ed ? '<b>Yalnızca meslek ve gelir bilgilerin düzenlenebilir.</b> Değişiklikleri kaydettikten sonra güncel bilgilerini onaylaman istenecek.' : '<b>Bankamızda kayıtlı bilgilerin.</b> Konut kredisi değerlendirmesinde kullanılır; güncelse onayla, meslek ya da gelir bilgin değiştiyse düzenle.'}</span></div>`}
+      ${changed ? `<div class="vm-sec-t">Güncellenen bilgiler</div>
+      <div class="vm-box vm-prof kn-chg-box">${v.thChanged.map(k => { const f = KN_TH_FIELDS.find(x => x[0] === k); return `<div class="vm-frow kn-chg"><span>${f[1]}<i class="vm-sub">Önceki: ${knThVal(k, v.thPrev[k])}</i></span><b>${knThVal(k, t[k])}</b></div>`; }).join('')}</div>` : ''}
+      <div class="vm-sec-t vm-sec-row"><span>Kimlik ve temel bilgiler</span><span class="kn-lockt">${I.lock}Değiştirilemez</span></div>
+      <div class="vm-box vm-prof kn-ro">${ro.map(([k, val]) => `<div class="vm-frow"><span>${k}</span><b>${val}</b></div>`).join('')}</div>
+      <div class="vm-sec-t vm-sec-row"><span>Meslek ve gelir</span><span class="kn-edt">${ed ? 'Düzenleniyor' : 'Güncellenebilir'}</span></div>
+      <div class="vm-box ${ed ? 'kn-th-form' : 'vm-prof'}" id="kn-th-box">${ed ? knThFormHTML() : knThViewHTML()}</div>
+      ${ed ? '' : `<div class="vm-note">${I.info}<span>Kimlik ve iletişim bilgilerin nüfus kayıtlarından ve müşteri kaydından gelir; değişiklik için şubemize başvurabilirsin.</span></div>`}
+    </div>
+    <div class="screen-cta kn-cta2">${cta}</div>
+  </div>`;
+}
+function knThViewHTML() {
+  const v = state.kn, t = v.tahsis;
+  return KN_TH_FIELDS.map(([k, label]) => {
+    const chg = v.thChanged.includes(k);
+    return `<div class="vm-frow ${chg ? 'kn-chg' : ''}"><span>${label}${chg ? `<i class="vm-sub">Önceki: ${knThVal(k, v.thPrev[k])}</i>` : ''}</span><b>${knThVal(k, t[k])}${chg ? '<em class="kn-chg-tag">Güncellendi</em>' : ''}</b></div>`;
+  }).join('') + `<div class="vm-frow kn-th-sum"><span>Aylık net hane geliri</span><b>${vmTL(knHouseIncome(t))}</b></div>`;
+}
+function knThFormHTML() {
+  const d = state.kn.thDraft;
+  return KN_TH_FIELDS.map(([k, label, type]) => {
+    if (Array.isArray(type)) return `<button class="vm-field kn-th-f" data-action="kn-th-pick" data-k="${k}"><span>${label}</span><b>${d[k]}</b>${I.chevDown}</button>`;
+    const money = type === 'money';
+    return `<label class="vm-in kn-th-f"><span>${label}</span><input id="kn-th-${k}" ${money ? 'inputmode="numeric"' : 'type="text"'} enterkeyhint="done" autocomplete="off" placeholder="${money ? '0' : ''}" value="${money ? (d[k] ? d[k].toLocaleString('tr-TR') : '0') : d[k]}" maxlength="${money ? 11 : 60}">${money ? '<em>TL</em>' : ''}</label>`;
+  }).join('') + '<div class="vm-warn-inline" id="kn-th-warn" role="status" aria-live="polite"></div>';
+}
+/* Typed values go straight into the draft, so a re-render (choice sheets) never loses them */
+function knSetupTahsis() {
+  const v = state.kn;
+  if (!v.thEdit) return;
+  KN_TH_FIELDS.forEach(([k, , type]) => {
+    const inp = document.getElementById('kn-th-' + k);
+    if (!inp) return;
+    inp.addEventListener('input', () => {
+      if (type === 'money') {
+        const dg = inp.value.replace(/\D/g, '').slice(0, 9);
+        inp.value = dg ? (+dg).toLocaleString('tr-TR') : '';
+        v.thDraft[k] = +dg || 0;
+      } else v.thDraft[k] = inp.value;
+    });
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+  });
+}
+function knThRefreshForm() { const el = document.getElementById('kn-th-box'); if (el) { el.innerHTML = knThFormHTML(); knSetupTahsis(); } }
+function knThEdit() { const v = state.kn; v.thEdit = true; v.thDraft = { ...v.tahsis }; vmRerender('anim-fade'); }
+function knThOpenEdit() { const v = state.kn; v.thEdit = true; v.thDraft = { ...v.tahsis }; go('konut-tahsis'); }
+function knThCancel() { const v = state.kn; v.thEdit = false; v.thDraft = null; vmRerender('anim-fade'); }
+function knThPick(k) {
+  const v = state.kn, f = KN_TH_FIELDS.find(x => x[0] === k);
+  v.thPickKey = k;
+  vmChoiceSheet(f[1], f[2].map(o => ({ v: o, label: o, on: v.thDraft[k] === o })), 'kn-th-set');
+}
+function knThSet(val) {
+  const v = state.kn;
+  v.thDraft[v.thPickKey] = val;
+  if (v.thPickKey === 'job' && val === 'Emekli') v.thDraft.work = 'Emekli';
+  closeSheet();
+  knThRefreshForm();
+}
+function knThSave() {
+  vmCommitInputs();
+  const v = state.kn, d = v.thDraft;
+  d.employer = String(d.employer || '').trim(); d.title = String(d.title || '').trim();
+  const retired = d.job === 'Emekli' || d.work === 'Emekli';
+  if (!d.income) return vmWarn('kn-th-warn', 'Aylık net gelirini gir.');
+  if (!retired && !d.employer) return vmWarn('kn-th-warn', 'İşveren bilgisini gir.');
+  const keys = KN_TH_FIELDS.map(f => f[0]).filter(k => d[k] !== v.tahsis[k]);
+  v.thEdit = false; v.thDraft = null;
+  if (!keys.length) { vmRerender('anim-fade'); return toast('Bilgilerinde değişiklik yapılmadı'); }
+  v.thPrev = { ...v.tahsis };
+  v.tahsis = { ...d };
+  v.thChanged = keys;
+  if (!v.incomeEdited) v.income = knHouseIncome();
+  vmRerender('anim-fade');
+  const sc = document.querySelector('#app .screen-scroll'); if (sc) sc.scrollTop = 0;
+  toast('Bilgilerin kaydedildi');
+}
+function knThConfirm() {
+  const v = state.kn;
+  if (!knBusyBtn('kn-th-ok', 'Onaylanıyor…')) return;
+  setTimeout(() => {
+    v.tahsisAt = knStamp();
+    v.thChanged = [];
+    if (!v.incomeEdited) v.income = knHouseIncome();
+    if (!v.ob.done) return go('konut-takbis');
+    navBack();
+    toast('Tahsis bilgilerin onaylandı');
+  }, 700);
+}
+
+/* -------------------- TAKBİS (first time) — step-by-step questions + decision tree -------------------- */
+const KN_TK_OPTS = [['0', 'Yok'], ['1', '1 adet'], ['2', '2 ve üzeri']];
+const KN_LTV = { 'Yüksek': 75, 'Düşük': 50 };   // EXAMPLE maximum loan / value (%) per LTV level
+const KN_BSMV = 15;                             // EXAMPLE BSMV % on interest when it applies
+// Decision table of the brief: S1 | S2 | S3 (< or > %50) → case number
+const KN_TK_CASES = { '0|0|-': 1, '0|1|<': 2, '0|1|>': 3, '0|2|-': 4, '1|0|<': 5, '1|0|>': 6, '1|1|-': 7, '2|-|-': 8 };
+const KN_TK_Q = {
+  s1: { n: 'Kendi konutun', t: '‘Hasarlı’ tipi dışında bir evin var mı?', d: 'Adına kayıtlı konutları say; tapuda ‘hasarlı’ tipiyle kayıtlı olanlar sayılmaz.' },
+  s2: { n: 'Eşinin / çocuğunun konutu', t: 'Eşinin ya da çocuğunun ‘hasarlı’ tipi dışında bir evi var mı?', d: 'Eşinin ve çocuklarının adına kayıtlı konutları say; ‘hasarlı’ tipindekiler sayılmaz.' },
+  s3: { n: 'Hisse oranı', t: 'Evin hisse oranı yüzde kaç?' },
+};
+/* Questions that apply for the given answers (conditional display rules of the brief) */
+function knTkQs(tk) {
+  if (tk.s1 == null || tk.s1 === '2') return ['s1'];
+  if (tk.s2 == null) return ['s1', 's2'];
+  return (tk.s1 === '0' && tk.s2 === '1') || (tk.s1 === '1' && tk.s2 === '0') ? ['s1', 's2', 's3'] : ['s1', 's2'];
+}
+function knTkTotal(tk) { return tk.s1 === '2' ? 1 : tk.s1 == null || tk.s2 == null ? 3 : knTkQs(tk).length; }
+function knTkNext(tk) { return knTkQs(tk).find(q => tk[q] == null) || null; }
+/* BSMV: own home → Var. LTV: no home in the household, or a single home with a share under %50 → Yüksek.
+   TAKBİS: LTV Yüksek → Herkese; BSMV Yok + LTV Düşük → Müşteriye; BSMV Var + LTV Düşük → N/A. Exactly %50 → manual. */
+function knTkResult(tk = state.kn.tk) {
+  const qs = knTkQs(tk);
+  if (qs.some(q => tk[q] == null)) return null;
+  const share = qs.includes('s3') ? tk.s3 : null;
+  if (share === 50) return { manual: true, case: null };
+  const own = +tk.s1, fam = qs.includes('s2') ? +tk.s2 : 0, homes = own === 2 ? 2 : own + fam;
+  const bsmv = own > 0 ? 'Var' : 'Yok';
+  const ltv = homes === 0 || (homes === 1 && share !== null && share < 50) ? 'Yüksek' : 'Düşük';
+  const scope = ltv === 'Yüksek' ? 'Herkese' : bsmv === 'Yok' ? 'Müşteriye' : 'N/A';
+  const key = `${tk.s1}|${qs.includes('s2') ? tk.s2 : '-'}|${share === null ? '-' : share < 50 ? '<' : '>'}`;
+  return { manual: false, bsmv, ltv, scope, case: KN_TK_CASES[key] || null };
+}
+/* What the calculations use: a manual case is priced conservatively (low LTV; BSMV if the customer owns a home) */
+function knTkEff() {
+  const r = knTkResult();
+  if (!r) return { bsmv: false, ltv: 'Yüksek', ltvMax: KN_LTV['Yüksek'] };
+  if (r.manual) return { bsmv: state.kn.tk.s1 !== '0', ltv: 'Düşük', ltvMax: KN_LTV['Düşük'], manual: true };
+  return { bsmv: r.bsmv === 'Var', ltv: r.ltv, ltvMax: KN_LTV[r.ltv] };
+}
+function knTkAns(q, tk = state.kn.tk) {
+  if (!knTkQs(tk).includes(q) || tk[q] == null) return 'Sorulmadı';
+  return q === 's3' ? '%' + vmPctStr(tk.s3) : KN_TK_OPTS.find(o => o[0] === tk[q])[1];
+}
+const KN_SCOPE_TXT = { 'Herkese': 'Sorgu senin, eşinin ve çocuklarının adına yapılır', 'Müşteriye': 'Sorgu yalnızca senin adına yapılır', 'N/A': 'TAKBİS sorgusu gerekmiyor' };
+function knTkResultRows(r) {
+  if (!r) return [];
+  if (r.manual) return [['BSMV', 'Manuel değerlendirme', ''], ['LTV', 'Manuel değerlendirme', ''], ['TAKBİS sorgu kapsamı', 'Manuel değerlendirme', '']];
+  return [
+    ['BSMV', r.bsmv, r.bsmv === 'Var' ? `Adına kayıtlı konut olduğu için kredi faizine BSMV uygulanır (%${KN_BSMV} örnek)` : 'Kredi faizine BSMV uygulanmaz'],
+    ['LTV', r.ltv, `Kredi / konut değeri en fazla %${KN_LTV[r.ltv]} (örnek)`],
+    ['TAKBİS sorgu kapsamı', r.scope, KN_SCOPE_TXT[r.scope]],
+  ];
+}
+function KnTakbis() {
+  const v = state.kn, tk = v.tk;
+  if (!tk.cur && knTkResult(tk)) return knTkResultView();
+  const q = tk.cur || knTkNext(tk) || 's1';
+  tk.cur = q;
+  const qs = knTkQs(tk), pos = qs.indexOf(q) + 1, total = knTkTotal(tk), Q = KN_TK_Q[q];
+  const before = qs.slice(0, qs.indexOf(q)).filter(k => tk[k] != null);
+  const helper = q === 's3' ? (tk.s1 === '1' ? 'Adına kayıtlı evdeki hisse oranını gir.' : 'Eşinin ya da çocuğunun adına kayıtlı evdeki hisse oranını gir.') : Q.d;
+  const share = tk.shareDraft != null ? tk.shareDraft : (tk.s3 != null ? vmPctStr(tk.s3) : '');
+  return `
+  <div class="screen ${vmAnim()} vm kn">
+    ${vmNav('TAKBİS Bilgileri')}
+    <div class="screen-scroll">
+      ${v.ob.done ? '' : knObFlowHTML(2)}
+      ${pos === 1 && !before.length ? `<div class="vm-infobar">${I.info}<span><b>TAKBİS bilgilerin ilk kez alınıyor.</b> Tapu ve Kadastro Bilgi Sistemi'ne göre sahip olduğun konutları soruyoruz; cevaplarına göre BSMV, LTV ve TAKBİS sorgu kapsamın belirlenir.</span></div>` : ''}
+      ${before.length ? `<div class="vm-box kn-tk-done">${before.map(k => `<div><span class="kn-tk-n">${I.check}</span><div><span>${KN_TK_Q[k].n}</span><b>${knTkAns(k)}</b></div><button class="sp-link" data-action="kn-tk-edit" data-q="${k}">Değiştir</button></div>`).join('')}</div>` : ''}
+      <div class="kn-tk-prog"><span>Soru ${pos} / ${total}</span><div class="kn-tk-bar">${Array.from({ length: total }, (_, i) => `<i class="${i < pos - 1 ? 'done' : i === pos - 1 ? 'on' : ''}"></i>`).join('')}</div></div>
+      <div class="vm-box kn-tk-q">
+        <span class="kn-tk-qn">${Q.n}</span>
+        <h3>${Q.t}</h3>
+        <p>${helper}</p>
+        ${q === 's3' ? `
+        <label class="vm-money kn-tk-share"><input id="kn-tk-share" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" value="${share}" aria-label="Hisse oranı (yüzde)"><em>%</em></label>
+        <div class="vm-chips kn-tk-chips">${[25, 40, 50, 75, 100].map(x => `<button class="vm-chip" data-action="kn-tk-chip" data-v="${x}">%${x}</button>`).join('')}</div>
+        <div class="vm-warn-inline" id="kn-tk-warn" role="status" aria-live="polite"></div>`
+        : `<div class="kn-tk-opts">${KN_TK_OPTS.map(([val, label]) => `<button class="kn-tk-opt ${tk[q] === val ? 'on' : ''}" data-action="kn-tk-opt" data-q="${q}" data-v="${val}"><span class="kn-tk-radio"></span><b>${label}</b></button>`).join('')}</div>`}
+      </div>
+      ${pos > 1 ? '<button class="sp-link kn-tk-prev" data-action="kn-tk-back">‹ Önceki soru</button>' : ''}
+    </div>
+    ${q === 's3' ? `<div class="screen-cta"><button class="btn-primary ${knTkShareVal(share) ? '' : 'disabled'}" id="kn-tk-go" data-action="kn-tk-share">Devam</button></div>` : ''}
+  </div>`;
+}
+function knTkShareVal(s) {
+  const n = Number(String(s).replace(',', '.'));
+  return String(s).trim() !== '' && isFinite(n) && n > 0 && n <= 100 ? Math.round(n * 10) / 10 : null;
+}
+function knSetupTakbis() {
+  const inp = document.getElementById('kn-tk-share');
+  if (!inp) return;
+  inp.addEventListener('input', () => {
+    inp.value = inp.value.replace(/[^\d,.]/g, '').replace('.', ',').slice(0, 5);
+    state.kn.tk.shareDraft = inp.value;
+    const b = document.getElementById('kn-tk-go'); if (b) b.classList.toggle('disabled', !knTkShareVal(inp.value));
+    vmWarn('kn-tk-warn', inp.value && !knTkShareVal(inp.value) ? 'Hisse oranı %0 ile %100 arasında olmalı.' : '');
+  });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') knTkShareSubmit(); });
+}
+/* Recording an answer drops answers of questions that no longer apply; the result is recomputed */
+function knTkAnswer(q, val) {
+  const tk = state.kn.tk;
+  tk[q] = val;
+  if (q !== 's3') tk.shareDraft = null;
+  const qs = knTkQs(tk);
+  ['s2', 's3'].forEach(k => { if (!qs.includes(k)) tk[k] = null; });
+  tk.cur = knTkNext(tk);
+  if (!tk.cur) tk.at = knStamp();
+  document.querySelectorAll(`.kn-tk-opt[data-q="${q}"]`).forEach(b => b.classList.toggle('on', b.dataset.v === val));
+  setTimeout(() => vmRerender('anim-fade'), 160);
+}
+function knTkShareChip(x) {
+  const inp = document.getElementById('kn-tk-share');
+  if (!inp) return;
+  inp.value = String(x);
+  inp.dispatchEvent(new Event('input'));
+}
+function knTkShareSubmit() {
+  const tk = state.kn.tk, inp = document.getElementById('kn-tk-share'), val = knTkShareVal(inp ? inp.value : '');
+  if (val === null) return vmWarn('kn-tk-warn', 'Hisse oranını yüzde olarak gir (ör. 40).');
+  tk.shareDraft = null;
+  knTkAnswer('s3', val);
+}
+function knTkEdit(q) { const tk = state.kn.tk; tk.cur = q; tk.shareDraft = null; vmRerender('anim-fade'); }
+function knTkBack() {
+  const tk = state.kn.tk, qs = knTkQs(tk), i = qs.indexOf(tk.cur);
+  if (i > 0) knTkEdit(qs[i - 1]);
+}
+function knTkResultView() {
+  const v = state.kn, tk = v.tk, r = knTkResult(tk), qs = knTkQs(tk);
+  return `
+  <div class="screen ${vmAnim()} vm kn">
+    ${vmNav('TAKBİS Bilgileri')}
+    <div class="screen-scroll">
+      ${v.ob.done ? '' : knObFlowHTML(3)}
+      ${r.manual
+        ? `<div class="kn-miss" role="status"><span class="kn-miss-ico">${I.info}</span><div><b>Manuel değerlendirme gerekli</b><span>Hisse oranı tam %50 olduğu için BSMV, LTV ve TAKBİS sorgu kapsamı otomatik belirlenmedi. Cevapların kaydedildi; bilgilerin bankamız tarafından ayrıca değerlendirilecek.</span></div></div>`
+        : `<div class="vm-okbar">${I.check}<span><b>TAKBİS bilgilerin başarıyla alındı</b>Cevaplarına göre BSMV durumun, LTV seviyen ve TAKBİS sorgu kapsamın belirlendi. Bu bilgiler kredi başvurunda kullanılacak.</span></div>`}
+      <div class="vm-sec-t">Cevapların</div>
+      <div class="vm-box kn-tk-sum">${['s1', 's2', 's3'].map(k => `<div><div><span>${KN_TK_Q[k].n}</span><b class="${qs.includes(k) ? '' : 'na'}">${knTkAns(k)}</b></div>${qs.includes(k) ? `<button class="sp-link" data-action="kn-tk-edit" data-q="${k}">Değiştir</button>` : ''}</div>`).join('')}</div>
+      <div class="vm-sec-t">Sonuç</div>
+      <div class="vm-box kn-tk-res">${knTkResultRows(r).map(([k, val, d]) => `<div class="${r.manual ? 'man' : ''}"><span>${k}</span><b>${val}</b>${d ? `<em>${d}</em>` : ''}</div>`).join('')}</div>
+      <div class="vm-note">${I.info}<span>${tk.at ? `Bilgiler ${tk.at} tarihinde alındı. ` : ''}Kredi başvurunda tekrar sorulmaz; başvuru ekranına otomatik taşınır.</span></div>
+      <div class="vm-demo"><div class="vm-demo-h">${I.info}<span>Demo · Karar ağacı: ${r.manual ? 'tam %50 hisse — tanımlı case yok, manuel değerlendirme' : r.case ? `Case ${r.case}` : 'tabloda olmayan kombinasyon — iş kurallarından hesaplandı'}</span></div></div>
+    </div>
+    <div class="screen-cta"><button class="btn-primary" data-action="kn-ob-finish">${v.ob.done ? 'Kaydet ve Dön' : 'Marketplace\'e Geç'}</button></div>
+  </div>`;
+}
+/* Onboarding done: the marketplace home replaces the onboarding screens in the back stack */
+function knObFinish() {
+  const v = state.kn;
+  if (!knTkResult(v.tk)) return;
+  const first = !v.ob.done;
+  v.ob.done = true;
+  if (!v.incomeEdited) v.income = knHouseIncome();
+  if (!first) return navBack();
+  while (state.nav.length && ['konut-tanitim', 'konut-tahsis', 'konut-takbis', 'konut'].includes(state.nav[state.nav.length - 1].screen)) state.nav.pop();
+  closeSheet();
+  state.chatSeed = false;
+  state.screen = 'konut';
+  vmRerender('anim-right');
+  toast('TAKBİS bilgilerin kaydedildi');
+}
+function knSeedOnboarding() {   // test answers of the brief: Özel sektör, 150.000 TL; S1 Yok, S2 1 adet, S3 %40
+  const v = state.kn;
+  v.tahsis = { ...KN_TAHSIS0 };
+  v.tahsisAt = knStamp();
+  v.tk = { s1: '0', s2: '1', s3: 40, cur: null, at: knStamp(), shareDraft: null };
+  v.ob.done = true;
+  if (!v.incomeEdited) v.income = knHouseIncome();
+}
+function knResetOnboarding() {
+  Object.assign(state.kn, { ob: { done: false }, tahsis: { ...KN_TAHSIS0 }, tahsisAt: null, thEdit: false, thDraft: null, thChanged: [], thPrev: null, tk: { s1: null, s2: null, s3: null, cur: 's1', at: null, shareDraft: null } });
+}
+
+/* -------------------- tapu copy uploaded by the seller -------------------- */
+function knTapuDoc(h) {
+  const i = KN_HOMES.indexOf(h), s = knSeller(h), up = new Date(); up.setDate(up.getDate() - h.days - 1);
+  return { by: s.kind === 'Ev sahibi' ? `${s.name} (ev sahibi)` : `${s.name} · ${s.kind.toLocaleLowerCase('tr')}`, at: knDay(up), ada: 1180 + i * 37, parsel: 4 + i * 3, share: `${80 + i * 5}/2400` };
+}
+function knTapuSheet() {
+  const v = state.kn, h = v.app ? knHome(v.app.home) : knHome(), d = knTapuDoc(h), a = v.app;
+  const checked = a && a.status !== 'review';
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Tapu fotokopisi</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="kn-deed">
+      <div class="kn-deed-h"><b>TAPU SENEDİ</b><span>Fotokopi · satıcı tarafından yüklendi</span></div>
+      <div class="kn-deed-g">
+        <div><span>İl / İlçe</span><b>${h.city} / ${h.district}</b></div><div><span>Mahalle</span><b>${h.hood}</b></div>
+        <div><span>Ada / Parsel</span><b>${d.ada} / ${d.parsel}</b></div><div><span>Niteliği</span><b>${h.type === 'Villa' || h.type === 'Müstakil ev' ? 'Kargir ev ve arsası' : 'Mesken · kat mülkiyeti'}</b></div>
+        <div><span>Bağımsız bölüm</span><b>${h.floor}</b></div><div><span>Arsa payı</span><b>${d.share}</b></div>
+        <div class="w"><span>Malik</span><b>Satıcı · kişisel bilgiler gizlendi</b></div>
+      </div>
+      <i class="kn-deed-stamp">Örnek</i>
+    </div>
+    <div class="receipt vm-sh-receipt">
+      <div class="r-row"><span class="r-l">Belge durumu</span><span class="r-r"><span class="vm-pill ok sm">${I.check}Sistemde mevcut</span></span></div>
+      <div class="r-row"><span class="r-l">Yükleyen</span><span class="r-r">${d.by}</span></div>
+      <div class="r-row"><span class="r-l">Yüklenme tarihi</span><span class="r-r">${d.at}</span></div>
+      <div class="r-row"><span class="r-l">Banka kontrolü</span><span class="r-r">${checked ? 'TAKBİS kaydıyla doğrulandı' : 'Başvuru değerlendirmesinde yapılır'}</span></div>
+    </div>
+    <div class="vm-cmp-note">Tapu fotokopisi satıcı tarafından ilan aşamasında sisteme yüklenir; senden ayrıca belge istenmez.</div>
+    <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`;
+  sheetEl.classList.add('open');
+  sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- success — loan disbursed -------------------- */
+function KnDone() {
+  const v = state.kn, a = v.app, p = v.ipt;
+  if (!a || !p || p.stage < 4) { state.screen = 'konut-ipotek'; return KnIpotek(); }
+  const h = knHome(a.home);
+  return `
+  <div class="screen anim-fade vm kn">
+    <div class="screen-scroll">
+      <div class="success kn-success">
+        <div class="success-check"><div class="ring">${I.checkBig}</div></div>
+        <h2>Konut kredin kullandırıldı</h2>
+        <div class="succ-date">${p.disbAt}</div>
+        <div class="amt">${vmTL(a.loan)}</div>
+        <div class="prod">${knTitle(h)} · satıcının hesabına aktarıldı</div>
+        <div class="kn-done kn-done-in"><span class="kn-done-ico">${VM_ICO.key}</span><b>Yeni evin hayırlı olsun!</b><span>Tapu devri ve ipotek tesisi tamamlandı. Tapu kaydını e-Devlet üzerinden görüntüleyebilirsin.</span></div>
+        <div class="receipt">
+          <div class="r-row"><span class="r-l">Taşınmaz</span><span class="r-r">${h.hood}, ${h.district}</span></div>
+          <div class="r-row"><span class="r-l">Tapu devri</span><span class="r-r">${vmShortDate(p.tapuAt)} · ${h.district} Tapu Müdürlüğü</span></div>
+          <div class="r-row"><span class="r-l">İpotek</span><span class="r-r">1. derece · Yapı Kredi lehine</span></div>
+          <div class="r-row"><span class="r-l">Vade · aylık taksit</span><span class="r-r">${a.term} ay · ${vmTL(a.pay)}</span></div>
+          <div class="r-row"><span class="r-l">İlk taksit</span><span class="r-r">${a.first}</span></div>
+          <div class="r-row"><span class="r-l">İşlem no</span><span class="r-r">${p.disbRef}</span></div>
+        </div>
+        <div class="success-actions">
+          <button class="btn-primary" data-action="kn-home">Marketplace Konut'a Dön</button>
+          <button class="btn-outline" data-action="kn-open-track">Başvuru Özetini Gör</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
 }
 
 /* ===================================================================
@@ -11283,6 +11684,10 @@ function render() {
     case 'konut-takip': html = KnTrack(); break;
     case 'konut-ekspertiz': html = KnEks(); break;
     case 'konut-ipotek': html = KnIpotek(); break;
+    case 'konut-tanitim': html = KnIntro(); break;
+    case 'konut-tahsis': html = KnTahsis(); break;
+    case 'konut-takbis': html = KnTakbis(); break;
+    case 'konut-tamam': html = KnDone(); break;
     case 'card-detail': html = CardDetailScreen(); break;
     case 'split': html = SplitHub(); break;
     case 'split-pick': html = SplitPick(); break;
@@ -11330,6 +11735,9 @@ function render() {
   if (state.screen === 'konut') knSetupSearch();
   if (state.screen === 'konut-detay') knSetupDetail();
   if (state.screen === 'konut-kredi') knSetupSim();
+  if (state.screen === 'konut-tahsis') knSetupTahsis();
+  if (state.screen === 'konut-takbis') knSetupTakbis();
+  knEksAway();   // Marketplace Konut: the ekspertiz result arrives after the customer has left that screen
   if (state.screen === 'split-amount') setTimeout(() => { const i = document.getElementById('spl-amt-input'); i && i.focus(); }, 280);
 }
 
@@ -12745,16 +13153,26 @@ document.addEventListener('click', (e) => {
     case 'kn-agree': return knToggleAgree(t);
     case 'kn-doc': e.preventDefault(); return knDocSheet(t.dataset.doc);
     case 'kn-submit': return knSubmit();
-    case 'kn-upload': return knUpload();
+    case 'kn-tapu-doc': return knTapuSheet();
     case 'kn-track': return knGoTrack();
     case 'kn-open-track': return knOpenTrack();
     case 'kn-to-eks': return go('konut-ekspertiz');
     case 'kn-to-ipt': return go('konut-ipotek');
     case 'kn-slot': return knPickSlot(t.dataset.kind, t.dataset.v, +t.dataset.ts);
-    case 'kn-eks-book': return knEksBook();
-    case 'kn-eks-approve': return knEksApprove();
-    case 'kn-eks-edit': return knEksEdit();
-    case 'kn-eks-update': return knEksUpdate();
+    case 'kn-ob-start': return go('konut-tahsis');
+    case 'kn-th-edit': return knThEdit();
+    case 'kn-th-open-edit': return knThOpenEdit();
+    case 'kn-th-cancel': return knThCancel();
+    case 'kn-th-save': return knThSave();
+    case 'kn-th-confirm': return knThConfirm();
+    case 'kn-th-pick': vmCommitInputs(); return knThPick(t.dataset.k);
+    case 'kn-th-set': return knThSet(t.dataset.v);
+    case 'kn-tk-opt': return knTkAnswer(t.dataset.q, t.dataset.v);
+    case 'kn-tk-chip': return knTkShareChip(+t.dataset.v);
+    case 'kn-tk-share': return knTkShareSubmit();
+    case 'kn-tk-edit': return knTkEdit(t.dataset.q);
+    case 'kn-tk-back': return knTkBack();
+    case 'kn-ob-finish': return knObFinish();
     case 'kn-report': return knReportSheet();
     case 'kn-adv': return knAdvance();
     case 'kn-ipt-book': return knIptBook();
@@ -12802,7 +13220,7 @@ function updateClock() {
    Her bölümün kendi hash linki var: #home #assistant #setur #chat #payment
    #success #tracking #search #settings #sections
    Link açıldığında ekran gereken state ile hazır gelir (akışı tekrarlamadan). */
-const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'sky-limit', 'sky-limit-manage', 'sky-limit-confirm', 'sky-limit-success', 'sky-limit-payment', 'toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis', 'arac', 'arac-liste', 'arac-detay', 'arac-on-onay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-takip', 'konut', 'konut-liste', 'konut-detay', 'konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek'];
+const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'sky-limit', 'sky-limit-manage', 'sky-limit-confirm', 'sky-limit-success', 'sky-limit-payment', 'toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis', 'arac', 'arac-liste', 'arac-detay', 'arac-on-onay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-takip', 'konut', 'konut-liste', 'konut-detay', 'konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek', 'konut-tanitim', 'konut-tahsis', 'konut-takbis', 'konut-tamam'];
 function routeTo(hash) {
   const h = (hash || '').replace('#', '') || 'home';
   if (!ROUTES.includes(h)) return false;
