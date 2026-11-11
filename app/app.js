@@ -271,6 +271,13 @@ const SECTIONS = [
   { hash: 'konut-ekspertiz', icon: 'pin', t: 'Taslak — Marketplace Konut: Ekspertiz', d: 'Bankanın başlattığı ekspertiz: atanan kuruluş, randevu; sonraki girişte onaylı rapor' },
   { hash: 'konut-ipotek', icon: 'bank', t: 'Taslak — Marketplace Konut: Tapu ve ipotek', d: 'Şube randevusu, DASK ve tapu harcı, tapu devri, ipotek tesisi ve kullandırım' },
   { hash: 'konut-tamam', icon: 'check', t: 'Taslak — Marketplace Konut: Kredi kullandırıldı', d: 'Süreç tamamlandı ekranı' },
+  { hash: 'isletme', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı', d: 'İşletmenin para giriş ve çıkışları, yapay zekâ analizi ve sana özel finansman teklifleri' },
+  { hash: 'isletme-hareketler', icon: 'pie', t: 'Taslak — Akıllı İşletme Finansmanı: Finansal hareketler', d: 'Şirkete girenler / çıkanlar, kategori ve işlem detayı, dönem karşılaştırma' },
+  { hash: 'isletme-analiz', icon: 'spark', t: 'Taslak — Akıllı İşletme Finansmanı: Yapay zekâ analizi', d: 'Finansal sağlık, nakit akışı eğilimi, olası nakit açıkları, finansman ihtiyacı' },
+  { hash: 'isletme-oneriler', icon: 'loan', t: 'Taslak — Akıllı İşletme Finansmanı: Finansman önerileri', d: 'İşletmeye özel 5 alternatif, gerekçeleri ve uygunluk puanı' },
+  { hash: 'isletme-karsilastir', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı: Teklif karşılaştırma', d: 'Tutar, maliyet, vade, aylık ödeme, toplam geri ödeme ve erken ödeme yan yana' },
+  { hash: 'isletme-basvuru', icon: 'doc', t: 'Taslak — Akıllı İşletme Finansmanı: Detay ve başvuru', d: 'İşletme bilgileri, finansman koşulları, geri ödeme planı ve başvuru özeti' },
+  { hash: 'isletme-takip', icon: 'doc', t: 'Taslak — Akıllı İşletme Finansmanı: Başvuru ve finansman takibi', d: 'Değerlendirme, onay, kullandırım ve geri ödeme planı' },
   { hash: 'search',    icon: 'search',   t: 'Arama',               d: 'Arama ekranı' },
   { hash: 'settings',  icon: 'gear',     t: 'Ayarlar',             d: 'Tema ve bildirimler' },
 ];
@@ -854,6 +861,8 @@ const SEARCH_FEATURES = [
     keys: ['araç', 'araba', 'otomobil', 'taşıt', 'taşıt kredisi', 'araç kredisi', 'oto kredi', 'kasko', 'galeri', 'bayi', 'ikinci el', 'sıfır araç', 'marketplace', 'otokoç', 'allianz', 'kredi'] },
   { hash: 'konut', name: 'Marketplace Konut', icon: I.home, sub: 'Evini bul, konut kredini planla; ekspertiz ve tapuyu takip et',
     keys: ['konut', 'ev al', 'ev kredisi', 'satılık ev', 'satılık daire', 'daire', 'konut kredisi', 'mortgage', 'ipotek', 'ekspertiz', 'emlak', 'tapu', 'dask', 'takbis', 'tahsis', 'marketplace', 'kredi'] },
+  { hash: 'isletme', name: 'Akıllı İşletme Finansmanı', icon: I.bars, sub: 'İşletmenin nakit akışını analiz et, sana özel finansman tekliflerini gör',
+    keys: ['işletme', 'işletme finansmanı', 'işletme sermayesi', 'sermaye', 'ticari', 'ticari kredi', 'kobi', 'şirket', 'finansman', 'nakit akışı', 'nakit açığı', 'tedarikçi', 'yapay zeka', 'yapay zekâ', 'analiz', 'kredi'] },
 ];
 // Turkish-aware and accent-insensitive: "Borç", "borc" and "BORÇ" match alike (keeps string length)
 function searchNorm(s) {
@@ -9277,6 +9286,1485 @@ function KnDone() {
   </div>`;
 }
 
+/* ======================================================================
+   AKILLI İŞLETME SERMAYESİ FİNANSMANI (draft) — AI-assisted business finance
+   Business cash-flow dashboard → inflow / outflow details → AI financial
+   analysis → personalised financing offers → comparison → application →
+   application & financing tracking. Not a loan product page: a platform that
+   reads the business's money in / money out and proposes financing.
+   The business, every amount, the "AI" analysis and all offers are DEMO /
+   EXAMPLE data computed locally — no real account, POS, AI model, offer or
+   credit process is involved. Reuses the vm-* kit of Marketplace Taşıt.
+   ====================================================================== */
+const BF_BIZ = {   // DEMO business (fictional)
+  name: 'ABC Teknoloji ve Ticaret A.Ş.', short: 'ABC Teknoloji', initials: 'ABC',
+  sector: 'Perakende', activity: 'Elektronik ve teknoloji ürünleri perakende satışı',
+  taxNo: '0123456789', taxOffice: 'Kadıköy Vergi Dairesi', founded: 2016, employees: 19,
+  stores: '2 mağaza (Kadıköy, Ataşehir) ve online satış', segment: 'KOBİ',
+  rep: 'Selçuk İmre', repRole: 'Genel Müdür · imza yetkilisi',
+  address: 'Caferağa Mah. Moda Cad. No:12, Kadıköy / İstanbul',
+  account: 'İşletme Vadesiz TL Hesabı', iban: 'TR•• •••• •••• •••• 7310',
+  balance: 320000,   // available balance in the business accounts on the demo date
+};
+const BF_ASOF = '10 Kasım 2026';            // data is current as of this (demo) date
+const BF_TODAY = new Date(2026, 10, 11);    // demo "today": the analysis and the forecast start here
+const BF_AY3 = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+const BF_N = 24;                            // months of data: index 0 = Kasım 2024 … 23 = Ekim 2026
+const BF_LAST = BF_N - 1;
+/* Monthly totals per category (TL). The last three months (Ağustos–Ekim 2026) average exactly to
+   the brief's test data; "Nakit girişleri" is not in the brief's test data and is an EXAMPLE value. */
+const BF_K = 1000;
+const BF_SERIES = {
+  pos:   [747, 773, 726, 592, 697, 732, 777, 815, 775, 810, 859, 925, 1010, 1076, 950, 803, 942, 1013, 1073, 1090, 1092, 1100, 1180, 1320],
+  order: [249, 246, 207, 189, 211, 229, 260, 251, 260, 270, 288, 327, 376, 349, 310, 298, 327, 347, 386, 387, 384, 400, 440, 510],
+  cash:  [121, 122, 103, 87, 97, 103, 107, 102, 103, 94, 102, 110, 108, 114, 97, 84, 95, 96, 103, 97, 96, 105, 98, 97],
+  oin:   [86, 87, 87, 97, 101, 92, 98, 86, 103, 104, 115, 113, 101, 106, 115, 100, 114, 108, 109, 110, 133, 160, 130, 160],
+  bill:  [169, 191, 203, 206, 186, 181, 180, 199, 220, 231, 214, 216, 230, 264, 279, 269, 252, 241, 239, 264, 294, 310, 290, 300],
+  sal:   [299, 447, 344, 344, 345, 348, 346, 345, 373, 373, 369, 375, 374, 561, 441, 437, 437, 435, 439, 434, 466, 480, 500, 520],
+  sup:   [675, 620, 222, 251, 311, 342, 349, 349, 324, 356, 446, 639, 911, 847, 299, 340, 448, 492, 484, 475, 438, 455, 595, 900],
+  oout:  [57, 61, 61, 69, 62, 61, 75, 71, 67, 74, 68, 77, 85, 85, 84, 79, 82, 80, 93, 90, 96, 90, 95, 115],
+};
+Object.keys(BF_SERIES).forEach(k => { BF_SERIES[k] = BF_SERIES[k].map(v => v * BF_K); });
+const BF_STAFF = [14, 14, 15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 18, 18, 18, 19];
+const BF_COL = { in: '#14A5A0', out: '#F5883E' };   // money in / money out (palette of the spending analysis)
+const BF_IN = [
+  { id: 'pos', name: 'POS satışları', short: 'POS', icon: 'card', color: '#14A5A0', unit: 'kart işlemi', ticket: 245, d: 'Mağaza POS cihazlarından hesaba geçen kart satışları' },
+  { id: 'order', name: 'Sipariş gelirleri', short: 'Sipariş', icon: 'box', color: '#2F6FED', unit: 'sipariş', ticket: 1850, d: 'Online mağaza, pazaryeri ve kurumsal sipariş tahsilatları' },
+  { id: 'cash', name: 'Nakit girişleri', short: 'Nakit', icon: 'cashout', color: '#4A6FA5', d: 'Mağaza kasalarından hesaba yatırılan nakit' },
+  { id: 'oin', name: 'Diğer tahsilatlar', short: 'Diğer', icon: 'receipt', color: '#8A8F98', d: 'Prim iadeleri, servis ve kira gelirleri, çek tahsilatları' },
+];
+const BF_OUT = [
+  { id: 'bill', name: 'Fatura ödemeleri', short: 'Fatura', icon: 'doc', color: '#8B7FD6', d: 'Kira, enerji, iletişim, lojistik ve hizmet faturaları' },
+  { id: 'sal', name: 'Maaş ödemeleri', short: 'Maaş', icon: 'user', color: '#C08A1E', d: 'Çalışan maaşları ve ikramiyeler' },
+  { id: 'sup', name: 'Tedarikçi ödemeleri', short: 'Tedarikçi', icon: 'truck', color: '#F5883E', d: 'Stok ve ürün alımları için tedarikçilere yapılan ödemeler' },
+  { id: 'oout', name: 'Diğer giderler', short: 'Diğer', icon: 'grid', color: '#8A8F98', d: 'Kargo, reklam, sigorta, bakım, banka ve müşavirlik giderleri' },
+];
+const BF_CATS = [...BF_IN, ...BF_OUT];
+const BF_PERIODS = [['1m', 1, 'Son 1 ay'], ['3m', 3, 'Son 3 ay'], ['6m', 6, 'Son 6 ay'], ['12m', 12, 'Son 12 ay']];
+/* 120-day projected balance of the business accounts from BF_TODAY (thousand TL) — the demo "AI forecast" */
+const BF_FC = [320, 335, 351, 366, 501, 630, 676, 721, 766, 384, 430, 475, 604, 649, 765, 810, 855, 1021, 1066, 1195, 588, 631, 675, 718, -430, -387, -267, -223, -180, -104, -97, -91, -84, -1, 116, 159, 202, 246, 289, -117, 3, 46, 89, 133, 246, 289, 332, 562, 606, 649, 692, 72, 111, 151, 256, -136, -96, -56, -17, 23, 94, 161, 163, 164, 165, 261, 300, 340, 445, 485, 376, 416, 456, 495, 535, 710, 750, 790, 923, 963, 1003, 1042, 402, 442, 481, 521, 352, 391, 431, 530, 570, 643, 646, 649, 652, 655, 804, 844, 883, 923, 963, 831, 871, 970, 1010, 1050, 1159, 1199, 1239, 1364, 731, 772, 813, 854, 664, 705, 746, 852, 893, 971].map(v => v * BF_K);
+const BF_FC_MONTHS = [['Kasım', 320000], ['Aralık', -480000], ['Ocak', 370000], ['Şubat', 340000]];   // projected net flow per month (demo)
+const BF_BUFFER = 15;              // EXAMPLE safety margin (%) on top of the deepest projected gap
+const BF_BSMV = 5;                 // BSMV on the interest of business loans (%)
+const BF_FEE = 0.5;                // EXAMPLE allocation fee (% of the amount)
+const BF_DRAW_IDX = 1;             // forecast index of the day the recommended financing would be used (12 Kasım)
+/* Financing alternatives — every rate, amount and condition is EXAMPLE data */
+const BF_OFFERS = [
+  { id: 'wc', type: 'Kısa vadeli işletme sermayesi finansmanı', short: 'İşletme sermayesi', icon: 'loan', tag: 'Yapay zekâ önerisi', best: true, fit: 96,
+    amount: 500000, min: 100000, max: 750000, term: 6, terms: [3, 6, 9, 12], rate: 3.19, kind: 'annuity',
+    pay: 'Aylık eşit taksit', periodTxt: 'Aylık', early: 'Kalan anaparanın %1’i', earlyFree: false,
+    use: 'Maaş, kira, tedarikçi ve fatura ödemeleri dahil tüm işletme giderleri',
+    reason: 'Aralık başındaki tahmini 430.000 TL’lik nakit açığını %15 güvenlik payıyla karşılar. Aylık taksit, Ocak’tan itibaren beklenen aylık nakit fazlasının en fazla %30’u kadar; sabit faiz ve taksitle bütçeni önceden planlarsın.' },
+  { id: 'line', type: 'Nakit akışı destek finansmanı', short: 'Nakit akışı desteği', icon: 'refresh', tag: 'Esnek kullanım', fit: 88,
+    amount: 600000, min: 200000, max: 800000, term: 12, terms: [12], rate: 3.89, kind: 'revolving',
+    pay: 'Kullandıkça; her ay yalnızca faiz', periodTxt: 'Aylık (faiz)', early: 'Ücretsiz · istediğin an', earlyFree: true,
+    use: 'Ayın ilk günlerindeki maaş, kira ve tedarikçi ödemeleri',
+    reason: 'Tahmin edilen açık dönemlerinde kullanır, tahsilat gelince kapatırsın; yalnızca kullandığın tutar ve gün için faiz ödersin. Faiz oranı değişkendir ve limit her yıl yeniden değerlendirilir.' },
+  { id: 'flex', type: 'Esnek geri ödemeli işletme finansmanı', short: 'Esnek ödemeli', icon: 'calendar', tag: 'Sezona uyumlu', fit: 85,
+    amount: 500000, min: 100000, max: 750000, term: 9, terms: [9, 12], grace: 2, rate: 3.39, kind: 'grace',
+    pay: 'İlk 2 ay yalnızca faiz, sonra eşit taksit', periodTxt: 'Aylık', early: 'Ücretsiz (3. aydan sonra)', earlyFree: true,
+    use: 'Sezon dönemi işletme giderleri',
+    reason: 'Aralık ve Ocak’ta yalnızca faiz ödersin; anapara taksitleri sezon tahsilatları geldikten sonra, Şubat’ta başlar. Vade uzadığı için toplam maliyet daha yüksektir.' },
+  { id: 'sup', type: 'Tedarikçi ödeme finansmanı', short: 'Tedarikçi finansmanı', icon: 'truck', tag: 'Stok dönemine özel', fit: 81,
+    amount: 450000, min: 100000, max: 600000, term: 3, terms: [1, 2, 3], rate: 2.99, kind: 'bullet',
+    pay: 'Vade sonunda tek ödeme', periodTxt: 'Vade sonunda', early: 'Ücretsiz', earlyFree: true,
+    use: 'Yalnızca tedarikçi ödemeleri; tutar doğrudan tedarikçine ödenir',
+    reason: '5 Aralık’taki sezon stok ödemesinin bir kısmını 90 gün öteler; ödemeyi Aralık satışlarının tahsilatı geldikten sonra yaparsın. Yalnızca tedarikçi ödemesinde kullanılabildiği için maaş ve kira açığını kapatmaz.' },
+  { id: 'bill', type: 'Fatura ödeme finansmanı', short: 'Fatura finansmanı', icon: 'doc', tag: null, fit: 64,
+    amount: 300000, min: 50000, max: 400000, term: 3, terms: [3, 6], rate: 3.29, kind: 'annuity',
+    pay: 'Aylık eşit taksit', periodTxt: 'Aylık', early: 'Kalan anaparanın %1’i', earlyFree: false,
+    use: 'Kira, enerji ve hizmet faturaları',
+    reason: 'Aralık’taki kira ve fatura ödemelerini 3 aya yayar. Tutarı açığın tamamını karşılamadığı için tek başına yeterli değildir.' },
+];
+const BF_STAGES = ['Başvuru', 'Değer&shy;lendirme', 'Onay', 'Kullan&shy;dırım', 'Geri ödeme'];
+const BF_REVIEW = ['Başvuru ve işletme bilgileri doğrulanıyor', 'Hesap, POS ve e-fatura hareketleri inceleniyor', 'Ticari kredi geçmişi (KKB) kontrol ediliyor', 'Kredi değerlendirmesi yapılıyor'];
+const BF_AI_STEPS = ['Hesap hareketlerin sınıflandırılıyor', 'POS ve sipariş tahsilatların inceleniyor', 'Maaş, kira ve tedarikçi ödeme takvimin çıkarılıyor', 'Önümüzdeki 120 günün nakit akışı tahmin ediliyor', 'Finansman ihtiyacın ve risk göstergelerin hesaplanıyor'];
+const BF_AI_DUR = [900, 1300, 1100, 1700, 1200];   // unequal step durations (ms)
+const BF_AGREE = [
+  ['pre', 'Ticari Kredi Ön Bilgilendirme Formu', '’nu okudum, anladım.'],
+  ['data', 'Finansal Verilerin Kullanımı Onayı', '’nı veriyorum (hesap, POS ve e-fatura hareketleri).'],
+  ['kkb', 'KKB Ticari Risk Raporu Sorgu İzni', '’ni veriyorum.'],
+];
+
+state.bf = {
+  period: { id: '3m', from: 21, to: 23 },
+  side: 'in', cat: null, shown: 20, cmp: false,
+  pick: null,                                   // custom range being picked in the period sheet
+  ai: { status: 'idle', step: 0, at: null, timer: null },
+  sel: ['wc', 'line', 'flex'],                  // offers in the comparison (max 3)
+  offer: 'wc', draft: null,
+  agree: { pre: false, data: false, kkb: false },
+  app: null,
+};
+
+/* -------------------- helpers -------------------- */
+function bfMonth(i) { const m = (10 + i) % 12; return { m, y: 2024 + Math.floor((10 + i) / 12) }; }
+function bfMonLong(i) { const x = bfMonth(i); return `${VM_AY[x.m]} ${x.y}`; }
+function bfMonShort(i) { return BF_AY3[bfMonth(i).m]; }
+function bfRangeTxt(from, to) {
+  const a = bfMonth(from), b = bfMonth(to);
+  if (from === to) return bfMonLong(from);
+  return a.y === b.y ? `${VM_AY[a.m]} – ${VM_AY[b.m]} ${b.y}` : `${VM_AY[a.m]} ${a.y} – ${VM_AY[b.m]} ${b.y}`;
+}
+function bfRangeShort(from, to) {
+  const a = bfMonth(from), b = bfMonth(to);
+  return from === to ? `${BF_AY3[a.m]} ${a.y}` : a.y === b.y ? `${BF_AY3[a.m]}–${BF_AY3[b.m]} ${b.y}` : `${BF_AY3[a.m]} ${String(a.y).slice(2)} – ${BF_AY3[b.m]} ${String(b.y).slice(2)}`;
+}
+function bfPer() { return state.bf.period; }
+function bfLen(p = bfPer()) { return p.to - p.from + 1; }
+function bfPerLabel(p = bfPer()) { const x = BF_PERIODS.find(q => q[0] === p.id); return x ? x[2] : 'Özel aralık'; }
+function bfPrev(p = bfPer()) { const n = bfLen(p); return { from: p.from - n, to: p.to - n }; }
+function bfCat(id) { return BF_CATS.find(c => c.id === id); }
+function bfSideCats(side) { return side === 'in' ? BF_IN : BF_OUT; }
+function bfSum(id, from, to) { let s = 0; for (let i = from; i <= to; i++) s += BF_SERIES[id][i]; return s; }
+function bfTot(side, from, to) { return bfSideCats(side).reduce((s, c) => s + bfSum(c.id, from, to), 0); }
+function bfMIn(i) { return bfTot('in', i, i); }
+function bfMOut(i) { return bfTot('out', i, i); }
+function bfChg(a, b) { return b ? (a - b) / b * 100 : 0; }
+function bfChgTxt(p, dec = 0) { const r = Math.abs(p) < 0.5 && !dec ? 0 : +p.toFixed(dec); return (r > 0 ? '+%' : r < 0 ? '−%' : '%') + vmPctStr(Math.abs(r)); }
+function bfSign(n) { return n > 0 ? '+' : n < 0 ? '−' : ''; }
+function bfTLs(n) { return bfSign(n) + vmTL(Math.abs(n)); }
+function bfCompact(n) {   // 1,77 mn · 430 bin
+  const a = Math.abs(n);
+  if (a >= 1e6) return (a / 1e6).toLocaleString('tr-TR', { maximumFractionDigits: a >= 1e7 ? 1 : 2 }) + ' mn';
+  if (a >= 1e3) return Math.round(a / 1e3).toLocaleString('tr-TR') + ' bin';
+  return Math.round(a).toLocaleString('tr-TR');
+}
+function bfCompactS(n) { return bfSign(n) + bfCompact(n); }
+function bfFcDate(k) { const d = new Date(BF_TODAY); d.setDate(d.getDate() + k); return d; }
+function bfDayTxt(d) { return `${d.getDate()} ${VM_AY[d.getMonth()]}`; }
+function bfAddMonths(d, n) { const x = new Date(d); x.setMonth(x.getMonth() + n); return x; }
+function bfDateTxt(d) { return `${d.getDate()} ${VM_AY[d.getMonth()]} ${d.getFullYear()}`; }
+function bfNumDate(d) { return d.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
+function bfIco(c, cls = '') { return `<span class="bf-ico ${cls}" style="--c:${c.color}">${I[c.icon]}</span>`; }
+function bfOffer(id = state.bf.offer) { return BF_OFFERS.find(o => o.id === id) || BF_OFFERS[0]; }
+
+/* Deterministic pseudo-random numbers (same transactions on every visit) */
+function bfRng(seed) {
+  let a = seed >>> 0;
+  return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+const BF_SUPPLIERS = [['Ege Elektronik Dağıtım A.Ş.', 5, 26], ['Ege Elektronik Dağıtım A.Ş.', 20, 20], ['Marmara Teknoloji Ürünleri Ltd. Şti.', 5, 12], ['Marmara Teknoloji Ürünleri Ltd. Şti.', 20, 10], ['Bilge Bilişim Toptan A.Ş.', 12, 16], ['Anka Aksesuar Tic. Ltd. Şti.', 25, 10], ['Kuzey Ambalaj San. Ltd. Şti.', 8, 6]];
+const BF_BILLS = [['Mağaza kirası · Kadıköy', 1, 22], ['Mağaza kirası · Ataşehir', 1, 20], ['Güvenlik ve temizlik hizmeti', 6, 10], ['Yazılım ve bulut abonelikleri', 8, 5], ['İnternet ve telefon', 10, 3], ['Elektrik faturası', 12, 14], ['Doğalgaz faturası', 13, 6], ['Su faturası', 14, 2], ['Lojistik hizmet faturası', 15, 18]];
+const BF_OOUT = [['Dijital reklam', 3, 25], ['Kargo ve kurye', 9, 30], ['Bakım ve onarım', 17, 12], ['İşyeri sigortası', 21, 10], ['Muhasebe ve müşavirlik', 27, 13], ['Banka ve POS masrafları', 30, 10]];
+const BF_CORP = ['Delta Ofis Çözümleri A.Ş.', 'Nova Eğitim Kurumları', 'Lale Otel İşletmeleri A.Ş.', 'Atlas Lojistik A.Ş.'];
+const BF_OIN = [['Tedarikçi prim iadesi', 'Ege Elektronik Dağıtım A.Ş.'], ['Garanti servis tahsilatı', 'Yetkili servis hak edişi'], ['Depo alt kira geliri', 'Atlas Lojistik A.Ş.'], ['Çek tahsilatı', 'Delta Ofis Çözümleri A.Ş.']];
+const bfTxCache = {};
+/* Transactions of one category in month i — lines add up exactly to the month's total */
+function bfTxns(id, i) {
+  const key = id + i;
+  if (bfTxCache[key]) return bfTxCache[key];
+  const r = bfRng((i + 1) * 7919 + id.length * 104729 + id.charCodeAt(0) * 31), { m, y } = bfMonth(i);
+  const days = new Date(y, m + 1, 0).getDate(), mon = VM_AY[m];
+  const lines = [];   // [day, weight, title, sub]
+  if (id === 'pos') [2, 5, 8, 12, 15, 19, 22, 26, 29].forEach((d, k) => lines.push([d, 0.8 + r() * 0.5, 'POS tahsilatı', k % 3 === 2 ? 'Ataşehir Mağaza' : 'Kadıköy Mağaza']));
+  if (id === 'order') {
+    [4, 11, 18, 25].forEach(d => lines.push([d, 1.4 + r() * 0.5, 'Online mağaza tahsilatı', 'Sanal POS']));
+    [9, 23].forEach(d => lines.push([d, 0.9 + r() * 0.4, 'Pazaryeri hak ediş ödemesi', 'Pazaryeri satışları']));
+    [15, 28].forEach((d, k) => lines.push([d, 0.8 + r() * 0.6, 'Kurumsal sipariş tahsilatı', BF_CORP[(i + k) % BF_CORP.length]]));
+  }
+  if (id === 'cash') [3, 7, 10, 14, 17, 21, 24, 28].forEach((d, k) => lines.push([d, 0.8 + r() * 0.5, 'Nakit yatırma', k % 2 ? 'Ataşehir Mağaza kasası · ATM' : 'Kadıköy Mağaza kasası · şube']));
+  if (id === 'oin') [[10, 0], [18, 1 + (i % 2)], [25, 3]].forEach(([d, k]) => lines.push([d, 0.7 + r() * 0.6, BF_OIN[k][0], BF_OIN[k][1]]));
+  if (id === 'bill') BF_BILLS.forEach(([t, d, w]) => lines.push([d, w * (0.9 + r() * 0.2), t, t.startsWith('Mağaza') ? 'Kira ödemesi' : 'Fatura ödemesi']));
+  if (id === 'sal') {
+    const prev = VM_AY[(m + 11) % 12], staff = BF_STAFF[i];
+    if (m === 11) { lines.push([1, 2, 'Maaş ödemesi', `${staff} çalışan · ${prev} dönemi`]); lines.push([18, 1, 'Yılsonu ikramiyesi', `${staff} çalışan`]); }
+    else lines.push([1, 1, 'Maaş ödemesi', `${staff} çalışan · ${prev} dönemi`]);
+  }
+  if (id === 'sup') BF_SUPPLIERS.forEach(([t, d, w]) => lines.push([d, w * (0.92 + r() * 0.16), t, m >= 9 || m === 11 ? 'Sezon stok alımı' : 'Ürün alımı · fatura ödemesi']));
+  if (id === 'oout') BF_OOUT.forEach(([t, d, w]) => lines.push([d, w * (0.85 + r() * 0.3), t, 'Gider ödemesi']));
+  const total = BF_SERIES[id][i], wsum = lines.reduce((s, l) => s + l[1], 0);
+  let acc = 0;
+  const out = lines.map((l, k) => {
+    const a = k === lines.length - 1 ? Math.round((total - acc) * 100) / 100 : Math.round(total * l[1] / wsum * 100 + (r() - 0.5) * 900) / 100;
+    acc += a;
+    return { d: Math.min(l[0], days), mon, i, a, t: l[2], s: l[3], cat: id };
+  });
+  out.forEach(x => {   // card transactions / orders as the count shown next to POS and order lines
+    const c = bfCat(id);
+    if (c.ticket && !x.t.startsWith('Kurumsal')) x.n = Math.max(1, Math.round(x.a / c.ticket));
+  });
+  return (bfTxCache[key] = out.sort((a, b) => b.d - a.d));
+}
+function bfCount(id, from, to) {
+  let n = 0;
+  for (let i = from; i <= to; i++) n += bfTxns(id, i).reduce((s, x) => s + (x.n || 1), 0);
+  return n;
+}
+function bfSideCount(side, from, to) { return bfSideCats(side).reduce((s, c) => s + bfCount(c.id, from, to), 0); }
+
+/* -------------------- financing maths (EXAMPLE rates) -------------------- */
+function bfI(o) { return o.rate / 100 * (1 + BF_BSMV / 100); }   // monthly cost incl. BSMV
+function bfAnnuity(P, i, n) { return P * i / (1 - Math.pow(1 + i, -n)); }
+/* Quote + repayment plan for an offer. Dates start from the disbursement date `d0`. */
+function bfQuote(o, P = o.amount, n = o.term, d0 = bfDisbDate()) {
+  const r = o.rate / 100, rows = [];
+  const fee = Math.round(P * BF_FEE / 100);
+  let rest = P;
+  const row = (k, prin, int) => { const tax = int * BF_BSMV / 100; rest = Math.max(0, rest - prin); rows.push({ n: k, date: bfAddMonths(d0, k), prin, int, tax, pay: prin + int + tax, rest }); };
+  if (o.kind === 'annuity' || o.kind === 'grace') {
+    const g = o.kind === 'grace' ? o.grace : 0;
+    for (let k = 1; k <= g; k++) row(k, 0, rest * r);
+    const pay = bfAnnuity(P, bfI(o), n - g);
+    for (let k = g + 1; k <= n; k++) { const int = rest * r; row(k, k === n ? rest : pay - int * (1 + BF_BSMV / 100), int); }
+  } else if (o.kind === 'bullet') {
+    row(n, P, P * r * n);
+  } else {   // revolving: interest on the example usage from the forecast (only the days it is needed)
+    const use = bfLineUse(P);
+    use.forEach((u, k) => row(k + 1, 0, u.int));
+    rows.forEach(x => { x.rest = 0; });
+  }
+  const int = rows.reduce((s, x) => s + x.int, 0), tax = rows.reduce((s, x) => s + x.tax, 0);
+  const regular = o.kind === 'grace' ? rows[rows.length - 1].pay : rows[0].pay;
+  return { P, n, rows, fee, int, tax, cost: int + tax + fee, total: (o.kind === 'revolving' ? bfLineUsed(P) : P) + int + tax,
+    monthly: o.kind === 'bullet' ? 0 : regular, first: rows[0], last: rows[rows.length - 1] };
+}
+/* Revolving line: use only what the forecast says is missing (capped at the limit) */
+function bfLineUse(limit) {
+  const months = {};
+  BF_FC.forEach((b, k) => {
+    if (b >= 0) return;
+    const d = bfFcDate(k), key = d.getFullYear() * 12 + d.getMonth();
+    const use = Math.min(limit, -b);
+    (months[key] = months[key] || { key, sum: 0, max: 0 });
+    months[key].sum += use; months[key].max = Math.max(months[key].max, use);
+  });
+  const o = BF_OFFERS.find(x => x.id === 'line');
+  return Object.values(months).sort((a, b) => a.key - b.key).map(x => ({ ...x, int: x.sum * o.rate / 100 / 30 }));
+}
+function bfLineUsed(limit) { return Math.max(...bfLineUse(limit).map(x => x.max)); }   // peak usage
+function bfDisbDate() { const a = state.bf.app; return a && a.disbTs ? new Date(a.disbTs) : bfFcDate(BF_DRAW_IDX); }
+/* Terms of the application (amount / term chosen by the customer; defaults to the offer) */
+function bfDraft() {
+  const v = state.bf, o = bfOffer();
+  if (!v.draft || v.draft.id !== o.id) v.draft = { id: o.id, amount: o.amount, term: o.term };
+  return v.draft;
+}
+function bfTermTxt(o, n) { return o.kind === 'bullet' ? `${n * 30} gün` : o.kind === 'revolving' ? `${n} ay (limit süresi)` : `${n} ay`; }
+
+/* -------------------- analysis results (derived from the demo data) -------------------- */
+function bfGaps() {   // contiguous negative windows of the forecast
+  const out = [];
+  let cur = null;
+  BF_FC.forEach((b, k) => {
+    if (b < 0) {
+      if (!cur) cur = { from: k, to: k, min: b, minK: k };
+      cur.to = k;
+      if (b < cur.min) { cur.min = b; cur.minK = k; }
+    } else if (cur) { out.push(cur); cur = null; }
+  });
+  if (cur) out.push(cur);
+  return out;
+}
+const BF_GAP_WHY = [
+  'Maaş ve kira (1 Aralık) ile sezon stok ödemesi (5 Aralık) aynı haftaya denk geliyor; POS tahsilatları ay boyunca yayılarak geliyor.',
+  'Yılsonu ikramiyesi ve tedarikçi ödemesi 20 Aralık’ta birlikte çıkıyor.',
+  'Maaş ve kira sonrası, sezon stok alımının ikinci ödemesi 5 Ocak’ta.',
+];
+function bfNeed() {
+  const min = Math.min(...BF_FC);
+  return { min, minK: BF_FC.indexOf(min), amount: Math.ceil(-min * (1 + BF_BUFFER / 100) / 50000) * 50000 };
+}
+function bfAvg(side) { return bfTot(side, 21, 23) / 3; }
+function bfAI() {
+  const a = 21, c = 23, inA = bfMIn(a), inC = bfMIn(c), outA = bfMOut(a), outC = bfMOut(c);
+  const sup = bfChg(BF_SERIES.sup[c], BF_SERIES.sup[a]);
+  const posShare = bfSum('pos', a, c) / bfTot('in', a, c) * 100;
+  const days = BF_BIZ.balance / (bfAvg('out') / 30);
+  const need = bfNeed(), lastDec = bfMIn(13) - bfMOut(13);
+  const supYoY = bfChg(BF_SERIES.sup[c], BF_SERIES.sup[c - 12]);
+  const top = bfTxns('sup', c).filter(x => x.t.startsWith('Ege')).reduce((s, x) => s + x.a, 0) / BF_SERIES.sup[c] * 100;
+  return { inG: bfChg(inC, inA), outG: bfChg(outC, outA), netA: inA - outA, netC: inC - outC, sup, posShare, days, need, lastDec, supYoY, top };
+}
+function bfScores() {
+  return [
+    ['Gelir büyümesi', 88, 'Girişler üç ayda istikrarlı artıyor'],
+    ['Nakit marjı', 74, 'Girişlerin yaklaşık %18’i nete kalıyor'],
+    ['Gider dengesi', 62, 'Giderler girişlerden hızlı artıyor'],
+    ['Nakit tamponu', 40, 'Bakiye birkaç günlük gidere yetiyor'],
+  ];
+}
+function bfScore() { const s = bfScores(); return Math.round(s.reduce((x, y) => x + y[1], 0) / s.length); }
+function bfScoreLabel(n) { return n >= 75 ? 'Güçlü' : n >= 60 ? 'İyi' : n >= 45 ? 'Orta' : 'Zayıf'; }
+
+/* -------------------- charts (inline SVG, theme-aware via CSS classes) -------------------- */
+function bfNiceMax(v) {
+  const mag = Math.pow(10, Math.floor(Math.log10(v || 1)));
+  for (const m of [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (m * mag >= v * 1.04) return m * mag;
+  return 10 * mag;
+}
+/* Money in vs money out per month (grouped bars) with the month's net (thousand TL) under each month */
+function bfBarsSVG(from, to, focus = null) {
+  const n = to - from + 1, W = 340, H = 176, L = 34, R = 4, T = 10, B = 40;
+  const ins = [], outs = [];
+  for (let i = from; i <= to; i++) { ins.push(bfMIn(i)); outs.push(bfMOut(i)); }
+  const top = bfNiceMax(Math.max(...ins, ...outs)), ph = H - T - B, cw = (W - L - R) / n;
+  const bw = Math.max(4, Math.min(18, cw * 0.32)), gap = n > 6 ? 1.5 : 3;
+  const y = v => T + ph * (1 - v / top);
+  const grid = [0, top / 2, top].map(g => `<line class="bf-grid" x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}"/><text class="bf-axis" x="${L - 5}" y="${y(g) + 3.5}" text-anchor="end">${g ? bfCompact(g) : '0'}</text>`).join('');
+  const bars = ins.map((a, k) => {
+    const cx = L + cw * k + cw / 2, b = outs[k], net = a - b, i = from + k;
+    return `<g class="bf-bar-g ${focus ? 'f-' + focus : ''}">
+      <rect class="bf-b-in" x="${cx - bw - gap / 2}" y="${y(a)}" width="${bw}" height="${ph * a / top}" rx="${Math.min(3, bw / 3)}"><title>${bfMonLong(i)} · giriş ${vmTL(a)}</title></rect>
+      <rect class="bf-b-out" x="${cx + gap / 2}" y="${y(b)}" width="${bw}" height="${ph * b / top}" rx="${Math.min(3, bw / 3)}"><title>${bfMonLong(i)} · çıkış ${vmTL(b)}</title></rect>
+      <text class="bf-axis m" x="${cx}" y="${H - B + 14}" text-anchor="middle">${bfMonShort(i)}</text>
+      <text class="bf-axis net ${net < 0 ? 'neg' : 'pos'}" x="${cx}" y="${H - B + 30}" text-anchor="middle">${bfSign(net)}${Math.round(Math.abs(net) / 1000).toLocaleString('tr-TR')}</text>
+    </g>`;
+  }).join('');
+  return `<svg class="bf-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Aylık para girişi ve çıkışı">${grid}${bars}
+    <text class="bf-axis" x="${L - 5}" y="${H - B + 30}" text-anchor="end">Net</text></svg>
+    <div class="bf-svg-cap">Net satırı bin TL</div>`;
+}
+/* Monthly net flow: actual months (+ optional projected months, hatched) */
+function bfNetSVG(from, to, proj = []) {
+  const vals = [];
+  for (let i = from; i <= to; i++) vals.push({ v: bfMIn(i) - bfMOut(i), l: bfMonShort(i) });
+  proj.forEach(([m, v]) => vals.push({ v, l: m.slice(0, 3), p: true }));
+  const W = 340, H = 160, L = 6, R = 6, T = 18, B = 34, n = vals.length, cw = (W - L - R) / n, bw = Math.min(26, cw * 0.56);
+  const mx = Math.max(...vals.map(x => Math.abs(x.v))) * 1.1, pos = Math.max(...vals.map(x => x.v), 0), neg = -Math.min(...vals.map(x => x.v), 0);
+  const ph = H - T - B, zero = T + ph * pos / (pos + neg || 1), sc = ph / (pos + neg || mx);
+  const first = proj.length ? vals.length - proj.length : -1;
+  return `<svg class="bf-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Aylık net nakit akışı">
+    ${first > 0 ? `<rect class="bf-proj-bg" x="${L + cw * first}" y="2" width="${cw * proj.length}" height="${H - 4}" rx="8"/><text class="bf-axis proj" x="${L + cw * first + cw * proj.length / 2}" y="12" text-anchor="middle">Tahmin</text>` : ''}
+    <line class="bf-zero" x1="${L}" x2="${W - R}" y1="${zero}" y2="${zero}"/>
+    ${vals.map((x, k) => {
+      const cx = L + cw * k + cw / 2, h = Math.max(2, Math.abs(x.v) * sc), yy = x.v >= 0 ? zero - h : zero;
+      return `<rect class="bf-nb ${x.v < 0 ? 'neg' : 'pos'} ${x.p ? 'p' : ''}" x="${cx - bw / 2}" y="${yy}" width="${bw}" height="${h}" rx="3"/>
+        <text class="bf-axis v ${x.v < 0 ? 'neg' : 'pos'}" x="${cx}" y="${x.v >= 0 ? yy - 4 : yy + h + 11}" text-anchor="middle">${bfCompactS(x.v).replace(' bin', 'b').replace(' mn', 'm')}</text>
+        <text class="bf-axis m" x="${cx}" y="${H - 6}" text-anchor="middle">${x.l}</text>`;
+    }).join('')}
+  </svg>`;
+}
+/* 120-day projected balance; optional second line with the recommended financing */
+function bfFcSVG(withFin) {
+  const W = 340, H = 190, L = 40, R = 6, T = 14, B = 24, n = BF_FC.length;
+  const fin = withFin ? bfFcWithFin() : null;
+  const all = BF_FC.concat(fin || []), hi = bfNiceMax(Math.max(...all)), lo = -bfNiceMax(-Math.min(...all));
+  const x = k => L + (W - L - R) * k / (n - 1), y = v => T + (H - T - B) * (hi - v) / (hi - lo);
+  const path = arr => arr.map((v, k) => `${k ? 'L' : 'M'}${x(k).toFixed(1)},${y(v).toFixed(1)}`).join('');
+  const need = bfNeed(), gaps = bfGaps();
+  const ticks = [0, 20, 51, 82, 110].filter(k => k < n);   // 11 Kas, 1 Ara, 1 Oca, 1 Şub, 1 Mar
+  return `<svg class="bf-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Önümüzdeki 120 günün tahmini hesap bakiyesi">
+    <defs><clipPath id="bf-below"><rect x="${L}" y="${y(0)}" width="${W - L - R}" height="${H}"/></clipPath><clipPath id="bf-above"><rect x="${L}" y="0" width="${W - L - R}" height="${y(0)}"/></clipPath></defs>
+    ${gaps.map(g => `<rect class="bf-gap-band" x="${x(g.from) - 1.5}" y="${T}" width="${x(g.to) - x(g.from) + 3}" height="${H - T - B}"/>`).join('')}
+    ${[hi, hi / 2, 0, lo].map(g => `<line class="${g ? 'bf-grid' : 'bf-zero'}" x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}"/><text class="bf-axis" x="${L - 5}" y="${y(g) + 3.5}" text-anchor="end">${g ? bfCompactS(g).replace(' bin', 'b').replace(' mn', 'm') : '0'}</text>`).join('')}
+    <path class="bf-fc-area" d="${path(BF_FC)}L${x(n - 1)},${y(0)}L${x(0)},${y(0)}Z" clip-path="url(#bf-above)"/>
+    <path class="bf-fc-area neg" d="${path(BF_FC)}L${x(n - 1)},${y(0)}L${x(0)},${y(0)}Z" clip-path="url(#bf-below)"/>
+    <path class="bf-fc-line" d="${path(BF_FC)}"/>
+    ${fin ? `<path class="bf-fc-line fin" d="${path(fin)}"/>` : ''}
+    <circle class="bf-fc-min" cx="${x(need.minK)}" cy="${y(need.min)}" r="4.5"/>
+    <text class="bf-axis minl" x="${x(need.minK) + 7}" y="${y(need.min) + 4}">${bfCompactS(need.min)} · ${bfDayTxt(bfFcDate(need.minK))}</text>
+    ${ticks.map(k => `<text class="bf-axis m" x="${x(k)}" y="${H - 7}" text-anchor="${k ? 'middle' : 'start'}">${bfFcDate(k).getDate()} ${BF_AY3[bfFcDate(k).getMonth()]}</text>`).join('')}
+  </svg>`;
+}
+/* Balance path when the recommended financing is used (disbursed on BF_DRAW_IDX, monthly instalments after) */
+function bfFcWithFin() {
+  const o = BF_OFFERS[0], q = bfQuote(o, bfNeed().amount, o.term, bfFcDate(BF_DRAW_IDX));
+  return BF_FC.map((b, k) => {
+    if (k < BF_DRAW_IDX) return b;
+    const d = bfFcDate(k);
+    return b + q.P - q.rows.filter(r => r.date <= d).reduce((s, r) => s + r.pay, 0);
+  });
+}
+function bfGauge(score) {
+  const r = 46, c = Math.PI * r, f = c * score / 100;
+  return `<svg class="bf-gauge" viewBox="0 0 120 70" role="img" aria-label="Finansal sağlık puanı ${score}">
+    <path d="M14 62 A46 46 0 0 1 106 62" class="bf-g-bg"/>
+    <path d="M14 62 A46 46 0 0 1 106 62" class="bf-g-fg" stroke-dasharray="${f.toFixed(1)} ${c.toFixed(1)}"/>
+    <text x="60" y="54" text-anchor="middle" class="bf-g-n">${score}</text><text x="60" y="67" text-anchor="middle" class="bf-g-s">/ 100</text>
+  </svg>`;
+}
+
+/* -------------------- Screen 1 — İşletme Finansmanı home (dashboard) -------------------- */
+function BfHome() {
+  const v = state.bf, p = bfPer(), tin = bfTot('in', p.from, p.to), tout = bfTot('out', p.from, p.to), net = tin - tout, n = bfLen(p);
+  return `
+  <div class="screen ${vmAnim()} vm bf">
+    <div class="nav-head ru-nav-accent">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">İşletme Finansmanı</div>
+      <button class="icon-btn" data-action="bf-info" aria-label="Akıllı İşletme Sermayesi Finansmanı nedir?">${I.info}</button>
+    </div>
+    <div class="screen-scroll">
+      <div class="ru-statcard bf-hero">
+        <div class="bf-biz">
+          <span class="bf-biz-av">${BF_BIZ.initials}</span>
+          <div class="bf-biz-t"><b>${BF_BIZ.name}</b><span>${BF_BIZ.sector} · ${BF_BIZ.segment} · ${BF_BIZ.employees} çalışan</span></div>
+        </div>
+        <button class="bf-per-btn" data-action="bf-period">${I.calendar}<span>Analiz dönemi: ${bfPerLabel()} · ${bfRangeShort(p.from, p.to)}</span>${I.chevDown}</button>
+        <div class="ru-jar-label">Net nakit akışı</div>
+        <div class="ru-jar-amt bf-net">${bfTLs(net)}</div>
+        <div class="bf-hero-sub">${n > 1 ? `Aylık ortalama ${bfTLs(net / n)}` : bfRangeTxt(p.from, p.to)}</div>
+        <div class="ru-statrow">
+          <div class="ru-stat tap" data-action="bf-flows-side" data-side="in"><div class="ru-stat-l"><i class="bf-dot in"></i>Toplam giriş</div><div class="ru-stat-v">${bfCompact(tin)} TL</div></div>
+          <div class="ru-stat mid tap" data-action="bf-flows-side" data-side="out"><div class="ru-stat-l"><i class="bf-dot out"></i>Toplam çıkış</div><div class="ru-stat-v">${bfCompact(tout)} TL</div></div>
+          <div class="ru-stat"><div class="ru-stat-l">Net marj</div><div class="ru-stat-v">%${vmPctStr((net / tin * 100).toFixed(1))}</div></div>
+        </div>
+      </div>
+      ${bfOngoingHTML()}
+      <div id="bf-ai-card">${bfAiCardHTML()}</div>
+      <div class="vm-sec-h"><span>Aylık finansal durum</span><span class="bf-legend"><i class="in"></i>Giriş<i class="out"></i>Çıkış</span></div>
+      <div class="vm-box bf-chart-box">${bfBarsSVG(p.from, p.to)}${bfMonthStatusHTML(p)}</div>
+      <div class="vm-sec-h"><span>Finansal hareketlerin özeti</span><button class="sp-link" data-action="bf-flows">Tümü ${I.chevR}</button></div>
+      <div class="vm-box bf-sum">${bfSumSideHTML('in', p)}${bfSumSideHTML('out', p)}</div>
+      <div class="vm-sec-h"><span>Sana özel finansman önerileri</span>${v.ai.status === 'done' ? `<button class="sp-link" data-action="bf-offers">Tümü ${I.chevR}</button>` : ''}</div>
+      <div id="bf-home-offers">${bfHomeOffersHTML()}</div>
+      <div class="sp-foot-note">${I.lock} Veriler ${BF_ASOF} itibarıyla günceldir · demo veri</div>
+    </div>
+  </div>`;
+}
+function bfMonthStatusHTML(p) {
+  const ms = [];
+  for (let i = p.from; i <= p.to; i++) ms.push({ i, net: bfMIn(i) - bfMOut(i) });
+  const plus = ms.filter(m => m.net >= 0).length, best = ms.reduce((a, b) => b.net > a.net ? b : a), worst = ms.reduce((a, b) => b.net < a.net ? b : a);
+  return `<div class="bf-mstat">
+    <div><span>Nakit fazlası veren ay</span><b>${plus} / ${ms.length}</b></div>
+    ${ms.length > 1 ? `<div><span>En güçlü ay</span><b class="pos">${VM_AY[bfMonth(best.i).m]} · ${bfCompactS(best.net)}</b></div>
+    <div><span>En zayıf ay</span><b class="${worst.net < 0 ? 'neg' : ''}">${VM_AY[bfMonth(worst.i).m]} · ${bfCompactS(worst.net)}</b></div>` : ''}
+  </div>`;
+}
+function bfSumSideHTML(side, p) {
+  const cats = bfSideCats(side), tot = bfTot(side, p.from, p.to);
+  const rows = cats.map(c => ({ c, a: bfSum(c.id, p.from, p.to) }));
+  return `<div class="bf-sum-side">
+    <div class="bf-sum-h"><span><i class="bf-dot ${side}"></i>${side === 'in' ? 'Şirkete girenler' : 'Şirketten çıkanlar'}</span><b>${vmTL(tot)}</b></div>
+    <div class="debt-bar bf-dist" role="img" aria-label="Kategorilere göre dağılım">${rows.map(x => `<span class="debt-seg" style="flex:${x.a} 1 0;background:${x.c.color}"></span>`).join('')}</div>
+    ${rows.map(x => `<div class="bf-sum-row tap" data-action="bf-flows-cat" data-side="${side}" data-cat="${x.c.id}">
+      ${bfIco(x.c, 'sm')}<span class="bf-sum-n">${x.c.name}</span><span class="bf-sum-p">%${Math.round(x.a / tot * 100)}</span><b>${bfCompact(x.a)} TL</b>${I.chevR}
+    </div>`).join('')}
+  </div>`;
+}
+function bfAiCardHTML() {
+  const ai = state.bf.ai;
+  if (ai.status === 'done') {
+    const need = bfNeed(), g = bfGaps()[0], sc = bfScore();
+    return `<div class="bf-ai-card done tap" data-action="bf-analysis">
+      <div class="bf-ai-top"><span class="bf-ai-ico">${I.spark}</span><div><b>Yapay zekâ analizin hazır</b><span>${ai.at || ''} · son 3 ay</span></div>${I.chevR}</div>
+      <div class="bf-ai-kpis">
+        <div><span>Finansal sağlık</span><b>${sc} <em>${bfScoreLabel(sc)}</em></b></div>
+        <div><span>Finansman ihtiyacı</span><b>${vmTL(need.amount)}</b></div>
+        <div><span>Riskli dönem</span><b class="neg">${bfFcDate(g.from).getDate()}–${bfDayTxt(bfFcDate(g.to))}</b></div>
+      </div>
+    </div>`;
+  }
+  if (ai.status === 'run') {
+    return `<div class="bf-ai-card run tap" data-action="bf-analysis">
+      <div class="bf-ai-top"><span class="bf-ai-ico spin">${I.spark}</span><div><b>Finansal verilerin analiz ediliyor</b><span class="bf-shim">${BF_AI_STEPS[Math.min(ai.step, BF_AI_STEPS.length - 1)]}…</span></div>${I.chevR}</div>
+    </div>`;
+  }
+  return `<div class="bf-ai-card">
+    <div class="bf-ai-top"><span class="bf-ai-ico">${I.spark}</span><div><b>Yapay zekâ ile finansal analiz</b><span>Son 3 ayın para giriş ve çıkışlarını inceler; nakit açığı risklerini ve finansman ihtiyacını önceden belirler.</span></div></div>
+    <button class="btn-primary bf-ai-btn" data-action="bf-analyze">${I.spark} Yapay Zekâ ile Finansal Analiz Et</button>
+  </div>`;
+}
+function bfHomeOffersHTML() {
+  if (state.bf.ai.status !== 'done') {
+    return `<div class="vm-box bf-locked">
+      <div class="bf-ghosts"><i></i><i></i><i></i></div>
+      <p>${I.lock} Yapay zekâ analizinden sonra işletmenin nakit akışına göre kişiselleştirilmiş finansman teklifleri burada listelenir.</p>
+    </div>`;
+  }
+  return `<div class="bf-hoffers">${BF_OFFERS.slice(0, 3).map(o => {
+    const q = bfQuote(o);
+    return `<div class="bf-hoffer tap ${o.best ? 'best' : ''}" data-action="bf-offer-focus" data-id="${o.id}">
+      <span class="bf-tag ${o.best ? 'ai' : ''}">${o.best ? I.spark : ''}${o.tag}</span>
+      <b>${o.short}</b>
+      <em>${o.kind === 'revolving' ? 'Limit ' : ''}${vmTL(o.amount)}</em>
+      <span>${bfTermTxt(o, o.term)} · ${o.kind === 'revolving' ? 'kullandıkça faiz' : o.kind === 'bullet' ? 'vade sonunda tek ödeme' : `aylık ${vmTL(q.monthly)}`}</span>
+    </div>`;
+  }).join('')}</div>`;
+}
+function bfOngoingHTML() {
+  const a = state.bf.app;
+  if (!a) return '';
+  const o = bfOffer(a.offer);
+  return `<div class="vm-ongoing bf-ongoing tap" data-action="bf-track">
+    <span class="bf-ico" style="--c:var(--primary)">${I[o.icon]}</span>
+    <div class="vm-og-mid"><span>Finansman başvurun</span><b>${o.short} · ${vmTL(a.amount)}</b><em>${bfStatusTxt(a)}</em></div>
+    ${I.chevR}
+  </div>`;
+}
+function bfInfoSheet() {
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Akıllı İşletme Sermayesi Finansmanı</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="debt-how">
+      <p class="bf-how-lead">Kredi değil, işletme finansman platformu.</p>
+      <div class="debt-how-row"><span class="debt-how-ico">${I.bars}</span><div><b>Para giriş ve çıkışların tek ekranda</b><span>POS satışları, siparişler, nakit ve diğer tahsilatlar; fatura, maaş, tedarikçi ve diğer ödemeler aylık olarak karşılaştırılır.</span></div></div>
+      <div class="debt-how-row"><span class="debt-how-ico">${I.spark}</span><div><b>Yapay zekâ destekli analiz</b><span>Nakit akışı eğilimi, olası nakit açığı dönemleri ve risk göstergeleri doğal dilde açıklanır.</span></div></div>
+      <div class="debt-how-row"><span class="debt-how-ico">${I.loan}</span><div><b>Doğru zamanda, sana özel finansman</b><span>İhtiyacın ve zamanlaması belirlenir; uygun alternatifler karşılaştırılarak tek akışta başvurulur.</span></div></div>
+    </div>
+    <div class="vm-sheet-note">${I.info}<span>Prototip: işletme, tutarlar, analiz ve teklifler demo veridir; gerçek hesap, POS veya yapay zekâ bağlantısı yoktur.</span></div>
+    <button class="sheet-btn" data-action="close-sheet">Anladım</button>`;
+  sheetEl.classList.add('open'); sheetScrimEl.classList.add('open');
+}
+
+/* -------------------- period selection (shared by the dashboard and the movements screen) -------------------- */
+function bfPeriodSheet() {
+  const v = state.bf, p = v.period;
+  v.pick = p.id === 'custom' ? { from: p.from, to: p.to } : null;
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Analiz dönemi</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-choices bf-per-list">
+      ${BF_PERIODS.map(([id, n, t]) => `<button class="vm-choice ${p.id === id ? 'on' : ''}" data-action="bf-per-set" data-v="${id}"><span>${t}<em>${bfRangeTxt(BF_LAST - n + 1, BF_LAST)}</em></span>${p.id === id ? `<i>${I.check}</i>` : ''}</button>`).join('')}
+      <button class="vm-choice ${p.id === 'custom' ? 'on' : ''}" data-action="bf-per-custom"><span>Özel aralık<em id="bf-pick-txt">${p.id === 'custom' ? bfRangeTxt(p.from, p.to) : 'Başlangıç ve bitiş ayını seç'}</em></span><i class="${p.id === 'custom' ? '' : 'dim'}">${p.id === 'custom' ? I.check : I.chevDown}</i></button>
+    </div>
+    <div class="bf-mgrid-wrap ${p.id === 'custom' ? '' : 'hide'}" id="bf-mgrid-wrap">
+      <div class="bf-mgrid" id="bf-mgrid">${bfMonthGridHTML()}</div>
+      <button class="sheet-btn" data-action="bf-per-apply">Uygula</button>
+    </div>
+    <div class="vm-sheet-note">${I.info}<span>Karşılaştırma, seçtiğin dönemi hemen önceki eşit uzunluktaki dönemle yapar.</span></div>`;
+  sheetEl.classList.add('open'); sheetScrimEl.classList.add('open');
+}
+function bfMonthGridHTML() {
+  const pk = state.bf.pick, out = [];
+  for (let i = BF_LAST - 11; i <= BF_LAST; i++) {
+    const on = pk && (i === pk.from || i === pk.to), inr = pk && pk.to != null && i > pk.from && i < pk.to;
+    out.push(`<button class="bf-mcell ${on ? 'on' : ''} ${inr ? 'in' : ''}" data-action="bf-per-month" data-i="${i}">${bfMonShort(i)}<em>${bfMonth(i).y}</em></button>`);
+  }
+  return out.join('');
+}
+function bfPerCustom() {
+  document.getElementById('bf-mgrid-wrap')?.classList.remove('hide');
+  if (!state.bf.pick) { state.bf.pick = { from: BF_LAST - 2, to: BF_LAST }; bfPickRefresh(); }
+}
+function bfPerMonth(i) {
+  const v = state.bf;
+  if (!v.pick || v.pick.to != null) v.pick = { from: i, to: null };
+  else if (i < v.pick.from) v.pick = { from: i, to: v.pick.from };
+  else v.pick.to = i;
+  bfPickRefresh();
+}
+function bfPickRefresh() {
+  const g = document.getElementById('bf-mgrid'), t = document.getElementById('bf-pick-txt'), pk = state.bf.pick;
+  if (g) g.innerHTML = bfMonthGridHTML();
+  if (t) t.textContent = pk.to == null ? `${bfMonLong(pk.from)} · bitiş ayını seç` : bfRangeTxt(pk.from, pk.to);
+}
+function bfPerSet(id) {
+  const n = BF_PERIODS.find(x => x[0] === id)[1];
+  bfApplyPeriod({ id, from: BF_LAST - n + 1, to: BF_LAST });
+}
+function bfPerApply() {
+  const pk = state.bf.pick;
+  if (!pk) return;
+  bfApplyPeriod({ id: 'custom', from: pk.from, to: pk.to == null ? pk.from : pk.to });
+}
+function bfApplyPeriod(p) {
+  const v = state.bf;
+  v.period = p; v.shown = 20;
+  closeSheet();
+  vmRerender();
+}
+
+/* -------------------- Screen 2 — money in / money out details -------------------- */
+function BfFlows() {
+  const v = state.bf, p = bfPer(), side = v.side, q = bfPrev(p), n = bfLen(p);
+  const tot = bfTot(side, p.from, p.to), cnt = bfSideCount(side, p.from, p.to), ptot = bfTot(side, q.from, q.to);
+  return `
+  <div class="screen ${vmAnim()} vm bf sp-screen">
+    <div class="nav-head sp-nav-accent">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Finansal Hareketler</div>
+      <span class="icon-btn" style="visibility:hidden">${I.info}</span>
+    </div>
+    <div class="sp-top">
+      <div class="sp-seg">
+        <button class="sp-seg-b ${side === 'in' ? 'on' : ''}" data-action="bf-side" data-side="in">Şirkete Girenler</button>
+        <button class="sp-seg-b ${side === 'out' ? 'on' : ''}" data-action="bf-side" data-side="out">Şirketten Çıkanlar</button>
+      </div>
+      <div class="sp-filters">
+        <button class="sp-fpill" data-action="bf-period"><span class="sp-fp-ic">${I.calendar}</span><span>${p.id === 'custom' ? bfRangeShort(p.from, p.to) : bfPerLabel()}</span>${I.chevDown}</button>
+        <button class="sp-fpill bf-cmp-pill ${v.cmp ? 'on' : ''}" data-action="bf-cmp" aria-pressed="${v.cmp}"><span class="sp-fp-ic">${I.bars}</span><span>Karşılaştır</span><i class="bf-sw ${v.cmp ? 'on' : ''}"></i></button>
+      </div>
+    </div>
+    <div class="screen-scroll">
+      <div class="sp-card bf-flow-sum">
+        <div class="sp-sum-label">${side === 'in' ? 'Şirkete giren para' : 'Şirketten çıkan para'} · ${bfRangeTxt(p.from, p.to)}</div>
+        <div class="sp-sum-amt bf-amt-${side}">${vmTL(tot)}</div>
+        <div class="bf-flow-meta"><span>${cnt.toLocaleString('tr-TR')} işlem</span>${n > 1 ? `<span>Aylık ort. ${vmTL(tot / n)}</span>` : ''}
+          ${v.cmp ? `<span class="bf-chip ${bfGood(side, tot - ptot) ? 'good' : 'bad'}">${bfChgTxt(bfChg(tot, ptot))} önceki döneme göre</span>` : ''}</div>
+      </div>
+      ${v.cmp ? bfCmpHTML(p, q) : ''}
+      <div class="sp-card bf-chart-card">
+        <div class="bf-card-h"><span>Giriş ve çıkış karşılaştırması</span><span class="bf-legend"><i class="in"></i>Giriş<i class="out"></i>Çıkış</span></div>
+        ${bfBarsSVG(p.from, p.to, side)}
+      </div>
+      <div class="vm-sec-h"><span>Kategoriler</span><span class="bf-sec-sub">${bfRangeShort(p.from, p.to)}</span></div>
+      <div class="bf-cats">${bfSideCats(side).map(c => bfCatCardHTML(c, p, q)).join('')}</div>
+      <div class="vm-sec-h" id="bf-tx-h"><span>İşlemler</span><span class="bf-sec-sub">${v.cat ? bfCat(v.cat).name : 'Tüm kategoriler'}</span></div>
+      <div class="bf-txchips vm-chips">
+        <button class="vm-chip ${!v.cat ? 'on' : ''}" data-action="bf-cat" data-cat="">Tümü</button>
+        ${bfSideCats(side).map(c => `<button class="vm-chip ${v.cat === c.id ? 'on' : ''}" data-action="bf-cat" data-cat="${c.id}">${c.short}</button>`).join('')}
+      </div>
+      <div id="bf-tx">${bfTxListHTML()}</div>
+      <div class="sp-foot-note">${I.lock} Veriler ${BF_ASOF} itibarıyla günceldir · demo veri</div>
+    </div>
+  </div>`;
+}
+function bfGood(side, delta) { return side === 'in' ? delta >= 0 : delta <= 0; }
+function bfCatCardHTML(c, p, q) {
+  const v = state.bf, side = BF_IN.includes(c) ? 'in' : 'out', tot = bfSum(c.id, p.from, p.to), stot = bfTot(side, p.from, p.to);
+  const last = BF_SERIES[c.id][p.to], prevM = BF_SERIES[c.id][p.to - 1], mom = bfChg(last, prevM);
+  const cnt = bfCount(c.id, p.from, p.to), ptot = bfSum(c.id, q.from, q.to);
+  return `<div class="bf-cat tap ${v.cat === c.id ? 'on' : ''}" data-action="bf-cat" data-cat="${c.id}">
+    <div class="bf-cat-top">${bfIco(c)}<div class="bf-cat-mid"><b>${c.name}</b><span>${cnt.toLocaleString('tr-TR')} ${c.unit || 'işlem'}</span></div><b class="bf-cat-a">${vmTL(tot)}</b></div>
+    <div class="bf-cat-bar"><i style="width:${Math.round(tot / stot * 100)}%;background:${c.color}"></i></div>
+    <div class="bf-cat-foot">
+      <span>Payı %${Math.round(tot / stot * 100)}</span>
+      <span class="bf-chip ${bfGood(side, mom) ? 'good' : 'bad'}" title="${bfMonLong(p.to)} / ${bfMonLong(p.to - 1)}">Aylık ${bfChgTxt(mom)}</span>
+      ${v.cmp ? `<span class="bf-chip ${bfGood(side, tot - ptot) ? 'good' : 'bad'}">Dönem ${bfChgTxt(bfChg(tot, ptot))}</span>` : ''}
+    </div>
+  </div>`;
+}
+function bfCmpHTML(p, q) {
+  const row = (t, a, b, side) => {
+    const mx = Math.max(Math.abs(a), Math.abs(b)) || 1;
+    return `<div class="bf-cmp-row">
+      <div class="bf-cmp-h"><span>${t}</span><b class="bf-chip ${side ? (bfGood(side, a - b) ? 'good' : 'bad') : (a >= b ? 'good' : 'bad')}">${bfChgTxt(bfChg(a, Math.abs(b)))}</b></div>
+      <div class="bf-cmp-bars">
+        <div><i class="${side || 'net'}" style="width:${Math.max(2, Math.abs(a) / mx * 100)}%"></i><span>${bfTLs(a).replace('+', '')}</span></div>
+        <div class="prev"><i class="${side || 'net'}" style="width:${Math.max(2, Math.abs(b) / mx * 100)}%"></i><span>${bfTLs(b).replace('+', '')}</span></div>
+      </div>
+    </div>`;
+  };
+  const ia = bfTot('in', p.from, p.to), ib = bfTot('in', q.from, q.to), oa = bfTot('out', p.from, p.to), ob = bfTot('out', q.from, q.to);
+  return `<div class="sp-card bf-cmp">
+    <div class="bf-card-h"><span>Dönem karşılaştırması</span></div>
+    <div class="bf-cmp-legend"><span><i></i>${bfRangeShort(p.from, p.to)}</span><span class="prev"><i></i>${bfRangeShort(q.from, q.to)}</span></div>
+    ${row('Para girişi', ia, ib, 'in')}${row('Para çıkışı', oa, ob, 'out')}${row('Net nakit akışı', ia - oa, ib - ob, null)}
+  </div>`;
+}
+function bfTxListHTML() {
+  const v = state.bf, p = bfPer(), ids = v.cat ? [v.cat] : bfSideCats(v.side).map(c => c.id);
+  const months = [];
+  for (let i = p.to; i >= p.from; i--) {
+    const list = ids.flatMap(id => bfTxns(id, i)).sort((a, b) => b.d - a.d || b.a - a.a);
+    months.push({ i, list });
+  }
+  const all = months.reduce((s, m) => s + m.list.length, 0);
+  let left = v.shown, html = '';
+  for (const m of months) {
+    if (left <= 0) break;
+    const part = m.list.slice(0, left);
+    left -= part.length;
+    const sum = m.list.reduce((s, x) => s + x.a, 0);
+    html += `<div class="bf-tx-month"><span>${bfMonLong(m.i)}</span><b>${v.side === 'in' ? '+' : '−'}${fmtTL2(sum)}</b></div>
+      <div class="vm-box bf-txs">${part.map(x => bfTxRowHTML(x)).join('')}</div>`;
+  }
+  return html + (all > v.shown ? `<button class="bf-more" data-action="bf-more">Daha fazla göster <em>${all - v.shown} işlem daha</em></button>` : '');
+}
+function bfTxRowHTML(x) {
+  const c = bfCat(x.cat), inSide = BF_IN.includes(c);
+  return `<div class="bf-tx">
+    ${bfIco(c, 'sm')}
+    <div class="bf-tx-mid"><b>${x.t}</b><span>${x.d} ${x.mon} · ${x.s}${x.n && x.n > 1 ? ` · ${x.n.toLocaleString('tr-TR')} ${c.unit}` : ''}</span></div>
+    <b class="bf-tx-a ${inSide ? 'in' : ''}">${inSide ? '+' : '−'}${fmtTL2(x.a)}</b>
+  </div>`;
+}
+function bfSetSide(side) { const v = state.bf; v.side = side; v.cat = null; v.shown = 20; vmRerender(); }
+function bfSetCat(id) {
+  const v = state.bf;
+  v.cat = id && v.cat !== id ? id : null; v.shown = 20;
+  vmRerender();
+  if (v.cat) setTimeout(() => document.getElementById('bf-tx-h')?.scrollIntoView({ block: 'start', behavior: 'smooth' }), 60);
+}
+function bfMore() {
+  state.bf.shown += 20;
+  const box = document.getElementById('bf-tx');
+  if (box) box.innerHTML = bfTxListHTML();
+}
+function bfOpenFlows(side, cat) {
+  const v = state.bf;
+  v.side = side || v.side; v.cat = cat || null; v.shown = 20;
+  go('isletme-hareketler');
+  if (cat) setTimeout(() => document.getElementById('bf-tx-h')?.scrollIntoView({ block: 'start' }), 80);
+}
+
+/* -------------------- Screen 3 — AI financial analysis -------------------- */
+function bfWords(n) {   // 1,9 milyon · 430 bin (for sentences)
+  const a = Math.abs(n);
+  if (a >= 1e6) return (a / 1e6).toLocaleString('tr-TR', { maximumFractionDigits: 2 }) + ' milyon';
+  if (a >= 1e3) return Math.round(a / 1e3).toLocaleString('tr-TR') + ' bin';
+  return Math.round(a).toLocaleString('tr-TR');
+}
+function bfDemoNow() {   // the demo date with the current time of day
+  const n = new Date();
+  return new Date(BF_TODAY.getFullYear(), BF_TODAY.getMonth(), BF_TODAY.getDate(), n.getHours(), n.getMinutes());
+}
+function bfStamp(d) { return `${bfNumDate(d)} · ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
+function bfGapTxt(g) {
+  const a = bfFcDate(g.from), b = bfFcDate(g.to);
+  if (g.from === g.to) return bfDayTxt(a);
+  return a.getMonth() === b.getMonth() ? `${a.getDate()}–${b.getDate()} ${VM_AY[b.getMonth()]}` : `${bfDayTxt(a)} – ${bfDayTxt(b)}`;
+}
+function bfSummaryHTML() {
+  const x = bfAI(), g = bfGaps(), need = x.need;
+  return `<p>Son üç ayda (${bfRangeTxt(21, 23)}) işletmenin para girişleri %${Math.round(x.inG)} artarak aylık ortalama ${bfWords(bfAvg('in'))} TL’ye ulaştı; artışı POS satışları ve online siparişler sürüklüyor. Aynı dönemde tedarikçi ödemeleri yılbaşı sezonu stok alımlarıyla neredeyse iki katına çıktı ve toplam giderler %${Math.round(x.outG)} arttı. Bu nedenle aylık net nakit akışı Ağustos’taki ${bfWords(x.netA)} TL’den Ekim’de ${bfWords(x.netC)} TL’ye geriledi.</p>
+    <p>Maaş, kira ve sezon stok ödemelerinin aynı haftaya denk geldiği <b>${bfGapTxt(g[0])}</b> arasında hesap bakiyesinin yaklaşık <b>${bfWords(need.min)} TL eksiye</b> düşmesi bekleniyor; ${g.length > 1 ? `${bfGapTxt(g[1])} ve ${bfGapTxt(g[g.length - 1])} tarihlerinde de kısa süreli açıklar var. ` : ''}Geçen yıl Aralık’ta da net nakit akışı ${bfWords(x.lastDec)} TL ekside kalmıştı.</p>
+    <p>Bu açığı %${BF_BUFFER} güvenlik payıyla karşılamak için Aralık başından önce <b>${bfWords(need.amount)} TL tutarında, 6 ay vadeli</b> kısa vadeli işletme sermayesi finansmanı uygun görünüyor. Ocak’tan itibaren beklenen aylık nakit fazlası taksitleri rahatça karşılıyor.</p>`;
+}
+function bfRisks() {
+  const x = bfAI(), g = bfGaps()[0];
+  return [
+    ['Nakit tamponu', 'hi', `Kullanılabilir bakiye (${vmTL(BF_BIZ.balance)}) yaklaşık ${Math.round(x.days)} günlük gidere yetiyor.`],
+    ['Mevsimsel nakit açığı', 'hi', `${bfGapTxt(g)} arasında tahmini en düşük bakiye ${bfTLs(x.need.min)}; geçen yıl Aralık’ta net akış ${bfTLs(x.lastDec)} olmuştu.`],
+    ['Gider artış hızı', 'mid', `Son üç ayda giderler %${Math.round(x.outG)}, girişler %${Math.round(x.inG)} arttı.`],
+    ['Tedarikçi yoğunlaşması', 'mid', `Ekim’de tedarikçi ödemelerinde tek tedarikçinin (Ege Elektronik) payı %${Math.round(x.top)}.`],
+    ['Tahsilat düzenliliği', 'lo', `Girişlerde POS satışlarının payı %${Math.round(x.posShare)}; tahsilatlar her gün düzenli geliyor.`],
+  ];
+}
+const BF_RISK_LBL = { hi: 'Yüksek', mid: 'Orta', lo: 'Düşük' };
+function bfRecs() {
+  const need = bfNeed();
+  return [
+    [`Aralık başından önce ${vmTL(need.amount)} işletme sermayesi finansmanı kullan`, 'Tahmini açığı güvenlik payıyla kapatır; taksitler Ocak’tan itibaren nakit fazlasından ödenir.', 'wc'],
+    ['Sezon stok ödemesinin bir kısmını 90 güne yay', 'Tedarikçi ödeme finansmanıyla 5 Aralık’taki ödemenin bir bölümünü Aralık satışlarının tahsilatından sonraya bırakabilirsin.', 'sup'],
+    ['Tedarikçi ödeme günlerini ayın ortasına kaydırmayı konuş', 'Maaş ve kira ile aynı haftaya denk gelmeyen ödemeler, açığın büyük bölümünü finansman gerektirmeden azaltabilir.', null],
+  ];
+}
+function BfAnalysis() {
+  const ai = state.bf.ai;
+  const nav = `<div class="nav-head ru-nav-accent">
+      <button class="icon-btn" data-action="nav-back">${I.back}</button>
+      <div class="nav-title">Yapay Zekâ Analizi</div>
+      <button class="icon-btn" data-action="bf-info" aria-label="Bilgi">${I.info}</button>
+    </div>`;
+  if (ai.status !== 'done') {
+    const run = ai.status === 'run';
+    return `
+    <div class="screen ${vmAnim()} vm bf">
+      ${nav}
+      <div class="screen-scroll">
+        <div class="bf-ai-run">
+          <div class="bf-ai-orb ${run ? 'run' : ''}">${I.spark}</div>
+          <b>${run ? 'Finansal verilerin analiz ediliyor' : ai.stopped ? 'Analiz durduruldu' : 'Yapay zekâ ile finansal analiz'}</b>
+          ${run ? `<div class="think-line"><span class="shimmer" id="bf-think">${BF_AI_STEPS[Math.min(ai.step, BF_AI_STEPS.length - 1)]}…</span></div>`
+            : `<p>${ai.stopped ? 'Analizi istediğin zaman yeniden başlatabilirsin. ' : ''}Son 3 ayın para giriş ve çıkışları incelenir, önümüzdeki 120 günün nakit akışı tahmin edilir; finansman ihtiyacın ve sana özel teklifler belirlenir.</p>`}
+          <div class="bf-ai-src">${I.lock} Kullanılan veriler: 3 işletme hesabı, 2 POS cihazı, e-fatura kayıtları · ${bfRangeTxt(21, 23)} (demo)</div>
+        </div>
+        ${run ? `<div class="bf-skel"><i></i><i></i><i class="s"></i></div><div class="bf-skel"><i></i><i class="s"></i></div><div class="bf-skel"><i></i><i></i><i class="s"></i></div>` : ''}
+      </div>
+      <div class="screen-cta">
+        ${run ? `<button class="btn-outline bf-stop" data-action="bf-ai-stop">${I.stop} Analizi Durdur</button>`
+          : `<button class="btn-primary" data-action="bf-analyze">${I.spark} ${ai.stopped ? 'Analizi Yeniden Başlat' : 'Yapay Zekâ ile Finansal Analiz Et'}</button>`}
+      </div>
+    </div>`;
+  }
+  const x = bfAI(), need = x.need, sc = bfScore(), gaps = bfGaps(), fin = state.bf.fcFin !== false;
+  return `
+  <div class="screen ${vmAnim()} vm bf">
+    ${nav}
+    <div class="screen-scroll">
+      <div class="bf-ai-sum">
+        <div class="bf-ai-sum-h"><span class="bf-ai-ico">${I.spark}</span><div><b>Yapay zekâ özeti</b><span>${bfRangeTxt(21, 23)} · ${ai.at}</span></div></div>
+        <div class="bf-ai-txt" id="bf-ai-txt">${bfSummaryHTML()}</div>
+        <div class="msg-actions bf-ai-acts">
+          <button class="ma-btn" data-action="bf-copy" aria-label="Kopyala">${I.copy}</button>
+          <button class="ma-btn" data-action="msg-like" aria-label="Beğen">${I.thumbUp}</button>
+          <button class="ma-btn" data-action="msg-dislike" aria-label="Beğenme">${I.thumbDown}</button>
+        </div>
+        <div class="ai-disclaimer bf-disc">Yapay zekâ hata yapabilir. Bu analiz demo verilerle oluşturulmuş örnek bir çıktıdır; finansal tavsiye değildir.</div>
+      </div>
+
+      <div class="vm-sec-h"><span>Finansal sağlık</span></div>
+      <div class="vm-box bf-health">
+        <div class="bf-health-top">${bfGauge(sc)}<div><b>${bfScoreLabel(sc)}</b><span>Büyüme ve kârlılık güçlü; nakit tamponu ve gider dengesi zayıflıyor.</span></div></div>
+        ${bfScores().map(([t, v, d]) => `<div class="bf-score"><div><span>${t}</span><b>${v}</b></div><div class="bf-score-bar"><i class="${v >= 75 ? 'g' : v >= 55 ? 'm' : 'w'}" style="width:${v}%"></i></div><em>${d}</em></div>`).join('')}
+      </div>
+
+      <div class="vm-sec-h"><span>Gelir – gider dengesi</span><span class="bf-legend"><i class="in"></i>Giriş<i class="out"></i>Çıkış</span></div>
+      <div class="vm-box bf-bal">
+        <div class="bf-kpis">
+          <div><span>Ortalama aylık gelir</span><b class="bf-amt-in">${vmTL(bfAvg('in'))}</b></div>
+          <div><span>Ortalama aylık gider</span><b class="bf-amt-out">${vmTL(bfAvg('out'))}</b></div>
+          <div><span>Aylık ortalama net</span><b>${bfTLs(bfAvg('in') - bfAvg('out'))}</b></div>
+          <div><span>Gelir / gider oranı</span><b>${(bfAvg('in') / bfAvg('out')).toFixed(2).replace('.', ',')}</b></div>
+        </div>
+        ${bfBarsSVG(21, 23)}
+      </div>
+
+      <div class="vm-sec-h"><span>Nakit akışı eğilimi</span><span class="bf-pill-dn">Azalan</span></div>
+      <div class="vm-box bf-trend">
+        ${bfNetSVG(18, 23, BF_FC_MONTHS)}
+        <div class="bf-trend-chips">
+          <span class="bf-chip good">Girişler ${bfChgTxt(x.inG)}</span>
+          <span class="bf-chip bad">Giderler ${bfChgTxt(x.outG)}</span>
+          <span class="bf-chip bad">Net ${bfChgTxt(bfChg(x.netC, x.netA))}</span>
+        </div>
+        <p class="bf-trend-txt">Gerçekleşen son 6 ay ve önümüzdeki 4 ayın tahmini net nakit akışı. Aralık’ta sezon stok ödemesi ve yılsonu ikramiyesiyle net akışın eksiye dönmesi bekleniyor.</p>
+      </div>
+
+      <div class="vm-sec-h"><span>Finansman ihtiyacı</span></div>
+      <div class="bf-need">
+        <div class="bf-need-top"><span>Tahmini ihtiyaç</span><b>${vmTL(need.amount)}</b><em>${I.calendar} Aralık başından önce · önerilen vade 6 ay</em></div>
+        <div class="bf-need-rows">
+          <div><span>En düşük tahmini bakiye</span><b>${bfTLs(need.min)} · ${bfDayTxt(bfFcDate(need.minK))}</b></div>
+          <div><span>Güvenlik payı</span><b>%${BF_BUFFER}</b></div>
+          <div><span>Geri ödeme kaynağı</span><b>Ocak–Mart nakit fazlası</b></div>
+        </div>
+      </div>
+
+      <div class="vm-sec-h"><span>Olası nakit açığı dönemleri</span></div>
+      <div class="vm-box bf-fc">
+        <div class="bf-fc-h"><span>Tahmini hesap bakiyesi · 120 gün</span>
+          <button class="bf-fc-tg ${fin ? 'on' : ''}" data-action="bf-fc-fin"><i class="bf-sw ${fin ? 'on' : ''}"></i>${bfCompact(need.amount)} TL finansmanla</button></div>
+        <div id="bf-fc-chart">${bfFcSVG(fin)}</div>
+        <div class="bf-fc-legend"><span><i class="cur"></i>Mevcut tahmin</span><span class="${fin ? '' : 'hide'}"><i class="fin"></i>Finansmanla</span><span><i class="gap"></i>Açık dönemi</span></div>
+        <div class="bf-gaps">${gaps.map((g, k) => `<div class="bf-gap">
+          <span class="bf-gap-n">${k + 1}</span>
+          <div><b>${bfGapTxt(g)}</b><em>${BF_GAP_WHY[k] || ''}</em></div>
+          <span class="bf-gap-min">${bfCompactS(g.min)}</span>
+        </div>`).join('')}</div>
+      </div>
+
+      <div class="vm-sec-h"><span>Finansal risk göstergeleri</span></div>
+      <div class="vm-box bf-risks">${bfRisks().map(([t, l, d]) => `<div class="bf-risk"><div><b>${t}</b><em>${d}</em></div><span class="bf-lvl ${l}">${BF_RISK_LBL[l]}</span></div>`).join('')}</div>
+
+      <div class="vm-sec-h"><span>Finansman ihtiyacına yönelik öneriler</span></div>
+      <div class="vm-box bf-recs">${bfRecs().map(([t, d, id], k) => `<div class="bf-rec">
+        <span class="bf-rec-n">${k + 1}</span>
+        <div><b>${t}</b><em>${d}</em>${id ? `<button class="sp-link" data-action="bf-offer-focus" data-id="${id}">Teklifi incele ${I.chevR}</button>` : ''}</div>
+      </div>`).join('')}</div>
+      <div class="vm-note">${I.info}<span>Tahminler geçmiş hareketlerin, düzenli ödeme günlerinin ve mevsimselliğin modellenmesiyle oluşturulan demo çıktılardır; gerçek hesap verisi kullanılmaz.</span></div>
+    </div>
+    <div class="screen-cta"><button class="btn-primary" data-action="bf-offers">Finansman Önerilerini Gör</button></div>
+  </div>`;
+}
+/* Analysis run: one shimmer line, unequal step durations; stoppable */
+function bfAnalyze() {
+  const ai = state.bf.ai;
+  if (ai.status === 'done') return go('isletme-analiz');
+  if (ai.status !== 'run') { ai.status = 'run'; ai.step = 0; ai.stopped = false; }
+  if (state.screen === 'isletme-analiz') vmRerender('anim-fade'); else go('isletme-analiz');
+  bfRunAI();
+}
+function bfRunAI() {
+  const ai = state.bf.ai, run = ai.run = (ai.run || 0) + 1;
+  clearTimeout(ai.timer);
+  const next = () => {
+    if (ai.status !== 'run' || ai.run !== run) return;
+    if (ai.step >= BF_AI_STEPS.length) return bfAIDone();
+    bfThink();
+    ai.timer = setTimeout(() => { ai.step++; next(); }, BF_AI_DUR[ai.step]);
+  };
+  next();
+}
+function bfThink() {
+  const ai = state.bf.ai, t = BF_AI_STEPS[Math.min(ai.step, BF_AI_STEPS.length - 1)] + '…';
+  const el = document.getElementById('bf-think');
+  if (el && el.textContent !== t) { el.textContent = t; el.classList.remove('step-in'); void el.offsetWidth; el.classList.add('step-in'); }
+  const card = document.getElementById('bf-ai-card');
+  if (card && state.screen === 'isletme') card.innerHTML = bfAiCardHTML();
+}
+function bfAIDone(quiet) {
+  const ai = state.bf.ai;
+  ai.status = 'done'; ai.step = BF_AI_STEPS.length; ai.at = bfStamp(bfDemoNow());
+  if (quiet) return;
+  if (state.screen === 'isletme-analiz') vmRerender('anim-fade');
+  else {
+    if (state.screen === 'isletme') vmRerender('anim-fade');
+    toast('Yapay zekâ analizin hazır');
+  }
+}
+function bfAIStop() {
+  const ai = state.bf.ai;
+  clearTimeout(ai.timer);
+  ai.run = (ai.run || 0) + 1;
+  ai.status = 'idle'; ai.step = 0; ai.stopped = true;
+  if (state.screen === 'isletme-analiz') vmRerender('anim-fade');
+}
+function bfFcFin() {
+  const v = state.bf, fin = v.fcFin = v.fcFin === false;
+  const c = document.getElementById('bf-fc-chart');
+  if (!c) return vmRerender('anim-fade');
+  c.innerHTML = bfFcSVG(fin);
+  document.querySelector('[data-action="bf-fc-fin"]')?.classList.toggle('on', fin);
+  document.querySelector('[data-action="bf-fc-fin"] .bf-sw')?.classList.toggle('on', fin);
+  document.querySelector('.bf-fc-legend .fin')?.parentElement.classList.toggle('hide', !fin);
+}
+function bfCopy() {
+  const txt = document.getElementById('bf-ai-txt')?.innerText || '';
+  if (txt && navigator.clipboard) navigator.clipboard.writeText(txt).then(() => toast('Analiz özeti kopyalandı'), () => toast('Kopyalama desteklenmiyor'));
+  else toast('Analiz özeti kopyalandı');
+}
+
+/* -------------------- Screen 4 — personalised financing offers -------------------- */
+function bfCostTxt(o, q) { return (o.kind === 'revolving' ? '~' : '') + vmTL(q.cost); }
+function bfMonthlyTxt(o, q) {
+  if (o.kind === 'bullet') return `Vade sonunda ${vmTL(q.total)}`;
+  if (o.kind === 'revolving') return `Faiz ~${vmTL(q.first.pay)} <small>${VM_AY[bfLineUse(q.P)[0].key % 12]}</small>`;
+  if (o.kind === 'grace') return `${vmTL(q.first.pay)} → ${vmTL(q.monthly)}`;
+  return vmTL(q.monthly);
+}
+function bfFitRing(n) {
+  const r = 17, c = 2 * Math.PI * r;
+  return `<svg viewBox="0 0 44 44" class="bf-ring"><circle cx="22" cy="22" r="${r}" class="bg"/><circle cx="22" cy="22" r="${r}" class="fg" stroke-dasharray="${(c * n / 100).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 22 22)"/><text x="22" y="26" text-anchor="middle">%${n}</text></svg>`;
+}
+function bfOfferCardHTML(o) {
+  const v = state.bf, q = bfQuote(o), sel = v.sel.includes(o.id);
+  return `<div class="bf-offer ${o.best ? 'best' : ''} ${v.focus === o.id ? 'focus' : ''}" id="bf-of-${o.id}">
+    <div class="bf-of-top">
+      ${bfIco({ icon: o.icon, color: o.best ? 'var(--primary)' : '#4A6FA5' }, 'lg')}
+      <div class="bf-of-t">${o.tag ? `<span class="bf-tag ${o.best ? 'ai' : ''}">${o.best ? I.spark : ''}${o.tag}</span>` : ''}<b>${o.type}</b></div>
+      <div class="bf-fit">${bfFitRing(o.fit)}<span>Uygunluk</span></div>
+    </div>
+    <div class="bf-of-amt"><span>${o.kind === 'revolving' ? 'Önerilen limit' : 'Önerilen tutar'}</span><b>${vmTL(o.amount)}</b></div>
+    <div class="bf-of-grid">
+      <div><span>Vade</span><b>${bfTermTxt(o, o.term)}</b></div>
+      <div><span>Tahmini maliyet ${vmEx()}</span><b>${bfCostTxt(o, q)}</b></div>
+      <div><span>${o.kind === 'bullet' ? 'Ödeme' : 'Aylık ödeme'}</span><b>${bfMonthlyTxt(o, q)}</b></div>
+      <div><span>Geri ödeme</span><b>${o.pay}</b></div>
+    </div>
+    <div class="bf-why"><div class="bf-why-h">${I.spark}<span>Neden bu öneri?</span></div><p>${o.reason}</p></div>
+    <div class="bf-of-act">
+      <button class="bf-cmp-tg ${sel ? 'on' : ''}" data-action="bf-sel" data-id="${o.id}"><span class="cbx">${I.check}</span>Karşılaştır</button>
+      <button class="btn-primary bf-sm" data-action="bf-choose" data-id="${o.id}">Bu Teklifi Seç</button>
+    </div>
+  </div>`;
+}
+function BfOffers() {
+  const v = state.bf, need = bfNeed();
+  if (v.ai.status !== 'done') { state.screen = 'isletme-analiz'; return BfAnalysis(); }
+  return `
+  <div class="screen ${vmAnim()} vm bf">
+    ${vmNav('Finansman Önerileri')}
+    <div class="screen-scroll">
+      <div class="bf-need-strip">
+        <span class="bf-ai-ico">${I.spark}</span>
+        <div><span>Yapay zekâ analizine göre ihtiyacın</span><b>${vmTL(need.amount)} · Aralık başından önce</b><em>${BF_OFFERS.length} alternatif, işletmenin nakit akışına uygunluğuna göre sıralandı</em></div>
+      </div>
+      ${v.app ? `<div class="vm-warn bf-warn tap" data-action="bf-track">${I.info}<span><b>Devam eden başvurun var.</b> Yeni başvuru için önce mevcut başvurunu takip ekranından tamamla ya da demoyu sıfırla.</span></div>` : ''}
+      <div class="bf-offers">${BF_OFFERS.map(bfOfferCardHTML).join('')}</div>
+      <div class="vm-note">${I.info}<span>Teklifler, oranlar ve tutarlar demo verisidir; gerçek banka teklifi veya kredi kararı değildir. Maliyete faiz, BSMV (%${BF_BSMV}) ve kredi tahsis ücreti (binde ${vmPctStr(BF_FEE * 10)}) dahildir.</span></div>
+    </div>
+    <div class="screen-cta"><button class="btn-primary" id="bf-cmp-go" data-action="bf-compare">${bfCmpBtnTxt()}</button></div>
+  </div>`;
+}
+function bfCmpBtnTxt() { const n = state.bf.sel.length; return n >= 2 ? `Teklifleri Karşılaştır (${n})` : 'Karşılaştırmak için en az 2 teklif seç'; }
+function bfToggleSel(id) {
+  const v = state.bf, on = v.sel.includes(id);
+  if (!on && v.sel.length >= 3) return toast('En fazla 3 teklifi karşılaştırabilirsin');
+  v.sel = on ? v.sel.filter(x => x !== id) : [...v.sel, id];
+  document.querySelectorAll(`[data-action="bf-sel"][data-id="${id}"]`).forEach(b => b.classList.toggle('on', !on));
+  const b = document.getElementById('bf-cmp-go');
+  if (b) { b.textContent = bfCmpBtnTxt(); b.classList.toggle('disabled', v.sel.length < 2); }
+  if (state.screen === 'isletme-karsilastir') vmRerender('anim-fade');
+}
+function bfCompare() {
+  if (state.bf.sel.length < 2) return toast('Karşılaştırmak için en az 2 teklif seç');
+  go('isletme-karsilastir');
+}
+function bfFocus(id) {
+  const v = state.bf;
+  if (v.ai.status !== 'done') return bfAnalyze();
+  v.focus = id;
+  if (state.screen !== 'isletme-oneriler') go('isletme-oneriler');
+  setTimeout(() => {
+    document.getElementById('bf-of-' + id)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    setTimeout(() => { if (state.bf.focus === id) { state.bf.focus = null; document.getElementById('bf-of-' + id)?.classList.remove('focus'); } }, 1800);
+  }, 120);
+}
+function bfChoose(id) {
+  const v = state.bf;
+  if (v.app) return bfGoTrack();
+  v.offer = id; v.draft = null;
+  go('isletme-basvuru');
+}
+
+/* -------------------- Screen 5 — compare offers -------------------- */
+function BfCompare() {
+  const v = state.bf;
+  if (v.ai.status !== 'done') { state.screen = 'isletme-analiz'; return BfAnalysis(); }
+  const cols = v.sel.map(id => bfOffer(id)), qs = cols.map(o => bfQuote(o));
+  const minOf = (vals) => { const nums = vals.filter(x => x != null); return nums.length > 1 ? Math.min(...nums) : null; };
+  const cost = qs.map((q, k) => cols[k].kind === 'revolving' ? null : q.cost), bestCost = minOf(cost);
+  const mon = qs.map((q, k) => ['annuity', 'grace'].includes(cols[k].kind) ? q.monthly : null), bestMon = minOf(mon);
+  const tot = qs.map((q, k) => cols[k].kind === 'revolving' ? null : q.total), bestTot = minOf(tot);
+  const bestFit = Math.max(...cols.map(o => o.fit));
+  const cell = (val, best) => `<td class="${best ? 'best' : ''}">${val}</td>`;
+  const rows = [
+    ['Finansman tutarı', cols.map(o => cell(`${o.kind === 'revolving' ? 'Limit ' : ''}${vmTL(o.amount)}`))],
+    ['Finansman maliyeti', qs.map((q, k) => cell(`${bfCostTxt(cols[k], q)}${cols[k].kind === 'revolving' ? '<sup>*</sup>' : ''}`, cost[k] != null && cost[k] === bestCost))],
+    ['Aylık faiz oranı', cols.map(o => cell(`%${vmPctStr(o.rate)}`, false))],
+    ['Vade', cols.map(o => cell(bfTermTxt(o, o.term)))],
+    ['Ödeme periyodu', cols.map(o => cell(o.periodTxt))],
+    ['Aylık ödeme', qs.map((q, k) => cell(cols[k].kind === 'bullet' ? '—' : cols[k].kind === 'revolving' ? 'Yalnızca faiz' : cols[k].kind === 'grace' ? `${vmTL(q.first.pay)}<i>ilk 2 ay</i>${vmTL(q.monthly)}` : vmTL(q.monthly), mon[k] != null && mon[k] === bestMon))],
+    ['Toplam geri ödeme', qs.map((q, k) => cell(cols[k].kind === 'revolving' ? `Kullanım + ~${vmTL(q.int + q.tax)}<sup>*</sup>` : vmTL(q.total), tot[k] != null && tot[k] === bestTot))],
+    ['Erken ödeme', cols.map(o => cell(o.early, o.earlyFree))],
+    ['Kullanım alanı', cols.map(o => cell(o.use))],
+    ['Uygunluk', cols.map(o => cell(`%${o.fit}`, o.fit === bestFit))],
+  ];
+  const cheap = cols[cost.indexOf(bestCost)], lowMon = cols[mon.indexOf(bestMon)], ai = cols.find(o => o.best);
+  return `
+  <div class="screen ${vmAnim()} vm bf">
+    ${vmNav('Teklifleri Karşılaştır')}
+    <div class="screen-scroll">
+      <div class="bf-pickrow">
+        <span>Karşılaştırılan teklifler (en fazla 3)</span>
+        <div class="vm-chips">${BF_OFFERS.map(o => `<button class="vm-chip ${v.sel.includes(o.id) ? 'on' : ''}" data-action="bf-sel" data-id="${o.id}">${o.short}</button>`).join('')}</div>
+      </div>
+      ${cols.length < 2 ? `<div class="vm-box bf-empty">Karşılaştırmak için en az 2 teklif seç.</div>` : `
+      <div class="bf-ctable-wrap"><table class="bf-ctable c${cols.length}">
+        <thead><tr><th></th>${cols.map(o => `<th class="${v.offer === o.id ? 'sel' : ''}"><span class="bf-ttag ${o.best ? 'ai' : ''}">${o.best ? I.spark : ''}${o.tag || '&nbsp;'}</span><b>${o.short}</b></th>`).join('')}</tr></thead>
+        <tbody>${rows.map(([t, cells]) => `<tr><th>${t}</th>${cells.join('')}</tr>`).join('')}</tbody>
+        <tfoot><tr><th></th>${cols.map(o => `<td><button class="bf-pick ${v.offer === o.id ? 'on' : ''}" data-action="bf-pick" data-id="${o.id}">${v.offer === o.id ? `${I.check} Seçildi` : 'Seç'}</button></td>`).join('')}</tr></tfoot>
+      </table></div>
+      <div class="bf-why bf-cmp-ai"><div class="bf-why-h">${I.spark}<span>Yapay zekâ yorumu</span></div>
+        <p>${cheap ? `Seçtiklerin içinde en düşük maliyet <b>${cheap.short}</b> (${vmTL(bfQuote(cheap).cost)}); ancak tutarlar ve kullanım alanları farklı. ` : ''}${lowMon ? `En düşük aylık ödeme <b>${lowMon.short}</b>. ` : ''}${cols.some(o => o.kind === 'revolving') ? 'Nakit akışı desteği, tahmin edildiği gibi yalnızca açık günlerinde kullanılırsa en ucuz seçenek olabilir; faizi değişkendir. ' : ''}${ai ? `Açığın tamamını sabit faiz ve öngörülebilir taksitle karşılayan seçenek <b>${ai.short}</b>.` : ''}</p>
+      </div>`}
+      <div class="vm-note">${I.info}<span>Değerler örnektir. Maliyete faiz, BSMV ve tahsis ücreti dahildir. * Nakit akışı desteğinde maliyet, tahmini nakit açığı günlerinde kullanıma göre hesaplanmıştır.</span></div>
+    </div>
+    <div class="screen-cta"><button class="btn-primary" data-action="bf-apply">${bfOffer().short} ile Devam Et</button></div>
+  </div>`;
+}
+function bfPick(id) { state.bf.offer = id; state.bf.draft = null; vmRerender('anim-fade'); }
+function bfToApply() {
+  if (state.bf.app) return bfGoTrack();
+  go('isletme-basvuru');
+}
+
+/* -------------------- Screen 6 — financing details & application -------------------- */
+const BF_FLOW = ['Analiz', 'Teklif', 'Başvuru', 'Değerlen&shy;dirme', 'Kullan&shy;dırım'];
+function bfFlowHTML(cur) {
+  return `<div class="vm-flow" role="list" aria-label="Finansman adımları">${BF_FLOW.map((t, i) =>
+    `<div class="vm-flow-s ${i < cur ? 'done' : i === cur ? 'on' : ''}" role="listitem"><i>${i < cur ? I.check : i + 1}</i><span>${t}</span></div>`).join('<b></b>')}</div>`;
+}
+function BfApply() {
+  const v = state.bf;
+  if (v.app) { state.screen = 'isletme-takip'; return BfTrack(); }
+  const o = bfOffer(), g = v.agree, all = BF_AGREE.every(([k]) => g[k]);
+  bfDraft();
+  return `
+  <div class="screen ${vmAnim()} vm bf">
+    ${vmNav('Finansman Başvurusu')}
+    <div class="screen-scroll">
+      ${bfFlowHTML(2)}
+      <div class="bf-selof">
+        ${bfIco({ icon: o.icon, color: 'var(--primary)' }, 'lg')}
+        <div><span>Seçilen finansman</span><b>${o.type}</b>${o.tag ? `<em class="bf-tag ${o.best ? 'ai' : ''}">${o.best ? I.spark : ''}${o.tag}</em>` : ''}</div>
+        <button class="sp-link" data-action="bf-change">Değiştir</button>
+      </div>
+
+      <div class="vm-sec-h"><span>İşletme bilgileri</span></div>
+      <div class="vm-box bf-rows">
+        <div class="vm-frow"><span>Ticari unvan</span><b>${BF_BIZ.name}</b></div>
+        <div class="vm-frow"><span>Vergi no · dairesi</span><b>${BF_BIZ.taxNo} · ${BF_BIZ.taxOffice}</b></div>
+        <div class="vm-frow"><span>Faaliyet</span><b>${BF_BIZ.sector} · ${BF_BIZ.activity}</b></div>
+        <div class="vm-frow"><span>Kuruluş · çalışan</span><b>${BF_BIZ.founded} · ${BF_BIZ.employees} çalışan</b></div>
+        <div class="vm-frow"><span>Satış kanalları</span><b>${BF_BIZ.stores}</b></div>
+        <div class="vm-frow"><span>Yetkili</span><b>${BF_BIZ.rep} · ${BF_BIZ.repRole}</b></div>
+        <div class="vm-frow"><span>Adres</span><b>${BF_BIZ.address}</b></div>
+        <div class="vm-frow"><span>Kullandırım hesabı</span><b>${BF_BIZ.account}<br><small>${BF_BIZ.iban}</small></b></div>
+      </div>
+      <div class="vm-sec-h"><span>Finansal görünüm</span><span class="bf-sec-sub">${bfRangeShort(21, 23)} · aylık ort.</span></div>
+      <div class="vm-box bf-rows">
+        <div class="vm-frow"><span>Para girişi</span><b class="bf-amt-in">${vmTL(bfAvg('in'))}</b></div>
+        <div class="vm-frow"><span>Para çıkışı</span><b class="bf-amt-out">${vmTL(bfAvg('out'))}</b></div>
+        <div class="vm-frow"><span>Net nakit akışı</span><b>${bfTLs(bfAvg('in') - bfAvg('out'))}</b></div>
+        <div class="vm-frow"><span>Yapay zekâ finansal sağlık puanı</span><b>${bfScore()} / 100 · ${bfScoreLabel(bfScore())}</b></div>
+      </div>
+
+      <div class="vm-sec-h"><span>Finansman koşulları</span></div>
+      <div class="vm-box bf-terms" id="bf-terms">${bfTermsHTML()}</div>
+
+      <div class="vm-sec-h"><span>${o.kind === 'revolving' ? 'Örnek kullanım ve faiz planı' : 'Geri ödeme planı'}</span><button class="sp-link" data-action="bf-plan">Tümü ${I.chevR}</button></div>
+      <div class="vm-box bf-plan" id="bf-plan">${bfPlanHTML(3)}</div>
+
+      <div class="vm-sec-h"><span>Başvuru özeti</span></div>
+      <div class="vm-box vm-receipt" id="bf-summary">${bfSummaryRowsHTML()}</div>
+
+      <div class="vm-sec-t">Sözleşmeler ve onaylar</div>
+      <div class="vm-docs">${BF_AGREE.map(([k, tt, tail]) => `
+        <label class="contract-row ${g[k] ? 'on' : ''}" data-action="bf-agree" data-key="${k}">
+          <span class="cbx">${I.check}</span>
+          <span class="contract-txt"><a data-action="bf-doc" data-doc="${k}">${tt}</a>${tail}</span>
+        </label>`).join('')}</div>
+      <div class="vm-note">${I.info}<span>Başvurun önce finansal verilerin ve ticari kredi geçmişinle otomatik olarak değerlendirilir. Onaylanırsa sözleşmeyi dijital olarak onaylar, tutarı işletme hesabına alırsın. Prototipte gerçek başvuru veya kullandırım yapılmaz.</span></div>
+    </div>
+    <div class="screen-cta">
+      <button class="btn-primary vm-approve ${all ? '' : 'disabled'}" id="bf-submit" data-action="bf-submit">${I.faceid} Başvuruyu Tamamla</button>
+    </div>
+  </div>`;
+}
+function bfTermsHTML() {
+  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term), need = bfNeed().amount, rev = o.kind === 'revolving';
+  const diff = d.amount - (o.best ? need : o.amount);
+  return `
+    <div class="bf-amt-edit">
+      <span>${rev ? 'Talep edilen limit' : 'Talep edilen tutar'}</span>
+      <div class="bf-stepper">
+        <button class="bf-stp" data-action="bf-amt" data-d="-1" aria-label="Azalt" ${d.amount <= o.min ? 'disabled' : ''}>−</button>
+        <b>${vmTL(d.amount)}</b>
+        <button class="bf-stp" data-action="bf-amt" data-d="1" aria-label="Artır" ${d.amount >= o.max ? 'disabled' : ''}>+</button>
+      </div>
+      <em class="${diff ? 'warn' : ''}">${I.spark}${diff === 0 ? (o.best ? 'Yapay zekâ önerisiyle aynı' : 'Önerilen tutar') : `Önerilen: ${vmTL(o.best ? need : o.amount)} · ${diff > 0 ? 'fazla tutar maliyeti artırır' : 'tahmini açığı tam karşılamayabilir'}`} · ${vmTL(o.min)}–${vmTL(o.max)}</em>
+    </div>
+    ${o.terms.length > 1 ? `<div class="bf-terms-pick"><span>Vade</span><div class="vm-chips">${o.terms.map(n => `<button class="vm-chip ${d.term === n ? 'on' : ''}" data-action="bf-term" data-v="${n}">${bfTermTxt(o, n)}</button>`).join('')}</div></div>` : ''}
+    ${o.terms.length > 1 ? '' : `<div class="vm-frow"><span>Vade</span><b>${bfTermTxt(o, d.term)}</b></div>`}
+    <div class="vm-frow"><span>Aylık faiz oranı ${vmEx()}</span><b>%${vmPctStr(o.rate)}</b></div>
+    <div class="vm-frow"><span>BSMV</span><b>Faiz üzerinden %${BF_BSMV}</b></div>
+    <div class="vm-frow"><span>Geri ödeme</span><b>${o.pay}</b></div>
+    ${rev ? `<div class="vm-frow"><span>Tahmini faiz + BSMV <small>örnek kullanım</small></span><b>${vmTL(q.int + q.tax)}</b></div>`
+      : `<div class="vm-frow"><span>${o.kind === 'bullet' ? 'Vade sonunda ödeme' : o.kind === 'grace' ? 'Aylık ödeme (ilk 2 ay / sonra)' : 'Aylık taksit'}</span><b>${o.kind === 'bullet' ? vmTL(q.total) : o.kind === 'grace' ? `${vmTL(q.first.pay)} / ${vmTL(q.monthly)}` : vmTL(q.monthly)}</b></div>
+         <div class="vm-frow"><span>Toplam faiz + BSMV</span><b>${vmTL(q.int + q.tax)}</b></div>`}
+    <div class="vm-frow"><span>Kredi tahsis ücreti <small>binde ${vmPctStr(BF_FEE * 10)}</small></span><b>${vmTL(q.fee)}</b></div>
+    <div class="vm-frow hl"><span>Toplam finansman maliyeti</span><b>${rev ? '~' : ''}${vmTL(q.cost)}</b></div>
+    ${rev ? '' : `<div class="vm-frow hl"><span>Toplam geri ödeme</span><b>${vmTL(q.total)}</b></div>`}
+    <div class="vm-frow"><span>Erken ödeme</span><b>${o.early}</b></div>`;
+}
+function bfPlanHTML(limit) {
+  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term), a = state.bf.app, paid = a ? a.paid : 0;
+  const rows = limit ? q.rows.slice(0, limit) : q.rows;
+  if (o.kind === 'revolving') {
+    const use = bfLineUse(d.amount);
+    return `<div class="bf-plan-h"><span>Ay</span><span>En yüksek kullanım</span><span>Faiz + BSMV</span></div>
+      ${use.map((u, k) => `<div class="bf-plan-r"><span>${VM_AY[u.key % 12]}</span><span>${vmTL(u.max)}</span><b>${vmTL(q.rows[k].int + q.rows[k].tax)}</b></div>`).join('')}
+      <div class="bf-plan-note">Anapara, tahsilatlar geldikçe istediğin zaman kapatılır; faiz yalnızca kullanılan gün için işler.</div>`;
+  }
+  return `<div class="bf-plan-h"><span>Taksit</span><span>Tarih</span><span>Tutar</span><span>Kalan</span></div>
+    ${rows.map(r => `<div class="bf-plan-r ${a && a.status === 'active' ? (r.n <= paid ? 'paid' : r.n === paid + 1 ? 'next' : '') : ''}">
+      <span>${r.n}${a && a.status === 'active' && r.n <= paid ? ` ${I.check}` : ''}</span><span>${bfNumDate(r.date)}</span><b>${vmTL(r.pay)}</b><span>${vmTL(r.rest)}</span></div>`).join('')}
+    ${limit && q.rows.length > limit ? `<button class="bf-more sm" data-action="bf-plan">${q.rows.length - limit} taksit daha</button>` : ''}`;
+}
+function bfSummaryRowsHTML() {
+  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term), rev = o.kind === 'revolving';
+  const r = (l, val, hl) => `<div class="r-row ${hl ? 'hl' : ''}"><span class="r-l">${l}</span><span class="r-r">${val}</span></div>`;
+  return r('İşletme', BF_BIZ.name)
+    + r('Finansman türü', o.type)
+    + r(rev ? 'Talep edilen limit' : 'Talep edilen tutar', vmTL(d.amount), true)
+    + r('Vade', bfTermTxt(o, d.term))
+    + r(o.kind === 'bullet' ? 'Ödeme tarihi' : 'İlk ödeme tarihi', `${bfDateTxt(q.rows[0].date)} ${vmEx()}`)
+    + (rev ? r('Tahmini maliyet', `~${vmTL(q.cost)}`) : r('Toplam finansman maliyeti', vmTL(q.cost)) + r('Toplam geri ödeme', vmTL(q.total), true))
+    + r('Kullandırım hesabı', `${BF_BIZ.account} · ${BF_BIZ.iban.slice(-4)}`)
+    + r('Başvuran', `${BF_BIZ.rep} (yetkili)`);
+}
+function bfRefreshTerms() {
+  const t = document.getElementById('bf-terms'), p = document.getElementById('bf-plan'), s = document.getElementById('bf-summary');
+  if (t) t.innerHTML = bfTermsHTML();
+  if (p) p.innerHTML = bfPlanHTML(3);
+  if (s) s.innerHTML = bfSummaryRowsHTML();
+}
+function bfAmt(dir) {
+  const o = bfOffer(), d = bfDraft(), step = o.max - o.min > 400000 ? 50000 : 25000;
+  d.amount = Math.min(o.max, Math.max(o.min, d.amount + dir * step));
+  bfRefreshTerms();
+}
+function bfTerm(n) { bfDraft().term = n; bfRefreshTerms(); }
+function bfPlanSheet() {
+  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term);
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>${o.kind === 'revolving' ? 'Örnek kullanım planı' : 'Geri ödeme planı'}</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="bf-plan-sheet">${bfPlanHTML(0)}</div>
+    <div class="vm-sheet-note">${I.info}<span>${o.short} · ${vmTL(d.amount)} · ${bfTermTxt(o, d.term)}. ${o.kind === 'revolving' ? '' : `Toplam geri ödeme ${vmTL(q.total)}. `}Tutarlara BSMV dahildir; değerler örnektir.</span></div>
+    <button class="sheet-btn" data-action="close-sheet">Kapat</button>`;
+  sheetEl.classList.add('open'); sheetScrimEl.classList.add('open');
+}
+function bfToggleAgree(el) {
+  const g = state.bf.agree, k = el.dataset.key;
+  g[k] = !g[k];
+  el.classList.toggle('on', g[k]);
+  document.getElementById('bf-submit')?.classList.toggle('disabled', !BF_AGREE.every(([x]) => g[x]));
+}
+function bfDocSheet(k) {
+  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term);
+  const body = {
+    pre: `<h4>1. Taraflar</h4><p>${BF_BIZ.name} (kredi kullanan) ile Yapı Kredi Bankası A.Ş.</p><h4>2. Finansman</h4><p>${o.type}; ${o.kind === 'revolving' ? 'limit' : 'tutar'} ${vmTL(d.amount)}, vade ${bfTermTxt(o, d.term)}, aylık faiz %${vmPctStr(o.rate)} (örnek), BSMV faiz üzerinden %${BF_BSMV}, kredi tahsis ücreti ${vmTL(q.fee)}.</p><h4>3. Geri ödeme</h4><p>${o.pay}. Erken ödeme: ${o.early}.</p><h4>4. Teminat</h4><p>Prototipte teminat koşulları gösterilmez; gerçek süreçte kredi değerlendirmesine göre belirlenir.</p>`,
+    data: `<p>Hesap hareketlerin, üye işyeri (POS) tahsilatların ve e-fatura kayıtların; finansman ihtiyacının belirlenmesi, teklif hazırlanması ve kredi değerlendirmesi amacıyla işlenir. Onayını istediğin zaman geri alabilirsin.</p><p>Prototipte gerçek veri kullanılmaz; tüm hareketler demo veridir.</p>`,
+    kkb: `<p>Başvurunun değerlendirilmesi için Kredi Kayıt Bürosu (KKB) üzerinden işletmenin ticari risk raporu ve kredi geçmişi sorgulanır.</p><p>Prototipte sorgu yapılmaz.</p>`,
+  }[k];
+  const t = BF_AGREE.find(x => x[0] === k)[1];
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>${t}</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="legal-scroll"><p>Bu metin prototip amaçlı örnek bir metindir; gerçek ürün koşullarını yansıtmaz.</p>${body}</div>
+    <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`;
+  sheetEl.classList.add('open'); sheetScrimEl.classList.add('open');
+}
+function bfChange() {
+  const prev = state.nav[state.nav.length - 1];
+  if (prev && ['isletme-oneriler', 'isletme-karsilastir'].includes(prev.screen)) return navBack();
+  go('isletme-oneriler');
+}
+function bfMakeApp(status) {
+  const o = bfOffer(), d = bfDraft(), at = bfDemoNow();
+  return { no: vmRef('IF'), offer: o.id, amount: d.amount, term: d.term, at: at.getTime(), status, step: 0,
+    approvedAt: null, disbTs: null, paid: 0, used: o.kind === 'revolving' ? 0 : null,
+    events: [{ t: 'Finansman başvurun alındı', d: `${o.short} · ${vmTL(d.amount)}`, at: bfStamp(at), k: 'ok' }] };
+}
+function bfSubmit() {
+  const v = state.bf, btn = document.getElementById('bf-submit');
+  if (!btn || v.app || !BF_AGREE.every(([k]) => v.agree[k])) return;
+  btn.innerHTML = '<span class="spinner"></span> Başvurun gönderiliyor…';
+  btn.style.pointerEvents = 'none';
+  setTimeout(() => {
+    v.app = bfMakeApp('review');
+    if (state.screen === 'isletme-basvuru') {
+      bfUnwind();
+      state.chatSeed = false;
+      state.screen = 'isletme-takip';
+      vmRerender('anim-right');
+    }
+    bfStartReview();
+  }, 1300);
+}
+
+/* -------------------- Screen 7 — application & financing tracking -------------------- */
+const BF_REVIEW_MS = [1100, 1600, 1300, 1500];
+function bfAppTime(a, min) { return bfStamp(new Date(a.at + min * 60000)); }
+function bfStatusTxt(a) {
+  if (a.status === 'review') return 'Başvurun değerlendiriliyor';
+  if (a.status === 'approved') return 'Onaylandı · sözleşme onayını bekliyor';
+  const o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term);
+  if (o.kind === 'revolving') return a.used ? `Limit kullanımda · ${vmTL(a.used)}` : 'Limit tanımlandı · kullanıma hazır';
+  return a.paid >= q.rows.length ? 'Finansman kapandı' : `Kullandırıldı · ${a.paid}/${q.rows.length} ödeme yapıldı`;
+}
+function bfStageList(a) {
+  const st = a.status, done = st === 'active';
+  const o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term), closed = o.kind !== 'revolving' && a.paid >= q.rows.length;
+  return [
+    { s: 'done', d: bfAppTime(a, 0).split(' · ')[0] },
+    { s: st === 'review' ? 'on' : 'done', d: st === 'review' ? 'Sürüyor' : 'Olumlu' },
+    { s: st === 'review' ? '' : 'done', d: a.approvedAt || 'Bekliyor' },
+    { s: done ? 'done' : st === 'approved' ? 'on' : '', d: done ? 'Tamamlandı' : st === 'approved' ? 'Sözleşme onayı' : 'Bekliyor' },
+    { s: closed ? 'done' : done ? 'on' : '', d: done ? (o.kind === 'revolving' ? 'Kullandıkça' : `${a.paid}/${q.rows.length} ödeme`) : 'Bekliyor' },
+  ];
+}
+function bfProgHTML(a) {
+  const list = bfStageList(a);
+  return `<div class="bf-prog">${list.map((x, k) => `<div class="bf-prog-s ${x.s}">
+    <i>${x.s === 'done' ? I.check : x.s === 'on' && k === 1 ? '<span class="vm-spin"></span>' : k + 1}</i><b>${BF_STAGES[k]}</b><span>${x.d}</span></div>`).join('')}</div>`;
+}
+function BfTrack() {
+  const v = state.bf, a = v.app;
+  if (!a) return bfTrackEmpty();
+  const o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term), rev = o.kind === 'revolving';
+  const pill = a.status === 'review' ? `<span class="vm-pill sm bf-pill-run">Değerlendiriliyor</span>` : a.status === 'approved' ? `<span class="vm-pill sm bf-pill-ok">Onaylandı</span>` : `<span class="vm-pill sm bf-pill-ok">${rev ? 'Limit aktif' : 'Kullandırıldı'}</span>`;
+  return `
+  <div class="screen ${vmAnim()} vm bf">
+    ${vmNav('Başvuru Takibi')}
+    <div class="screen-scroll">
+      <div class="vm-box bf-trk-head">
+        <div class="bf-trk-top"><div><span>Finansman başvurusu</span><b>No ${a.no}</b></div>${pill}</div>
+        <div class="vm-frow"><span>Başvuru tarihi</span><b>${bfAppTime(a, 0)}</b></div>
+        <div class="vm-frow"><span>Talep edilen finansman</span><b>${o.short}<br><small>${rev ? 'Limit ' : ''}${vmTL(a.amount)} · ${bfTermTxt(o, a.term)}</small></b></div>
+        <div class="vm-frow"><span>Başvuru durumu</span><b id="bf-status">${bfStatusTxt(a)}</b></div>
+      </div>
+      ${bfProgHTML(a)}
+      ${a.fresh ? `<div class="vm-okbar bf-fresh">${I.check}<span><b>${a.fresh}</b></span></div>` : ''}
+      ${a.status === 'review' ? `
+        <div class="vm-sec-h"><span>Değerlendirme aşaması</span><span class="bf-sec-sub" id="bf-phase">${a.step}/${BF_REVIEW.length}</span></div>
+        <div class="vm-box vm-chk">${BF_REVIEW.map((t, k) => vmChkRowHTML(t, k, a.step, 'bf-rv-')).join('')}</div>
+        <div class="vm-note">${I.info}<span>Ön değerlendirme finansal verilerinle otomatik yapılır; gerçek süreçte genellikle 1 iş günü sürer. Prototipte birkaç saniye.</span></div>` : ''}
+      ${a.status === 'approved' ? `
+        <div class="vm-sec-h"><span>Onay detayları</span></div>
+        <div class="vm-box bf-rows">
+          <div class="vm-frow"><span>Onay durumu</span><b class="bf-ok">Onaylandı · ${a.approvedAt}</b></div>
+          <div class="vm-frow"><span>${rev ? 'Onaylanan limit' : 'Onaylanan tutar'}</span><b>${vmTL(a.amount)}</b></div>
+          <div class="vm-frow"><span>Vade</span><b>${bfTermTxt(o, a.term)}</b></div>
+          <div class="vm-frow"><span>Aylık faiz oranı ${vmEx()}</span><b>%${vmPctStr(o.rate)}</b></div>
+          ${rev ? '' : `<div class="vm-frow"><span>${o.kind === 'bullet' ? 'Vade sonunda ödeme' : 'Aylık ödeme'}</span><b>${o.kind === 'bullet' ? vmTL(q.total) : o.kind === 'grace' ? `${vmTL(q.first.pay)} / ${vmTL(q.monthly)}` : vmTL(q.monthly)}</b></div>
+          <div class="vm-frow"><span>Toplam geri ödeme</span><b>${vmTL(q.total)}</b></div>`}
+          <div class="vm-frow"><span>Teklif geçerliliği</span><b>15 gün</b></div>
+        </div>` : ''}
+      ${a.status === 'active' ? bfUseHTML(a, o, q) : ''}
+      ${a.status !== 'review' ? `
+        <div class="vm-sec-h"><span>${rev ? 'Faiz ödemeleri' : 'Geri ödeme planı'}</span>${rev ? '' : `<button class="sp-link" data-action="bf-plan">Tümü ${I.chevR}</button>`}</div>
+        <div class="vm-box bf-plan">${bfTrackPlanHTML(a, o, q)}</div>` : ''}
+      <div class="vm-sec-h"><span>Bildirimler</span></div>
+      <div class="vm-box bf-events">${a.events.slice().reverse().map(e => `<div class="bf-ev ${e.k || ''}"><i>${e.k === 'ok' ? I.check : I.info}</i><div><b>${e.t}</b><span>${e.d ? e.d + ' · ' : ''}${e.at}</span></div></div>`).join('')}</div>
+      ${bfDemoHTML(a)}
+    </div>
+    <div class="screen-cta">
+      ${a.status === 'approved' ? `<button class="btn-primary" data-action="bf-contract">${rev ? 'Sözleşmeyi Onayla ve Limiti Aç' : 'Sözleşmeyi Onayla ve Kullan'}</button>`
+        : a.status === 'active' && rev ? `<div class="bf-cta2"><button class="btn-outline" data-action="bf-home">Ana Ekran</button><button class="btn-primary" data-action="bf-draw">Limitten Kullan</button></div>`
+        : `<button class="${a.status === 'review' ? 'btn-outline' : 'btn-primary'}" data-action="bf-home">İşletme Finansmanı’na Dön</button>`}
+    </div>
+  </div>`;
+}
+function bfUseHTML(a, o, q) {
+  const rev = o.kind === 'revolving';
+  if (rev) {
+    return `<div class="vm-sec-h"><span>Finansman kullanımı</span></div>
+      <div class="vm-box bf-rows">
+        <div class="bf-use-top"><span>Kullanılan finansman tutarı</span><b>${vmTL(a.used || 0)}</b><div class="bf-score-bar"><i class="g" style="width:${Math.round((a.used || 0) / a.amount * 100)}%"></i></div><em>Limit ${vmTL(a.amount)} · kalan ${vmTL(a.amount - (a.used || 0))}</em></div>
+        <div class="vm-frow"><span>Limit açılış tarihi</span><b>${a.disbAt}</b></div>
+        <div class="vm-frow"><span>Hesap</span><b>${BF_BIZ.account} · ${BF_BIZ.iban.slice(-4)}</b></div>
+        <div class="vm-frow"><span>Tahmini aylık faiz (mevcut kullanım)</span><b>${vmTL((a.used || 0) * bfI(o))}</b></div>
+      </div>`;
+  }
+  const paidRows = q.rows.slice(0, a.paid), restP = a.paid ? paidRows[paidRows.length - 1].rest : a.amount, next = q.rows[a.paid];
+  return `<div class="vm-sec-h"><span>Finansman kullanımı</span></div>
+    <div class="vm-box bf-rows">
+      <div class="bf-use-top"><span>Kullanılan finansman tutarı</span><b>${vmTL(a.amount)}</b><div class="bf-score-bar"><i class="g" style="width:${Math.round(a.paid / q.rows.length * 100)}%"></i></div><em>${a.paid} / ${q.rows.length} ödeme yapıldı · kalan anapara ${vmTL(restP)}</em></div>
+      <div class="vm-frow"><span>Kullandırım tarihi</span><b>${a.disbAt}</b></div>
+      <div class="vm-frow"><span>${o.kind === 'sup' || o.id === 'sup' ? 'Ödeme yapılan tedarikçi' : 'Aktarılan hesap'}</span><b>${o.id === 'sup' ? 'Ege Elektronik Dağıtım A.Ş.' : `${BF_BIZ.account} · ${BF_BIZ.iban.slice(-4)}`}</b></div>
+      ${next ? `<div class="vm-frow"><span>Sıradaki ödeme</span><b>${bfDateTxt(next.date)} · ${vmTL(next.pay)}</b></div>` : `<div class="vm-frow"><span>Durum</span><b class="bf-ok">Tüm ödemeler tamamlandı</b></div>`}
+    </div>`;
+}
+function bfTrackPlanHTML(a, o, q) {
+  if (o.kind === 'revolving') {
+    return `<div class="bf-plan-h"><span>Ay</span><span>Kullanım</span><span>Faiz + BSMV</span></div>
+      <div class="bf-plan-r next"><span>${VM_AY[bfAddMonths(new Date(a.disbTs || a.at), 1).getMonth()]}</span><span>${vmTL(a.used || 0)}</span><b>${vmTL((a.used || 0) * bfI(o))}</b></div>
+      <div class="bf-plan-note">Faiz her ay kullanılan tutar ve gün üzerinden tahsil edilir; anaparayı istediğin zaman kapatabilirsin.</div>`;
+  }
+  const show = q.rows.slice(Math.max(0, Math.min(a.paid - 1, q.rows.length - 3)), Math.max(0, Math.min(a.paid - 1, q.rows.length - 3)) + 3);
+  return `<div class="bf-plan-h"><span>Taksit</span><span>Tarih</span><span>Tutar</span><span>Durum</span></div>
+    ${show.map(r => {
+      const st = a.status !== 'active' ? 'Bekliyor' : r.n <= a.paid ? 'Ödendi' : r.n === a.paid + 1 ? 'Sıradaki' : 'Bekliyor';
+      return `<div class="bf-plan-r ${st === 'Ödendi' ? 'paid' : st === 'Sıradaki' ? 'next' : ''}"><span>${r.n}</span><span>${bfNumDate(r.date)}</span><b>${vmTL(r.pay)}</b><span class="bf-st">${st}</span></div>`;
+    }).join('')}`;
+}
+function bfDemoHTML(a) {
+  const o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term);
+  const adv = a.status === 'review' ? 'Değerlendirmeyi tamamla' : a.status === 'active' && o.kind !== 'revolving' && a.paid < q.rows.length ? 'Sonraki ödemeyi yap (1 ay ileri)' : '';
+  return `<div class="vm-demo">
+    <div class="vm-demo-h">${I.info}<span>Demo kontrolleri · Gerçek süreçte durumlar banka sistemlerinden gelen bilgilerle güncellenir.</span></div>
+    <div class="vm-demo-btns">
+      ${adv ? `<button class="vm-demo-btn main" data-action="bf-adv">${adv}</button>` : ''}
+      <button class="vm-demo-btn" data-action="bf-reset">Demoyu sıfırla</button>
+    </div>
+  </div>`;
+}
+function bfTrackEmpty() {
+  return `
+  <div class="screen ${vmAnim()} vm bf">
+    ${vmNav('Başvuru Takibi')}
+    <div class="screen-scroll">
+      <div class="vm-empty big">${I.doc}<b>Henüz finansman başvurun yok</b><span>Yapay zekâ analizinden sonra sana özel teklifleri inceleyip başvurabilirsin.</span>
+        <button class="btn-primary" data-action="${state.bf.ai.status === 'done' ? 'bf-offers' : 'bf-analyze'}">${state.bf.ai.status === 'done' ? 'Finansman Önerilerini Gör' : 'Yapay Zekâ ile Analiz Et'}</button></div>
+    </div>
+  </div>`;
+}
+function bfStartReview() {
+  const a = state.bf.app;
+  if (!a || a.status !== 'review' || a.running) return;
+  a.running = true;
+  vmRunChecks(a, 'step', BF_REVIEW.length, 'bf-rv-', BF_REVIEW_MS, () => {
+    a.running = false;
+    if (state.bf.app !== a || a.status !== 'review') return;
+    bfApprove(a);
+  }, () => { const el = document.getElementById('bf-phase'); if (el) el.textContent = `${a.step}/${BF_REVIEW.length}`; });
+}
+function bfApprove(a, quiet) {
+  a.status = 'approved'; a.step = BF_REVIEW.length;
+  const t = bfAppTime(a, 4);
+  a.approvedAt = t;
+  a.events.push({ t: 'Ön değerlendirme tamamlandı', d: 'Finansal veriler ve ticari kredi geçmişi', at: bfAppTime(a, 3), k: 'ok' });
+  a.events.push({ t: 'Başvurun onaylandı', d: `${vmTL(a.amount)} · sözleşme onayını bekliyor`, at: t, k: 'ok' });
+  a.fresh = quiet ? null : 'Başvurun onaylandı. Sözleşmeyi onaylayınca tutar işletme hesabına aktarılır.';
+  if (quiet) return;
+  if (state.screen === 'isletme-takip') vmRerender('anim-fade'); else toast('Finansman başvurun onaylandı');
+}
+function bfContractSheet() {
+  const a = state.bf.app, o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term), rev = o.kind === 'revolving';
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Sözleşme onayı</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="receipt vm-sh-receipt">
+      <div class="r-row"><span class="r-l">Finansman</span><span class="r-r">${o.short}</span></div>
+      <div class="r-row hl"><span class="r-l">${rev ? 'Limit' : 'Tutar'}</span><span class="r-r">${vmTL(a.amount)}</span></div>
+      <div class="r-row"><span class="r-l">Vade</span><span class="r-r">${bfTermTxt(o, a.term)}</span></div>
+      ${rev ? '' : `<div class="r-row"><span class="r-l">Toplam geri ödeme</span><span class="r-r">${vmTL(q.total)}</span></div>`}
+      <div class="r-row"><span class="r-l">${o.id === 'sup' ? 'Ödenecek tedarikçi' : 'Aktarılacak hesap'}</span><span class="r-r">${o.id === 'sup' ? 'Ege Elektronik Dağıtım A.Ş.' : `${BF_BIZ.account} · ${BF_BIZ.iban.slice(-4)}`}</span></div>
+    </div>
+    <div class="vm-sheet-note">${I.info}<span>Ticari kredi sözleşmesini ${BF_BIZ.rep} (imza yetkilisi) olarak dijital onaylıyorsun. Prototipte gerçek sözleşme veya kullandırım yapılmaz.</span></div>
+    <button class="sheet-btn vm-approve" id="bf-sign" data-action="bf-sign">${I.faceid} Onaylıyorum</button>`;
+  sheetEl.classList.add('open'); sheetScrimEl.classList.add('open');
+}
+function bfSignContract() {
+  const btn = document.getElementById('bf-sign'), a = state.bf.app;
+  if (!btn || btn.dataset.busy || !a) return;
+  const o = bfOffer(a.offer);
+  btn.dataset.busy = '1'; btn.style.pointerEvents = 'none';
+  btn.innerHTML = '<span class="spinner"></span> Face ID ile doğrulanıyor…';
+  setTimeout(() => { btn.innerHTML = `<span class="spinner"></span> ${o.kind === 'revolving' ? 'Limit açılıyor…' : o.id === 'sup' ? 'Tedarikçiye ödeniyor…' : 'Tutar hesabına aktarılıyor…'}`; }, 900);
+  setTimeout(() => {
+    bfActivate(a);
+    closeSheet();
+    if (state.screen === 'isletme-takip') vmRerender('anim-fade');
+  }, 2200);
+}
+function bfActivate(a, quiet) {
+  const o = bfOffer(a.offer);
+  a.status = 'active';
+  a.disbTs = a.at + 7 * 60000;
+  a.disbAt = bfAppTime(a, 7);
+  a.events.push({ t: 'Sözleşme dijital olarak onaylandı', d: BF_BIZ.rep, at: bfAppTime(a, 6), k: 'ok' });
+  a.events.push({ t: o.kind === 'revolving' ? `${vmTL(a.amount)} limit açıldı` : o.id === 'sup' ? `${vmTL(a.amount)} tedarikçine ödendi` : `${vmTL(a.amount)} işletme hesabına aktarıldı`, d: o.id === 'sup' ? 'Ege Elektronik Dağıtım A.Ş.' : BF_BIZ.account, at: a.disbAt, k: 'ok' });
+  a.fresh = quiet ? null : o.kind === 'revolving' ? 'Limitin açıldı; ihtiyaç duyduğunda kullanabilirsin.' : o.id === 'sup' ? 'Tutar tedarikçine ödendi.' : `${vmTL(a.amount)} işletme hesabına aktarıldı.`;
+}
+function bfDrawSheet() {
+  const a = state.bf.app, o = bfOffer(a.offer), free = a.amount - (a.used || 0);
+  const opts = [100000, 250000, -bfNeed().min, free].filter((x, k, arr) => x > 0 && x <= free && arr.indexOf(x) === k);
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Limitten kullan</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
+    <div class="vm-choices">${opts.map(x => `<button class="vm-choice" data-action="bf-draw-set" data-v="${x}"><span>${vmTL(x)}${x === -bfNeed().min ? '<em>Yapay zekâ: Aralık başındaki tahmini açık</em>' : x === free ? '<em>Kalan limitin tamamı</em>' : ''}</span></button>`).join('')}</div>
+    <div class="vm-sheet-note">${I.info}<span>Kullanılabilir limit ${vmTL(free)}. Tutar ${BF_BIZ.account} hesabına aktarılır; faiz kullandığın gün kadar işler (aylık %${vmPctStr(o.rate)}, örnek).</span></div>`;
+  sheetEl.classList.add('open'); sheetScrimEl.classList.add('open');
+}
+function bfDraw(x) {
+  const a = state.bf.app;
+  a.used = (a.used || 0) + x;
+  a.events.push({ t: `Limitten ${vmTL(x)} kullanıldı`, d: BF_BIZ.account, at: bfStamp(bfDemoNow()), k: 'ok' });
+  a.fresh = `${vmTL(x)} işletme hesabına aktarıldı.`;
+  closeSheet();
+  vmRerender('anim-fade');
+}
+function bfAdvance() {
+  const a = state.bf.app;
+  if (!a) return;
+  if (a.status === 'review') { a.running = false; a.step = BF_REVIEW.length; return bfApprove(a); }
+  const o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term);
+  if (a.status !== 'active' || o.kind === 'revolving' || a.paid >= q.rows.length) return;
+  const r = q.rows[a.paid];
+  a.paid++;
+  a.events.push({ t: a.paid === q.rows.length ? 'Son ödeme yapıldı · finansman kapandı' : `${a.paid}. ödeme yapıldı`, d: vmTL(r.pay), at: `${bfNumDate(r.date)} · 10:00`, k: 'ok' });
+  a.fresh = a.paid === q.rows.length ? 'Tüm ödemeler tamamlandı; finansman kapandı.' : `${a.paid}. ödeme işletme hesabından alındı.`;
+  vmRerender('anim-fade');
+}
+function bfUnwind() {
+  const i = state.nav.map(f => f.screen).lastIndexOf('isletme');
+  if (i >= 0) state.nav = state.nav.slice(0, i);
+  else while (state.nav.length && state.nav[state.nav.length - 1].screen.startsWith('isletme')) state.nav.pop();
+  state.nav.push({ screen: 'isletme', chatSeed: false });
+}
+function bfGoHome() {
+  const i = state.nav.map(f => f.screen).lastIndexOf('isletme');
+  if (i >= 0) state.nav = state.nav.slice(0, i);
+  closeSheet();
+  state.chatSeed = false;
+  state.screen = 'isletme';
+  vmRerender();
+}
+function bfGoTrack() {
+  const prev = state.nav[state.nav.length - 1];
+  if (state.screen === 'isletme-takip') return;
+  if (prev && prev.screen === 'isletme-takip') return navBack();
+  go('isletme-takip');
+}
+function bfResetFlow() {
+  const v = state.bf;
+  v.app = null; v.draft = null; v.offer = 'wc';
+  v.agree = { pre: false, data: false, kkb: false };
+}
+function bfReset() { bfResetFlow(); bfGoHome(); toast('Demo süreci sıfırlandı'); }
+/* Clears the "fresh" banner of the tracking screen once it has been seen */
+function bfSeen() { const a = state.bf.app; if (a && a.fresh && state.screen !== 'isletme-takip') a.fresh = null; }
+// Deep links (#isletme-…) prepare the state they need without replaying the flow
+function bfSeed(hash) {
+  const v = state.bf;
+  if (hash === 'isletme' || hash === 'isletme-hareketler') return;
+  if (v.ai.status !== 'done') { clearTimeout(v.ai.timer); bfAIDone(true); }
+  if (hash !== 'isletme-takip' || v.app) return;
+  v.offer = 'wc'; v.draft = null;
+  v.agree = { pre: true, data: true, kkb: true };
+  v.app = bfMakeApp('review');
+  setTimeout(bfStartReview, 400);   // shows the evaluation running
+}
+
 /* ===================================================================
    RENDER & NAVİGASYON
    =================================================================== */
@@ -11688,6 +13176,13 @@ function render() {
     case 'konut-tahsis': html = KnTahsis(); break;
     case 'konut-takbis': html = KnTakbis(); break;
     case 'konut-tamam': html = KnDone(); break;
+    case 'isletme': html = BfHome(); break;
+    case 'isletme-hareketler': html = BfFlows(); break;
+    case 'isletme-analiz': html = BfAnalysis(); break;
+    case 'isletme-oneriler': html = BfOffers(); break;
+    case 'isletme-karsilastir': html = BfCompare(); break;
+    case 'isletme-basvuru': html = BfApply(); break;
+    case 'isletme-takip': html = BfTrack(); break;
     case 'card-detail': html = CardDetailScreen(); break;
     case 'split': html = SplitHub(); break;
     case 'split-pick': html = SplitPick(); break;
@@ -11738,6 +13233,7 @@ function render() {
   if (state.screen === 'konut-tahsis') knSetupTahsis();
   if (state.screen === 'konut-takbis') knSetupTakbis();
   knEksAway();   // Marketplace Konut: the ekspertiz result arrives after the customer has left that screen
+  bfSeen();      // İşletme Finansmanı: the tracking screen's "fresh" banner is shown once
   if (state.screen === 'split-amount') setTimeout(() => { const i = document.getElementById('spl-amt-input'); i && i.focus(); }, 280);
 }
 
@@ -13186,6 +14682,47 @@ document.addEventListener('click', (e) => {
     case 'kn-reset': return knReset();
     case 'kn-reset-start': return knResetStart(t.dataset.id);
     case 'kn-home': return knGoMarket();
+    // Akıllı İşletme Sermayesi Finansmanı (draft)
+    case 'bf-info': return bfInfoSheet();
+    case 'bf-period': return bfPeriodSheet();
+    case 'bf-per-set': return bfPerSet(t.dataset.v);
+    case 'bf-per-custom': return bfPerCustom();
+    case 'bf-per-month': return bfPerMonth(+t.dataset.i);
+    case 'bf-per-apply': return bfPerApply();
+    case 'bf-flows': return bfOpenFlows();
+    case 'bf-flows-side': return bfOpenFlows(t.dataset.side);
+    case 'bf-flows-cat': return bfOpenFlows(t.dataset.side, t.dataset.cat);
+    case 'bf-side': return bfSetSide(t.dataset.side);
+    case 'bf-cat': return bfSetCat(t.dataset.cat);
+    case 'bf-cmp': state.bf.cmp = !state.bf.cmp; return vmRerender();
+    case 'bf-more': return bfMore();
+    case 'bf-analyze': return bfAnalyze();
+    case 'bf-analysis': return go('isletme-analiz');
+    case 'bf-ai-stop': return bfAIStop();
+    case 'bf-fc-fin': return bfFcFin();
+    case 'bf-copy': return bfCopy();
+    case 'bf-offers': return go('isletme-oneriler');
+    case 'bf-offer-focus': return bfFocus(t.dataset.id);
+    case 'bf-sel': return bfToggleSel(t.dataset.id);
+    case 'bf-compare': return bfCompare();
+    case 'bf-choose': return bfChoose(t.dataset.id);
+    case 'bf-pick': return bfPick(t.dataset.id);
+    case 'bf-apply': return bfToApply();
+    case 'bf-change': return bfChange();
+    case 'bf-amt': return bfAmt(+t.dataset.d);
+    case 'bf-term': return bfTerm(+t.dataset.v);
+    case 'bf-plan': return bfPlanSheet();
+    case 'bf-agree': return bfToggleAgree(t);
+    case 'bf-doc': e.preventDefault(); return bfDocSheet(t.dataset.doc);
+    case 'bf-submit': return bfSubmit();
+    case 'bf-track': return bfGoTrack();
+    case 'bf-home': return bfGoHome();
+    case 'bf-contract': return bfContractSheet();
+    case 'bf-sign': return bfSignContract();
+    case 'bf-draw': return bfDrawSheet();
+    case 'bf-draw-set': return bfDraw(+t.dataset.v);
+    case 'bf-adv': return bfAdvance();
+    case 'bf-reset': return bfReset();
 
     case 'set-theme': return setTheme(t.dataset.theme);
     case 'toggle-switch': return t.classList.toggle('on');
@@ -13220,7 +14757,7 @@ function updateClock() {
    Her bölümün kendi hash linki var: #home #assistant #setur #chat #payment
    #success #tracking #search #settings #sections
    Link açıldığında ekran gereken state ile hazır gelir (akışı tekrarlamadan). */
-const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'sky-limit', 'sky-limit-manage', 'sky-limit-confirm', 'sky-limit-success', 'sky-limit-payment', 'toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis', 'arac', 'arac-liste', 'arac-detay', 'arac-on-onay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-takip', 'konut', 'konut-liste', 'konut-detay', 'konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek', 'konut-tanitim', 'konut-tahsis', 'konut-takbis', 'konut-tamam'];
+const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'sky-limit', 'sky-limit-manage', 'sky-limit-confirm', 'sky-limit-success', 'sky-limit-payment', 'toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis', 'arac', 'arac-liste', 'arac-detay', 'arac-on-onay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-takip', 'konut', 'konut-liste', 'konut-detay', 'konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek', 'konut-tanitim', 'konut-tahsis', 'konut-takbis', 'konut-tamam', 'isletme', 'isletme-hareketler', 'isletme-analiz', 'isletme-oneriler', 'isletme-karsilastir', 'isletme-basvuru', 'isletme-takip'];
 function routeTo(hash) {
   const h = (hash || '').replace('#', '') || 'home';
   if (!ROUTES.includes(h)) return false;
@@ -13239,6 +14776,7 @@ function routeTo(hash) {
   if (h.startsWith('erken-maas')) ewaSeed(h);    // Erken Maaş Erişimi deep links
   if (h.startsWith('arac')) vmSeed(h);          // Marketplace Taşıt deep links
   if (h.startsWith('konut')) knSeed(h);         // Marketplace Konut deep links
+  if (h.startsWith('isletme')) bfSeed(h);       // Akıllı İşletme Finansmanı deep links
   if (h === 'assistant') {            // Koçtaş sohbetini dolu göster
     state.chatStarted = true;
     state.chatSeed = true;
