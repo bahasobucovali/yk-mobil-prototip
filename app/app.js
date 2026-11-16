@@ -8474,6 +8474,11 @@ function knReportNo() { return `DR-${new Date().getFullYear()}-${Math.floor(1000
 //            3 tapu devri done, ipotek being registered · 4 ipotek registered, loan paid to the seller
 function knHarcAmt(h) { return Math.round(h.price * KN_FEES.deedPct / 100); }
 function knBranchReady() { const p = state.kn.ipt; return !!(p && p.dask) && !knDocsMissing().length; }
+/* What is still missing before the branch appointment (only the missing parts are named) */
+function knBranchTodo() {
+  const p = state.kn.ipt, docs = knDocsMissing().length > 0, dask = !(p && p.dask);
+  return docs && dask ? 'gerekli belgeleri yükle ve DASK poliçeni öde' : docs ? 'gerekli belgeleri yükle' : 'DASK poliçeni öde';
+}
 function KnIpotek() {
   const v = state.kn, a = v.app;
   if (!a || a.status !== 'approved') { state.screen = 'konut-takip'; return KnTrack(); }
@@ -8490,7 +8495,7 @@ function KnIpotek() {
   const cta = st === 0 && !p.slot ? `<button class="btn-primary ${p.pick ? '' : 'disabled'}" id="kn-cta" data-action="kn-ipt-book">Şube Randevusunu Onayla</button>`
     : st === 1 ? `<button class="btn-primary ${knCtaReady() ? '' : 'disabled'}" id="kn-cta" data-action="kn-tapu-book">Tapu Randevusunu Onayla</button>`
     : done ? '<button class="btn-primary" data-action="kn-home">Marketplace Konut\'a Dön</button>' : '';
-  const tip = st === 0 && p.slot ? (knBranchReady() ? 'Sonraki adıma geçtiğinde şube randevun gerçekleşmiş olur.' : 'Şube randevusuna geçmeden önce gerekli belgeleri yükle ve DASK poliçeni öde.')
+  const tip = st === 0 && p.slot ? (knBranchReady() ? 'Sonraki adıma geçtiğinde şube randevun gerçekleşmiş olur.' : `Şube randevusuna geçmeden önce ${knBranchTodo()}.`)
     : st === 2 ? 'Sonraki adıma geçtiğinde tapu devri yapılır, ardından ipotek tesis edilir.' : '';
   return `
   <div class="screen ${vmAnim()} vm kn">
@@ -8556,7 +8561,7 @@ function knOpBranchHTML(p) {
     ['DASK poliçesi', p.dask ? (st > 0 ? 'Tamamlandı' : 'Ödendi') : 'Ödeme bekleniyor', !!p.dask],
     ['Kredi sözleşmesi imzası', p.signedAt ? 'İmzalandı' : 'Randevuda', !!p.signedAt, p.signedAt ? '' : '<button class="kn-op-lnk" data-action="kn-doc" data-doc="contract">İncele</button>'],
   ]);
-  const warn = st === 0 && p.slot && !knBranchReady() ? `<div class="kn-op-warn">${I.info}<span>Randevudan önce gerekli belgeleri yükle ve DASK poliçeni öde.</span><button class="kn-op-lnk" data-action="kn-to-docs">Belgelere git</button></div>` : '';
+  const warn = st === 0 && p.slot && !knBranchReady() ? `<div class="kn-op-warn">${I.info}<span>Randevudan önce ${knBranchTodo()}.</span><button class="kn-op-lnk" data-action="kn-to-docs">Belgelere git</button></div>` : '';
   return knOpHTML(1, s, 'Şube Randevusu', 'Kullandırım bilgi ve belgelerinin tamamlanması, DASK poliçesinin tamamlanması.', pill,
     `${where}${when}${lines}${warn}
     ${st > 0 ? '' : `<div class="vm-dealer-btns"><button data-action="toast" data-msg="Yol tarifi prototipte aktif değil">${VM_ICO.route}Yol tarifi</button><button data-action="toast" data-msg="Arama prototipte aktif değil">${VM_ICO.phone}Şubeyi ara</button></div>`}`);
@@ -8778,7 +8783,7 @@ function knIptAdvance() {
   const v = state.kn, p = v.ipt, a = v.app;
   if (!p) return;
   if (p.stage === 0 && p.slot) {
-    if (!knBranchReady()) { knToDocs(); return toast('Önce gerekli belgeleri yükle ve DASK poliçeni öde'); }
+    if (!knBranchReady()) { knToDocs(); const t = knBranchTodo(); return toast(t.charAt(0).toLocaleUpperCase('tr') + t.slice(1)); }
     knBranchDone(p, a);
     knRefresh();
     return toast('Şube randevun tamamlandı, kredi sözleşmen imzalandı');
