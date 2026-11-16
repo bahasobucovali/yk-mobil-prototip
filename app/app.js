@@ -460,20 +460,20 @@ const BK_RATE = 5;
 const bkGoals = [
   { id: 'g-market', name: 'Market Alışverişi', icon: '🛒', target: 30000, spent: 18450, daysLeft: 12, rate: BK_RATE, share: 'equal', status: 'active', claimed: false,
     members: [
-      { id: 'me', name: 'Selçuk İmre', contrib: 6200, me: true },
+      { id: 'me', name: 'Zeynep Sanıbelli', contrib: 6200, me: true },
       { id: 'k8', name: 'Ayşe Yıldız', contrib: 5800 },
       { id: 'k3', name: 'Mert Demir',  contrib: 4000 },
       { id: 'k9', name: 'Ece Kaya',    contrib: 2450 },
     ] },
   { id: 'g-resto', name: 'Restoran Haftası', icon: '🍽️', target: 10000, spent: 6750, daysLeft: 5, rate: BK_RATE, share: 'equal', status: 'active', claimed: false,
     members: [
-      { id: 'me', name: 'Selçuk İmre', contrib: 2600, me: true },
+      { id: 'me', name: 'Zeynep Sanıbelli', contrib: 2600, me: true },
       { id: 'k2', name: 'Burak Ünal',  contrib: 2400 },
       { id: 'k4', name: 'Deniz Şahin', contrib: 1750 },
     ] },
   { id: 'g-yaz', name: 'Yaz Tatili', icon: '🏖️', target: 20000, spent: 20000, daysLeft: 0, rate: BK_RATE, share: 'equal', status: 'done', claimed: true,
     members: [
-      { id: 'me', name: 'Selçuk İmre', contrib: 7000, me: true },
+      { id: 'me', name: 'Zeynep Sanıbelli', contrib: 7000, me: true },
       { id: 'k8', name: 'Ayşe Yıldız', contrib: 6000 },
       { id: 'k3', name: 'Mert Demir',  contrib: 4500 },
       { id: 'k9', name: 'Ece Kaya',    contrib: 2500 },
@@ -496,15 +496,15 @@ const splitOut = [
 
 /* ---------- Mock teslimat adresleri (kişisel veri yok, tamamen örnek) ---------- */
 const ADDRESSES = [
-  { id: 'a1', title: 'Ev',     name: 'Selçuk İmre', line: 'Zincirlidere Cad. No:1 Daire:1 Kat:1', city: 'Şişli / İstanbul',    phone: '0 (5••) ••• •• 24' },
-  { id: 'a2', title: 'İş',     name: 'Selçuk İmre', line: 'Yapı Kredi Bankacılık Üssü, Rahmi Dibek Cad. No:1', city: 'Çayırova / Kocaeli', phone: '0 (5••) ••• •• 24' },
-  { id: 'a3', title: 'Yazlık', name: 'Selçuk İmre', line: 'Güzeloba Mah. Lara Cad. No:42 D:7', city: 'Muratpaşa / Antalya', phone: '0 (5••) ••• •• 24' },
+  { id: 'a1', title: 'Ev',     name: 'Zeynep Sanıbelli', line: 'Zincirlidere Cad. No:1 Daire:1 Kat:1', city: 'Şişli / İstanbul',    phone: '0 (5••) ••• •• 24' },
+  { id: 'a2', title: 'İş',     name: 'Zeynep Sanıbelli', line: 'Yapı Kredi Bankacılık Üssü, Rahmi Dibek Cad. No:1', city: 'Çayırova / Kocaeli', phone: '0 (5••) ••• •• 24' },
+  { id: 'a3', title: 'Yazlık', name: 'Zeynep Sanıbelli', line: 'Güzeloba Mah. Lara Cad. No:42 D:7', city: 'Muratpaşa / Antalya', phone: '0 (5••) ••• •• 24' },
 ];
 function getAddress() { return ADDRESSES.find(a => a.id === state.addressId) || ADDRESSES[0]; }
 
 /* ---------- Mock kullanıcı finansal profili (örnek veriler) ---------- */
 const USER = {
-  name: 'Selçuk',
+  name: 'Zeynep',
   limit: 18500,          // Worldcard kullanılabilir limit (TL)
   worldpuan: 1250,       // mevcut Worldpuan bakiyesi
   balance: 10000,        // Vadesiz TL hesap bakiyesi
@@ -5324,7 +5324,7 @@ const VM_ICO = {
   compare: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="16" rx="2"/><rect x="14" y="4" width="7" height="16" rx="2"/><path d="M6.5 9h0M17.5 9h0"/></svg>',
 };
 // Mock customer data used in the pre-evaluation (masked; no real personal data)
-const VM_PROFILE = { name: 'Selçuk İmre', tckn: '•••••••••42', phone: '0 (5••) ••• •• 24', job: 'Özel sektör · Ücretli', income: 150000 };
+const VM_PROFILE = { name: 'Zeynep Sanıbelli', tckn: '•••••••••44', phone: '0 (5••) ••• •• 24', job: 'Özel sektör · Ücretli', income: 150000 };
 // Every listing is sold by an Otokoç Otomotiv (Koç Topluluğu) location: new cars by Otokoç
 // authorized dealers, used cars by Otokoç 2. El. Locations are DEMO data; no third-party sellers.
 const VM_PAYEE = { short: 'Otokoç Otomotiv', legal: 'Otokoç Otomotiv Tic. ve San. A.Ş.' };   // loan is paid to the seller
@@ -6978,7 +6978,7 @@ const KN_HOMES = [
 ];
 // Mock customer shown unmasked inside the bank's secure channel. Fictional data: the T.C. number fails the
 // official checksum and the phone prefix / e-mail domain are not in use, so none of it can belong to a real person.
-const KN_PROFILE = { name: 'Selçuk İmre', tckn: '26419837542', birth: '14.03.1992', birthPlace: 'İstanbul', nationality: 'T.C.', phone: '0 (500) 000 12 24', email: 'selcuk.imre@example.com', address: 'Zincirlidere Cad. No:1 Daire:1 Kat:1, Şişli / İstanbul', account: 'Vadesiz TL Hesabım · TR•••• 4521' };
+const KN_PROFILE = { name: 'Zeynep Sanıbelli', tckn: '22211133344', birth: '01.01.2001', birthPlace: 'İstanbul', nationality: 'T.C.', phone: '0 (500) 000 12 24', email: 'zeynep.sanibelli@example.com', address: 'Zincirlidere Cad. No:1 Daire:1 Kat:1, Şişli / İstanbul', account: 'Vadesiz TL Hesabım · TR•••• 4521' };
 // Customer information registered at the bank ("Müşteri Bilgileri"; tahsis data internally) — editable part
 // (test data: özel sektör çalışanı, monthly net income 300.000 TL)
 const KN_TAHSIS0 = { job: 'Özel sektör çalışanı', title: 'Yazılım mühendisi', work: 'Ücretli · tam zamanlı', employer: 'Mavi Bulut Yazılım A.Ş.', sector: 'Bilişim ve teknoloji', income: 300000, other: 0 };
@@ -9343,7 +9343,7 @@ const BF_BIZ = {   // DEMO business (fictional)
   sector: 'Perakende', activity: 'Elektronik ve teknoloji ürünleri perakende satışı',
   taxNo: '0123456789', taxOffice: 'Kadıköy Vergi Dairesi', founded: 2016, employees: 19,
   stores: '2 mağaza (Kadıköy, Ataşehir) ve online satış', segment: 'KOBİ',
-  rep: 'Selçuk İmre', repRole: 'Genel Müdür · imza yetkilisi',
+  rep: 'Zeynep Sanıbelli', repRole: 'Genel Müdür · imza yetkilisi',
   address: 'Caferağa Mah. Moda Cad. No:12, Kadıköy / İstanbul',
   account: 'İşletme Vadesiz TL Hesabı', iban: 'TR•• •••• •••• •••• 7310',
   balance: 320000,   // available balance in the business accounts on the demo date
@@ -11406,7 +11406,7 @@ function BkNew() {
 
       <div class="spl-sec-lbl">KATILIMCILAR</div>
       <div class="bk-chips">
-        <span class="bk-pchip you">${splAvatar('Selçuk İmre', 'sm')}<b>Sen</b></span>
+        <span class="bk-pchip you">${splAvatar('Zeynep Sanıbelli', 'sm')}<b>Sen</b></span>
         ${d.people.map(p => `<span class="bk-pchip">${splAvatar(p.name, 'sm')}<b>${bkFirstName(p.name)}</b><button class="bk-pchip-x" data-action="bk-remove-person" data-id="${p.id}">✕</button></span>`).join('')}
         <button class="bk-pchip add" data-action="bk-add-person"><span class="bk-pchip-plus">${I.plus}</span>Kişi Ekle</button>
       </div>
@@ -11547,7 +11547,7 @@ function bkRemovePerson(id) {
 function bkStart() {
   bkCaptureNewInputs();
   const d = state.bk;
-  const members = [{ id: 'me', name: 'Selçuk İmre', contrib: 0, me: true }, ...d.people.map(p => ({ id: p.id, name: p.name, contrib: 0 }))];
+  const members = [{ id: 'me', name: 'Zeynep Sanıbelli', contrib: 0, me: true }, ...d.people.map(p => ({ id: p.id, name: p.name, contrib: 0 }))];
   const spent = Math.round(d.target * 0.55);
   const n = members.length;
   const base = Math.floor(spent / n);
