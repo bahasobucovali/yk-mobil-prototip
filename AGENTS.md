@@ -53,6 +53,11 @@ Framework yok; tek dosyada şu düzen:
 2. **`state`** (~satır 261): tüm uygulama durumu tek nesnede (`state.screen`, `state.nav`, akış state'leri).
 3. **Ekran component'leri:** `HomeScreen()`, `ChatScreen()`, `PaymentScreen()` gibi HTML string döndüren fonksiyonlar.
 4. **`render()`:** `state.screen` değerine göre `switch` ile ilgili component'i `#app` içine basar.
+   Basma işi `navSwap()` ile yapılır: `go()` ileri (yeni ekran sağdan, önceki sola), `navBack()` geri
+   (mevcut ekran sağa, önceki soldan) geçişi oynatır; giden ekran animasyon süresince etkileşimsiz bir
+   katman olarak kalır. Sol kenardan kaydırma geri butonuyla aynı işi yapar. Geri dönülen ekranın kaydırma
+   konumu ve yazılan değerleri `curFrame()` ile saklanıp geri yüklenir. Yeni ekranlar `anim-right`
+   (itilen ekran) ya da `anim-fade` / `anim-up` (sonuç / kaplama) sınıfıyla başlar; geçiş türü buradan anlaşılır.
 5. **Aksiyon dispatcher:** tek global click listener; tıklanan elemanın `data-action` attribute'una göre
    büyük bir `switch` çalışır.
 6. **Hash router:** `ROUTES` listesi + `routeTo(hash)`. Her bölüm `#etiket` ile doğrudan açılır ve
