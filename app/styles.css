@@ -2947,11 +2947,6 @@ body[data-theme="light"] .ewa-ex, body[data-theme="light"] .ewa-banner svg { col
 .vm-loanrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; padding: 11px 12px; border-radius: 12px; background: var(--card-2); }
 .vm-loanrow span { font-size: 13px; color: var(--text-dim); }
 .vm-loanrow b { font-size: 19px; font-weight: 800; font-variant-numeric: tabular-nums; }
-.vm-preuse { margin-top: 12px; }
-.vm-preuse-bar { height: 6px; overflow: hidden; border-radius: 99px; background: rgba(0,152,203,.16); }
-.vm-preuse-bar i { display: block; height: 100%; border-radius: 99px; background: var(--primary); transition: width .15s; }
-.vm-preuse-l { display: flex; justify-content: space-between; gap: 10px; margin-top: 6px; font-size: 11.5px; color: var(--text-dim); }
-.vm-preuse-l b { color: var(--primary); }
 .vm-terms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 16px; }
 .vm-term { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 2px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); color: var(--text); font-family: inherit; cursor: pointer; }
 .vm-term b { font-size: 14px; font-weight: 700; }
@@ -3041,6 +3036,7 @@ body[data-theme="light"] .ewa-ex, body[data-theme="light"] .ewa-banner svg { col
 .vm-docl > div > div span { display: block; margin-top: 1px; font-size: 11.5px; color: var(--text-dim); }
 .btn-primary.vm-approve { display: flex; align-items: center; justify-content: center; gap: 10px; }
 .btn-primary.vm-approve svg { width: 22px; height: 22px; }
+.sheet-btn > svg { width: 22px; height: 22px; flex: none; }
 
 /* Screen 7 — kasko */
 .vm-ks { display: flex; flex-direction: column; gap: 18px; margin: 0 16px; padding-top: 6px; }
@@ -3370,8 +3366,6 @@ body[data-theme="light"] .vm-pre-res .vm-pill.ok { color: #7fe5aa; }
 .kn-done span { font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
 .kn-lock { display: flex; gap: 8px; margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: var(--card-2); font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
 .kn-lock svg { width: 15px; height: 15px; flex: none; margin-top: 2px; color: var(--text-faint); }
-.vm-pcts.kn-insts { grid-template-columns: repeat(3, 1fr); margin: 0 0 16px; }
-.vm-sheet-note.kn-sh-note { margin-top: 0; }
 .kn-sh-scroll { max-height: 56vh; overflow-y: auto; }
 /* Light theme: deeper amber / green text for contrast on white */
 body[data-theme="light"] .kn-vs.good, body[data-theme="light"] .kn-lv.ok, body[data-theme="light"] .kn-cap-v.ok svg, body[data-theme="light"] .kn-ev.ok > i { color: #178a4a; }
@@ -3618,6 +3612,9 @@ body[data-theme="light"] .bf { --bf-neg: #d0021b; --bf-pos: #178a4a; --bf-in: #0
 @keyframes bfPulse { 50% { transform: scale(.82) rotate(18deg); opacity: .7; } }
 .bf-ai-btn { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
 .bf-ai-btn svg { width: 18px; height: 18px; }
+/* the longer Akıllı Asistan label breaks into two even lines instead of leaving a word alone */
+.btn-primary[data-action="bf-analyze"] { line-height: 1.25; text-wrap: balance; }
+.btn-primary[data-action="bf-analyze"] svg { flex: none; }
 .bf-shim { background: linear-gradient(90deg, var(--text-faint) 0%, var(--text-faint) 35%, var(--text) 50%, var(--text-faint) 65%, var(--text-faint) 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: shimmerSweep 1.6s linear infinite; }
 .bf-ai-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
 .bf-ai-kpis > div { padding: 9px 10px; border-radius: 12px; background: var(--card); }
@@ -4004,11 +4001,9 @@ body[data-theme="light"] .bf-amt-edit em.warn { color: #8a6400; }
 body[data-theme="light"] .bf-score-bar i.m { background: #d9a400; }
 
 /* ===================================================================
-   MARKETPLACE TAŞIT — finance revision (simulation, application state, in-screen payments, Kullandırım)
+   MARKETPLACE TAŞIT — finance revision (simulation, application state, kasko, Kullandırım)
    Reuses the Marketplace Konut kit for capacity meter, costs, operation cards and documents.
    =================================================================== */
-.vm-calc-sep { height: 1px; margin: 16px -14px 14px; background: var(--border); }
-.vm-calc .vm-calc-h + .vm-money:not(.lg) { margin-top: 8px; }
 .vm-car-head .vm-mini-mid span { color: var(--text-dim); }
 .vm-car-head + .vm-box { margin-top: 12px; }
 .vm-scen-lbl { display: block; font-size: 12px; font-weight: 700; line-height: 1.25; color: var(--text); }
@@ -4030,24 +4025,94 @@ body[data-theme="light"] .bf-score-bar i.m { background: #d9a400; }
 .vm-app-ok .vm-frow b .vm-pill { vertical-align: middle; }
 .vm-app-ok.fresh .vm-app-ok-ico { animation: vmAppOkPop .5s cubic-bezier(.2,.8,.3,1.3); }
 @keyframes vmAppOkPop { 0% { transform: scale(.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-/* kasko: payment running inside the screen */
-.vm-busy { pointer-events: none; opacity: .55; transition: opacity .2s; }
+/* kasko: paid state */
 .receipt.vm-receipt.vm-k-paid .r-r .vm-pill { vertical-align: middle; }
-/* Kullandırım: document waiting tag and the in-row payment confirmation */
+#vm-k-sum .r-row .r-r { min-width: 0; }
+/* Kullandırım: document waiting tag (uploads) */
 .vm-wait-tag { display: inline-block; margin-top: 5px; padding: 2px 7px; border-radius: 99px; background: rgba(242,183,5,.14); font-style: normal; font-size: 10.5px; font-weight: 700; color: var(--gold); }
-.vm-docl > div.vm-pay.open { flex-wrap: wrap; }
-.vm-docl > div > div.vm-pay-cf { flex: 0 0 auto; width: calc(100% - 42px); }
-.vm-pay-cf { display: flex; flex-direction: column; gap: 10px; margin: 2px 0 2px 42px; padding: 10px 12px; border: 1px solid rgba(0,152,203,.35); border-radius: 12px; background: rgba(0,152,203,.08); font-size: 12.5px; line-height: 1.4; color: var(--text-dim); }
-.vm-docl .vm-pay-cf b { display: inline; font-size: inherit; font-weight: 700; color: var(--text); }
-.vm-docl .vm-pay-cf > span { margin: 0; font-size: 12.5px; line-height: 1.4; }
-.vm-pay-cf-btns { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
-.vm-pay-cf-btns button { display: flex; align-items: center; justify-content: center; gap: 6px; height: 36px; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
-.vm-pay-cf-x { border: 1px solid var(--border); background: var(--card-2); color: var(--text); }
-.vm-pay-cf-ok { border: none; background: var(--primary); color: #fff; }
-.vm-pay-cf-ok svg { width: 17px; height: 17px; }
-.vm-pay-cf-ok .spinner { width: 14px; height: 14px; }
-.vm-pay-cf-x:disabled { opacity: .5; }
 body[data-theme="light"] .vm-wait-tag { color: #8a6400; }
+
+/* ===================================================================
+   SHARED POP-UPS — payment (paypop) and transaction confirmation (cfpop)
+   Built on the bottom sheet layer; long content scrolls inside the sheet.
+   =================================================================== */
+.sheet.pop-sheet { max-height: 92%; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.sheet .sheet-x:disabled { opacity: .4; cursor: default; }
+.sheet-btn.ghost:disabled { opacity: .4; cursor: default; }
+/* check / warning visual shared by both pop-ups */
+.pop-check, .cfpop-ico { display: grid; place-items: center; border-radius: 50%; margin: 0 auto; }
+.pop-check { width: 76px; height: 76px; background: rgba(46,204,113,.14); color: var(--success); animation: popIn .45s cubic-bezier(.2,.8,.3,1.25); }
+.pop-check svg, .cfpop-ico svg { width: 46px; height: 46px; }
+.pop-check svg path, .cfpop-ico svg path { stroke-dasharray: 40; stroke-dashoffset: 0; animation: popDraw .5s .15s ease-out backwards; }
+.pop-check.warn, .cfpop-ico.warn { background: rgba(242,183,5,.16); color: var(--gold); }
+@keyframes popIn { 0% { transform: scale(.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes popDraw { from { stroke-dashoffset: 40; } }
+
+/* -------- payment pop-up -------- */
+.paypop { transition: opacity .2s; }
+.paypop.busy { pointer-events: none; opacity: .55; }
+.paypop-sum { display: flex; flex-direction: column; align-items: center; text-align: center; margin: -4px 0 14px; }
+.paypop-type { font-size: 13px; color: var(--text-dim); }
+.paypop-amt { margin: 2px 0 2px; font-size: 34px; font-weight: 800; letter-spacing: -.5px; }
+.paypop-inst-l { font-size: 12.5px; font-weight: 600; color: var(--primary); }
+.paypop-desc { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 14px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); text-align: left; }
+.paypop-desc-ico { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: 10px; background: var(--card-2); color: var(--primary); }
+.paypop-desc-ico svg { width: 19px; height: 19px; }
+.paypop-desc > div { min-width: 0; }
+.paypop-desc b { display: block; font-size: 14px; font-weight: 700; }
+.paypop-desc span { display: block; margin-top: 2px; font-size: 12px; line-height: 1.4; color: var(--text-dim); }
+.vm-sheet-note.paypop-note { margin: 0 2px 14px; }
+.paypop-h { margin: 4px 2px 8px; font-size: 13px; font-weight: 700; color: var(--text-dim); }
+.paypop-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 10px; padding: 4px; border: 1px solid var(--border); border-radius: 13px; background: var(--card); }
+.paypop-seg button { height: 38px; border: none; border-radius: 10px; background: transparent; font-family: inherit; font-size: 14px; font-weight: 700; color: var(--text-dim); cursor: pointer; transition: background .15s, color .15s; }
+.paypop-seg button.on { background: var(--primary); color: #fff; }
+.paypop-cards { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.paypop-card { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 14px; background: var(--card); font-family: inherit; color: var(--text); text-align: left; cursor: pointer; transition: border-color .15s, background .15s; }
+.paypop-card.on { border-color: var(--primary); background: var(--card-2); }
+.paypop-card-mid { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.paypop-card-mid b { font-size: 14.5px; font-weight: 700; }
+.paypop-card-mid span { margin-top: 1px; font-size: 12.5px; letter-spacing: .3px; color: var(--text); }
+.paypop-card-mid em { margin-top: 2px; font-style: normal; font-size: 11.5px; color: var(--text-dim); }
+.paypop-card-mid em.paypop-short { align-self: flex-start; margin-top: 5px; padding: 2px 7px; border-radius: 99px; background: rgba(242,183,5,.14); font-size: 10.5px; font-weight: 700; color: var(--gold); }
+body[data-theme="light"] .paypop-card-mid em.paypop-short { color: #8a6400; }
+.paypop-radio { width: 22px; height: 22px; flex: none; display: grid; place-items: center; border: 2px solid var(--border); border-radius: 50%; }
+.paypop-card.on .paypop-radio { border-color: var(--primary); }
+.paypop-card.on .paypop-radio::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--primary); }
+/* drawn mini cards */
+.paypop-art { position: relative; width: 48px; height: 31px; flex: none; overflow: hidden; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,.35); }
+.paypop-art b { position: absolute; left: 6px; top: 6px; width: 9px; height: 7px; border-radius: 2px; background: linear-gradient(135deg, #f2d377, #c9a13b); }
+.paypop-art i { position: absolute; right: 5px; bottom: 4px; font-size: 7.5px; font-style: italic; font-weight: 800; letter-spacing: .1px; color: #fff; }
+.paypop-art.a-world { background: linear-gradient(135deg, #8e2c86, #c4206a); }
+.paypop-art.a-signia { background: linear-gradient(135deg, #4a4a52, #101014); }
+.paypop-art.a-signia i { color: #d9d9de; }
+.paypop-art.a-tl { background: linear-gradient(135deg, #00a9e0, #0079b1 75%); }
+.paypop-art.a-tl i, .paypop-art.a-salary i { font-style: normal; font-size: 6.5px; }
+.paypop-art.a-salary { background: linear-gradient(135deg, #0a3d7a, #072c5a); }
+.paypop-insts { margin-bottom: 14px; padding: 0 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+.paypop-debit { display: flex; gap: 8px; margin: -2px 2px 16px; font-size: 12px; line-height: 1.45; color: var(--text-dim); }
+.paypop-debit svg { width: 15px; height: 15px; flex: none; margin-top: 1px; color: var(--primary); }
+.sheet-btn.paypop-ok .spinner, #cfpop-ok .spinner { width: 18px; height: 18px; }
+/* result */
+.paypop-res { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 4px 6px 2px; }
+.paypop-res-t { margin-top: 14px; font-size: 19px; font-weight: 800; }
+.paypop-res-amt { margin-top: 4px; font-size: 28px; font-weight: 800; letter-spacing: -.4px; }
+.paypop-res-msg { margin-top: 6px; font-size: 13px; line-height: 1.45; color: var(--text-dim); }
+.paypop-res-sub { margin: 8px 0 18px; font-size: 12px; color: var(--text-faint); }
+.paypop-res.fail .paypop-res-msg { color: var(--text); }
+.receipt.paypop-rcpt { margin: 16px 0 16px; }
+.paypop-rcpt .r-row .r-r { min-width: 0; overflow-wrap: anywhere; }
+
+/* -------- transaction confirmation pop-up (checkpoint) -------- */
+.cfpop { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.cfpop-ico { width: 84px; height: 84px; margin-bottom: 16px; background: rgba(0,152,203,.14); color: var(--primary); box-shadow: 0 0 0 8px rgba(0,152,203,.06); animation: popIn .45s cubic-bezier(.2,.8,.3,1.25); }
+.cfpop h3 { font-size: 19px; line-height: 1.3; }
+.cfpop p { margin: 8px 6px 4px; }
+.receipt.cfpop-sum { margin: 12px 0 16px; }
+.cfpop-sum .r-row .r-r { min-width: 0; overflow-wrap: anywhere; }
+.cfpop.fail p { margin-bottom: 18px; color: var(--text); }
+@media (prefers-reduced-motion: reduce) {
+  .pop-check, .cfpop-ico, .pop-check svg path, .cfpop-ico svg path { animation: none; }
+}
 
 /* ===================================================================
    HARCAMA ANALİZİ & LİMİT  (Harcamalarım)
@@ -5443,7 +5508,7 @@ body[data-theme="light"] .vm-wait-tag { color: #8a6400; }
 .sv-new-plus { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; background: rgba(0,152,203,.10); color: var(--primary); }
 
 /* ===================================================================
-   SKY LIMIT (draft) — one shared credit limit across credit products
+   ÇATI LİMİT (draft) — one shared credit limit across credit products
    Product hue arrives via --c (solid = used), --ct (tint = available), --cs (soft bg)
    =================================================================== */
 .sky-hero .ru-jar-amt { margin-bottom: 12px; }
