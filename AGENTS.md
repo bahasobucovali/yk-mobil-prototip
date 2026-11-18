@@ -92,8 +92,9 @@ Not: Uzun listeli veya animasyonlu ekranlarda tam `render()` yerine kısmi DOM g
   Açılış karşılama mesajıyla olur, boş durumla değil.
 - **Ödeme ve onay:** ödemeler her ekranda ortak **Ödeme pop-up**'ı (`payPopOpen()`) ile alınır, yeni bir ödeme
   sayfası yazılmaz; taksit varsayılanı Tek Çekim, kullanıcı değiştirebilir. Başvuru gibi önemli adımlardan önce ortak
-  **İşlem Onay pop-up**'ı (`confirmPopOpen()`) açılır. Face ID logosu / görseli kullanılmaz; onay adımlarında
-  check-circle (checkpoint) ikonu kullanılır ve "başarılı" simülasyonu gösterilir.
+  **İşlem Onay pop-up**'ı (`confirmPopOpen()`) açılır; sonucun değerlendirildiği adımlarda ayrı sayfa yerine ekranın
+  üzerinde kısa kontrol → onay animasyonu (`checkAnimRun()`) kullanılabilir. Face ID logosu / görseli kullanılmaz; onay
+  adımlarında check-circle (checkpoint) ikonu kullanılır ve "başarılı" simülasyonu gösterilir.
 - Yeni görsel gerekirse kullanıcıdan istenir (indirip `app/assets/` içine atar).
 - Lottie animasyonu (`.lottie` / `.json`) gelirse animasyon JSON'u `app/assets/` içine konur ve `app/vendor/lottie_light.min.js` ile oynatılır;
   kütüphane yalnızca ilgili ekran açılınca yüklenir (örnek: Marketplace Taşıt ana ekranı, `vmHeroSync`).

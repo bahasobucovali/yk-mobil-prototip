@@ -245,7 +245,7 @@ const SECTIONS = [
   { hash: 'insights',   icon: 'pie',      t: 'Harcama Analizi',      d: 'Aylık toplam, kategori dağılımı, işyeri kırılımı' },
   { hash: 'limits',     icon: 'target',   t: 'Harcama Limitlerim',   d: 'Kategoriye tutar girerek aylık limit koy' },
   { hash: 'kid',        icon: 'wallet2',  t: 'Çocuk Ek Kartı',       d: 'Limit, harçlık, birikim hedefi, veli eşleştirme, onaylar, rozetler' },
-  { hash: 'toplu-borc', icon: 'payments', t: 'Taslak — Toplu Borç Ödeme', d: 'Kart, esnek hesap ve kredi borçları tek ekstrede: toplam borç, dağılım, toplu öde' },
+  { hash: 'toplu-borc', icon: 'payments', t: 'Taslak — Toplu Borç Ödeme', d: 'Kart, esnek hesap ve kredi borçları tek ekstrede: kalem seçerek ya da tamamını öde' },
   { hash: 'toplu-borc-ekstre', icon: 'doc', t: 'Taslak — Toplu Borç: Ekstre detayı', d: 'Ürün bazında borç, taksit ve son ödeme bilgileri' },
   { hash: 'toplu-borc-gecmis', icon: 'receipt', t: 'Taslak — Toplu Borç: Ödeme geçmişi', d: 'Önceki toplu ödemeler, durum ve işlem detayı' },
   { hash: 'erken-maas', icon: 'salaryEarly', t: 'Taslak — Erken Maaş Erişimi', d: 'Maaşın %25\'ine maaş gününü beklemeden eriş: limit, tutar seçimi, koşullar' },
@@ -255,9 +255,9 @@ const SECTIONS = [
   { hash: 'arac-liste', icon: 'search', t: 'Taslak — Marketplace Taşıt: İlanlar ve karşılaştırma', d: 'Filtre, sıralama, favoriler, 3 araca kadar yan yana karşılaştırma' },
   { hash: 'arac-detay', icon: 'car', t: 'Taslak — Marketplace Taşıt: Araç detayı', d: 'Galeri, özellikler, bayi bilgisi, kredi simülasyonu başlangıcı' },
   { hash: 'arac-kredi', icon: 'loan', t: 'Taslak — Marketplace Taşıt: Kredi simülasyonu', d: 'Peşinat kaydırıcısı ve bağlı kredi tutarı (en fazla 1.200.000 TL), vade, ödeme kapasitesi, senaryolar, masraflar' },
-  { hash: 'arac-basvuru', icon: 'doc', t: 'Taslak — Marketplace Taşıt: Kredi başvurusu', d: 'Meslek ve gelir, başvuru özeti, aydınlatma metni; işlem onayıyla tamamlanınca aynı ekranda "Başvurunuz Alındı"' },
+  { hash: 'arac-basvuru', icon: 'doc', t: 'Taslak — Marketplace Taşıt: Kredi başvurusu', d: 'Meslek ve gelir, başvuru özeti, aydınlatma metni; işlem onayı ve kontrol animasyonunun ardından aynı ekranda "Başvurunuz Onaylandı"' },
   { hash: 'arac-kasko', icon: 'insurance', t: 'Taslak — Marketplace Taşıt: Kasko', d: 'Allianz Türkiye paketleri, sigorta bilgileri; "Onayla ve Öde" ile ortak ödeme pop-up’ı' },
-  { hash: 'arac-kullandirim', icon: 'bank', t: 'Taslak — Marketplace Taşıt: Kullandırım', d: 'Şube, noter ve rehin; gerekli belgeler, tahsis / noter / rehin ödemeleri (ortak ödeme pop-up’ı)' },
+  { hash: 'arac-kullandirim', icon: 'bank', t: 'Taslak — Marketplace Taşıt: Kullandırım', d: 'Gerekli Belgeler (taşıt kredisi sözleşmelerinin dijital onayı) → Noter → Rehin' },
   { hash: 'arac-tamam', icon: 'check', t: 'Taslak — Marketplace Taşıt: Kredi kullandırıldı', d: 'Kullandırım tamamlandı ekranı' },
   { hash: 'konut', icon: 'home', t: 'Taslak — Marketplace Konut', d: 'Satılık konut ara ve karşılaştır; kredini planla, başvuru, ekspertiz ve kullandırımı tek akışta izle' },
   { hash: 'konut-tanitim', icon: 'spark', t: 'Taslak — Marketplace Konut: İlk giriş tanıtımı', d: 'Hizmet tanıtımı; müşteri bilgileri ve TAKBİS adımlarından önce (yalnızca ilk girişte)' },
@@ -269,7 +269,7 @@ const SECTIONS = [
   { hash: 'konut-basvuru', icon: 'doc', t: 'Taslak — Marketplace Konut: Kredi başvurusu', d: 'Meslek ve gelir, TAKBİS bilgileri ve kredi özeti; işlem onayıyla tamamlanınca aynı ekranda "Başvurunuz Alındı"' },
   { hash: 'konut-takip', icon: 'doc', t: 'Taslak — Marketplace Konut: Başvuru takibi', d: 'İlk değerlendirme, ekspertiz durumu ve onaylanan ekspertiz raporu' },
   { hash: 'konut-ekspertiz', icon: 'pin', t: 'Taslak — Marketplace Konut: Ekspertiz', d: 'Bankanın başlattığı ekspertiz: atanan kuruluş, randevu; sonraki girişte onaylı rapor ve kullandırıma geçiş' },
-  { hash: 'konut-ipotek', icon: 'bank', t: 'Taslak — Marketplace Konut: Kullandırım', d: 'Onaylanan tutar; şube randevusu, tapu devri ve ipotek; gerekli belgeler, DASK ve tapu harcı ödemeleri (ortak ödeme pop-up’ı)' },
+  { hash: 'konut-ipotek', icon: 'bank', t: 'Taslak — Marketplace Konut: Kullandırım', d: 'Onaylanan tutar; şube randevusu, tapu devri (randevu tapu müdürlüğünce) ve ipotek; gerekli belgeler ve DASK ödemesi (ortak ödeme pop-up’ı)' },
   { hash: 'konut-tamam', icon: 'check', t: 'Taslak — Marketplace Konut: Kredi kullandırıldı', d: 'Süreç tamamlandı ekranı' },
   { hash: 'isletme', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı', d: 'İşletmenin para giriş ve çıkışları, Yapı Kredi Akıllı Asistanı analizi ve sana özel finansman teklifleri' },
   { hash: 'isletme-hareketler', icon: 'pie', t: 'Taslak — Akıllı İşletme Finansmanı: Finansal hareketler', d: 'Şirkete girenler / çıkanlar, kategori ve işlem detayı, dönem karşılaştırma' },
@@ -600,15 +600,17 @@ const lockEl = document.getElementById('lockscreen');
    SHARED POP-UPS — payment and transaction confirmation
    One component each, opened with parameters from any screen. Both use the bottom sheet layer:
    the screen stays behind the scrim and keeps its state; a running step cannot be dismissed.
-   onPaid receives { ref, at, amount, method, methodLabel, inst, card, cardLabel, instLabel, label }.
-     payPopOpen({ title, desc, amount, type, note, insts, okMsg, ms, onPaid(res), onClose })
+   onPaid receives { ref, at, amount, method, methodLabel, inst, card, cardLabel, instLabel, label, acct }.
+   methods limits the payment methods (default both; e.g. ['debit'] where a credit card cannot be used).
+     checkAnimRun({ steps, items, ms, okTitle, okSub, onDone }) — short check → success animation over the screen
+     payPopOpen({ title, desc, amount, type, note, insts, methods, okMsg, ms, onPaid(res), onClose })
      confirmPopOpen({ title, desc, rows, okText, cancelText, busyText, ms, check(), onConfirm(), onCancel() })
    =================================================================== */
 // Saved cards (DEMO). Credit cards offer instalments; debit cards pay in one go from the linked account.
 const PAY_CARDS = {
   credit: [
     { id: 'worldcard', name: 'Worldcard', num: '1234 56** **** 3333', exp: '09/29', limit: USER.limit, art: 'world', mark: 'world' },
-    { id: 'signia', name: 'World Signia', num: '5400 24** **** 7781', exp: '06/30', limit: 300000, art: 'signia', mark: 'signia' },
+    { id: 'adios', name: 'Adios', num: '5400 24** **** 7781', exp: '06/30', limit: 300000, art: 'adios', mark: 'adios' },
   ],
   debit: [
     { id: 'tlcard', name: 'TLcard', num: '4506 34** **** 8842', acct: 'Vadesiz TL Hesabım', balance: USER.balance, art: 'tl', mark: 'TLcard' },
@@ -653,8 +655,9 @@ function payPopPick(m, amount) { const l = PAY_CARDS[m]; return (l.find(c => pay
 function payPopOpen(o) {
   if (popBusy()) return;
   CF_POP = null;
-  const m = PAY_CARDS.credit.some(c => payPopAvail(c) >= o.amount) || !PAY_CARDS.debit.some(c => payPopAvail(c) >= o.amount) ? 'credit' : 'debit';
-  PAY_POP = { o: { insts: PAY_INSTS, ...o }, method: m, card: payPopPick(m, o.amount), inst: 1, phase: 'form', res: null, err: null };
+  const ms = (o.methods || Object.keys(PAY_METHODS)).filter(x => PAY_CARDS[x]);
+  const m = ms.length === 1 ? ms[0] : PAY_CARDS.credit.some(c => payPopAvail(c) >= o.amount) || !PAY_CARDS.debit.some(c => payPopAvail(c) >= o.amount) ? 'credit' : 'debit';
+  PAY_POP = { o: { insts: PAY_INSTS, ...o, methods: ms }, method: m, card: payPopPick(m, o.amount), inst: 1, phase: 'form', res: null, err: null };
   payPopRender();
 }
 function payPopRender() {
@@ -697,7 +700,9 @@ function payPopFormHTML() {
       </div>
       ${o.note ? `<div class="vm-sheet-note paypop-note">${I.info}<span>${o.note}</span></div>` : ''}
       <div class="paypop-h">Ödeme yöntemi</div>
-      <div class="paypop-seg" role="tablist">${Object.keys(PAY_METHODS).map(m => `<button class="${P.method === m ? 'on' : ''}" data-action="paypop-method" data-m="${m}" role="tab" aria-selected="${P.method === m}">${PAY_METHODS[m]}</button>`).join('')}</div>
+      ${o.methods.length > 1
+        ? `<div class="paypop-seg" role="tablist">${o.methods.map(m => `<button class="${P.method === m ? 'on' : ''}" data-action="paypop-method" data-m="${m}" role="tab" aria-selected="${P.method === m}">${PAY_METHODS[m]}</button>`).join('')}</div>`
+        : `<div class="paypop-one">${PAY_METHODS[P.method]}</div>`}
       <div class="paypop-cards" role="radiogroup" aria-label="${PAY_METHODS[P.method]}">${payPopCards().map(c => payPopCardHTML(c, c.id === P.card)).join('')}</div>
       ${insts}
     </div>
@@ -738,7 +743,7 @@ function payPopFailHTML() {
 }
 function payPopMethod(m) {
   const P = PAY_POP;
-  if (!P || P.phase !== 'form' || !PAY_CARDS[m] || P.method === m) return;
+  if (!P || P.phase !== 'form' || !P.o.methods.includes(m) || P.method === m) return;
   P.method = m;
   P.card = payPopPick(m, P.o.amount);
   P.inst = 1;
@@ -774,7 +779,7 @@ function payPopConfirm() {
     PAY_SPENT[c.id] = (PAY_SPENT[c.id] || 0) + amt;
     const inst = P.method === 'credit' ? P.inst : 1;
     P.res = { ref: popRef('ODM'), at: popNow(), amount: amt, method: P.method, methodLabel: PAY_METHODS[P.method], inst,
-      card: { id: c.id, name: c.name, last4: popLast4(c) }, cardLabel: `${c.name} •••• ${popLast4(c)}`,
+      card: { id: c.id, name: c.name, last4: popLast4(c) }, cardLabel: `${c.name} •••• ${popLast4(c)}`, acct: c.acct || null,
       instLabel: P.method === 'credit' ? popInstLabel(inst) : 'Tek çekim (banka kartı)',
       label: `${c.name} •••• ${popLast4(c)}${P.method === 'credit' ? ' · ' + popInstLabel(inst) : ''}` };
     P.phase = 'ok';
@@ -823,8 +828,9 @@ function confirmPopRender() {
 function confirmPopOk() {
   const C = CF_POP;
   if (!C || C.phase !== 'form') return;
+  const ms = C.o.ms ?? 1200;
   C.phase = 'busy';
-  confirmPopRender();
+  if (ms) confirmPopRender();
   setTimeout(() => {
     if (CF_POP !== C) return;
     const err = C.o.check ? C.o.check() : '';
@@ -832,7 +838,7 @@ function confirmPopOk() {
     CF_POP = null;
     closeSheet();
     if (C.o.onConfirm) C.o.onConfirm();
-  }, C.o.ms || 1200);
+  }, ms);
 }
 function confirmPopRetry() {
   const C = CF_POP;
@@ -847,6 +853,41 @@ function confirmPopCancel() {
   CF_POP = null;
   closeSheet();
   if (C.o.onCancel) C.o.onCancel();
+}
+
+/* -------------------- Check → approve animation (over the current screen, no separate page) -------------------- */
+// The main line rotates through `steps`, the checklist `items` tick one by one; then the ring turns into a check
+// with `okTitle` and the overlay fades out before onDone (the caller updates its screen there).
+function checkAnimRun(o) {
+  const scr = document.querySelector('#app .screen:not(.nav-ghost)');
+  const fast = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ms = fast ? 600 : (o.ms || 2400), okMs = fast ? 400 : (o.okMs || 1100);
+  if (!scr) { if (o.onDone) o.onDone(); return; }
+  const steps = o.steps || [], items = o.items || [];
+  const el = document.createElement('div');
+  el.className = 'chk-anim';
+  el.setAttribute('role', 'status');
+  el.setAttribute('aria-live', 'polite');
+  el.innerHTML = `<div class="chk-box">
+      <span class="chk-ring"><svg viewBox="0 0 48 48" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle class="chk-track" cx="24" cy="24" r="20"/><circle class="chk-arc" cx="24" cy="24" r="20"/><path class="chk-mark" d="M15.5 24.5l6 6 11-12"/></svg></span>
+      <b class="chk-t" id="chk-t">${steps[0] || ''}</b>
+      <span class="chk-s" id="chk-s">${o.sub || 'Lütfen bekle, bu birkaç saniye sürer.'}</span>
+      ${items.length ? `<div class="chk-list">${items.map((t, i) => `<div class="chk-li" data-i="${i}"><i></i><span>${t}</span></div>`).join('')}</div>` : ''}
+    </div>`;
+  scr.appendChild(el);
+  requestAnimationFrame(() => el.classList.add('in'));
+  const set = (id, t) => { const x = el.querySelector('#' + id); if (x) x.textContent = t; };
+  steps.slice(1).forEach((t, i) => setTimeout(() => set('chk-t', t), ms * (i + 1) / steps.length));
+  items.forEach((_, i) => setTimeout(() => { const li = el.querySelector(`.chk-li[data-i="${i}"]`); if (li) li.classList.add('ok'); }, ms * (i + 1) / (items.length + 0.4)));
+  setTimeout(() => {
+    el.classList.add('ok');
+    set('chk-t', o.okTitle || 'Onaylandı');
+    set('chk-s', o.okSub || '');
+    setTimeout(() => {
+      el.classList.add('out');
+      setTimeout(() => { el.remove(); if (o.onDone) o.onDone(); }, fast ? 0 : 220);
+    }, okMs);
+  }, ms);
 }
 
 /* ===================================================================
@@ -4658,17 +4699,13 @@ const DEBT_ITEMS = [
     rows: [['Esnek hesap limiti', '25.000,00 TL'], ['Son ödeme', 'Sabit tarih yok']],
     note: 'Esnek hesapta sabit bir son ödeme tarihi yoktur; borç, ödemeyle kapanır.' },
 ];
-// Payable TL accounts. "Vadesiz TL Hesabım" keeps the home screen balance (10.000 TL), so it cannot cover the statement.
-const DEBT_ACCTS = [
-  { id: 'salary', name: 'Maaş Hesabım',       no: 'Vadesiz TL · 8765 4321', balance: 96750 },
-  { id: 'main',   name: 'Vadesiz TL Hesabım', no: 'Vadesiz TL · 12345678',  balance: USER.balance },
-];
 const DEBT_LOANS = { mortgage: 18000, auto: 15000, personal: 12500 };   // fixed monthly installments (history)
 
 state.debt = {
-  account: 'salary',   // selected payment account
-  paid: false,
-  payment: null,       // { amount, acct, ref, date, dateShort }
+  sel: DEBT_ITEMS.map(d => d.id),   // selected items (all at the start; any can be left out)
+  paidItems: {},       // items paid this period { id: { amount, ref, date, dateShort } }
+  paid: false,         // every item paid
+  payment: null,       // last payment { amount, items, acct, card, ref, date, dateShort }
   history: [           // previous consolidated payments (newest first); card / flex vary, loans are fixed
     { id: 'h10',  period: 'Ekim 2026',    date: '14.10.2026 · 10:42', amount: 76450, acct: 'Maaş Hesabım',       ok: true,  ref: 'TBO20261014204731', card: 23950, flex: 7000 },
     { id: 'h09',  period: 'Eylül 2026',   date: '15.09.2026 · 09:18', amount: 79120, acct: 'Maaş Hesabım',       ok: true,  ref: 'TBO20260915118640', card: 26120, flex: 7500 },
@@ -4681,7 +4718,6 @@ state.debt = {
 
 /* -------------------- helpers -------------------- */
 function debtTotal() { return DEBT_ITEMS.reduce((a, d) => a + d.amount, 0); }
-function debtAcct(id = state.debt.account) { return DEBT_ACCTS.find(a => a.id === id) || DEBT_ACCTS[0]; }
 function debtTint(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; }
 function debtDaysLeft() {
   const t = new Date(); t.setHours(0, 0, 0, 0);
@@ -4705,13 +4741,21 @@ function debtTLImg() { return `<img src="assets/tl-white.png" class="tl-img" alt
 /* Part-to-whole bar: one segment per product, width = share of the statement */
 function debtBarHTML() {
   return `<div class="debt-bar" role="img" aria-label="Ürünlere göre borç dağılımı">${DEBT_ITEMS.map(d =>
-    `<span class="debt-seg" style="flex:${d.amount} 1 0;background:${d.color}"></span>`).join('')}</div>`;
+    `<span class="debt-seg ${debtIsPaid(d.id) ? 'paid' : ''}" style="flex:${d.amount} 1 0;background:${d.color}"></span>`).join('')}</div>`;
 }
 function debtPaidChip(txt = 'Ödendi') { return `<span class="debt-chip ok">${I.check}${txt}</span>`; }
 
-/* -------------------- Screen 1 — dashboard -------------------- */
+/* Selective payment: every item can be selected on its own; only the selected ones are paid (shared payment pop-up) */
+function debtIsPaid(id) { return !!state.debt.paidItems[id]; }
+function debtUnpaid() { return DEBT_ITEMS.filter(d => !debtIsPaid(d.id)); }
+function debtRemaining() { return debtUnpaid().reduce((a, d) => a + d.amount, 0); }
+function debtPaidSum() { return DEBT_ITEMS.filter(d => debtIsPaid(d.id)).reduce((a, d) => a + d.amount, 0); }
+function debtSelItems() { const s = state.debt; return DEBT_ITEMS.filter(d => s.sel.includes(d.id) && !debtIsPaid(d.id)); }
+function debtSelTotal() { return debtSelItems().reduce((a, d) => a + d.amount, 0); }
+function debtDue(d) { const r = d.rows.find(x => x[0] === 'Son ödeme'); return r && /\d/.test(r[1]) ? `Son ödeme ${r[1].replace(/ \d{4}$/, '')}` : 'Sabit son ödeme yok'; }
+
+/* -------------------- Screen 1 — dashboard (items can be selected and paid on their own) -------------------- */
 function DebtHome() {
-  const s = state.debt, total = debtTotal(), pm = s.payment;
   return `
   <div class="screen anim-right">
     <div class="nav-head ru-nav-accent">
@@ -4719,18 +4763,27 @@ function DebtHome() {
       <div class="nav-title">Toplu Borç Ödeme</div>
       <button class="icon-btn" data-action="debt-info" aria-label="Toplu Borç Ödeme nedir?">${I.info}</button>
     </div>
-    <div class="screen-scroll">
+    <div class="screen-scroll" id="debt-body">${debtHomeBodyHTML()}</div>
+    <div class="pay-foot" id="debt-foot">${debtFootHTML()}</div>
+  </div>`;
+}
+function debtHomeBodyHTML() {
+  const s = state.debt, total = debtTotal(), left = debtRemaining(), paidN = DEBT_ITEMS.length - debtUnpaid().length, all = !debtUnpaid().length, pm = s.payment;
+  return `
       <div class="ru-statcard debt-hero">
-        <div class="ru-jar-label">${DEBT_PERIOD.label} ekstresi · ${s.paid ? 'Kalan borç' : 'Toplam borç'}</div>
-        <div class="ru-jar-amt">${fmtTL2(s.paid ? 0 : total)}</div>
-        ${s.paid
-          ? `<div class="debt-hero-pill ok">${I.check} ${pm.dateShort} tarihinde ${fmtTL2(pm.amount)} ödendi</div>`
+        <div class="ru-jar-label">${DEBT_PERIOD.label} ekstresi · ${paidN ? 'Kalan borç' : 'Toplam borç'}</div>
+        <div class="ru-jar-amt" id="debt-left">${fmtTL2(left)}</div>
+        ${all ? `<div class="debt-hero-pill ok">${I.check} Ekstrenin tamamı ödendi · ${pm.dateShort}</div>`
+          : paidN ? `<div class="debt-hero-pill ok">${I.check} ${paidN} kalem ödendi · ${DEBT_ITEMS.length - paidN} kalem kaldı</div>`
           : `<div class="debt-hero-pill">${I.calendar} Son ödeme ${DEBT_PERIOD.due}</div>`}
         <div class="ru-statrow">
-          ${s.paid ? `
-          <div class="ru-stat"><div class="ru-stat-l">Ödenen</div><div class="ru-stat-v">${fmtShortTL(pm.amount)}</div></div>
-          <div class="ru-stat mid"><div class="ru-stat-l">Ödeme tarihi</div><div class="ru-stat-v">${pm.dateShort}</div></div>
-          <div class="ru-stat"><div class="ru-stat-l">Sonraki kesim</div><div class="ru-stat-v">30 Kasım</div></div>` : `
+          ${all ? `
+          <div class="ru-stat"><div class="ru-stat-l">Ödenen</div><div class="ru-stat-v">${fmtShortTL(debtPaidSum())}</div></div>
+          <div class="ru-stat mid"><div class="ru-stat-l">Son ödeme tarihi</div><div class="ru-stat-v">${pm.dateShort}</div></div>
+          <div class="ru-stat"><div class="ru-stat-l">Sonraki kesim</div><div class="ru-stat-v">30 Kasım</div></div>` : paidN ? `
+          <div class="ru-stat"><div class="ru-stat-l">Ödenen</div><div class="ru-stat-v">${fmtShortTL(debtPaidSum())}</div></div>
+          <div class="ru-stat mid"><div class="ru-stat-l">Kalan borç</div><div class="ru-stat-v">${DEBT_ITEMS.length - paidN} kalem</div></div>
+          <div class="ru-stat"><div class="ru-stat-l">Son ödeme</div><div class="ru-stat-v">${DEBT_PERIOD.dueShort}</div></div>` : `
           <div class="ru-stat"><div class="ru-stat-l">Hesap kesim</div><div class="ru-stat-v">31 Ekim</div></div>
           <div class="ru-stat mid"><div class="ru-stat-l">Son ödeme</div><div class="ru-stat-v">${DEBT_PERIOD.dueShort}</div></div>
           <div class="ru-stat"><div class="ru-stat-l">Kalan süre</div><div class="ru-stat-v">${debtDaysLabel()}</div></div>`}
@@ -4738,30 +4791,102 @@ function DebtHome() {
       </div>
 
       <div class="debt-card">
-        <div class="debt-card-h"><span>Borç dağılımı</span><span class="debt-card-sub">${DEBT_ITEMS.length} ürün</span></div>
+        <div class="debt-card-h"><span>Borç kalemleri</span>${all ? `<span class="debt-card-sub">${DEBT_ITEMS.length} kalem ödendi</span>` : `<button class="sp-link debt-all" id="debt-all" data-action="debt-sel-all">${debtAllLabel()}</button>`}</div>
         ${debtBarHTML()}
-        <div class="debt-rows">${DEBT_ITEMS.map(d => debtRowHTML(d, total)).join('')}</div>
-        <div class="debt-total"><span>${s.paid ? 'Ödenen toplam' : 'Toplam ödenecek tutar'}</span><b>${fmtTL2(total)}</b></div>
+        ${all ? '' : '<div class="debt-pick-hint">Ödemek istediğin borç kalemlerini seç; tamamını seçmek zorunda değilsin.</div>'}
+        <div class="debt-rows" role="group" aria-label="Borç kalemleri">${DEBT_ITEMS.map(d => debtRowHTML(d, total)).join('')}</div>
+        ${all ? `<div class="debt-total"><span>Ödenen toplam</span><b>${fmtTL2(total)}</b></div>` : `<div class="debt-sel-sum" id="debt-sel-sum">${debtSelSumHTML()}</div>`}
       </div>
 
       <div class="ru-info-card debt-links">
         <div class="ru-info-row tap" data-action="debt-statement"><span class="ru-info-ico">${I.doc}</span><span class="ru-info-k">Ekstre detayları</span><span class="ru-info-v">${DEBT_PERIOD.label}</span>${I.chevR}</div>
         <div class="ru-info-row tap" data-action="debt-history"><span class="ru-info-ico">${I.receipt}</span><span class="ru-info-k">Ödeme geçmişi</span><span class="ru-info-v">${s.history.length} işlem</span>${I.chevR}</div>
-      </div>
-    </div>
-    <div class="pay-foot">
-      ${s.paid
-        ? `<button class="btn-outline" data-action="debt-history">Ödeme Geçmişini Gör</button>`
-        : `<button class="pay-btn" data-action="debt-pay"><span>Toplu Öde</span><span class="div"></span><span>${fmtTL2(total)}</span></button>`}
-    </div>
-  </div>`;
+      </div>`;
 }
 function debtRowHTML(d, total) {
-  return `<div class="debt-row">
-    ${debtIcoHTML(d)}
-    <div class="debt-row-mid"><b>${d.name}</b><span>${d.kind}</span></div>
-    <div class="debt-row-r"><b>${fmtTL2(d.amount)}</b>${state.debt.paid ? debtPaidChip() : `<span>%${Math.round(d.amount / total * 100)}</span>`}</div>
-  </div>`;
+  const paid = debtIsPaid(d.id), on = !paid && state.debt.sel.includes(d.id);
+  return paid
+    ? `<div class="debt-row debt-pick paid" data-id="${d.id}">
+      <span class="debt-cbx done">${I.check}</span>
+      ${debtIcoHTML(d)}
+      <div class="debt-row-mid"><b>${d.name}</b><span>${d.kind} · ${state.debt.paidItems[d.id].dateShort} ödendi</span></div>
+      <div class="debt-row-r"><b>${fmtTL2(d.amount)}</b>${debtPaidChip()}</div>
+    </div>`
+    : `<div class="debt-row debt-pick ${on ? 'on' : ''}" data-id="${d.id}" data-action="debt-sel" role="checkbox" aria-checked="${on}" tabindex="0">
+      <span class="debt-cbx">${I.check}</span>
+      ${debtIcoHTML(d)}
+      <div class="debt-row-mid"><b>${d.name}</b><span>${d.kind} · ${debtDue(d)}</span></div>
+      <div class="debt-row-r"><b>${fmtTL2(d.amount)}</b><span>%${Math.round(d.amount / total * 100)}</span></div>
+    </div>`;
+}
+function debtSelSumHTML() {
+  const n = debtSelItems().length, sel = debtSelTotal(), left = debtRemaining();
+  return `<div><span>Seçilen borç</span><b id="debt-sel-n">${n} / ${debtUnpaid().length} kalem</b></div>
+    <div class="hl"><span>Ödenecek tutar</span><b id="debt-sel-t">${fmtTL2(sel)}</b></div>
+    <div><span>Ödeme sonrası kalan borç</span><b>${fmtTL2(left - sel)}</b></div>`;
+}
+function debtAllLabel() { return debtSelItems().length === debtUnpaid().length ? 'Seçimi kaldır' : 'Tümünü seç'; }
+function debtFootHTML() {
+  if (!debtUnpaid().length) return '<button class="btn-outline" data-action="debt-history">Ödeme Geçmişini Gör</button>';
+  const n = debtSelItems().length;
+  return `<button class="pay-btn" id="debt-pay-btn" data-action="debt-pay" ${n ? '' : 'disabled'}><span>${n ? `Seçilenleri Öde (${n})` : 'Borç seç'}</span><span class="div"></span><span>${fmtTL2(debtSelTotal())}</span></button>`;
+}
+/* Selection: partial DOM update (no re-render → no slide-in replay) */
+function debtSelUpdate() {
+  document.querySelectorAll('.debt-pick[data-action="debt-sel"]').forEach(el => {
+    const on = state.debt.sel.includes(el.dataset.id);
+    el.classList.toggle('on', on);
+    el.setAttribute('aria-checked', on);
+  });
+  const set = (id, h) => { const el = document.getElementById(id); if (el) el.innerHTML = h; };
+  set('debt-sel-sum', debtSelSumHTML());
+  set('debt-foot', debtFootHTML());
+  const all = document.getElementById('debt-all'); if (all) all.textContent = debtAllLabel();
+}
+function debtToggle(id) {
+  const s = state.debt;
+  if (debtIsPaid(id) || PAY_POP) return;
+  s.sel = s.sel.includes(id) ? s.sel.filter(x => x !== id) : [...s.sel, id];
+  debtSelUpdate();
+}
+function debtToggleAll() {
+  const s = state.debt;
+  s.sel = debtSelItems().length === debtUnpaid().length ? [] : debtUnpaid().map(d => d.id);
+  debtSelUpdate();
+}
+/* Pay the selected items through the shared payment pop-up (bank card: a credit card cannot pay loan or card debt) */
+function debtPaySelected() {
+  const items = debtSelItems();
+  if (!items.length) return;
+  payPopOpen({
+    type: `Toplu borç ödemesi · ${items.length} kalem`, title: items.map(d => d.name).join(', '),
+    desc: `${DEBT_PERIOD.label} ekstresi · ${items.map(d => `${d.name} ${fmtTL2(d.amount)}`).join(' · ')}`,
+    amount: debtSelTotal(), methods: ['debit'], busyText: 'Borç ödemen yapılıyor…',
+    note: 'Kredi ve kredi kartı borçları, banka kartının bağlı olduğu hesaptan ödenir. Seçmediğin kalemler ödenmez.',
+    okMsg: `${items.length} borç kalemi ödendi; ekstren güncellendi.`,
+    onPaid: res => debtApplyPayment(items, res),
+  });
+}
+function debtApplyPayment(items, res) {
+  const s = state.debt, now = debtNow(), amount = items.reduce((a, d) => a + d.amount, 0), acct = res.acct || res.cardLabel;
+  items.forEach(d => { s.paidItems[d.id] = { amount: d.amount, ref: now.ref, date: now.full, dateShort: now.short }; });
+  s.sel = [];
+  s.paid = !debtUnpaid().length;
+  s.payment = { amount, items: items.map(d => d.id), acct, card: res.cardLabel, ref: now.ref, date: now.full, dateShort: now.short };
+  s.history.forEach(x => { x.isNew = false; });
+  s.history.unshift({ id: 'p' + Date.now(), period: DEBT_PERIOD.label, date: now.full, amount, acct, card: res.cardLabel, ok: true, ref: now.ref, isNew: true,
+    items: items.map(d => ({ id: d.id, amount: d.amount })) });
+  debtRefresh();
+}
+/* Re-draw the dashboard in place after a payment (keeps the scroll position, no slide-in) */
+function debtRefresh() {
+  if (state.screen !== 'toplu-borc') return;
+  const b = document.getElementById('debt-body'), f = document.getElementById('debt-foot');
+  if (!b || !f) return;
+  const y = b.scrollTop;
+  b.innerHTML = debtHomeBodyHTML();
+  f.innerHTML = debtFootHTML();
+  b.scrollTop = y;
 }
 function debtInfoSheet() {
   sheetEl.innerHTML = `
@@ -4769,7 +4894,7 @@ function debtInfoSheet() {
     <div class="sheet-bar"><h3>Toplu Borç Ödeme nedir?</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
     <div class="debt-how">
       <div class="debt-how-row"><span class="debt-how-ico">${I.doc}</span><div><b>Tek ekstre</b><span>Kredi kartı, esnek hesap ve kredi taksitlerin her ay sonunda tek bir ekstrede birleşir.</span></div></div>
-      <div class="debt-how-row"><span class="debt-how-ico">${I.calendar}</span><div><b>Tek tarih, tek işlem</b><span>Tüm ürünlerin borcunu aynı son ödeme tarihinde, tek bir ödemeyle kapatırsın.</span></div></div>
+      <div class="debt-how-row"><span class="debt-how-ico">${I.calendar}</span><div><b>Tamamını ya da seçtiklerini öde</b><span>Borç kalemlerinin tamamını tek ödemeyle kapatabilir ya da yalnızca seçtiğin kalemleri ödeyip kalanları sonra ödeyebilirsin.</span></div></div>
       <div class="debt-how-row"><span class="debt-how-ico">${I.shield}</span><div><b>Ürünlerin değişmez</b><span>Bu yeni bir kredi ya da borç yapılandırması değildir; kredilerinin faiz, vade ve taksit koşulları aynen devam eder.</span></div></div>
     </div>
     <button class="sheet-btn" data-action="close-sheet">Anladım</button>`;
@@ -4779,7 +4904,7 @@ function debtInfoSheet() {
 
 /* -------------------- Screen 2 — statement details -------------------- */
 function DebtStatement() {
-  const s = state.debt, total = debtTotal();
+  const total = debtTotal(), left = debtRemaining(), all = !debtUnpaid().length;
   return `
   <div class="screen anim-right">
     <div class="nav-head">
@@ -4789,7 +4914,7 @@ function DebtStatement() {
     </div>
     <div class="screen-scroll">
       <div class="debt-card debt-st-head">
-        <div class="debt-card-h"><span>${DEBT_PERIOD.label} Toplu Ekstresi</span>${s.paid ? debtPaidChip() : ''}</div>
+        <div class="debt-card-h"><span>${DEBT_PERIOD.label} Toplu Ekstresi</span>${all ? debtPaidChip() : ''}</div>
         <div class="debt-st-grid">
           <div><span>Hesap kesim</span><b>${DEBT_PERIOD.cut}</b></div>
           <div><span>Son ödeme</span><b>${DEBT_PERIOD.due}</b></div>
@@ -4798,11 +4923,11 @@ function DebtStatement() {
       </div>
       ${DEBT_ITEMS.map(debtStatementCardHTML).join('')}
       <div class="debt-card debt-st-total">
-        <div><span>Toplam borç</span><em>${DEBT_ITEMS.length} ürün · ${DEBT_PERIOD.label} dönemi</em></div>
+        <div><span>Toplam borç</span><em>${DEBT_ITEMS.length} ürün · ${DEBT_PERIOD.label} dönemi${left < total ? ` · kalan ${fmtTL2(left)}` : ''}</em></div>
         <b>${fmtTL2(total)}</b>
       </div>
     </div>
-    ${s.paid ? '' : `<div class="pay-foot"><button class="pay-btn" data-action="debt-pay"><span>Toplu Öde</span><span class="div"></span><span>${fmtTL2(total)}</span></button></div>`}
+    ${all ? '' : `<div class="pay-foot"><button class="pay-btn" data-action="debt-select"><span>Borç Seçerek Öde</span><span class="div"></span><span>${fmtTL2(left)}</span></button></div>`}
   </div>`;
 }
 function debtStatementCardHTML(d) {
@@ -4810,171 +4935,14 @@ function debtStatementCardHTML(d) {
     <div class="debt-st-top">
       ${debtIcoHTML(d)}
       <div class="debt-st-mid"><b>${d.name}</b><span>${d.sub}</span></div>
-      <div class="debt-st-amt"><b>${fmtTL2(d.amount)}</b>${state.debt.paid ? debtPaidChip() : `<span>${d.kind}</span>`}</div>
+      <div class="debt-st-amt"><b>${fmtTL2(d.amount)}</b>${debtIsPaid(d.id) ? debtPaidChip() : `<span>${d.kind}</span>`}</div>
     </div>
     <div class="debt-st-rows">${d.rows.map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join('')}</div>
     ${d.note ? `<div class="debt-st-note">${I.info}<span>${d.note}</span></div>` : ''}
   </div>`;
 }
 
-/* -------------------- Screen 3 — consolidated payment -------------------- */
-function DebtPay() {
-  const s = state.debt;
-  if (s.paid) { state.screen = 'toplu-borc'; return DebtHome(); }
-  const total = debtTotal();
-  return `
-  <div class="screen anim-right">
-    <div class="nav-head">
-      <button class="icon-btn" data-action="nav-back">${I.back}</button>
-      <div class="nav-title">Toplu Ödeme</div>
-    </div>
-    <div class="screen-scroll">
-      <div class="debt-card debt-owed">
-        <div><span>Toplam ekstre borcu</span><em>${DEBT_PERIOD.label} · Son ödeme ${DEBT_PERIOD.due}</em></div>
-        <b>${fmtTL2(total)}</b>
-      </div>
-      <div class="qr-amt-box debt-amt-box">
-        <div class="qr-amt-lbl">Ödenecek tutar</div>
-        <div class="qr-amt">${fmtTL2(total)}</div>
-        <div class="qr-amt-sub">Ekstredeki ${DEBT_ITEMS.length} ürünün borcunun tamamı · tek işlem</div>
-      </div>
-
-      <div class="pay-section-title">Ödeme hesabı</div>
-      ${DEBT_ACCTS.map(a => debtAcctHTML(a, total)).join('')}
-      <div class="debt-warn" id="debt-warn">${debtWarnHTML()}</div>
-
-      <div class="pay-section-title">Ödeme özeti</div>
-      <div class="receipt debt-receipt" id="debt-summary">${debtSummaryHTML()}</div>
-    </div>
-    <div class="pay-foot">
-      <button class="pay-btn" id="debt-continue" data-action="debt-continue" ${debtAcct().balance < total ? 'disabled' : ''}><span>Devam Et</span><span class="div"></span><span>${fmtTL2(total)}</span></button>
-      <div class="secure-note">${I.lock} Bilgilerin 256 bit SSL ile korunur</div>
-    </div>
-  </div>`;
-}
-function debtAcctHTML(a, total) {
-  const short = a.balance < total;
-  return `<div class="method debt-acct ${a.id === state.debt.account ? 'selected' : ''} ${short ? 'short' : ''}" data-action="debt-acct" data-id="${a.id}">
-    <div class="m-ico tl-ico">${debtTLImg()}</div>
-    <div class="debt-acct-mid">
-      <div class="m-name">${a.name}</div>
-      <div class="m-sub">${a.no}</div>
-      <div class="debt-bal">Kullanılabilir bakiye <b>${fmtTL2(a.balance)}</b>${short ? '<span class="debt-chip warn">Yetersiz</span>' : ''}</div>
-    </div>
-    <div class="m-check">${I.check}</div>
-  </div>`;
-}
-function debtWarnHTML() {
-  const a = debtAcct(), gap = debtTotal() - a.balance;
-  return gap > 0 ? `${I.info}<span><b>${a.name}</b> bakiyesi bu ödeme için yeterli değil (${fmtTL2(gap)} eksik). Başka bir hesap seç.</span>` : '';
-}
-function debtSummaryHTML() {
-  const a = debtAcct(), total = debtTotal(), after = a.balance - total;
-  return `
-    <div class="r-row"><span class="r-l">Ekstre dönemi</span><span class="r-r">${DEBT_PERIOD.label}</span></div>
-    <div class="r-row"><span class="r-l">Ödenecek tutar</span><span class="r-r">${fmtTL2(total)}</span></div>
-    <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">${a.name}</span></div>
-    <div class="r-row"><span class="r-l">Ödeme sonrası bakiye</span><span class="r-r ${after < 0 ? 'debt-neg' : ''}">${after < 0 ? 'Yetersiz bakiye' : fmtTL2(after)}</span></div>`;
-}
-/* Account choice: partial DOM update (no re-render → no slide-in replay) */
-function debtSelectAcct(id) {
-  state.debt.account = id;
-  document.querySelectorAll('.debt-acct').forEach(el => el.classList.toggle('selected', el.dataset.id === id));
-  const w = document.getElementById('debt-warn'); if (w) w.innerHTML = debtWarnHTML();
-  const sm = document.getElementById('debt-summary'); if (sm) sm.innerHTML = debtSummaryHTML();
-  const b = document.getElementById('debt-continue'); if (b) b.disabled = debtAcct().balance < debtTotal();
-}
-
-/* -------------------- Screen 4 — confirm -------------------- */
-function DebtConfirm() {
-  const s = state.debt, total = debtTotal(), a = debtAcct();
-  if (s.paid || a.balance < total) { state.screen = 'toplu-borc'; return DebtHome(); }
-  return `
-  <div class="screen anim-right">
-    <div class="nav-head">
-      <button class="icon-btn" data-action="nav-back">${I.back}</button>
-      <div class="nav-title">Ödemeyi Onayla</div>
-    </div>
-    <div class="screen-scroll">
-      <div class="debt-confirm-amt">
-        <span>Toplam ödeme tutarı</span>
-        <b>${fmtTL2(total)}</b>
-        <em>${DEBT_PERIOD.label} toplu ekstresi</em>
-      </div>
-      <div class="receipt debt-receipt">
-        <div class="r-row"><span class="r-l">Ödeme yapılacak hesap</span><span class="r-r">${a.name}<br><i class="debt-sub">${a.no}</i></span></div>
-        <div class="r-row"><span class="r-l">Ekstre dönemi</span><span class="r-r">${DEBT_PERIOD.label}</span></div>
-        <div class="r-row"><span class="r-l">Son ödeme tarihi</span><span class="r-r">${DEBT_PERIOD.due}</span></div>
-        <div class="r-row"><span class="r-l">Ödeme sonrası bakiye</span><span class="r-r">${fmtTL2(a.balance - total)}</span></div>
-      </div>
-      <div class="debt-card pad0 debt-list">
-        <div class="debt-card-h"><span>Borcu oluşturan ürünler</span><span class="debt-card-sub">${DEBT_ITEMS.length} ürün</span></div>
-        ${DEBT_ITEMS.map(d => `<div class="debt-li">${debtIcoHTML(d, 'sm')}<div class="debt-li-mid"><b>${d.name}</b><span>${d.kind}</span></div><b class="debt-li-a">${fmtTL2(d.amount)}</b></div>`).join('')}
-        <div class="debt-li total"><span>Toplam</span><b class="debt-li-a">${fmtTL2(total)}</b></div>
-      </div>
-      <div class="debt-note">${I.info}<span>Onayladığında ${fmtTL2(total)} hesabından çekilir ve ekstredeki ${DEBT_ITEMS.length} ürünün ${DEBT_PERIOD.label} borcu kapanır. Kredilerinin vade ve taksit koşulları değişmez.</span></div>
-    </div>
-    <div class="screen-cta">
-      <button class="btn-primary debt-approve" id="debt-approve" data-action="debt-approve">${I.checkCircle} Onayla</button>
-      <button class="btn-ghost" data-action="debt-cancel">Vazgeç</button>
-    </div>
-  </div>`;
-}
-function debtApprove() {
-  const btn = document.getElementById('debt-approve');
-  if (!btn) return;
-  btn.innerHTML = '<span class="spinner"></span> Ödeme Onaylanıyor…';
-  btn.style.pointerEvents = 'none';
-  setTimeout(() => { debtApplyPayment(); go('toplu-borc-sonuc'); }, 1500);
-}
-function debtApplyPayment() {
-  const s = state.debt, a = debtAcct(), total = debtTotal(), now = debtNow();
-  a.balance -= total;
-  s.paid = true;
-  s.payment = { amount: total, acct: a.name, acctNo: a.no, balanceAfter: a.balance, ref: now.ref, date: now.full, dateShort: now.short };
-  s.history.unshift({
-    id: 'h11', period: DEBT_PERIOD.label, date: now.full, amount: total, acct: a.name, ok: true, ref: now.ref, isNew: true,
-    card: DEBT_ITEMS.find(d => d.id === 'card').amount, flex: DEBT_ITEMS.find(d => d.id === 'flex').amount,
-  });
-}
-
-/* -------------------- Screen 5 — result -------------------- */
-function DebtResult() {
-  const s = state.debt, pm = s.payment;
-  if (!pm) { state.screen = 'toplu-borc'; return DebtHome(); }
-  return `
-  <div class="screen anim-fade">
-    <div class="screen-scroll">
-      <div class="success debt-success">
-        <div class="success-check"><div class="ring">${I.checkBig}</div></div>
-        <h2>Ödemen Başarıyla Gerçekleşti</h2>
-        <div class="succ-date">${pm.date}</div>
-        <div class="amt">${fmtTL2(pm.amount)}</div>
-        <div class="prod">${DEBT_PERIOD.label} toplu ekstresi</div>
-
-        <div class="debt-card flat">
-          <div class="debt-card-h"><span>Güncel ekstre durumu</span>${debtPaidChip()}</div>
-          <div class="debt-left"><span>Kalan borç</span><b>${fmtTL2(0)}</b></div>
-          ${DEBT_ITEMS.map(d => `<div class="debt-li">${debtIcoHTML(d, 'sm')}<div class="debt-li-mid"><b>${d.name}</b><span>${fmtTL2(d.amount)} ödendi</span></div><span class="debt-li-ok">${I.check}</span></div>`).join('')}
-          <div class="debt-next">${I.calendar}<span>Sonraki ekstre ${DEBT_PERIOD.nextCut} tarihinde kesilecek.</span></div>
-        </div>
-
-        <div class="receipt">
-          <div class="r-row"><span class="r-l">İşlem referans no</span><span class="r-r">${pm.ref}</span></div>
-          <div class="r-row"><span class="r-l">Ödeme tarihi</span><span class="r-r">${pm.date}</span></div>
-          <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">${pm.acct}</span></div>
-          <div class="r-row"><span class="r-l">Hesap bakiyesi</span><span class="r-r">${fmtTL2(pm.balanceAfter)}</span></div>
-        </div>
-        <div class="success-actions">
-          <button class="btn-primary" data-action="debt-home">Ana Ekrana Dön</button>
-          <button class="btn-outline" data-action="debt-history-after">Ödeme Geçmişi</button>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-/* -------------------- Screen 6 — payment history -------------------- */
+/* -------------------- Screen 3 — payment history -------------------- */
 function DebtHistory() {
   const h = state.debt.history, ok = h.filter(x => x.ok);
   const paidSum = ok.reduce((a, x) => a + x.amount, 0);
@@ -4995,9 +4963,10 @@ function DebtHistory() {
   </div>`;
 }
 function debtHistRowHTML(x) {
+  const part = x.items && x.items.length < DEBT_ITEMS.length;
   return `<div class="debt-h ${x.isNew ? 'new' : ''}" data-action="debt-hist-open" data-id="${x.id}">
     <span class="debt-h-ico ${x.ok ? 'ok' : 'fail'}">${x.ok ? I.check : I.close}</span>
-    <div class="debt-h-mid"><b>${x.period} ekstresi${x.isNew ? ' <em class="debt-new">Yeni</em>' : ''}</b><span>${x.date}</span></div>
+    <div class="debt-h-mid"><b>${x.period} ekstresi${part ? ` · ${x.items.length} kalem` : ''}${x.isNew ? ' <em class="debt-new">Yeni</em>' : ''}</b><span>${x.date}</span></div>
     <div class="debt-h-r"><b>${fmtTL2(x.amount)}</b><span class="debt-status ${x.ok ? 'ok' : 'fail'}">${x.ok ? 'Başarılı' : 'Başarısız'}</span></div>
     <span class="debt-h-chev">${I.chevR}</span>
   </div>`;
@@ -5006,22 +4975,26 @@ function debtHistSheet(id) {
   const x = state.debt.history.find(h => h.id === id);
   if (!x) return;
   const amounts = { card: x.card, flex: x.flex, ...DEBT_LOANS };
+  const prods = x.items ? x.items.map(it => ({ d: DEBT_ITEMS.find(d => d.id === it.id), amount: it.amount })) : DEBT_ITEMS.map(d => ({ d, amount: amounts[d.id] }));
+  const part = x.items && x.items.length < DEBT_ITEMS.length;
   sheetEl.innerHTML = `
     <div class="sheet-handle"></div>
     <div class="sheet-bar"><h3>İşlem Detayı</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
     <div class="debt-sh-head">
       <span class="debt-status big ${x.ok ? 'ok' : 'fail'}">${x.ok ? I.check : I.close}${x.ok ? 'Başarılı' : 'Başarısız'}</span>
       <b>${fmtTL2(x.amount)}</b>
-      <span>${x.period} toplu ekstresi</span>
+      <span>${x.period} toplu ekstresi${part ? ` · ${x.items.length} kalem` : ''}</span>
     </div>
     <div class="receipt debt-sh-receipt">
       <div class="r-row"><span class="r-l">İşlem tarihi</span><span class="r-r">${x.date}</span></div>
       <div class="r-row"><span class="r-l">Referans no</span><span class="r-r">${x.ref}</span></div>
       <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">${x.acct}</span></div>
+      ${x.items ? `<div class="r-row"><span class="r-l">Banka kartı</span><span class="r-r">${typeof x.card === 'string' ? x.card : ''}</span></div>` : ''}
       ${x.ok ? '' : `<div class="r-row"><span class="r-l">Neden</span><span class="r-r">${x.reason}</span></div>`}
     </div>
     ${x.ok
-      ? `<div class="debt-sh-prods">${DEBT_ITEMS.map(d => `<div><i style="background:${d.color}"></i><span>${d.name}</span><b>${fmtTL2(amounts[d.id])}</b></div>`).join('')}</div>`
+      ? `<div class="debt-sh-prods">${prods.map(p => `<div><i style="background:${p.d.color}"></i><span>${p.d.name}</span><b>${fmtTL2(p.amount)}</b></div>`).join('')}</div>
+      ${part ? `<div class="debt-note in">${I.info}<span>Kısmi ödeme: yalnızca seçilen ${x.items.length} kalem ödendi; diğer kalemler ödenmedi.</span></div>` : ''}`
       : `<div class="debt-note in">${I.info}<span>Ödeme gerçekleşmedi; ekstre borcu değişmedi. Aynı gün başka bir hesaptan ödendi.</span></div>`}
     <button class="sheet-btn ghost" data-action="toast" data-msg="Dekont paylaşımı prototipte aktif değil">Dekontu Paylaş</button>`;
   sheetEl.classList.add('open');
@@ -5034,27 +5007,17 @@ function debtUnwind() {
   const i = state.nav.map(f => f.screen).lastIndexOf('toplu-borc');
   if (i >= 0) state.nav = state.nav.slice(0, i);
 }
-function debtGoHome() {
+function debtGoHome() {   // from the statement back to the selectable list
+  const prev = state.nav[state.nav.length - 1];
+  if (prev && prev.screen === 'toplu-borc') return navBack();
   debtUnwind();
-  state.chatSeed = false;
-  state.screen = 'toplu-borc';
-  render();
+  go('toplu-borc');
 }
-function debtHistoryAfterPay() {
-  debtUnwind();
-  state.nav.push({ screen: 'toplu-borc', chatSeed: false });
-  state.screen = 'toplu-borc-gecmis';
-  render();
-}
-function debtCancel() {
-  debtGoHome();
-  toast('Ödeme iptal edildi');
-}
-// Deep links (#toplu-borc-…) prepare the state they need without replaying the flow
-function debtSeed(h) {
-  const s = state.debt;
-  if ((h === 'toplu-borc-odeme' || h === 'toplu-borc-onay') && debtAcct().balance < debtTotal()) s.account = 'salary';
-  if (h === 'toplu-borc-sonuc' && !s.paid) debtApplyPayment();
+// Links of the old payment screens (account choice / confirm / result) open the dashboard; the result link with the statement paid
+function debtAlias(h) {
+  if (!/^toplu-borc-(odeme|onay|sonuc)$/.test(h)) return h;
+  if (h === 'toplu-borc-sonuc' && debtUnpaid().length) debtApplyPayment(debtUnpaid(), { acct: 'Maaş Hesabım', cardLabel: 'Maaş Kartım •••• 5521' });
+  return 'toplu-borc';
 }
 
 /* ======================================================================
@@ -5550,7 +5513,7 @@ function ewaSeed(h) {
    MARKETPLACE TAŞIT (draft) — vehicle loan marketplace
    Car search → listing & price comparison → details → loan simulation →
    application (received on the same screen) → kasko → Kullandırım
-   (şube → noter → rehin) → loan disbursed, in one journey. Sellers are Otokoç Otomotiv (Koç
+   (gerekli belgeler → noter → rehin) → loan disbursed, in one journey. Sellers are Otokoç Otomotiv (Koç
    Topluluğu) locations and kasko comes from Allianz Türkiye; listings,
    rates, instalments, coverages and premiums are EXAMPLE figures that do
    not represent real terms. Car pictures are representative vector
@@ -5640,10 +5603,10 @@ state.vm = {
   kasko: 'k2',        // selected kasko offer
   kAgree: false,      // kasko information form read
   policy: null,       // { offer, no, payRef, payLabel, at, inst, amount, start, end }
-  use: null,          // Kullandırım { stage, pick, slot, branchAt, noterSlot, noterAt, pledgeAt, disbAt, disbRef }
+  use: null,          // Kullandırım { stage, contracts, docsAt, noterSlot, noterAt, pledgeAt, disbAt, disbRef }
+  ctAgree: false,     // "read and approve" box of the loan contracts sheet
   upl: {},            // uploaded documents { key: { at, file } }
   uploading: null,
-  paid: {},           // extra costs paid on Kullandırım { key: { at, ref, amount, label } }
 };
 let vmSvgSeq = 0;
 let vmAnimNext = null;   // one-shot animation for in-place screen updates (mode switches)
@@ -6034,7 +5997,7 @@ function vmFeatCardHTML(c, i) {
 }
 function vmOngoingHTML() {
   const v = state.vm, a = v.app, c = vmCar(a.car), u = v.use;
-  const step = !v.policy ? 'Başvurun alındı · kasko adımı' : !u || u.stage === 0 ? 'Kullandırım · şube adımı' : u.stage === 1 ? 'Kullandırım · noter adımı' : u.stage === 2 ? 'Kullandırım · rehin tesis ediliyor' : 'Kullandırım tamamlandı';
+  const step = !v.policy ? 'Başvurun onaylandı · kasko adımı' : !u || u.stage === 0 ? 'Kullandırım · gerekli belgeler' : u.stage === 1 ? 'Kullandırım · noter adımı' : u.stage === 2 ? 'Kullandırım · rehin tesis ediliyor' : 'Kullandırım tamamlandı';
   return `<div class="vm-ongoing" data-action="vm-track">
     <div class="vm-og-img">${vmPicHTML(c, 'side', 'studio')}</div>
     <div class="vm-og-mid"><span>Devam eden satın alman</span><b>${c.brand} ${c.model}</b><em>${step}</em></div>
@@ -6563,7 +6526,7 @@ function vmPlanSheet() {
   sheetScrimEl.classList.add('open');
 }
 
-/* -------------------- Screen 5 — application (the same screen turns into "Başvurunuz Alındı") -------------------- */
+/* -------------------- Screen 5 — application (the same screen turns into "Başvurunuz Onaylandı") -------------------- */
 // Registered job / education / income fields that the application shows and lets the customer correct
 const VM_PROF_FIELDS = [
   ['job', 'Meslek', ['Özel sektör çalışanı', 'Kamu çalışanı', 'Serbest meslek', 'Şirket sahibi / esnaf', 'Emekli']],
@@ -6602,7 +6565,7 @@ function VmApply() {
           <span class="contract-txt"><a data-action="vm-doc" data-doc="kvkk">Aydınlatma Metni</a>'ni okudum; değerlendirme için KKB sorgusu yapılmasını onaylıyorum.</span>
         </label>
       </div>
-      <div class="vm-note">${I.info}<span>Başvurun alındıktan sonra kasko poliçeni düzenlersin. Kredi; şube, noter ve rehin işlemlerinden sonra ${VM_PAYEE.short} hesabına ödenir.</span></div>
+      <div class="vm-note">${I.info}<span>Başvurun onaylandıktan sonra kasko poliçeni düzenlersin. Kredi; gerekli belgeler, noter ve rehin işlemlerinden sonra ${VM_PAYEE.short} hesabına ödenir.</span></div>
     </div>
     <div class="screen-cta">
       <button class="btn-primary vm-approve ${vmCanSubmit() ? '' : 'disabled'}" id="vm-submit" data-action="vm-submit">Başvuruyu Tamamla</button>
@@ -6683,8 +6646,8 @@ function vmMakeApp() {
   const v = state.vm, c = vmCar(), q = vmQuote();
   return { car: c.id, ref: vmRef('TK'), at: vmNowStr(), down: v.down, term: v.term, loan: q.loan, pay: q.pay, total: q.total, first: vmFirstDue(), prof: { ...v.prof }, fresh: false };
 }
-/* "Başvuruyu Tamamla" opens the shared confirmation pop-up; confirming keeps the customer on the same screen
-   (same route) and replaces the form with the received state */
+/* "Başvuruyu Tamamla" opens the shared confirmation pop-up; confirming closes it at once, a short check → approve
+   animation runs over this screen and the same screen (same route) then shows the approved application */
 function vmSubmit() {
   const v = state.vm;
   if (v.app || !vmCanSubmit() || state.screen !== 'arac-basvuru') return;
@@ -6699,7 +6662,7 @@ function vmSubmit() {
       ['Talep edilen kredi tutarı', vmTL(q.loan), true],
       ['Vade · aylık taksit', `${v.term} ay · ${vmTL(q.pay)}`],
     ],
-    busyText: 'Başvurun gönderiliyor…',
+    ms: 0,
     check: () => state.vm.app ? 'Bu araç için başvurun zaten alınmış.' : '',
     onConfirm: vmSubmitDone,
   });
@@ -6707,31 +6670,39 @@ function vmSubmit() {
 function vmSubmitDone() {
   const v = state.vm;
   if (v.app) return;
-  v.app = vmMakeApp();
-  v.app.fresh = true;
-  if (state.screen !== 'arac-basvuru') return;
+  const a = v.app = vmMakeApp();   // kept in state from the start: leaving during the animation does not lose it
+  a.fresh = true;
   vmUnwind();   // back from here goes to the marketplace, not to the finished simulation
-  vmRerender('anim-fade');
-  const sc = document.querySelector('#app .screen-scroll'); if (sc) sc.scrollTop = 0;
-  toast('Başvurun alındı');
+  if (state.screen !== 'arac-basvuru') return;
+  checkAnimRun({
+    steps: ['Başvurunuz kontrol ediliyor…', 'Bilgileriniz değerlendiriliyor…'],
+    items: ['Kimlik ve gelir bilgileri', 'Kredi kayıtları (KKB)', 'Araç ve satış noktası bilgileri'],
+    okTitle: 'Başvurunuz onaylandı', okSub: `${vmTL(a.loan)} taşıt kredin onaylandı.`,
+    onDone: () => {
+      if (state.vm.app !== a || state.screen !== 'arac-basvuru') return;
+      vmRerender('anim-fade');
+      const sc = document.querySelector('#app .screen-scroll'); if (sc) sc.scrollTop = 0;
+      toast('Başvurun onaylandı');
+    },
+  });
 }
 function vmApplyDone() {
   const v = state.vm, a = v.app, c = vmCar(a.car), fresh = a.fresh;
   a.fresh = false;
   const next = v.policy
-    ? { ico: I.bank, t: 'Kullandırım', d: 'Kasko poliçen düzenlendi. Şube, noter ve rehin adımlarıyla kredin kullandırılır.' }
-    : { ico: I.insurance, t: 'Kasko', d: 'Kredinin kullandırılabilmesi için bankamızın dain-i mürtehin olarak yer aldığı bir kasko poliçesi gerekir. Allianz Türkiye teklifleri aracına göre hazır; poliçeyi bir sonraki adımda düzenlersin.' };
+    ? { ico: I.bank, t: 'Kullandırım', d: 'Kasko poliçen düzenlendi. Gerekli belgeler, noter ve rehin adımlarıyla kredin kullandırılır.' }
+    : { ico: I.insurance, t: 'Kasko', d: 'Kredin onaylandı. Kullandırılabilmesi için bankamızın dain-i mürtehin olarak yer aldığı bir kasko poliçesi gerekir. Allianz Türkiye teklifleri aracına göre hazır; poliçeyi bir sonraki adımda düzenlersin.' };
   return `
   <div class="screen ${vmAnim()} vm">
     ${vmNav('Taşıt Kredisi Başvurusu')}
     <div class="screen-scroll">
       ${vmFlowHTML(v.policy ? 3 : 2)}
       <div class="vm-box vm-app-ok ${fresh ? 'fresh' : ''}" role="status">
-        <div class="vm-app-ok-top"><span class="vm-app-ok-ico">${I.check}</span><div><b>Başvurunuz Alındı</b><span>Taşıt kredisi başvurun başarıyla alındı.</span></div></div>
+        <div class="vm-app-ok-top"><span class="vm-app-ok-ico">${I.check}</span><div><b>Başvurunuz Onaylandı</b><span>Taşıt kredisi başvurun değerlendirildi ve onaylandı.</span></div></div>
         <div class="vm-frow"><span>Başvuru no</span><b>${a.ref}</b></div>
         <div class="vm-frow"><span>Başvuru tarihi</span><b>${a.at}</b></div>
-        <div class="vm-frow"><span>Başvuru durumu</span><b><span class="vm-pill ok sm">${I.check}Başvurunuz Alındı</span></b></div>
-        <div class="vm-frow hl"><span>Talep edilen kredi tutarı</span><b>${vmTL(a.loan)}</b></div>
+        <div class="vm-frow"><span>Başvuru durumu</span><b><span class="vm-pill ok sm">${I.check}Onaylandı</span></b></div>
+        <div class="vm-frow hl"><span>Onaylanan kredi tutarı</span><b>${vmTL(a.loan)}</b></div>
         <div class="vm-frow"><span>Vade · aylık taksit ${vmEx()}</span><b>${a.term} ay · ${vmTL(a.pay)}</b></div>
       </div>
       <div class="vm-sec-t">Seçilen araç</div>
@@ -6899,29 +6870,38 @@ function vmKBuy() {
     },
   });
 }
-function vmIssuePolicy(res = { ref: vmRef('ODM'), inst: 1, methodLabel: 'Kredi Kartı', cardLabel: 'World Signia •••• 7781', instLabel: 'Tek Çekim' }) {
+function vmIssuePolicy(res = { ref: vmRef('ODM'), inst: 1, methodLabel: 'Kredi Kartı', cardLabel: 'Adios •••• 7781', instLabel: 'Tek Çekim' }) {
   const v = state.vm, k = vmK();
   v.policy = { offer: k.id, no: vmRef('KSK'), payRef: res.ref, payMethod: res.methodLabel, payCard: res.cardLabel, payInst: res.instLabel,
     at: vmNowStr(), inst: res.inst, amount: k.premium, start: vmDateIn(0), end: vmDateIn(365) };
 }
 
-/* -------------------- Screen 7 — Kullandırım: Şube → Noter → Rehin -------------------- */
-// use.stage: 0 şube (branch appointment) · 1 noter (sale & transfer; appointment set by the dealer) ·
+/* -------------------- Screen 7 — Kullandırım: Gerekli Belgeler → Noter → Rehin -------------------- */
+// No branch visit: the documents and the digital approval of the loan contracts are completed here.
+// use.stage: 0 gerekli belgeler (documents + contracts) · 1 noter (sale & transfer; appointment set by the dealer) ·
 //            2 rehin being registered · 3 rehin registered, loan paid to the seller
-const VM_BRANCH_TIMES = ['09:30', '11:00', '14:30'];
 // Customer documents uploaded on this screen, { key: { t, d, file } } — none are requested for now; the upload flow stays for later needs
 const VM_UPL_DOCS = {};
-// Extra costs paid on this screen (kasko was paid on its own step) — EXAMPLE amounts
-function vmUseFees() {
-  const a = state.vm.app;
-  return [
-    { k: 'alloc', t: 'Kredi tahsis ücreti', d: `Kredi tutarının binde ${vmPctStr(VM_FEES.alloc * 10)}'i · şube işlemlerinden önce`, amt: vmAllocFee(a.loan) },
-    { k: 'noter', t: 'Noter masrafı', d: 'Satış ve devir işlemi · noter randevusundan önce', amt: VM_FEES.noter },
-    { k: 'pledge', t: 'Rehin tesis masrafı', d: 'Banka lehine rehin · noter randevusundan önce', amt: VM_FEES.pledge },
-  ];
+// Taşıt kredisi contracts approved digitally on the Gerekli Belgeler step — EXAMPLE texts
+const VM_CONTRACTS = [
+  { k: 'loan', t: 'Taşıt Kredisi Sözleşmesi', d: 'Kredi tutarı, vade, faiz ve geri ödeme koşulları' },
+  { k: 'pre', t: 'Ön Bilgilendirme Formu', d: 'Kredinin toplam maliyeti, ücretler ve cayma hakkı' },
+  { k: 'pledge', t: 'Araç Rehni Sözleşmesi', d: 'Araç üzerine banka lehine rehin tesisi' },
+];
+function vmContractBody(k) {
+  const a = state.vm.app, c = vmCar(a.car);
+  return {
+    loan: `<h4>1. Kredi</h4><p>${c.brand} ${c.model} (${c.year}) aracının alımı için ${vmTL(a.loan)} taşıt kredisi, ${a.term} ay vade, aylık ${vmTL(a.pay)} taksit (örnek faiz oranıyla).</p>
+      <h4>2. Kullandırım</h4><p>Kredi tutarı; noterde satış ve banka lehine rehin tesisinden sonra ${VM_PAYEE.legal} hesabına ödenir.</p>
+      <h4>3. Geri ödeme</h4><p>Taksitler Vadesiz TL Hesabım'dan otomatik tahsil edilir; ilk taksit ${a.first}.</p>
+      <h4>4. Erken ödeme</h4><p>Krediyi vadesinden önce kısmen ya da tamamen kapatabilirsin.</p>`,
+    pre: `<h4>Toplam maliyet</h4><p>Faiz, KKDF ve BSMV ile toplam geri ödeme ${vmTL(a.total)}; kredi tahsis ücreti binde ${vmPctStr(VM_FEES.alloc * 10)}.</p>
+      <h4>Cayma hakkı</h4><p>Sözleşmenin kurulmasından itibaren 14 gün içinde gerekçe göstermeden cayabilirsin.</p>`,
+    pledge: `<h4>Rehin</h4><p>${c.brand} ${c.model} aracı üzerine, kredi borcu karşılığında Yapı Kredi Bankası A.Ş. lehine ${vmTL(a.loan)} tutarında rehin tesis edilir.</p>
+      <h4>Rehnin kaldırılması</h4><p>Kredi tamamen ödendiğinde rehin bankamız tarafından kaldırılır.</p>`,
+  }[k];
 }
-function vmNewUse() { return { stage: 0, pick: null, pickTs: null, slot: null, slotTs: null, branchAt: null, noterSlot: null, noterAt: null, pledgeAt: null, disbAt: null, disbRef: null }; }
-function vmBranch(c) { const d = vmDealer(c); return { name: `Yapı Kredi ${d.district} Şubesi`, district: d.district, city: d.city }; }
+function vmNewUse() { return { stage: 0, contracts: null, docsAt: null, noterSlot: null, noterAt: null, pledgeAt: null, disbAt: null, disbRef: null }; }
 function vmNoter(c) { const d = vmDealer(c); return `${d.district} ${d.city === 'İstanbul' ? 12 : 3}. Noterliği`; }
 function vmBizDays(n, from, base = new Date()) {
   const out = [], d = new Date(base);
@@ -6934,14 +6914,9 @@ function vmSlotLabel(d, t) { return `${KN_GUN[d.getDay()]}, ${d.getDate()} ${VM_
 function vmAt(d, hhmm) { const [h, m] = hhmm.split(':'); const x = new Date(d); x.setHours(+h, +m, 0, 0); return x; }
 function vmShortSlot(s) { return s.split(' · ')[0].split(', ')[1]; }
 function vmUseDocsMissing() { return Object.keys(VM_UPL_DOCS).filter(k => !state.vm.upl[k]); }
-function vmFeePaid(k) { return !!state.vm.paid[k]; }
-function vmBranchTodo() {
-  const docs = vmUseDocsMissing().length > 0, fee = !vmFeePaid('alloc');
-  return docs && fee ? 'gerekli belgeleri yükle ve kredi tahsis ücretini öde' : docs ? 'gerekli belgeleri yükle' : fee ? 'kredi tahsis ücretini öde' : '';
-}
-function vmNoterTodo() {
-  const n = !vmFeePaid('noter'), p = !vmFeePaid('pledge');
-  return n && p ? 'noter ve rehin tesis masraflarını öde' : n ? 'noter masrafını öde' : p ? 'rehin tesis masrafını öde' : '';
+function vmDocsTodo() {
+  const u = state.vm.use, docs = vmUseDocsMissing().length > 0, ct = !(u && u.contracts);
+  return docs && ct ? 'gerekli belgeleri yükle ve taşıt kredisi sözleşmelerini onayla' : docs ? 'gerekli belgeleri yükle' : ct ? 'taşıt kredisi sözleşmelerini onayla' : '';
 }
 function VmUse() {
   const v = state.vm, a = v.app;
@@ -6949,17 +6924,17 @@ function VmUse() {
   if (!v.policy) { state.screen = 'arac-kasko'; return VmKasko(); }
   if (!v.use) v.use = vmNewUse();
   const u = v.use, c = vmCar(a.car), st = u.stage, done = st >= 3;
-  const pill = done ? '' : st === 0 ? (u.slot ? 'Şube randevusu planlandı' : 'Şube randevusu bekleniyor') : st === 1 ? 'Noter işlemi bekleniyor' : 'Rehin tesis ediliyor';
+  const pill = done ? '' : st === 0 ? (u.contracts ? 'Belgeler bekleniyor' : 'Sözleşme onayı bekleniyor') : st === 1 ? 'Noter işlemi bekleniyor' : 'Rehin tesis ediliyor';
   const stages = [
-    { t: 'Şube', d: st > 0 ? 'Tamamlandı' : u.slot ? 'Randevu ' + vmShortSlot(u.slot) : 'Randevu seç', s: st > 0 ? 'done' : u.slot ? 'on' : 'wait' },
-    { t: 'Noter', d: st > 1 ? 'Devir tamamlandı' : st === 1 ? 'Randevu ' + vmShortSlot(u.noterSlot) : 'Şubeden sonra', s: st > 1 ? 'done' : st === 1 ? 'on' : 'todo' },
+    { t: 'Gerekli Belgeler', d: st > 0 ? 'Tamamlandı' : u.contracts ? 'Belgeler bekleniyor' : 'Sözleşme onayı', s: st > 0 ? 'done' : 'on' },
+    { t: 'Noter', d: st > 1 ? 'Devir tamamlandı' : st === 1 ? 'Randevu ' + vmShortSlot(u.noterSlot) : 'Belgelerden sonra', s: st > 1 ? 'done' : st === 1 ? 'on' : 'todo' },
     { t: 'Rehin', d: st > 2 ? 'Tesis edildi' : st === 2 ? 'Tesis ediliyor' : 'Noter işleminde', s: st > 2 ? 'done' : st === 2 ? 'on' : 'todo' },
   ];
   const opsDone = [st > 0, st > 1, st > 2].filter(Boolean).length;
-  const cta = st === 0 && !u.slot ? `<button class="btn-primary ${u.pick ? '' : 'disabled'}" id="vm-use-cta" data-action="vm-use-book">Şube Randevusunu Onayla</button>`
+  const cta = st === 0 && !u.contracts ? '<button class="btn-primary" id="vm-use-cta" data-action="vm-contracts">Sözleşmeleri İncele ve Onayla</button>'
     : done ? '<button class="btn-primary" data-action="vm-home">Marketplace Taşıt\'a Dön</button>' : '';
-  const tip = st === 0 && u.slot ? (vmBranchTodo() ? `Şube randevusuna geçmeden önce ${vmBranchTodo()}.` : 'Sonraki adıma geçtiğinde şube randevun gerçekleşmiş olur; noter randevusu bayi tarafından belirlenir.')
-    : st === 1 ? (vmNoterTodo() ? `Noter randevusundan önce ${vmNoterTodo()}.` : 'Sonraki adıma geçtiğinde noterde satış ve devir yapılır, ardından rehin tesis edilir.') : '';
+  const tip = st === 0 ? 'Sözleşmeleri onayladığında gerekli belgeler adımı tamamlanır; noter randevun bayi tarafından belirlenir.'
+    : st === 1 ? 'Sonraki adıma geçtiğinde noterde satış ve devir yapılır, ardından rehin tesis edilir.' : '';
   return `
   <div class="screen ${vmAnim()} vm">
     ${vmNav('Kullandırım')}
@@ -6980,7 +6955,7 @@ function VmUse() {
       </div>` : ''}
       <div class="kn-st3" aria-label="Kullandırım süreci">${vmStagesHTML(stages)}</div>
       <div class="vm-sec-t vm-sec-row"><span>Tamamlanacak işlemler</span><span class="vm-sec-ref">${opsDone}/3 tamamlandı</span></div>
-      ${vmOpBranchHTML(u, c)}
+      ${vmOpDocsHTML(u)}
       ${vmOpNoterHTML(u, a, c)}
       ${vmOpPledgeHTML(u, a, c)}
       <div class="ru-info-card vm-links kn-gap">
@@ -6988,40 +6963,29 @@ function VmUse() {
         <div class="ru-info-row tap" data-action="vm-policy"><span class="ru-info-ico">${I.insurance}</span><span class="ru-info-k">Kasko poliçesi</span><span class="ru-info-v">Allianz · ${v.policy.no}</span>${I.chevR}</div>
         <div class="ru-info-row tap" data-action="vm-open-apply"><span class="ru-info-ico">${I.bell}</span><span class="ru-info-k">Başvuru</span><span class="ru-info-v">No ${a.ref}</span>${I.chevR}</div>
       </div>
-      <div class="vm-sec-t vm-sec-row" id="vm-req-t"><span>Gerekli belgeler</span><span class="vm-sec-ref">${vmReqCountTxt()}</span></div>
-      <div class="kn-docs-hint" role="status" aria-live="polite">${vmUseHint()}</div>
-      <div class="vm-box vm-docl kn-req" id="vm-docs">${vmUseDocsHTML()}</div>
-      ${vmDemoHTML((st === 0 && !!u.slot) || st === 1, tip)}
+      ${vmDemoHTML(st === 1, tip)}
     </div>
     ${cta ? `<div class="screen-cta">${cta}</div>` : ''}
   </div>`;
 }
-/* Operation cards reuse Marketplace Konut's Kullandırım kit (knOpHTML / knOpPill / knOpLines, kn-op styles) */
-function vmOpBranchHTML(u, c) {
-  const st = u.stage, b = vmBranch(c), miss = vmUseDocsMissing().length;
-  const s = st > 0 ? 'done' : u.slot ? 'on' : 'act';
-  const pill = st > 0 ? knOpPill('ok', 'Tamamlandı') : u.slot ? knOpPill('on', 'Randevu planlandı') : knOpPill('wait', 'Randevu seç');
-  const where = `<div class="vm-dealer"><div class="vm-dealer-ico">${I.bank}</div><div class="vm-dealer-mid"><b>${b.name}</b><span>${b.district} / ${b.city} · Bireysel krediler · satış noktana en yakın şube</span></div></div>`;
-  const when = st === 0 && !u.slot
-    ? `<div class="vm-adv-t">Randevu için gün ve saat seç</div>
-      ${vmSlotsHTML(u.pick)}
-      <div class="kn-picked ${u.pick ? 'on' : ''}" id="vm-pick-branch">${knPickedHTML(u.pick)}</div>`
-    : `<div class="vm-deliv-pt">${KN_ICO.cal}<span><b>${st > 0 ? 'Randevu tamamlandı' : 'Şube randevun'}</b>${u.slot}</span></div>`;
-  const lines = knOpLines([
-    ['Gerekli bilgi ve belgeler', st > 0 ? 'Tamamlandı' : miss ? `${miss} belge bekleniyor` : 'Hazır', st > 0 || !miss],
-    ['Kredi tahsis ücreti', vmFeePaid('alloc') ? 'Ödendi' : 'Ödeme bekleniyor', vmFeePaid('alloc')],
-  ]);
-  const warn = st === 0 && u.slot && vmBranchTodo() ? `<div class="kn-op-warn">${I.info}<span>Randevudan önce ${vmBranchTodo()}.</span><button class="kn-op-lnk" data-action="vm-to-docs">Belgelere git</button></div>` : '';
-  return knOpHTML(1, s, 'Şube', 'Kredi kullandırım işlemleri için gerekli bilgi ve belgelerin tamamlanması.', pill,
-    `${where}${when}${lines}${warn}
-    ${st > 0 ? '' : `<div class="vm-dealer-btns"><button data-action="toast" data-msg="Yol tarifi prototipte aktif değil">${VM_ICO.route}Yol tarifi</button><button data-action="toast" data-msg="Arama prototipte aktif değil">${VM_ICO.phone}Şubeyi ara</button></div>`}`);
+/* Operation cards reuse Marketplace Konut's Kullandırım kit (knOpHTML / knOpPill / knOpLines, kn-op styles).
+   Step 1 is the Gerekli Belgeler block itself: documents, their states and the contracts to approve. */
+function vmOpDocsHTML(u) {
+  const st = u.stage, s = st > 0 ? 'done' : 'act';
+  const pill = st > 0 ? knOpPill('ok', 'Tamamlandı') : u.contracts ? knOpPill('on', 'Belge bekleniyor') : knOpPill('wait', 'Onay bekleniyor');
+  const todo = st === 0 ? vmDocsTodo() : '';
+  return knOpHTML(1, s, 'Gerekli Belgeler', 'Kredi kullandırımı için gerekli belgelerin tamamlanması ve taşıt kredisi sözleşmelerinin dijital onayı.', pill,
+    `<div class="vm-req-h" id="vm-req-t"><span>Belgeler</span><span class="vm-sec-ref">${vmReqCountTxt()}</span></div>
+    ${todo ? `<div class="kn-docs-hint" role="status" aria-live="polite">${todo.charAt(0).toLocaleUpperCase('tr') + todo.slice(1)}. Şubeye gitmene gerek yok; tüm işlemler buradan tamamlanır.</div>` : ''}
+    <div class="vm-docl kn-req vm-req-in" id="vm-docs">${vmUseDocsHTML()}</div>
+    ${st > 0 ? `<div class="vm-deliv-pt">${I.check}<span><b>Gerekli belgeler tamamlandı</b>${u.docsAt}</span></div>` : ''}`);
 }
 function vmOpNoterHTML(u, a, c) {
   const st = u.stage, d = vmDealer(c);
   const s = st > 1 ? 'done' : st === 1 ? 'on' : 'todo';
   const pill = st > 1 ? knOpPill('ok', 'Devir tamamlandı') : st === 1 ? knOpPill('on', 'Randevu planlandı') : knOpPill('kn-later', 'Sırada');
   const where = `<div class="vm-dealer"><div class="vm-dealer-ico">${KN_ICO.pen}</div><div class="vm-dealer-mid"><b>${vmNoter(c)}</b><span>Satış ve devir ${d.name} tarafından noterde yapılır</span></div></div>`;
-  const when = st === 0 ? `<div class="kn-lock">${I.lock}<span>Şube işlemlerin tamamlandığında noter randevun bayi tarafından belirlenir.</span></div>`
+  const when = st === 0 ? `<div class="kn-lock">${I.lock}<span>Gerekli belgeler tamamlandığında noter randevun bayi tarafından belirlenir.</span></div>`
     : `<div class="vm-deliv-pt">${KN_ICO.cal}<span><b>${st > 1 ? 'Satış ve devir yapıldı' : 'Noter randevun'}</b>${u.noterSlot}</span></div>`;
   const rows = `<div class="vm-prof kn-op-rows">
       <div class="vm-frow"><span>Araç</span><b>${c.brand} ${c.model} · ${c.year}</b></div>
@@ -7029,12 +6993,8 @@ function vmOpNoterHTML(u, a, c) {
       <div class="vm-frow"><span>Alıcı</span><b>${VM_PROFILE.name} · T.C. ${VM_PROFILE.tckn}</b></div>
       <div class="vm-frow"><span>Noter işlem durumu</span><b class="${st > 1 ? 'kn-okv' : ''}">${st > 1 ? 'Araç adına devredildi' : st === 1 ? 'Randevu günü yapılacak' : 'Bekleniyor'}</b></div>
     </div>`;
-  const lines = st === 1 ? knOpLines([
-    ['Noter masrafı', vmFeePaid('noter') ? 'Ödendi' : 'Ödeme bekleniyor', vmFeePaid('noter')],
-    ['Rehin tesis masrafı', vmFeePaid('pledge') ? 'Ödendi' : 'Ödeme bekleniyor', vmFeePaid('pledge')],
-  ]) : '';
   return knOpHTML(2, s, 'Noter', 'Araç satış ve devir işlemlerinin noter aracılığıyla gerçekleştirilmesi.', pill,
-    `${where}${when}${lines}${rows}<div class="vm-hint">Noterde satışla birlikte araç üzerine bankamız lehine rehin konulur; ruhsat yeni sahibi olarak senin adına düzenlenir.</div>`);
+    `${where}${when}${rows}<div class="vm-hint">Noterde satışla birlikte araç üzerine bankamız lehine rehin konulur; ruhsat yeni sahibi olarak senin adına düzenlenir.</div>`);
 }
 function vmOpPledgeHTML(u, a, c) {
   const st = u.stage;
@@ -7052,81 +7012,37 @@ function vmOpPledgeHTML(u, a, c) {
     : `<div class="vm-hint">Rehin tesis edildikten sonra kredi tutarı ${VM_PAYEE.short} hesabına aktarılır; rehin kredi kapandığında kaldırılır.</div>`;
   return knOpHTML(3, s, 'Rehin', 'Kredi kapsamında satın alınan araç üzerine banka lehine rehin tesis edilmesi.', pill, rows + pay);
 }
-function vmSlotsHTML(pick) {
-  return `<div class="kn-slots">${vmBizDays(3, 1).map(d => `<div class="kn-day"><b>${KN_GUN[d.getDay()]}</b><span>${d.getDate()} ${VM_AY[d.getMonth()].slice(0, 3)}</span>
-    ${VM_BRANCH_TIMES.map(t => { const val = vmSlotLabel(d, t); return `<button class="kn-slot ${pick === val ? 'on' : ''}" data-action="vm-slot" data-v="${val}" data-ts="${vmAt(d, t).getTime()}">${t}</button>`; }).join('')}</div>`).join('')}</div>`;
-}
-function vmPickSlot(val, ts) {
-  const u = state.vm.use;
-  if (!u || u.slot) return;
-  u.pick = val; u.pickTs = ts;
-  document.querySelectorAll('.kn-slot[data-action="vm-slot"]').forEach(b => b.classList.toggle('on', b.dataset.v === val));
-  const sel = document.getElementById('vm-pick-branch'); if (sel) { sel.innerHTML = knPickedHTML(val); sel.classList.add('on'); }
-  const cta = document.getElementById('vm-use-cta'); if (cta) cta.classList.remove('disabled');
-}
-function vmBusyBtn(id, text) {
-  const b = document.getElementById(id);
-  if (!b || b.dataset.busy) return null;
-  b.dataset.busy = '1';
-  b.style.pointerEvents = 'none';
-  b.innerHTML = `<span class="spinner"></span> ${text}`;
-  return b;
-}
-function vmUseBook() {
-  const v = state.vm, u = v.use;
-  if (!u || u.stage !== 0 || u.slot || !u.pick || !vmBusyBtn('vm-use-cta', 'Randevu oluşturuluyor…')) return;
-  setTimeout(() => {
-    if (state.vm.use !== u) return;
-    u.slot = u.pick; u.slotTs = u.pickTs;
-    vmUseRefresh();
-    toast('Şube randevun oluşturuldu');
-  }, 1100);
-}
-/* Gerekli belgeler: uploads, documents already in place, what to bring, and the extra payments */
+/* Gerekli belgeler: uploads (none requested for now), documents already in place and the loan contracts */
 function vmUseDocs() {
-  const v = state.vm, a = v.app, c = vmCar(a.car), st = v.use ? v.use.stage : 0;
+  const v = state.vm, a = v.app, c = vmCar(a.car), u = v.use, st = u ? u.stage : 0;
   const upl = Object.keys(VM_UPL_DOCS).map(k => {
     const x = v.upl[k], D = VM_UPL_DOCS[k];
     return { k, t: D.t, d: D.d, file: x ? x.file : '', s: !x ? 'up' : st > 0 ? 'ok' : 'done' };
   });
   return [
     ...upl,
+    { k: 'contracts', t: 'Taşıt Kredisi Sözleşmeleri', d: u && u.contracts ? `${VM_CONTRACTS.length} sözleşme dijital olarak onaylandı · ${u.contracts.at}` : `${VM_CONTRACTS.length} sözleşme · dijital onayın bekleniyor`, s: u && u.contracts ? 'signed' : 'sign' },
     { k: 'id', t: 'Kimlik bilgileri', d: 'Nüfus kayıtlarından doğrulandı', s: 'ready' },
     { k: 'inc', t: 'Gelir bilgisi', d: 'Kayıtlı bilgilerin ve hesap hareketlerinle doğrulandı', s: 'ready' },
     c.cond === 'new' ? { k: 'inv', t: 'Proforma fatura', d: `${vmDealer(c).name} tarafından iletildi`, s: 'ready' } : { k: 'inv', t: 'Satış sözleşmesi taslağı', d: `${vmDealer(c).name} tarafından iletildi`, s: 'ready' },
     c.cond === 'new' ? { k: 'car', t: 'Araç bilgileri (şasi ve motor no)', d: `${vmDealer(c).name} tarafından iletildi`, s: 'ready' } : { k: 'car', t: 'Ruhsat ve ekspertiz raporu', d: `${vmDealer(c).name} tarafından iletildi`, s: 'ready' },
     { k: 'kasko', t: 'Kasko poliçesi', d: `Allianz Türkiye · ${v.policy.no}`, s: 'ready' },
-    { k: 'kimlik', t: 'T.C. kimlik kartı', d: 'Şube ve noter randevusunda yanında olmalı', s: 'bring' },
   ];
 }
 function vmReqCountTxt() {
-  const n = Object.keys(VM_UPL_DOCS).length + vmUseFees().length;
-  const done = Object.keys(VM_UPL_DOCS).filter(k => state.vm.upl[k]).length + vmUseFees().filter(f => vmFeePaid(f.k)).length;
-  return `${done}/${n} tamamlandı`;
-}
-function vmUseHint() {
-  const v = state.vm, u = v.use;
-  if (!u || u.stage >= 2) return '';
-  const miss = vmUseDocsMissing().length, pay = vmUseFees().filter(f => !vmFeePaid(f.k)).length;
-  if (!miss && !pay) return '';
-  const t = [miss ? `${miss > 1 ? 'belgelerini' : 'belgeni'} yükle` : '', pay ? `${pay > 1 ? 'ödemelerini' : 'kalan ödemeni'} yap` : ''].filter(Boolean).join(', ');
-  return t.charAt(0).toLocaleUpperCase('tr') + t.slice(1) + '. Kasko ödemen önceki adımda tamamlandı.';
+  const docs = vmUseDocs();
+  return `${docs.filter(x => x.s !== 'up' && x.s !== 'sign').length}/${docs.length} tamamlandı`;
 }
 function vmUseDocsHTML() {
   const v = state.vm;
   const pill = x => x.s === 'ok' ? `<span class="vm-pill ok sm">${I.check}Onaylandı</span>`
     : x.s === 'done' ? `<span class="vm-pill ok sm">${I.check}Yüklendi</span>`
     : x.s === 'ready' ? `<span class="vm-pill ok sm">${I.check}Hazır</span>`
-    : x.s === 'bring' ? '<span class="vm-pill sm kn-later">Yanında getir</span>'
+    : x.s === 'signed' ? `<span class="vm-pill ok sm">${I.check}Onaylandı</span>`
+    : x.s === 'sign' ? `<span class="kn-up miss vm-ct-btn">${KN_ICO.pen}İncele ve Onayla</span>`
     : `<button class="kn-up miss ${v.uploading === x.k ? 'busy' : ''}" data-action="vm-upl" data-doc="${x.k}">${v.uploading === x.k ? '<span class="vm-spin"></span>Yükleniyor' : KN_ICO.upload + 'Yükle'}</button>`;
-  const docs = vmUseDocs().map(x => `<div class="${x.k in VM_UPL_DOCS ? 'kn-updoc' : ''} kn-ds-${x.s}" data-doc="${x.k}"><span class="vm-docl-ico">${I.doc}</span><div><b>${x.t}</b><span>${x.d}</span>${x.s === 'up' ? '<em class="vm-wait-tag">Bekleniyor</em>' : ''}${x.file ? `<em class="kn-upfile">${I.check}${x.file}</em>` : ''}</div>${pill(x)}</div>`).join('');
-  const pays = vmUseFees().map(f => {
-    const paid = v.paid[f.k];
-    return `<div class="kn-pay vm-pay ${paid ? 'paid' : ''}" data-pay="${f.k}"><span class="vm-docl-ico kn-pay-ico">${I.wallet}</span><div><b>${f.t}</b><span>${paid ? `${paid.label} · dekont ${paid.ref}` : f.d}</span></div>
-      <div class="kn-pay-r"><b>${vmTL(f.amt)}</b>${paid ? `<span class="vm-pill ok sm">${I.check}Ödendi</span>` : `<button class="kn-pay-btn" data-action="vm-pay" data-k="${f.k}">Öde</button>`}</div>
-    </div>`;
-  }).join('');
-  return `${docs}<div class="kn-req-sub">Ödemeler</div>${pays}`;
+  return vmUseDocs().map(x => `<div class="${x.k in VM_UPL_DOCS ? 'kn-updoc' : ''} ${x.k === 'contracts' ? 'vm-ct-row tap' : ''} kn-ds-${x.s}" data-doc="${x.k}" ${x.k === 'contracts' ? 'data-action="vm-contracts" role="button"' : ''}>
+      <span class="vm-docl-ico">${x.k === 'contracts' ? KN_ICO.pen : I.doc}</span><div><b>${x.t}</b><span>${x.d}</span>${x.s === 'up' || x.s === 'sign' ? '<em class="vm-wait-tag">Bekleniyor</em>' : ''}${x.file ? `<em class="kn-upfile">${I.check}${x.file}</em>` : ''}</div>${pill(x)}</div>`).join('');
 }
 function vmUseRefresh() { if (state.screen === 'arac-kullandirim') vmStill(); }
 /* Upload simulation (prototype: no real file is read or sent) */
@@ -7140,30 +7056,64 @@ function vmUploadDoc(k) {
     if (!v.app) return;   // demo was reset meanwhile
     v.upl[k] = { at: vmNowStr(), file: VM_UPL_DOCS[k].file };
     toast(`${VM_UPL_DOCS[k].t} yüklendi`);
+    vmDocsCheck();
     vmUseRefresh();
   }, 1200);
 }
-/* Every "Öde" opens the shared payment pop-up with the fee's description and amount; a paid fee turns "Ödendi" */
-function vmPayFee(k) {
-  const v = state.vm, a = v.app, f = a && v.use ? vmUseFees().find(x => x.k === k) : null;
-  if (!f || v.paid[k]) return;
-  payPopOpen({
-    type: f.t, title: f.t, desc: f.d, amount: f.amt, okMsg: `${f.t} ödendi.`,
-    onPaid: res => {
-      if (state.vm.app !== a || v.paid[k]) return;   // demo was reset meanwhile
-      v.paid[k] = { at: vmNowStr(), ref: res.ref, amount: f.amt, label: res.label };
-      vmUseRefresh();
-    },
-  });
+/* Taşıt Kredisi Sözleşmeleri: a small sheet; each contract opens in place, one approval covers all */
+function vmContractSheet(open) {
+  const v = state.vm, u = v.use;
+  if (!u || !v.app) return;
+  const ok = !!u.contracts, ctOpen = open === undefined ? (sheetEl.dataset.ct || '') : open;
+  sheetEl.dataset.ct = ctOpen;
+  sheetEl.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Taşıt Kredisi Sözleşmeleri</h3><button class="sheet-x" data-action="close-sheet" aria-label="Kapat">${I.close}</button></div>
+    <div class="vm-ct-note">${ok ? `${I.check}<span>Sözleşmelerin ${u.contracts.at} tarihinde dijital olarak onaylandı · onay no ${u.contracts.ref}</span>` : `${I.info}<span>Şubeye gitmeden, kredinin kullandırılması için aşağıdaki sözleşmeleri buradan onaylaman gerekiyor. İçeriği görmek için sözleşmeye dokun.</span>`}</div>
+    <div class="vm-ct-list">${VM_CONTRACTS.map(x => `<div class="vm-ct ${ctOpen === x.k ? 'open' : ''}">
+        <button class="vm-ct-h" data-action="vm-ct-toggle" data-k="${x.k}" aria-expanded="${ctOpen === x.k}"><span class="vm-ct-ico">${I.doc}</span><span class="vm-ct-mid"><b>${x.t}</b><span>${x.d}</span></span>${ok ? `<span class="vm-pill ok sm">${I.check}Onaylandı</span>` : ''}<span class="vm-ct-chev">${I.chevDown}</span></button>
+        ${ctOpen === x.k ? `<div class="vm-ct-body vm-legal">${vmContractBody(x.k)}<p class="vm-ct-ex">Metin örnektir.</p></div>` : ''}
+      </div>`).join('')}</div>
+    ${ok ? '<button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>' : `
+    <label class="contract-row vm-ct-agree ${v.ctAgree ? 'on' : ''}" data-action="vm-ct-agree"><span class="cbx">${I.check}</span><span class="contract-txt">Sözleşmeleri okudum, onaylıyorum.</span></label>
+    <button class="sheet-btn" id="vm-ct-ok" data-action="vm-ct-ok" ${v.ctAgree ? '' : 'disabled'}>Sözleşmeleri Onayla</button>
+    <button class="sheet-btn ghost" data-action="close-sheet">Vazgeç</button>`}`;
+  sheetEl.classList.add('open', 'pop-sheet');
+  sheetScrimEl.classList.add('open');
 }
-function vmToDocs() {
-  const t = document.getElementById('vm-req-t'), sc = document.querySelector('#app .screen-scroll');
-  if (t && sc) sc.scrollTo({ top: t.offsetTop - 8, behavior: 'smooth' });
+function vmContractToggle(k) {
+  const y = sheetEl.scrollTop;
+  vmContractSheet(sheetEl.dataset.ct === k ? '' : k);
+  sheetEl.scrollTop = y;
 }
-function vmBranchDone(u, c) {
-  u.stage = 1; u.branchAt = vmNowStr();
-  const nd = vmBizDays(1, 2, new Date(u.slotTs || Date.now()))[0];
-  u.noterSlot = vmSlotLabel(nd, '11:00');   // the dealer books the notary
+function vmContractAgree() {
+  const v = state.vm;
+  v.ctAgree = !v.ctAgree;
+  const row = sheetEl.querySelector('.vm-ct-agree'); if (row) row.classList.toggle('on', v.ctAgree);
+  const b = document.getElementById('vm-ct-ok'); if (b) b.disabled = !v.ctAgree;
+}
+function vmContractApprove() {
+  const v = state.vm, u = v.use, b = document.getElementById('vm-ct-ok');
+  if (!u || u.contracts || !v.ctAgree || !b || b.dataset.busy) return;
+  b.dataset.busy = '1';
+  b.innerHTML = '<span class="spinner"></span> Sözleşmelerin onaylanıyor…';
+  sheetEl.querySelectorAll('.sheet-btn.ghost, .sheet-x').forEach(x => { x.disabled = true; });
+  setTimeout(() => {
+    if (state.vm.use !== u) return closeSheet();   // demo was reset meanwhile
+    u.contracts = { at: vmNowStr(), ref: vmRef('SZL') };
+    closeSheet();
+    const done = vmDocsCheck();
+    vmUseRefresh();
+    toast(done ? 'Sözleşmelerin onaylandı · gerekli belgeler tamamlandı' : 'Sözleşmelerin onaylandı');
+  }, 1000);
+}
+/* Step 1 completes as soon as nothing is missing; the dealer then books the notary */
+function vmDocsCheck() {
+  const u = state.vm.use;
+  if (!u || u.stage !== 0 || vmDocsTodo()) return false;
+  u.stage = 1; u.docsAt = vmNowStr();
+  u.noterSlot = vmSlotLabel(vmBizDays(1, 2)[0], '11:00');
+  return true;
 }
 function vmNoterDone(u) { u.stage = 2; u.noterAt = vmNowStr(); }
 function vmPledgeDone(u, quiet) {
@@ -7177,17 +7127,11 @@ function vmPledgeDone(u, quiet) {
 function vmAdvance() {
   const v = state.vm, u = v.use;
   if (!u || state.screen !== 'arac-kullandirim') return;
-  const c = vmCar(v.app.car);
-  if (u.stage === 0 && u.slot) {
-    const todo = vmBranchTodo();
-    if (todo) { vmToDocs(); return toast(todo.charAt(0).toLocaleUpperCase('tr') + todo.slice(1)); }
-    vmBranchDone(u, c);
-    vmUseRefresh();
-    return toast('Şube işlemlerin tamamlandı');
+  if (u.stage === 0) {
+    const todo = vmDocsTodo();
+    if (todo) return toast(todo.charAt(0).toLocaleUpperCase('tr') + todo.slice(1));
   }
   if (u.stage === 1) {
-    const todo = vmNoterTodo();
-    if (todo) { vmToDocs(); return toast(todo.charAt(0).toLocaleUpperCase('tr') + todo.slice(1)); }
     vmNoterDone(u);
     vmUseRefresh();
     toast('Noterde satış ve devir yapıldı, rehin tesis ediliyor');
@@ -7196,7 +7140,7 @@ function vmAdvance() {
 }
 function vmDemoHTML(adv, tip) {
   return `<div class="vm-demo">
-    <div class="vm-demo-h">${I.info}<span>Demo kontrolleri · ${tip || 'Gerçek süreçte bu adımlar şube, bayi ve noterden gelen bilgilerle güncellenir.'}</span></div>
+    <div class="vm-demo-h">${I.info}<span>Demo kontrolleri · ${tip || 'Gerçek süreçte bu adımlar bayi ve noterden gelen bilgilerle güncellenir.'}</span></div>
     <div class="vm-demo-btns">
       ${adv ? '<button class="vm-demo-btn main" data-action="vm-adv">Sonraki adıma geç</button>' : ''}
       <button class="vm-demo-btn" data-action="vm-reset">Demoyu sıfırla</button>
@@ -7312,7 +7256,7 @@ function vmDocSheet(kind) {
       <h4>Paylaşım</h4><p>Araç ve satış bilgileri satış noktasıyla, kasko bilgileri sigorta şirketiyle, satış ve rehin bilgileri noterle paylaşılır.</p>
       <h4>Hakların</h4><p>Verilerinin işlenip işlenmediğini öğrenme, düzeltilmesini ve silinmesini isteme hakkına sahipsin.</p>`],
     contract: ['Taşıt Kredisi Sözleşmesi', `
-      <h4>1. Kullandırım</h4><p>${c.brand} ${c.model} aracının alımı için ${vmTL(q.loan)} kredi, ${term} ay vade. Kredi tutarı; şubede sözleşme imzası, noterde satış ve rehin tesisinden sonra doğrudan satıcının hesabına aktarılır.</p>
+      <h4>1. Kullandırım</h4><p>${c.brand} ${c.model} aracının alımı için ${vmTL(q.loan)} kredi, ${term} ay vade. Kredi tutarı; sözleşmelerin dijital onayı, noterde satış ve rehin tesisinden sonra doğrudan satıcının hesabına aktarılır.</p>
       <h4>2. Geri ödeme</h4><p>Aylık taksit ${vmTL(q.pay)}, toplam geri ödeme ${vmTL(q.total)} (örnek). Taksitler ödeme planındaki tarihlerde hesabından tahsil edilir.</p>
       <h4>3. Rehin ve kasko</h4><p>Araç, kredi borcu karşılığında bankamız lehine rehinlenir; kredi süresince bankamızın dain-i mürtehin olduğu kasko poliçesi yenilenir. Rehin kredi kapandığında kaldırılır.</p>
       <h4>4. Erken ödeme ve cayma</h4><p>Krediyi vadesinden önce kapatabilirsin. Sözleşmenin kurulmasından itibaren 14 gün içinde cayma hakkın vardır.</p>`],
@@ -7383,7 +7327,7 @@ function vmBusySheet(c) {
 }
 /* Demo reset clears the purchase; the customer's registered information stays */
 function vmResetPurchase() {
-  Object.assign(state.vm, { app: null, policy: null, use: null, upl: {}, uploading: null, paid: {},
+  Object.assign(state.vm, { app: null, policy: null, use: null, upl: {}, uploading: null, ctAgree: false,
     kasko: 'k2', kAgree: false, flowCar: null, agree: { kvkk: false }, profEdit: null });
 }
 function vmResetStart(id) { vmResetPurchase(); closeSheet(); state.vm.car = id; vmStartSim(); }
@@ -7401,11 +7345,10 @@ function vmSeed(h) {
   v.kAgree = true;
   vmIssuePolicy();
   if (h === 'arac-kullandirim') return;
-  const u = v.use = vmNewUse(), c = vmCar(), day = vmBizDays(1, 1)[0];   // the whole Kullandırım part, completed
+  const u = v.use = vmNewUse();   // the whole Kullandırım part, completed
   Object.keys(VM_UPL_DOCS).forEach(k => { v.upl[k] = { at: vmNowStr(), file: VM_UPL_DOCS[k].file }; });
-  vmUseFees().forEach(f => { v.paid[f.k] = { at: vmNowStr(), ref: vmRef('ODM'), amount: f.amt, label: 'Worldcard •••• 3333 · Tek Çekim' }; });
-  Object.assign(u, { slot: vmSlotLabel(day, '09:30'), slotTs: vmAt(day, '09:30').getTime() });
-  vmBranchDone(u, c);
+  u.contracts = { at: vmNowStr(), ref: vmRef('SZL') };
+  vmDocsCheck();
   vmNoterDone(u);
   vmPledgeDone(u, true);
 }
@@ -7518,7 +7461,7 @@ state.kn = {
   tk: { s1: null, s2: null, s3: null, cur: 's1', at: null, shareDraft: null },   // TAKBİS answers (S3 = share %)
   app: null,           // { home, ref, at, status: 'review' | 'pre' (first evaluation passed) | 'approved' (final), step, down, term, loan, pay, total, first, events }
   eks: null,           // ekspertiz, started by the bank { stage 1 appointment set, 4 report uploaded & approved; slot, seen, away, reportNo }
-  ipt: null,           // ipotek { stage 0 sign, 1 tapu appointment, 2 tapu & ipotek, 3 disbursement, 4 done; slot, dask, harc, done }
+  ipt: null,           // Kullandırım { stage 0 branch, 2 tapu appointment (set by the tapu müdürlüğü), 3 tapu done · ipotek running, 4 done; slot, dask, tslot }
   clock: null,         // demo clock (ms): steps jump to their appointment dates; null = real time
 };
 let knSvgSeq = 0;
@@ -8666,7 +8609,7 @@ function knApplyDone() {
   const next = rev ? { ico: VM_ICO.clock, t: 'İlk kredi değerlendirmesi', d: 'Başvurun değerlendirmeye alındı; sonuç bildirim olarak da gelir. Olumlu sonuçlanırsa bankamız ekspertiz sürecini başlatır.' }
     : pre ? { ico: VM_ICO.clock, t: 'Ekspertiz', d: 'İlk değerlendirmen olumlu sonuçlandı. Ekspertiz randevun bankamız tarafından belirlendi; rapor onaylandığında kullandırım aşamasına geçilir.' }
     : done ? { ico: VM_ICO.key, t: 'Süreç tamamlandı', d: 'Tapu devri ve ipotek tesisi tamamlandı, kredin satıcıya aktarıldı.' }
-    : { ico: I.bank, t: 'Kullandırım', d: 'Şube randevusu, tapu devri ve ipotek; gerekli belgeler, DASK ve tapu harcı.' };
+    : { ico: I.bank, t: 'Kullandırım', d: 'Şube randevusu, tapu devri ve ipotek; gerekli belgeler ve DASK.' };
   return `
   <div class="screen ${vmAnim()} vm kn">
     ${vmNav('Konut Kredisi Başvurusu')}
@@ -8713,7 +8656,7 @@ function knNewEks() {
   const slot = knAt(knBizDays(1, 2)[0], '10:30');
   return { stage: 1, ref: vmRef('EKS'), at: knStamp(), slot: knSlotLabel(slot, '10:30'), slotTs: slot.getTime(), seen: false, away: false, fresh: false, reportNo: null, reportAt: null, okAt: null };
 }
-function knNewIpt() { return { stage: 0, slot: null, slotTs: null, pick: null, pickTs: null, signedAt: null, dask: null, harc: null, tslot: null, tslotTs: null, tpick: null, tpickTs: null, tapuAt: null, iptAt: null, disbAt: null, disbRef: null }; }
+function knNewIpt() { return { stage: 0, slot: null, slotTs: null, pick: null, pickTs: null, signedAt: null, dask: null, tslot: null, tslotTs: null, tapuAt: null, iptAt: null, disbAt: null, disbRef: null }; }
 function knPreApprove(a, quiet) {
   a.status = 'pre';
   a.preAt = knStamp();
@@ -8778,7 +8721,7 @@ function KnTrack() {
   const next = rev ? { ico: VM_ICO.clock, t: 'Değerlendirme sonucunu bekle', d: 'Sonuç bildirim olarak da gelir; gerçek süreçte genellikle 1–2 iş günü sürer.' }
     : pre ? { ico: VM_ICO.clock, t: 'Ekspertiz raporunu bekle', d: 'Rapor bankamıza ulaşıp onaylandığında ekspertiz ekranında görünür, ardından kullandırım aşamasına geçersin; senin bir işlem yapman gerekmiyor.' }
     : done ? { ico: VM_ICO.key, t: 'Süreç tamamlandı', d: 'Tapu devri ve ipotek tesisi tamamlandı, kredin satıcıya aktarıldı.', act: 'kn-to-ipt' }
-    : { ico: I.bank, t: 'Kullandırım', d: 'Şube randevusu, tapu devri ve ipotek; gerekli belgeler, DASK ve tapu harcı.', act: 'kn-to-ipt' };
+    : { ico: I.bank, t: 'Kullandırım', d: 'Şube randevusu, tapu devri ve ipotek; gerekli belgeler ve DASK.', act: 'kn-to-ipt' };
   const cta = rev ? '<button class="btn-primary disabled">Değerlendiriliyor…</button>'
     : pre ? '<button class="btn-primary" data-action="kn-to-eks">Ekspertiz Detaylarını Gör</button>'
     : done ? '<button class="btn-primary" data-action="kn-home">Marketplace Konut\'a Dön</button>'
@@ -8880,7 +8823,6 @@ function knTrackEmpty() {
 
 /* -------------------- appointments (business days, offered slots) -------------------- */
 const KN_BRANCH_TIMES = ['09:30', '11:00', '14:30'];
-const KN_TAPU_TIMES = ['10:30', '13:00', '15:30'];
 function knBizDays(n, from) {
   const out = [], d = knClock();
   d.setHours(12, 0, 0, 0);
@@ -8897,7 +8839,7 @@ function knPickedHTML(val) {
   return val ? `${KN_ICO.cal}<span>Seçilen randevu <b>${val}</b></span>` : `${KN_ICO.cal}<span>Uygun gün ve saati seç</span>`;
 }
 function knPickSlot(kind, val, ts) {
-  const v = state.kn, o = v.ipt, k = kind === 'tapu' ? 'tpick' : 'pick';
+  const v = state.kn, o = v.ipt, k = 'pick';
   if (!o) return;
   o[k] = val;
   o[k + 'Ts'] = ts;
@@ -8907,7 +8849,7 @@ function knPickSlot(kind, val, ts) {
 }
 function knCtaReady() {
   const p = state.kn.ipt;
-  if (state.screen === 'konut-ipotek') return p.stage === 0 ? !!p.pick : p.stage === 1 ? !!(p.harc && p.tpick) : true;
+  if (state.screen === 'konut-ipotek') return p.stage === 0 ? !!p.pick : true;
   return true;
 }
 
@@ -9036,9 +8978,9 @@ function knBusyBtn(id, text) {
 function knReportNo() { return `DR-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`; }
 
 /* -------------------- Screen 8 — Kullandırım: branch appointment → tapu devri → ipotek -------------------- */
-// ipt.stage: 0 kullandırım (branch appointment) · 1 tapu devri preparation · 2 tapu appointment set ·
-//            3 tapu devri done, ipotek being registered · 4 ipotek registered, loan paid to the seller
-function knHarcAmt(h) { return Math.round(h.price * KN_FEES.deedPct / 100); }
+// ipt.stage: 0 kullandırım (branch appointment) · 2 tapu appointment set by the tapu müdürlüğü (no choice for the
+//            customer; it is created when the branch step completes) · 3 tapu devri done, ipotek being registered ·
+//            4 ipotek registered, loan paid to the seller. (Stage 1, the old tapu booking step, is no longer used.)
 function knBranchReady() { const p = state.kn.ipt; return !!(p && p.dask) && !knDocsMissing().length; }
 /* What is still missing before the branch appointment (only the missing parts are named) */
 function knBranchTodo() {
@@ -9051,15 +8993,14 @@ function KnIpotek() {
   if (!v.eks || v.eks.stage < 4 || !v.ipt) { state.screen = 'konut-takip'; return KnTrack(); }
   a.finalSeen = true;
   const p = v.ipt, h = knHome(a.home), st = p.stage, done = st >= 4;
-  const pill = st === 0 ? (p.slot ? 'Şube randevusu planlandı' : 'Şube randevusu bekleniyor') : ['', 'Tapu devri hazırlığı', 'Tapu randevusu planlandı', 'İpotek tesis ediliyor'][st];
+  const pill = st === 0 ? (p.slot ? 'Şube randevusu planlandı' : 'Şube randevusu bekleniyor') : ['', 'Tapu randevusu bekleniyor', 'Tapu randevusu planlandı', 'İpotek tesis ediliyor'][st];
   const stages = [
     { t: 'Kullan&shy;dırım', d: st > 0 ? 'Tamamlandı' : p.slot ? 'Randevu ' + knShortSlot(p.slotTs).split(' · ')[0] : 'Randevu seç', s: st > 0 ? 'done' : p.slot ? 'on' : 'wait' },
-    { t: 'Tapu Devri', d: st > 2 ? 'Tamamlandı' : st === 2 ? 'Randevu ' + knShortSlot(p.tslotTs).split(' · ')[0] : st === 1 ? 'Randevu seç' : 'Kullandırımdan sonra', s: st > 2 ? 'done' : st === 2 ? 'on' : st === 1 ? 'wait' : 'todo' },
+    { t: 'Tapu Devri', d: st > 2 ? 'Tamamlandı' : st === 2 ? 'Randevu ' + knShortSlot(p.tslotTs).split(' · ')[0] : 'Kullandırımdan sonra', s: st > 2 ? 'done' : st === 2 ? 'on' : 'todo' },
     { t: 'İpotek', d: st > 3 ? 'Tesis edildi' : st === 3 ? 'Tesis ediliyor' : 'Tapu devriyle', s: st > 3 ? 'done' : st === 3 ? 'on' : 'todo' },
   ];
   const opsDone = [st > 0, st > 2, st > 3].filter(Boolean).length;
   const cta = st === 0 && !p.slot ? `<button class="btn-primary ${p.pick ? '' : 'disabled'}" id="kn-cta" data-action="kn-ipt-book">Şube Randevusunu Onayla</button>`
-    : st === 1 ? `<button class="btn-primary ${knCtaReady() ? '' : 'disabled'}" id="kn-cta" data-action="kn-tapu-book">Tapu Randevusunu Onayla</button>`
     : done ? '<button class="btn-primary" data-action="kn-home">Marketplace Konut\'a Dön</button>' : '';
   const tip = st === 0 && p.slot ? (knBranchReady() ? 'Sonraki adıma geçtiğinde şube randevun gerçekleşmiş olur.' : `Şube randevusuna geçmeden önce ${knBranchTodo()}.`)
     : st === 2 ? 'Sonraki adıma geçtiğinde tapu devri yapılır, ardından ipotek tesis edilir.' : '';
@@ -9135,15 +9076,11 @@ function knOpBranchHTML(p) {
 /* B — Tapu devri: the ownership passes to the customer at the tapu office */
 function knOpTapuHTML(p, a, h) {
   const st = p.stage, sl = knSeller(h);
-  const s = st > 2 ? 'done' : st === 2 ? 'on' : st === 1 ? 'act' : 'todo';
-  const pill = st > 2 ? knOpPill('ok', 'Tamamlandı') : st === 2 ? knOpPill('on', 'Randevu planlandı') : st === 1 ? knOpPill('wait', p.harc ? 'Randevu seç' : 'Harç bekleniyor') : knOpPill('kn-later', 'Sırada');
+  const s = st > 2 ? 'done' : st === 2 ? 'on' : 'todo';
+  const pill = st > 2 ? knOpPill('ok', 'Tamamlandı') : st === 2 ? knOpPill('on', 'Randevu planlandı') : knOpPill('kn-later', 'Sırada');
   const where = `<div class="vm-dealer"><div class="vm-dealer-ico">${KN_ICO.deed}</div><div class="vm-dealer-mid"><b>${h.district} Tapu Müdürlüğü</b><span>Satış ve ipotek aynı randevuda tescil edilir</span></div></div>`;
-  const when = st === 0 ? `<div class="kn-lock">${I.lock}<span>Şube randevun tamamlandıktan sonra tapu randevusu seçebilirsin.</span></div>`
-    : st === 1 ? (p.harc ? `<div class="vm-adv-t">Tapu işlemi için gün ve saat seç</div>
-      ${knSlotsHTML('tapu', p.tpick, 2, KN_TAPU_TIMES)}
-      <div class="kn-picked ${p.tpick ? 'on' : ''}" id="kn-pick-tapu">${knPickedHTML(p.tpick)}</div>`
-      : `<div class="kn-lock">${I.lock}<span>Tapu harcı ödendiğinde tapu randevusu seçebilirsin. Ödemeyi gerekli belgeler bölümünden yapabilirsin.</span></div>`)
-    : `<div class="vm-deliv-pt">${KN_ICO.cal}<span><b>${st > 2 ? 'Tapu devri yapıldı' : 'Tapu randevun'}</b>${p.tslot}</span></div>`;
+  const when = st < 2 ? `<div class="kn-lock">${I.info}<span>Tapu randevun ${h.district} Tapu Müdürlüğü tarafından oluşturulur; tarih ve saat seçmen gerekmez. Şube randevun tamamlandığında randevu bilgin burada görünür.</span></div>`
+    : `<div class="vm-deliv-pt">${KN_ICO.cal}<span><b>${st > 2 ? 'Tapu devri yapıldı' : 'Tapu randevun'}</b>${p.tslot}${st === 2 ? ' · tapu müdürlüğü tarafından belirlendi' : ''}</span></div>`;
   const rows = `<div class="vm-prof kn-op-rows">
       <div class="vm-frow"><span>Taşınmaz</span><b>${h.hood}, ${h.district} / ${h.city}</b></div>
       <div class="vm-frow"><span>Devreden</span><b>${sl.kind === 'Ev sahibi' ? sl.name : `Tapu maliki · ${sl.name} ilanı`}</b></div>
@@ -9180,18 +9117,7 @@ function knIptBook() {
     toast('Şube randevun oluşturuldu');
   }, 1100);
 }
-function knTapuBook() {
-  const v = state.kn, p = v.ipt;
-  if (!p || p.stage !== 1 || !p.harc || !p.tpick || !knBusyBtn('kn-cta', 'Randevu oluşturuluyor…')) return;
-  setTimeout(() => {
-    if (state.kn.ipt !== p) return;
-    p.tslot = p.tpick; p.tslotTs = p.tpickTs; p.stage = 2;
-    knEvent(v.app, 'Tapu randevun oluşturuldu', `${knHome(v.app.home).district} Tapu Müdürlüğü · ${p.tslot}`);
-    knRefresh();
-    toast('Tapu randevun oluşturuldu');
-  }, 1200);
-}
-/* -------------------- Gerekli belgeler: uploads, ready documents, things to bring, DASK and tapu harcı payments -------------------- */
+/* -------------------- Gerekli belgeler: uploads, ready documents, things to bring and the DASK payment -------------------- */
 function knDocs() {
   const v = state.kn, a = v.app, p = v.ipt, h = knHome(a.home), st = p ? p.stage : 0;
   const upl = knReqDocs().map(k => {
@@ -9212,7 +9138,6 @@ function knPays() {
   const v = state.kn, p = v.ipt, h = knHome(v.app.home);
   return [
     { k: 'dask', t: 'DASK poliçesi', d: p.dask ? `Allianz Türkiye · poliçe ${p.dask.no}` : 'Zorunlu deprem sigortası · Allianz Türkiye · 1 yıl', amt: KN_FEES.dask, paid: !!p.dask },
-    { k: 'harc', t: 'Tapu harcı', d: p.harc ? `${h.district} Tapu Müdürlüğü · dekont ${p.harc.ref}` : `Alıcı payı · ${h.district} Tapu Müdürlüğü`, amt: knHarcAmt(h), paid: !!p.harc },
   ];
 }
 function knReqCountTxt() {
@@ -9225,7 +9150,7 @@ function knDocsHint() {
   if (!p || p.stage > 0) return '';
   const miss = knDocsMissing().length, pay = knPays().filter(x => !x.paid).length;
   if (!miss && !pay) return '';
-  return [miss ? `${miss > 1 ? 'Belgelerini' : 'Belgeni'} yükle` : '', pay ? `${pay > 1 ? 'DASK ve tapu harcı ödemelerini' : 'kalan ödemeni'} yap` : ''].filter(Boolean).join(', ') + '. DASK poliçesi şube randevusundan, tapu harcı tapu randevusundan önce gerekir.';
+  return [miss ? `${miss > 1 ? 'Belgelerini' : 'Belgeni'} yükle` : '', pay ? 'DASK poliçeni öde' : ''].filter(Boolean).join(', ') + '. DASK poliçesi şube randevusundan önce gerekir.';
 }
 function knDocsHTML() {
   const v = state.kn;
@@ -9282,25 +9207,17 @@ function knPayItem(k) {
       knRefresh();
     },
   });
-  if (k === 'harc' && !p.harc && p.stage <= 1) return payPopOpen({
-    type: 'Tapu harcı · alıcı payı', title: 'Tapu harcı', desc: `${h.district} Tapu Müdürlüğü · ${vmTL(h.price)} satış bedeli üzerinden`,
-    amount: knHarcAmt(h), busyText: 'Harç ödemen yapılıyor…', okMsg: 'Tapu harcın ödendi; ödemen tapu müdürlüğüne elektronik olarak iletildi.',
-    note: 'Satıcı payını satıcı ayrıca öder. Tapu harcı, tapu randevusundan önce ödenmelidir.',
-    onPaid: res => {
-      if (state.kn.ipt !== p) return;
-      knAddMin(15);
-      p.harc = { ref: vmRef('HRC'), at: knStamp(), amount: res.amount, pay: res };
-      knEvent(a, 'Tapu harcın ödendi', `${vmTL(p.harc.amount)} · dekont ${p.harc.ref} · ${res.label}`, 'ok');
-      knRefresh();
-    },
-  });
 }
 /* Step completions (shared by the demo controls and the #konut-tamam deep link) */
 function knBranchDone(p, a) {
   knSetClock(new Date(p.slotTs)); knAddMin(40);   // the demo moves to the branch appointment
-  p.stage = 1; p.signedAt = knStamp();
+  p.signedAt = knStamp();
   knEvent(a, 'Kullandırım bilgi ve belgelerin tamamlandı', `${KN_BRANCH.name} · DASK poliçesi ${p.dask.no}`, 'ok');
   knEvent(a, 'Kredi sözleşmen imzalandı', KN_BRANCH.name, 'ok');
+  const t = knAt(knAddBiz(knClock(), 2), '10:30');   // set by the tapu müdürlüğü, not chosen by the customer
+  Object.assign(p, { stage: 2, tslot: knSlotLabel(t, '10:30'), tslotTs: t.getTime() });
+  knAddMin(5);
+  knEvent(a, 'Tapu randevun oluşturuldu', `${knHome(a.home).district} Tapu Müdürlüğü tarafından · ${p.tslot}`);
 }
 function knTapuDone(p, a) {
   knSetClock(new Date(p.tslotTs)); knAddMin(30);   // the demo moves to the tapu appointment
@@ -9314,7 +9231,7 @@ function knIptAdvance() {
     if (!knBranchReady()) { knToDocs(); const t = knBranchTodo(); return toast(t.charAt(0).toLocaleUpperCase('tr') + t.slice(1)); }
     knBranchDone(p, a);
     knRefresh();
-    return toast('Şube randevun tamamlandı, kredi sözleşmen imzalandı');
+    return toast('Şube randevun tamamlandı; tapu randevun tapu müdürlüğünce oluşturuldu');
   }
   if (p.stage === 2) {
     knTapuDone(p, a);
@@ -9505,18 +9422,14 @@ function knSeed(hash) {
   v.eks.fresh = false;
   a.finalSeen = true;
   if (hash === 'konut-tamam') {   // the whole Kullandırım part, in the past
-    const p = v.ipt, sign = knAt(knAddBiz(knClock(), 2), '09:30'), tapu = knAt(knAddBiz(sign, 2), '10:30');
+    const p = v.ipt, sign = knAt(knAddBiz(knClock(), 2), '09:30');
     knAddMin(30);
     knReqDocs().forEach(k => { v.upl[k] = { at: knStamp(), file: KN_UPL_DOCS[k].file }; knEvent(a, `Belge alındı: ${KN_UPL_DOCS[k].t}`, 'Kullandırım için', 'ok'); });
     knAddMin(10); p.dask = { no: vmRef('DSK'), at: knStamp(), inst: 1 };
     knEvent(a, 'DASK ödemen yapıldı, poliçen düzenlendi', `Allianz Türkiye · ${p.dask.no}`, 'ok');
-    knAddMin(10); p.harc = { ref: vmRef('HRC'), at: knStamp(), amount: knHarcAmt(knHome()) };
-    knEvent(a, 'Tapu harcın ödendi', `${vmTL(p.harc.amount)} · dekont ${p.harc.ref}`, 'ok');
     Object.assign(p, { slot: knSlotLabel(sign, '09:30'), slotTs: sign.getTime() });
     knAddMin(5); knEvent(a, 'Şube randevun oluşturuldu', `${KN_BRANCH.name} · ${p.slot}`);
     knBranchDone(p, a);
-    Object.assign(p, { tslot: knSlotLabel(tapu, '10:30'), tslotTs: tapu.getTime(), stage: 2 });
-    knAddMin(10); knEvent(a, 'Tapu randevun oluşturuldu', `${knHome().district} Tapu Müdürlüğü · ${p.tslot}`);
     knTapuDone(p, a);
     knIptFinish(p, true);
   }
@@ -13841,7 +13754,7 @@ function navEdgeSwipe() {
   const EDGE = 22, MIN = 72;
   let g = null;
   const backBtn = () => { const cur = navCurScreen(); return cur && cur.querySelector('[data-action="nav-back"]'); };
-  const blocked = () => sheetEl.classList.contains('open') || drawerEl.classList.contains('open');
+  const blocked = () => sheetEl.classList.contains('open') || drawerEl.classList.contains('open') || !!app.querySelector('.chk-anim');
   const start = (x, y, id) => {
     if (g || blocked() || !backBtn()) return;
     const r = app.getBoundingClientRect(), k = (r.width / app.offsetWidth) || 1;
@@ -13930,9 +13843,6 @@ function render() {
     case 'kid': html = KidScreen(); break;
     case 'toplu-borc': html = DebtHome(); break;
     case 'toplu-borc-ekstre': html = DebtStatement(); break;
-    case 'toplu-borc-odeme': html = DebtPay(); break;
-    case 'toplu-borc-onay': html = DebtConfirm(); break;
-    case 'toplu-borc-sonuc': html = DebtResult(); break;
     case 'toplu-borc-gecmis': html = DebtHistory(); break;
     case 'erken-maas': html = EwaHome(); break;
     case 'erken-maas-tutar': html = EwaAmount(); break;
@@ -15338,13 +15248,10 @@ document.addEventListener('click', (e) => {
     case 'debt-info': return debtInfoSheet();
     case 'debt-statement': return go('toplu-borc-ekstre');
     case 'debt-history': return go('toplu-borc-gecmis');
-    case 'debt-pay': return go('toplu-borc-odeme');
-    case 'debt-acct': return debtSelectAcct(t.dataset.id);
-    case 'debt-continue': return go('toplu-borc-onay');
-    case 'debt-approve': return debtApprove();
-    case 'debt-cancel': return debtCancel();
-    case 'debt-home': return debtGoHome();
-    case 'debt-history-after': return debtHistoryAfterPay();
+    case 'debt-sel': return debtToggle(t.dataset.id);
+    case 'debt-sel-all': return debtToggleAll();
+    case 'debt-pay': return debtPaySelected();
+    case 'debt-select': return debtGoHome();
     case 'debt-hist-open': return debtHistSheet(t.dataset.id);
 
     // Erken Maaş Erişimi (draft)
@@ -15414,11 +15321,11 @@ document.addEventListener('click', (e) => {
     case 'vm-to-use': return vmToUse();
     case 'vm-track': return vmGoTrack();
     case 'vm-fin': return vmFinSheet();
-    case 'vm-slot': return vmPickSlot(t.dataset.v, +t.dataset.ts);
-    case 'vm-use-book': return vmUseBook();
+    case 'vm-contracts': return vmContractSheet('');
+    case 'vm-ct-toggle': return vmContractToggle(t.dataset.k);
+    case 'vm-ct-agree': return vmContractAgree();
+    case 'vm-ct-ok': return vmContractApprove();
     case 'vm-upl': return vmUploadDoc(t.dataset.doc);
-    case 'vm-pay': return vmPayFee(t.dataset.k);
-    case 'vm-to-docs': return vmToDocs();
     case 'vm-policy': return vmPolicySheet();
     case 'vm-disb': return vmDisbSheet();
     case 'vm-adv': return vmAdvance();
@@ -15491,7 +15398,6 @@ document.addEventListener('click', (e) => {
     case 'kn-adv': return knAdvance();
     case 'kn-ipt-book': return knIptBook();
     case 'kn-pay': return knPayItem(t.dataset.k);
-    case 'kn-tapu-book': return knTapuBook();
     case 'kn-disb': return knDisbSheet();
     case 'kn-reset': return knReset();
     case 'kn-reset-start': return knResetStart(t.dataset.id);
@@ -15571,9 +15477,9 @@ function updateClock() {
    Her bölümün kendi hash linki var: #home #assistant #setur #chat #payment
    #success #tracking #search #settings #sections
    Link açıldığında ekran gereken state ile hazır gelir (akışı tekrarlamadan). */
-const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'cati-limit', 'cati-limit-manage', 'cati-limit-confirm', 'cati-limit-success', 'cati-limit-payment', 'toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-odeme', 'toplu-borc-onay', 'toplu-borc-sonuc', 'toplu-borc-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis', 'arac', 'arac-liste', 'arac-detay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-kullandirim', 'arac-tamam', 'konut', 'konut-liste', 'konut-detay', 'konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek', 'konut-tanitim', 'konut-tahsis', 'konut-takbis', 'konut-tamam', 'isletme', 'isletme-hareketler', 'isletme-analiz', 'isletme-oneriler', 'isletme-karsilastir', 'isletme-basvuru', 'isletme-takip'];
+const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'cati-limit', 'cati-limit-manage', 'cati-limit-confirm', 'cati-limit-success', 'cati-limit-payment', 'toplu-borc', 'toplu-borc-ekstre', 'toplu-borc-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis', 'arac', 'arac-liste', 'arac-detay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-kullandirim', 'arac-tamam', 'konut', 'konut-liste', 'konut-detay', 'konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek', 'konut-tanitim', 'konut-tahsis', 'konut-takbis', 'konut-tamam', 'isletme', 'isletme-hareketler', 'isletme-analiz', 'isletme-oneriler', 'isletme-karsilastir', 'isletme-basvuru', 'isletme-takip'];
 function routeTo(hash) {
-  const h = ((hash || '').replace('#', '') || 'home').replace(/^sky-limit/, 'cati-limit');   // links from before the rename
+  const h = debtAlias(((hash || '').replace('#', '') || 'home').replace(/^sky-limit/, 'cati-limit'));   // links from before the renames
   if (!ROUTES.includes(h)) return false;
   // Ödeme/başarı/takip: ürün seçili değilse asistanın önerdiğiyle hazırla
   if (['payment', 'success', 'tracking'].includes(h) && !state.selectedProduct) {
@@ -15586,7 +15492,6 @@ function routeTo(hash) {
   }
   // Karekod ile Öde derin-linkleri — işyeri seçili değilse demo işyerini kur
   if (['qr-scan', 'qr-pay', 'qr-success'].includes(h)) qrSeed();
-  if (h.startsWith('toplu-borc')) debtSeed(h);   // Toplu Borç Ödeme deep links
   if (h.startsWith('erken-maas')) ewaSeed(h);    // Erken Maaş Erişimi deep links
   if (h.startsWith('arac')) vmSeed(h);          // Marketplace Taşıt deep links
   if (h.startsWith('konut')) knSeed(h);         // Marketplace Konut deep links
