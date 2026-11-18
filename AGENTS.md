@@ -95,6 +95,10 @@ Not: Uzun listeli veya animasyonlu ekranlarda tam `render()` yerine kısmi DOM g
   **İşlem Onay pop-up**'ı (`confirmPopOpen()`) açılır; sonucun değerlendirildiği adımlarda ayrı sayfa yerine ekranın
   üzerinde kısa kontrol → onay animasyonu (`checkAnimRun()`) kullanılabilir. Face ID logosu / görseli kullanılmaz; onay
   adımlarında check-circle (checkpoint) ikonu kullanılır ve "başarılı" simülasyonu gösterilir.
+  Zorunlu bir adım (ör. Taşıt kaporası, ön bilgilendirme, sözleşme onayları) tamamlanmadan ana buton pasif görünür
+  (`disabled vm-guide`, `aria-disabled`); dokunulursa işlem yapılmaz, kullanıcı eksik adıma yönlendirilir.
+- **Geçici demo senaryoları:** state yalnızca bellektedir; bir senaryonun her açılışta baştan başlaması gerekiyorsa
+  başlangıç durumu bir fabrika fonksiyonundan kurulur ve yalnızca o senaryo sıfırlanır (örnek: Çatı Limit, `skyFresh()`).
 - Yeni görsel gerekirse kullanıcıdan istenir (indirip `app/assets/` içine atar).
 - Lottie animasyonu (`.lottie` / `.json`) gelirse animasyon JSON'u `app/assets/` içine konur ve `app/vendor/lottie_light.min.js` ile oynatılır;
   kütüphane yalnızca ilgili ekran açılınca yüklenir (örnek: Marketplace Taşıt ana ekranı, `vmHeroSync`).

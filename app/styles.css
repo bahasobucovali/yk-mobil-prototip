@@ -2302,7 +2302,7 @@ body[data-theme="light"] .hotel-rating { color: #d99800; }
 @keyframes fy-glow { 0%, 100% { box-shadow: 0 8px 24px rgba(0,152,203,.4); } 50% { box-shadow: 0 8px 34px rgba(0,152,203,.65); } }
 
 /* ===================================================================
-   TOPLU BORÇ ÖDEME (draft) — card, flexible account and loan debts in one statement
+   ANLIK BORÇ İZLEME (draft, formerly Toplu Borç Ödeme) — card, flexible account and loan debts
    Product hue arrives via --c
    =================================================================== */
 .debt-hero .ru-jar-amt { margin-bottom: 10px; }
@@ -4062,6 +4062,31 @@ body[data-theme="light"] .vm-wait-tag { color: #8a6400; }
 .sheet .vm-ct-body p.vm-ct-ex { margin-top: 8px; font-style: italic; color: var(--text-faint); }
 .contract-row.vm-ct-agree { margin: 0 0 12px; }
 
+/* Kapora (deposit) block on the application: required before the application can be completed */
+.vm-box.vm-dep { padding: 4px 14px 12px; transition: border-color .25s, box-shadow .25s; }
+.vm-box.vm-dep.paid { border-color: rgba(46,204,113,.35); }
+.vm-dep-top { display: flex; align-items: center; gap: 12px; padding: 10px 0 12px; }
+.vm-dep-ico { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 12px; background: rgba(0,152,203,.12); color: var(--primary); }
+.vm-dep-ico svg { width: 20px; height: 20px; }
+.vm-dep-mid { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.vm-dep-mid span { font-size: 11.5px; color: var(--text-dim); }
+.vm-dep-mid b { font-size: 14.5px; font-weight: 700; }
+.vm-dep-mid em { font-style: normal; font-size: 12px; color: var(--text-dim); }
+.vm-dep .vm-frow.hl { margin-top: 0; }
+.vm-dep .vm-frow b small { font-size: 11.5px; font-weight: 500; color: var(--text-dim); }
+.vm-pill.vm-dep-wait { background: rgba(242,183,5,.14); color: var(--gold); }
+.btn-primary.vm-dep-btn { width: 100%; margin: 6px 0 2px; }
+.vm-dep-note { display: flex; gap: 7px; padding-top: 10px; font-size: 11.5px; line-height: 1.45; color: var(--text-dim); }
+.vm-dep-note svg { width: 14px; height: 14px; flex: none; margin-top: 1px; color: var(--primary); }
+.vm-box.vm-dep.nudge { animation: vmDepNudge 1.2s ease; }
+@keyframes vmDepNudge {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(242,183,5,0); border-color: var(--border); }
+  25%, 60% { box-shadow: 0 0 0 4px rgba(242,183,5,.28); border-color: var(--gold); }
+}
+@media (prefers-reduced-motion: reduce) { .vm-box.vm-dep.nudge { animation: none; border-color: var(--gold); } }
+/* A passive "Başvuruyu Tamamla" still answers a tap: it shows what is missing (kapora / aydınlatma metni) */
+.btn-primary.disabled.vm-guide { pointer-events: auto; cursor: default; }
+
 /* ===================================================================
    SHARED POP-UPS — payment (paypop) and transaction confirmation (cfpop)
    Built on the bottom sheet layer; long content scrolls inside the sheet.
@@ -4170,7 +4195,7 @@ body[data-theme="light"] .chk-anim { background: rgba(238,241,245,.82); }
 }
 
 /* ===================================================================
-   TOPLU BORÇ ÖDEME — selective payment (items are selected one by one)
+   ANLIK BORÇ İZLEME — selective payment (items are selected one by one)
    =================================================================== */
 .debt-pick-hint { margin: 12px 0 0; font-size: 12px; line-height: 1.4; color: var(--text-dim); }
 .debt-row.debt-pick { gap: 10px; }
@@ -4191,6 +4216,177 @@ body[data-theme="light"] .chk-anim { background: rgba(238,241,245,.82); }
 .debt-sel-sum b { color: var(--text); font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .debt-sel-sum > div.hl b { font-size: 18px; font-weight: 800; letter-spacing: -.3px; color: var(--primary); }
 .debt-seg.paid { opacity: .3; }
+
+/* ===================================================================
+   REVISION 7 — Çatı Limit new limit, Anlık Borç İzleme, Akıllı Asistan opportunities, İşletme Kullandırım
+   =================================================================== */
+/* Çatı Limit: new limit added to the main limit */
+.sky-hero-gain { display: inline-flex; align-items: center; gap: 6px; margin: -4px auto 12px; padding: 5px 11px; border-radius: 99px; background: rgba(46,204,113,.2); color: #c8f5d9; font-size: 12px; font-weight: 600; }
+.sky-hero-gain svg { width: 14px; height: 14px; flex: none; }
+.sky-next.paid .sky-ico { color: var(--success); background: rgba(46,204,113,.14); }
+.sky-paid-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 99px; font-size: 11.5px; font-weight: 700; color: var(--success); background: rgba(46,204,113,.14); }
+.sky-paid-chip svg { width: 11px; height: 11px; }
+.sky-reopen-row.sub { margin-top: 6px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.14); }
+.sky-reopen-row.sub b { font-weight: 700; }
+
+/* Anlık Borç İzleme: tabs in the hero, due badges, early-payment discount, whole debt load */
+.debt-hero .debt-tabs { margin: 8px 0 6px; }
+.debt-hero-pill.warn { background: rgba(242,183,5,.22); color: #ffe39a; }
+.pay-foot.hide { display: none; }
+.debt-due { display: inline-flex; align-items: center; gap: 4px; padding: 1px 7px; border-radius: 99px; font-size: 11px; font-weight: 700; vertical-align: 1px; white-space: nowrap; }
+.debt-due svg { width: 11px; height: 11px; }
+.debt-due.warn { color: var(--gold); background: rgba(242,183,5,.14); }
+.debt-due.hot { color: #E5733A; background: rgba(229,115,58,.14); }
+.debt-row-mid span .debt-due { display: inline-flex; margin-top: 0; }
+.debt-disc { display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 99px; font-size: 11px; font-weight: 600; white-space: nowrap; color: var(--primary); background: rgba(0,152,203,.1); font-variant-numeric: tabular-nums; }
+.debt-disc.on { color: var(--success); background: rgba(46,204,113,.14); font-weight: 700; }
+.debt-early { display: flex; align-items: center; gap: 10px; width: 100%; margin: 12px 0 0; padding: 10px 12px; border: 1px solid rgba(0,152,203,.28); border-radius: 12px; background: rgba(0,152,203,.07); color: var(--text); font-family: inherit; text-align: left; cursor: pointer; }
+.debt-early > svg { width: 16px; height: 16px; flex: none; color: var(--text-dim); }
+.debt-early-ico { width: 28px; height: 28px; flex: none; display: grid; place-items: center; border-radius: 9px; background: rgba(0,152,203,.14); color: var(--primary); }
+.debt-early-ico svg { width: 15px; height: 15px; }
+.debt-early-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.debt-early-t b { font-size: 13px; font-weight: 700; }
+.debt-early-t span { font-size: 11.5px; line-height: 1.35; color: var(--text-dim); }
+.debt-sel-sum > div.disc span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.debt-sel-sum > div.disc span svg { width: 13px; height: 13px; color: var(--primary); }
+.debt-sel-sum > div.disc span i { font-style: normal; font-size: 10.5px; padding: 1px 6px; border-radius: 99px; background: var(--card-3, rgba(127,127,127,.18)); color: var(--text-dim); }
+.debt-sel-sum > div.disc b { color: var(--success); }
+.debt-sel-sum > div.disc.none b { color: var(--text-dim); }
+.debt-early-lead { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: var(--text-dim); text-align: left; }
+.debt-early-tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; }
+.debt-early-tiers div { display: flex; flex-direction: column; gap: 2px; padding: 9px 11px; border-radius: 11px; background: var(--card-2); text-align: left; }
+.debt-early-tiers span { font-size: 11.5px; color: var(--text-dim); }
+.debt-early-tiers b { font-size: 15px; font-weight: 800; color: var(--primary); }
+.debt-early-tiers div:last-child b { font-size: 13px; color: var(--text-dim); }
+.debt-early-h { margin: 0 0 4px; font-size: 13px; font-weight: 700; text-align: left; }
+.debt-early-list { margin-bottom: 4px; }
+.debt-early-r { display: grid; grid-template-columns: 9px 1fr auto auto; align-items: center; gap: 9px; padding: 9px 0; border-top: 1px solid var(--border); font-size: 12.5px; text-align: left; }
+.debt-early-r:first-child { border-top: none; }
+.debt-early-r i { width: 9px; height: 9px; border-radius: 3px; }
+.debt-early-r span { display: flex; flex-direction: column; gap: 1px; color: var(--text-dim); font-size: 11.5px; }
+.debt-early-r span b { font-size: 13px; color: var(--text); font-weight: 600; }
+.debt-early-r em { font-style: normal; font-weight: 700; color: var(--primary); }
+.debt-early-r > b { font-weight: 700; color: var(--success); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.debt-early-r.paid { opacity: .6; }
+.debt-sh-prods span em { font-style: normal; font-size: 11.5px; color: var(--success); }
+.debt-load-list { margin-top: 12px; }
+.debt-load { padding: 12px 0; border-top: 1px solid var(--border); }
+.debt-load:first-child { border-top: none; padding-top: 4px; }
+.debt-load-top { display: flex; align-items: center; gap: 12px; }
+.debt-load-mid { flex: 1; min-width: 0; }
+.debt-load-mid b { display: block; font-size: 14.5px; font-weight: 700; }
+.debt-load-mid span { display: block; margin-top: 2px; font-size: 12px; color: var(--text-dim); }
+.debt-load-amt { font-size: 15px; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.debt-load-sub { display: flex; align-items: flex-start; gap: 9px; margin: 8px 0 0 52px; font-size: 12px; color: var(--text-dim); }
+.debt-load-sub > i { width: 9px; height: 9px; margin-top: 3px; border-radius: 3px; flex: none; }
+.debt-load-sub > div { flex: 1; min-width: 0; }
+.debt-load-sub > div > span { display: block; line-height: 1.4; }
+.debt-load-sub > div > span b { color: var(--text); font-weight: 600; }
+.debt-load-sub > b { color: var(--text); font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.debt-load-prog { height: 5px; margin: 6px 0 3px; border-radius: 99px; background: var(--card-2); overflow: hidden; }
+.debt-load-prog i { display: block; height: 100%; border-radius: 99px; }
+.debt-load-sub em { font-style: normal; font-size: 11px; color: var(--text-faint, var(--text-dim)); }
+
+/* Akıllı Asistan: Finansman Fırsatları / Yatırım Fırsatları */
+.bf-ai-opps { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.bf-ai-opps span { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; background: var(--card); font-size: 11.5px; font-weight: 700; }
+.bf-ai-opps span svg { width: 13px; height: 13px; }
+.bf-ai-opps .neg { color: var(--primary); }
+.bf-ai-opps .pos { color: var(--bf-pos); }
+.bf-opp-lead { margin: -2px 18px 10px; font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
+.bf-opp-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 0 16px 10px; padding: 4px; border-radius: 13px; background: var(--card-2); }
+.bf-opp-seg button { display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 0; padding: 9px 6px; border: none; border-radius: 10px; background: transparent; color: var(--text-dim); font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+.bf-opp-seg button svg { width: 15px; height: 15px; flex: none; }
+.bf-opp-seg button span { min-width: 0; line-height: 1.2; text-align: center; }
+.bf-opp-seg button em { flex: none; min-width: 18px; padding: 1px 5px; border-radius: 99px; background: var(--card-3, rgba(127,127,127,.2)); font-style: normal; font-size: 11px; }
+.bf-opp-seg button.on { background: var(--card); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
+.bf-opp-seg button.on[data-v="fin"] svg { color: var(--primary); }
+.bf-opp-seg button.on[data-v="inv"] svg { color: var(--bf-pos); }
+.bf-opp-seg button.on em { background: var(--primary); color: #fff; }
+.bf-opp-seg button.on[data-v="inv"] em { background: var(--bf-pos); }
+.bf-opp-sum { display: flex; gap: 10px; margin: 0 16px 10px; padding: 11px 12px; border-radius: 13px; font-size: 12px; line-height: 1.45; color: var(--text-dim); }
+.bf-opp-sum > svg { width: 18px; height: 18px; flex: none; margin-top: 1px; }
+.bf-opp-sum b { display: block; font-size: 13px; color: var(--text); }
+.bf-opp-sum.neg { background: rgba(255,107,107,.08); border: 1px solid rgba(255,107,107,.25); }
+.bf-opp-sum.neg > svg { color: var(--bf-neg); }
+.bf-opp-sum.pos { background: rgba(46,204,113,.08); border: 1px solid rgba(46,204,113,.28); }
+.bf-opp-sum.pos > svg { color: var(--bf-pos); }
+.bf-basis { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+.bf-basis span { padding: 3px 8px; border-radius: 99px; background: var(--card-2); font-size: 11px; font-weight: 600; color: var(--text-dim); }
+.bf-rec-tag { display: inline-block; margin-top: 7px; font-size: 11.5px; font-weight: 600; color: var(--text-faint, var(--text-dim)); }
+.bf-invs { display: flex; flex-direction: column; gap: 8px; margin: 0 16px 10px; }
+.bf-inv { display: flex; align-items: center; gap: 12px; padding: 13px 12px 13px 14px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); cursor: pointer; }
+.bf-inv > svg { width: 16px; height: 16px; flex: none; color: var(--text-faint, var(--text-dim)); }
+.bf-inv-ico { width: 40px; height: 40px; flex: none; display: grid; place-items: center; border-radius: 12px; background: rgba(46,204,113,.13); color: var(--bf-pos); }
+.bf-inv-ico svg { width: 20px; height: 20px; }
+.bf-inv-mid { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.bf-inv-sig { font-size: 11px; font-weight: 700; letter-spacing: .1px; color: var(--bf-pos); }
+.bf-inv-mid b { font-size: 14px; font-weight: 700; line-height: 1.3; }
+.bf-inv-mid em { font-style: normal; font-size: 12px; line-height: 1.35; color: var(--text-dim); }
+.bf-inv-mid .vm-pill { margin-top: 4px; }
+/* investment detail */
+.bf-inv-hero { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 10px 16px 4px; padding: 20px 18px; border-radius: 18px; background: linear-gradient(160deg, #0f5a4f, var(--navy) 60%, var(--navy-dark)); color: #fff; text-align: center; }
+.bf-inv-hico { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 14px; background: rgba(255,255,255,.14); color: #7fe5aa; }
+.bf-inv-hico svg { width: 24px; height: 24px; }
+.bf-inv-tag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 99px; background: rgba(46,204,113,.2); color: #b8f0cf; font-size: 11.5px; font-weight: 700; }
+.bf-inv-tag svg { width: 12px; height: 12px; }
+.bf-inv-hero b { font-size: 19px; font-weight: 800; line-height: 1.25; }
+.bf-inv-hero > span:last-child { font-size: 12.5px; line-height: 1.4; color: rgba(255,255,255,.78); }
+.vm-box.bf-inv-gain { display: flex; flex-direction: column; gap: 6px; }
+.bf-inv-gain b { font-size: 18px; font-weight: 800; color: var(--bf-pos); }
+.bf-inv-gain span { font-size: 12.5px; line-height: 1.5; color: var(--text-dim); }
+.vm-box.bf-inv-ind { padding: 2px 14px; }
+.bf-inv-i { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 0; border-top: 1px solid var(--border); font-size: 13px; }
+.bf-inv-i:first-child { border-top: none; }
+.bf-inv-i > span { color: var(--text-dim); min-width: 0; }
+.bf-inv-i > span em { display: block; margin-top: 1px; font-style: normal; font-size: 11px; color: var(--text-faint, var(--text-dim)); }
+.bf-inv-i > b { flex: none; max-width: 52%; font-weight: 700; text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+.vm-box.bf-inv-chart { padding-bottom: 8px; }
+.bf-why.bf-inv-why { margin: 12px 16px; }
+.vm-warn.bf-inv-warn b { color: var(--text); }
+/* İşletme Finansmanı: two-stage flow, ön bilgilendirme, contracts */
+.vm-flow.bf-flow2 { justify-content: center; padding: 12px 40px 6px; }
+.vm-flow.bf-flow2 > b { max-width: 120px; }
+.vm-flow.bf-flow2 .vm-flow-s { width: 76px; }
+.vm-box.bf-pre { padding: 4px 14px 6px; transition: border-color .25s, box-shadow .25s; }
+.bf-pre-top { display: flex; align-items: center; gap: 12px; padding: 10px 0 6px; }
+.bf-pre-ico { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 12px; background: rgba(0,152,203,.12); color: var(--primary); }
+.bf-pre-ico svg { width: 20px; height: 20px; }
+.bf-pre-top b { display: block; font-size: 14px; font-weight: 700; }
+.bf-pre-top span { display: block; margin-top: 2px; font-size: 12px; color: var(--text-dim); }
+.bf-pre-btn { display: flex; align-items: center; gap: 4px; margin: 2px 0 6px; padding: 8px 0; border: none; background: none; color: var(--primary); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.bf-pre-btn svg { width: 15px; height: 15px; }
+.vm-box.bf-pre .contract-row { margin: 0 -2px 6px; }
+.vm-box.bf-pre.nudge { animation: vmDepNudge 1.2s ease; }
+.vm-box.bf-cts { padding: 12px 14px 4px; }
+.bf-ct-prog { height: 6px; margin-bottom: 4px; border-radius: 99px; background: var(--card-2); overflow: hidden; }
+.bf-ct-prog i { display: block; height: 100%; border-radius: 99px; background: var(--bf-pos); transition: width .5s cubic-bezier(.22,.61,.36,1); }
+.bf-ct { display: flex; align-items: center; gap: 11px; padding: 12px 0; border-top: 1px solid var(--border); cursor: pointer; }
+.bf-ct:nth-child(2) { border-top: none; }
+.bf-ct-ico { width: 34px; height: 34px; flex: none; display: grid; place-items: center; border-radius: 10px; background: rgba(0,152,203,.12); color: var(--primary); }
+.bf-ct-ico svg { width: 17px; height: 17px; }
+.bf-ct.ok .bf-ct-ico { background: rgba(46,204,113,.14); color: var(--success); }
+.bf-ct-mid { flex: 1; min-width: 0; }
+.bf-ct-mid b { display: block; font-size: 13.5px; font-weight: 700; }
+.bf-ct-mid span { display: block; margin-top: 2px; font-size: 11.5px; line-height: 1.35; color: var(--text-dim); }
+.kn-up.bf-ct-btn { height: 28px; padding: 0 10px; font-size: 11.5px; pointer-events: none; }
+.bf-selof.bf-selof-done { margin-top: 0; }
+.vm-box.bf-disb { margin-top: 0; }
+@media (max-width: 360px) { .bf-opp-seg button { font-size: 12px; gap: 4px; } }
+.ai-disclaimer.bf-inv-disc { margin: 6px 18px 4px; }
+/* Anlık Borç İzleme on narrow phones (320–360 px) */
+@media (max-width: 360px) {
+  .debt-sel-sum > div.disc span { white-space: normal; min-width: 0; }
+  .debt-sel-sum > div.disc span i { display: none; }
+  .debt-row.debt-pick { gap: 8px; }
+  .debt-row.debt-pick .debt-ico { width: 32px; height: 32px; }
+  .debt-row.debt-pick .debt-ico svg { width: 16px; height: 16px; }
+  .debt-row.debt-pick .debt-row-mid b { font-size: 13.5px; }
+  .debt-row.debt-pick .debt-row-r b { font-size: 13.5px; }
+  .debt-due, .debt-disc { font-size: 10.5px; padding: 1px 6px; }
+  #debt-pay-btn { font-size: 14px; gap: 10px; }
+  .debt-early-r { grid-template-columns: 9px minmax(0, 1fr) auto auto; gap: 7px; }
+}
 
 /* ===================================================================
    HARCAMA ANALİZİ & LİMİT  (Harcamalarım)
