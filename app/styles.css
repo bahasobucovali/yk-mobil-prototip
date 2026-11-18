@@ -4087,6 +4087,19 @@ body[data-theme="light"] .vm-wait-tag { color: #8a6400; }
 /* A passive "Başvuruyu Tamamla" still answers a tap: it shows what is missing (kapora / aydınlatma metni) */
 .btn-primary.disabled.vm-guide { pointer-events: auto; cursor: default; }
 
+/* Revision 8 — Güvenli Ödeme Sistemi under the Gerekli Belgeler list, and the simplified Noter step */
+.kn-op .vm-box.vm-gos { margin: 12px 0 0; background: var(--card-2); }
+.vm-gos .vm-dep-mid em { line-height: 1.4; }
+.vm-box.vm-gos.paid .vm-dep-ico { background: rgba(46,204,113,.14); color: var(--success); }
+.vm-gos .vm-frow b small { font-size: 11.5px; font-weight: 500; color: var(--text-dim); }
+.btn-primary.vm-dep-btn:disabled { display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(46,204,113,.14); color: var(--success); box-shadow: none; cursor: default; opacity: 1; }
+.btn-primary.vm-dep-btn:disabled svg { width: 16px; height: 16px; }
+.vm-noter-wait { display: flex; gap: 12px; align-items: flex-start; margin-top: 12px; padding: 12px; border-radius: 12px; background: rgba(0,152,203,.08); border: 1px solid rgba(0,152,203,.22); }
+.vm-noter-ico { width: 34px; height: 34px; flex: none; display: grid; place-items: center; border-radius: 10px; background: rgba(0,152,203,.14); color: var(--primary); }
+.vm-noter-ico svg { width: 18px; height: 18px; }
+.vm-noter-wait b { display: block; font-size: 14px; font-weight: 700; }
+.vm-noter-wait span { display: block; margin-top: 3px; font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
+
 /* ===================================================================
    SHARED POP-UPS — payment (paypop) and transaction confirmation (cfpop)
    Built on the bottom sheet layer; long content scrolls inside the sheet.
@@ -4193,6 +4206,31 @@ body[data-theme="light"] .chk-anim { background: rgba(238,241,245,.82); }
 @media (prefers-reduced-motion: reduce) {
   .pop-check, .cfpop-ico, .pop-check svg path, .cfpop-ico svg path, .chk-arc, .chk-anim.ok .chk-ring { animation: none; }
 }
+
+/* Account payment pop-up (bank accounts only) */
+.acctpop-accts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.acctpop-acct { display: flex; align-items: center; gap: 11px; width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 14px; background: var(--card); font-family: inherit; color: var(--text); text-align: left; cursor: pointer; transition: border-color .15s, background .15s; }
+.acctpop-acct.on { border-color: var(--primary); background: var(--card-2); }
+.acctpop-acct.on .paypop-radio { border-color: var(--primary); }
+.acctpop-acct.on .paypop-radio::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--primary); }
+.acctpop-acct.off { opacity: .55; cursor: not-allowed; }
+.acctpop-ico { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 12px; background: linear-gradient(135deg, #00a9e0, #0079b1 75%); color: #fff; font-size: 18px; font-weight: 800; }
+.acctpop-ico.fx { background: linear-gradient(135deg, #3d7bd9, #1d4f9e); }
+.acctpop-mid { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.acctpop-mid b { font-size: 14px; font-weight: 700; }
+.acctpop-mid > span { margin-top: 1px; font-size: 11.5px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acctpop-mid .acctpop-iban { letter-spacing: .3px; font-variant-numeric: tabular-nums; }
+.acctpop-tag { align-self: flex-start; margin-top: 5px; white-space: nowrap; padding: 2px 7px; border-radius: 99px; background: var(--card-3, rgba(127,127,127,.18)); font-style: normal; font-size: 10.5px; font-weight: 700; color: var(--text-dim); }
+.acctpop-tag.warn { background: rgba(242,183,5,.14); color: var(--gold); }
+body[data-theme="light"] .acctpop-tag.warn { color: #8a6400; }
+.acctpop-mid .acctpop-bal { margin-top: 5px; font-size: 12px; color: var(--text-dim); }
+.acctpop-bal b { margin-left: 3px; font-size: 14px; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; }
+.acctpop-after { display: flex; gap: 8px; margin: 0 2px 16px; font-size: 12px; line-height: 1.45; color: var(--text-dim); }
+.acctpop-after svg { width: 15px; height: 15px; flex: none; margin-top: 1px; color: var(--primary); }
+.acctpop-after b { color: var(--text); font-variant-numeric: tabular-nums; }
+.acctpop-after.warn { color: var(--text); }
+.acctpop-after.warn svg { color: var(--gold); }
+@media (max-width: 360px) { .acctpop-acct { gap: 9px; padding: 10px; } .acctpop-ico { width: 32px; height: 32px; font-size: 15px; } .acctpop-bal b { font-size: 13px; } }
 
 /* ===================================================================
    ANLIK BORÇ İZLEME — selective payment (items are selected one by one)
@@ -4387,6 +4425,95 @@ body[data-theme="light"] .chk-anim { background: rgba(238,241,245,.82); }
   #debt-pay-btn { font-size: 14px; gap: 10px; }
   .debt-early-r { grid-template-columns: 9px minmax(0, 1fr) auto auto; gap: 7px; }
 }
+
+/* ===================================================================
+   REVISION 8 — Akıllı İşletme Finansmanı: offer selection, Kredi Detay with the Çatı Limit slider,
+   the single contracts block, and cash management / savings opportunities
+   =================================================================== */
+.bf-of-desc { margin: 10px 0 0; font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
+.bf-offer.sel { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary) inset; }
+.bf-of-sel { width: 100%; min-height: 44px; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; padding: 8px 12px; border: 1.5px solid var(--primary); border-radius: 12px; background: none; color: var(--primary); font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .2s, color .2s; }
+.bf-of-sel svg { width: 16px; height: 16px; }
+.bf-of-sel small { width: 100%; font-size: 11px; font-weight: 500; opacity: .85; }
+.bf-of-sel.on { background: var(--primary); color: #fff; }
+.bf-sel-tip { display: flex; gap: 8px; margin: 12px 16px 0; font-size: 12px; line-height: 1.45; color: var(--text-dim); }
+.bf-sel-tip svg { width: 14px; height: 14px; flex: none; margin-top: 1px; color: var(--primary); }
+.bf-ctable td.bf-adv { font-size: 11.5px; line-height: 1.4; color: var(--text); text-align: left; }
+.vm-box.bf-empty { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.vm-box.bf-empty .btn-primary { width: 100%; }
+
+/* Kredi Detay: amount slider and the Çatı Limit */
+.vm-box.bf-calc { margin-top: 0; }
+.bf-calc .vm-calc-h b { display: inline-flex; align-items: center; gap: 4px; }
+.bf-calc .vm-calc-h b svg { width: 13px; height: 13px; }
+.bf-amt-lim { display: flex; gap: 7px; margin-top: 10px; font-size: 11.5px; line-height: 1.45; color: var(--text-dim); }
+.bf-amt-lim svg { width: 14px; height: 14px; flex: none; margin-top: 1px; color: var(--primary); }
+.bf-cati { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.vm-box.bf-cati-box { margin-top: 0; padding-top: 14px; border-top: 1px solid var(--border); }
+.bf-cati-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13px; }
+.bf-cati-h span { display: inline-flex; align-items: center; gap: 6px; color: var(--text-dim); }
+.bf-cati-h span svg { width: 15px; height: 15px; color: var(--primary); }
+.bf-cati-h b { font-weight: 800; font-variant-numeric: tabular-nums; }
+.bf-cati-bar { display: flex; height: 10px; margin: 10px 0; border-radius: 99px; background: var(--card-2); overflow: hidden; }
+.bf-cati-bar i { display: block; height: 100%; transition: width .25s; }
+.bf-cati-bar i.u { background: #7d8fa9; }
+.bf-cati-bar i.t { background: var(--primary); }
+.bf-cati-leg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.bf-cati-leg span { display: flex; flex-direction: column; gap: 2px; min-width: 0; font-size: 11px; line-height: 1.3; color: var(--text-dim); }
+.bf-cati-leg span i { display: inline-block; width: 8px; height: 8px; margin-bottom: 2px; border-radius: 3px; background: var(--card-2); border: 1px solid var(--border); }
+.bf-cati-leg span i.u { background: #7d8fa9; border-color: #7d8fa9; }
+.bf-cati-leg span i.t { background: var(--primary); border-color: var(--primary); }
+.bf-cati-leg b { font-size: 12.5px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* Kullandırım: İşletme Finansmanı Sözleşmeleri */
+.vm-box.bf-ctblock { margin-top: 0; transition: border-color .25s; }
+.vm-box.bf-ctblock.ok { border-color: rgba(46,204,113,.35); }
+.bf-ctb-top { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; }
+.bf-ctb-ico { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 12px; background: rgba(0,152,203,.12); color: var(--primary); }
+.bf-ctb-ico svg { width: 19px; height: 19px; }
+.bf-ctblock.ok .bf-ctb-ico { background: rgba(46,204,113,.14); color: var(--success); }
+.bf-ctb-top b { display: block; font-size: 14.5px; font-weight: 700; }
+.bf-ctb-top span { display: block; margin-top: 2px; font-size: 12px; line-height: 1.4; color: var(--text-dim); }
+.bf-ctblock .vm-frow b small { font-size: 11.5px; font-weight: 500; color: var(--text-dim); }
+.bf-ctblock .bf-ctb-btn { width: 100%; margin-top: 10px; }
+.bf-ct-list .vm-ct { padding-bottom: 0; }
+.contract-row.bf-ct-chk { margin: 0 12px; padding: 8px 0 10px; border-top: 1px solid var(--border); font-size: 12.5px; }
+.contract-row.bf-ct-chk .cbx { flex: none; }
+
+/* Yatırım Fırsatları: nakit yönetimi ve birikim */
+.bf-inv.bf-inv8 { flex-direction: column; align-items: stretch; gap: 10px; cursor: default; }
+.bf-inv-row { display: flex; align-items: flex-start; gap: 12px; }
+.bf-inv-row .vm-pill { flex: none; }
+.bf-inv-kv { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 8px; font-size: 12px; line-height: 1.45; }
+.bf-inv-kv span { font-weight: 700; color: var(--text-dim); }
+.bf-inv-kv p { margin: 0; color: var(--text); }
+.bf-inv-go { display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 40px; border: 1px solid var(--primary); border-radius: 12px; background: none; color: var(--primary); font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+.bf-inv-go svg { width: 15px; height: 15px; }
+.vm-box.bf-dep .bf-terms-pick:first-child { border-top: none; padding-top: 0; }
+.vm-box.bf-terms .bf-terms-pick, .vm-box.bf-dep .bf-terms-pick { flex-direction: column; align-items: stretch; gap: 8px; }
+.vm-box.bf-terms .bf-terms-pick .vm-chips, .vm-box.bf-dep .bf-terms-pick .vm-chips { justify-content: flex-start; flex-wrap: wrap; }
+.bf-liq { display: flex; gap: 10px; padding-bottom: 12px; font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
+.bf-liq svg { width: 20px; height: 20px; flex: none; color: var(--bf-pos); }
+.bf-liq b { display: block; font-size: 14px; color: var(--text); }
+.bf-rd-dests { display: flex; flex-direction: column; gap: 8px; margin: 0 16px 12px; }
+.bf-rd-dest { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1.5px solid var(--border); border-radius: 14px; background: var(--card); color: var(--text); font-family: inherit; text-align: left; cursor: pointer; transition: border-color .2s, background .2s; }
+.bf-rd-dest.on { border-color: var(--primary); background: rgba(0,152,203,.08); }
+.bf-rd-dest:disabled { cursor: default; opacity: .75; }
+.bf-rd-dest:disabled.on { opacity: 1; }
+.bf-rd-ico { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: 11px; background: var(--card-2); color: var(--primary); }
+.bf-rd-ico svg { width: 18px; height: 18px; }
+.bf-rd-mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.bf-rd-mid b { font-size: 14px; font-weight: 700; }
+.bf-rd-mid span { font-size: 12px; color: var(--text-dim); }
+.bf-rd-dest.on .paypop-radio { border-color: var(--primary); }
+.bf-rd-dest.on .paypop-radio::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--primary); }
+@media (max-width: 360px) {
+  .bf-cati-leg { grid-template-columns: 1fr; }
+  .bf-cati-leg span { flex-direction: row; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+  .bf-cati-leg b { margin-left: auto; }
+}
+.sheet-bar h3.bf-ct-h3 { padding: 0 40px; line-height: 1.3; }
+.vm-box.bf-dep > .vm-frow:first-child { border-top: none; padding-top: 0; }
 
 /* ===================================================================
    HARCAMA ANALİZİ & LİMİT  (Harcamalarım)

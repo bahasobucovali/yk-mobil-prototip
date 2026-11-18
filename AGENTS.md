@@ -63,7 +63,7 @@ Framework yok; tek dosyada şu düzen:
 6. **Hash router:** `ROUTES` listesi + `routeTo(hash)`. Her bölüm `#etiket` ile doğrudan açılır ve
    gereken state'i kendisi hazırlar (örnek: `#payment`, ürün seçili değilse asistanın önerdiğini kurar).
 
-Katmanlar: `drawer` (soldan menü), `sheet` (alttan onay/modal; ortak Ödeme ve İşlem Onay pop-up'ları da bunu kullanır), `toast`, `lockscreen`.
+Katmanlar: `drawer` (soldan menü), `sheet` (alttan onay/modal; ortak Ödeme, Hesaptan Ödeme ve İşlem Onay pop-up'ları da bunu kullanır), `toast`, `lockscreen`.
 Hepsi index.html'de hazırdır; `openSheet()` / `closeSheet()` gibi yardımcılarla kullanılır.
 
 ### Yeni ekran / bölüm ekleme adımları
@@ -90,8 +90,10 @@ Not: Uzun listeli veya animasyonlu ekranlarda tam `render()` yerine kısmi DOM g
   Üretim sırasında durdur butonu; bot mesajı altında kopyala + 👍/👎;
   girişin altında "yapay zeka hata yapabilir" uyarısı.
   Açılış karşılama mesajıyla olur, boş durumla değil.
-- **Ödeme ve onay:** ödemeler her ekranda ortak **Ödeme pop-up**'ı (`payPopOpen()`) ile alınır, yeni bir ödeme
-  sayfası yazılmaz; taksit varsayılanı Tek Çekim, kullanıcı değiştirebilir. Başvuru gibi önemli adımlardan önce ortak
+- **Ödeme ve onay:** kartla ödemeler ortak **Ödeme pop-up**'ı (`payPopOpen()`), hesaptan ödemeler ortak
+  **Hesaptan Ödeme pop-up**'ı (`acctPopOpen()`: yalnızca hesaplar, bakiye kontrolü, `onPaid` ile ekran durumu) ile
+  alınır; ikisi ayrı bileşendir, yeni bir ödeme sayfası yazılmaz. Ödeme başarılı olmadan akışın sonraki adımı
+  açılmaz. Taksit varsayılanı Tek Çekim, kullanıcı değiştirebilir. Başvuru gibi önemli adımlardan önce ortak
   **İşlem Onay pop-up**'ı (`confirmPopOpen()`) açılır; sonucun değerlendirildiği adımlarda ayrı sayfa yerine ekranın
   üzerinde kısa kontrol → onay animasyonu (`checkAnimRun()`) kullanılabilir. Face ID logosu / görseli kullanılmaz; onay
   adımlarında check-circle (checkpoint) ikonu kullanılır ve "başarılı" simülasyonu gösterilir.

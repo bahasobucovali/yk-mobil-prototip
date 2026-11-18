@@ -239,13 +239,13 @@ const SECTIONS = [
   { hash: 'reward-goal-new', icon: 'target', t: 'Birlikte Kazan — Yeni hedef', d: 'Grup, hedef tutar, dönem, eşit/katkı paylaşımı' },
   { hash: 'reward-goal-track', icon: 'pie', t: 'Birlikte Kazan — İlerleme', d: 'Kolektif ilerleme, üye katkıları, ödül havuzu (dolu)' },
   { hash: 'reward-goal-win', icon: 'star', t: 'Birlikte Kazan — Kutlama', d: 'Hedefe ulaşıldı, havuz kişi başı paylaşıldı, Ödüllerim' },
-  { hash: 'cati-limit',  icon: 'loan',     t: 'Taslak — Çatı Limit', d: 'Tek ortak kredi limiti: toplam limit, ürün bazında dağılım, son ödemeler' },
+  { hash: 'cati-limit',  icon: 'loan',     t: 'Taslak — Çatı Limit', d: 'Tek ortak kredi limiti: toplam limit, ürün bazında dağılım, hesaptan taksit ödemesi ve yeni limit' },
   { hash: 'cati-limit-manage', icon: 'transfer', t: 'Taslak — Çatı Limit: Limit dağılımı', d: 'Toplam Çatı Limit üzerinden ürünlere limit dağıtımı (kaydırma + tutar girişi, kurallarla)' },
   { hash: 'cati-limit-payment', icon: 'refresh', t: 'Taslak — Çatı Limit: Ödeme sonrası açılan limit', d: '20.000 TL taksit ödendi → yeni limit ana limite eklendi (520.000 TL), ürünlere dağıt' },
   { hash: 'insights',   icon: 'pie',      t: 'Harcama Analizi',      d: 'Aylık toplam, kategori dağılımı, işyeri kırılımı' },
   { hash: 'limits',     icon: 'target',   t: 'Harcama Limitlerim',   d: 'Kategoriye tutar girerek aylık limit koy' },
   { hash: 'kid',        icon: 'wallet2',  t: 'Çocuk Ek Kartı',       d: 'Limit, harçlık, birikim hedefi, veli eşleştirme, onaylar, rozetler' },
-  { hash: 'borc-izleme', icon: 'payments', t: 'Taslak — Anlık Borç İzleme', d: 'Kasım ayı borçların: son ödeme uyarıları, erken ödeme indirimi, kalem seçerek ya da tamamını öde' },
+  { hash: 'borc-izleme', icon: 'payments', t: 'Taslak — Anlık Borç İzleme', d: 'Kasım ayı borçların: son ödeme uyarıları, erken ödeme indirimi, kalem seçerek ya da tamamını hesaptan öde' },
   { hash: 'borc-izleme-tum', icon: 'bars', t: 'Taslak — Anlık Borç İzleme: Tüm borçlar', d: 'Toplam borç yükü: kredi kartı, konut, taşıt ve diğer borçlar ürün bazında' },
   { hash: 'borc-izleme-detay', icon: 'doc', t: 'Taslak — Anlık Borç İzleme: Borç detayı', d: 'Ürün bazında borç, taksit, son ödeme ve erken ödeme bilgileri' },
   { hash: 'borc-izleme-gecmis', icon: 'receipt', t: 'Taslak — Anlık Borç İzleme: Ödeme geçmişi', d: 'Önceki borç ödemeleri, durum ve işlem detayı' },
@@ -258,7 +258,7 @@ const SECTIONS = [
   { hash: 'arac-kredi', icon: 'loan', t: 'Taslak — Marketplace Taşıt: Kredi simülasyonu', d: 'Peşinat kaydırıcısı ve bağlı kredi tutarı (en fazla 1.200.000 TL), vade, ödeme kapasitesi, senaryolar, masraflar' },
   { hash: 'arac-basvuru', icon: 'doc', t: 'Taslak — Marketplace Taşıt: Kredi başvurusu', d: 'Meslek ve gelir, başvuru özeti, kapora ödemesi (zorunlu), aydınlatma metni; işlem onayı ve kontrol animasyonunun ardından aynı ekranda "Başvurunuz Onaylandı"' },
   { hash: 'arac-kasko', icon: 'insurance', t: 'Taslak — Marketplace Taşıt: Kasko', d: 'Allianz Türkiye paketleri, sigorta bilgileri; "Onayla ve Öde" ile ortak ödeme pop-up’ı' },
-  { hash: 'arac-kullandirim', icon: 'bank', t: 'Taslak — Marketplace Taşıt: Kullandırım', d: 'Gerekli Belgeler (taşıt kredisi sözleşmelerinin dijital onayı) → Noter → Rehin' },
+  { hash: 'arac-kullandirim', icon: 'bank', t: 'Taslak — Marketplace Taşıt: Kullandırım', d: 'Gerekli Belgeler (sözleşme onayı ve Güvenli Ödeme Sistemi, hesaptan ödeme) → Noter (işlem bekleniyor) → Rehin' },
   { hash: 'arac-tamam', icon: 'check', t: 'Taslak — Marketplace Taşıt: Kredi kullandırıldı', d: 'Kullandırım tamamlandı ekranı' },
   { hash: 'konut', icon: 'home', t: 'Taslak — Marketplace Konut', d: 'Satılık konut ara ve karşılaştır; kredini planla, başvuru, ekspertiz ve kullandırımı tek akışta izle' },
   { hash: 'konut-tanitim', icon: 'spark', t: 'Taslak — Marketplace Konut: İlk giriş tanıtımı', d: 'Hizmet tanıtımı; müşteri bilgileri ve TAKBİS adımlarından önce (yalnızca ilk girişte)' },
@@ -274,12 +274,12 @@ const SECTIONS = [
   { hash: 'konut-tamam', icon: 'check', t: 'Taslak — Marketplace Konut: Kredi kullandırıldı', d: 'Süreç tamamlandı ekranı' },
   { hash: 'isletme', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı', d: 'İşletmenin para giriş ve çıkışları, Yapı Kredi Akıllı Asistanı analizi ve sana özel finansman teklifleri' },
   { hash: 'isletme-hareketler', icon: 'pie', t: 'Taslak — Akıllı İşletme Finansmanı: Finansal hareketler', d: 'Şirkete girenler / çıkanlar, kategori ve işlem detayı, dönem karşılaştırma' },
-  { hash: 'isletme-analiz', icon: 'spark', t: 'Taslak — Akıllı İşletme Finansmanı: Akıllı Asistan analizi', d: 'Finansal sağlık, nakit akışı eğilimi, olası nakit açıkları; finansman ve yatırım fırsatları' },
-  { hash: 'isletme-yatirim', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı: Yatırım fırsatı', d: 'Olumlu göstergelere dayalı yatırım / büyüme önerisi: dayanakları, faydası, ilgili ürüne talep' },
-  { hash: 'isletme-oneriler', icon: 'loan', t: 'Taslak — Akıllı İşletme Finansmanı: Finansman önerileri', d: 'İşletmeye özel 5 alternatif, gerekçeleri ve uygunluk puanı' },
-  { hash: 'isletme-karsilastir', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı: Teklif karşılaştırma', d: 'Tutar, maliyet, vade, aylık ödeme, toplam geri ödeme ve erken ödeme yan yana' },
-  { hash: 'isletme-basvuru', icon: 'doc', t: 'Taslak — Akıllı İşletme Finansmanı: Başvuru', d: 'Teklif özeti, işletme ve müşteri bilgileri, ön bilgilendirme; işlem onayı ve kontrol animasyonunun ardından "Başvurunuz Onaylandı"' },
-  { hash: 'isletme-kullandirim', icon: 'check', t: 'Taslak — Akıllı İşletme Finansmanı: Kullandırım', d: 'Sözleşmelerin incelenmesi ve dijital onayı (ek belge yok), Kullandırımı Tamamla' },
+  { hash: 'isletme-analiz', icon: 'spark', t: 'Taslak — Akıllı İşletme Finansmanı: Akıllı Asistan analizi', d: 'Finansal sağlık, nakit akışı eğilimi, olası nakit açıkları; finansman fırsatları, nakit yönetimi ve birikim önerileri' },
+  { hash: 'isletme-yatirim', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı: Yatırım fırsatı', d: 'Nakit yönetimi ve birikim: vadeli mevduat, Sınırsız Hesap, harcama ve ekstre yuvarlama (Fon / Maden / Mevduat)' },
+  { hash: 'isletme-oneriler', icon: 'loan', t: 'Taslak — Akıllı İşletme Finansmanı: Finansman önerileri', d: 'İşletmeye özel 5 alternatif, Öneriyi Seç; tek öneride teklif detayı, birden fazlasında karşılaştırma' },
+  { hash: 'isletme-karsilastir', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı: Önerileri karşılaştır', d: 'Seçilen öneriler yan yana: tutar, vade, aylık taksit, toplam geri ödeme, maliyet ve işletmeye avantajı' },
+  { hash: 'isletme-kredi', icon: 'doc', t: 'Taslak — Akıllı İşletme Finansmanı: Kredi Detay', d: 'Çatı Limit’ten kullanım: tutar slider’ı, geri ödeme planı ve kredi özeti; başvuru yok, doğrudan kullandırım' },
+  { hash: 'isletme-kullandirim', icon: 'check', t: 'Taslak — Akıllı İşletme Finansmanı: Kullandırım', d: 'İşletme Finansmanı Sözleşmeleri bloğu ve onay pop-up’ı (ek belge yok), Kullandırımı Tamamla, Çatı Limit kullanımı' },
   { hash: 'isletme-takip', icon: 'doc', t: 'Taslak — Akıllı İşletme Finansmanı: Finansman takibi', d: 'Kullandırılan finansman: geri ödeme planı, limit kullanımı ve bildirimler' },
   { hash: 'search',    icon: 'search',   t: 'Arama',               d: 'Arama ekranı' },
   { hash: 'settings',  icon: 'gear',     t: 'Ayarlar',             d: 'Tema ve bildirimler' },
@@ -608,7 +608,20 @@ const lockEl = document.getElementById('lockscreen');
      checkAnimRun({ steps, items, ms, okTitle, okSub, onDone }) — short check → success animation over the screen
      payPopOpen({ title, desc, amount, type, note, insts, methods, okMsg, ms, onPaid(res), onClose })
      confirmPopOpen({ title, desc, rows, okText, cancelText, busyText, ms, check(), onConfirm(), onCancel() })
+     acctPopOpen({ title, desc, amount, type, note, busyText, okMsg, ms, autoClose, onPaid(res), onClose(res) })
+       — payment from the customer's bank accounts only (no credit / debit card); res = { ref, at, amount, acct, acctLabel, balanceAfter }
+   Account balances are shared: a debit card spends from its linked account, so both pop-ups show the same balance.
    =================================================================== */
+// Customer's bank accounts (DEMO). Maaş Hesabım holds 2.000.000 TL so that payments can be tested end to end.
+const PAY_ACCOUNTS = [
+  { id: 'main',   name: 'Vadesiz TL Hesabım',    type: 'Vadesiz TL',        no: '12345678', iban: 'TR•• •••• •••• 5678', cur: 'TL',  balance: USER.balance, mark: '₺' },
+  { id: 'salary', name: 'Maaş Hesabım',          type: 'Maaş · Vadesiz TL', no: '87654321', iban: 'TR•• •••• •••• 4321', cur: 'TL',  balance: 2000000,      mark: '₺' },
+  { id: 'eur',    name: 'Vadesiz Euro Hesabım',  type: 'Vadesiz EUR',       no: '12345679', iban: 'TR•• •••• •••• 5679', cur: 'EUR', balance: 1250,         mark: '€' },
+];
+const ACCT_SPENT = {};                          // amounts paid in this session per account (card and account payments)
+function acctById(id) { return PAY_ACCOUNTS.find(a => a.id === id); }
+function acctAvail(a) { return a.balance - (ACCT_SPENT[a.id] || 0); }
+function acctMoney(n, cur = 'TL') { return (Math.round(n * 100) / 100).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + cur; }
 // Saved cards (DEMO). Credit cards offer instalments; debit cards pay in one go from the linked account.
 const PAY_CARDS = {
   credit: [
@@ -616,14 +629,14 @@ const PAY_CARDS = {
     { id: 'adios', name: 'Adios', num: '5400 24** **** 7781', exp: '06/30', limit: 300000, art: 'adios', mark: 'adios' },
   ],
   debit: [
-    { id: 'tlcard', name: 'TLcard', num: '4506 34** **** 8842', acct: 'Vadesiz TL Hesabım', balance: USER.balance, art: 'tl', mark: 'TLcard' },
-    { id: 'salary', name: 'Maaş Kartım', num: '4506 34** **** 5521', acct: 'Maaş Hesabım', balance: 96750, art: 'salary', mark: 'Bankamatik' },
+    { id: 'tlcard', name: 'TLcard', num: '4506 34** **** 8842', acct: 'Vadesiz TL Hesabım', acctId: 'main', art: 'tl', mark: 'TLcard' },
+    { id: 'salary', name: 'Maaş Kartım', num: '4506 34** **** 5521', acct: 'Maaş Hesabım', acctId: 'salary', art: 'salary', mark: 'Bankamatik' },
   ],
 };
 const PAY_METHODS = { credit: 'Kredi Kartı', debit: 'Banka Kartı' };
 const PAY_INSTS = [1, 2, 3, 6];                 // default instalment options (1 = Tek Çekim, the default choice)
 const PAY_SPENT = {};                           // amounts paid in this session, per card (limit / balance shown to the customer)
-let PAY_POP = null, CF_POP = null;
+let PAY_POP = null, CF_POP = null, ACCT_POP = null;
 
 function popTL(n) {
   const r = Math.round(n * 100) / 100;
@@ -634,7 +647,7 @@ function popNow() {
   return `${d.getDate()} ${m} ${d.getFullYear()} · ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 function popRef(p) { return p + String(Math.floor(100000000 + Math.random() * 900000000)); }
-function popBusy() { return !!((PAY_POP && PAY_POP.phase === 'busy') || (CF_POP && CF_POP.phase === 'busy')); }
+function popBusy() { return !!((PAY_POP && PAY_POP.phase === 'busy') || (CF_POP && CF_POP.phase === 'busy') || (ACCT_POP && ACCT_POP.phase === 'busy')); }
 function popShow(html) {
   const y = sheetEl.classList.contains('open') ? sheetEl.scrollTop : 0;
   sheetEl.innerHTML = html;
@@ -650,14 +663,14 @@ const POP_ICO = {
 };
 
 /* -------------------- Payment pop-up -------------------- */
-function payPopAvail(c) { return (c.limit != null ? c.limit : c.balance) - (PAY_SPENT[c.id] || 0); }
+function payPopAvail(c) { return c.acctId ? acctAvail(acctById(c.acctId)) : c.limit - (PAY_SPENT[c.id] || 0); }   // debit card → its account
 function payPopCards(m = PAY_POP.method) { return PAY_CARDS[m]; }
 function payPopCard() { const P = PAY_POP; return payPopCards().find(c => c.id === P.card) || payPopCards()[0]; }
 // Preselect the first card that covers the amount (credit first); the customer can choose any card
 function payPopPick(m, amount) { const l = PAY_CARDS[m]; return (l.find(c => payPopAvail(c) >= amount) || l[0]).id; }
 function payPopOpen(o) {
   if (popBusy()) return;
-  CF_POP = null;
+  CF_POP = null; ACCT_POP = null;
   const ms = (o.methods || Object.keys(PAY_METHODS)).filter(x => PAY_CARDS[x]);
   const m = ms.length === 1 ? ms[0] : PAY_CARDS.credit.some(c => payPopAvail(c) >= o.amount) || !PAY_CARDS.debit.some(c => payPopAvail(c) >= o.amount) ? 'credit' : 'debit';
   PAY_POP = { o: { insts: PAY_INSTS, ...o, methods: ms }, method: m, card: payPopPick(m, o.amount), inst: 1, phase: 'form', res: null, err: null };
@@ -779,7 +792,7 @@ function payPopConfirm() {
         : `${c.acct} bakiyesi (${popTL(avail)}) bu ödeme için yeterli değil.`;
       return payPopRender();
     }
-    PAY_SPENT[c.id] = (PAY_SPENT[c.id] || 0) + amt;
+    if (c.acctId) ACCT_SPENT[c.acctId] = (ACCT_SPENT[c.acctId] || 0) + amt; else PAY_SPENT[c.id] = (PAY_SPENT[c.id] || 0) + amt;
     const inst = P.method === 'credit' ? P.inst : 1;
     P.res = { ref: popRef('ODM'), at: popNow(), amount: amt, method: P.method, methodLabel: PAY_METHODS[P.method], inst,
       card: { id: c.id, name: c.name, last4: popLast4(c) }, cardLabel: `${c.name} •••• ${popLast4(c)}`, acct: c.acct || null,
@@ -809,7 +822,7 @@ function payPopClose() {
 /* -------------------- Transaction confirmation pop-up (checkpoint before an important step) -------------------- */
 function confirmPopOpen(o) {
   if (popBusy()) return;
-  PAY_POP = null;
+  PAY_POP = null; ACCT_POP = null;
   CF_POP = { o: { okText: 'Onayla', cancelText: 'Vazgeç', ...o }, phase: 'form', err: null };
   confirmPopRender();
 }
@@ -856,6 +869,133 @@ function confirmPopCancel() {
   CF_POP = null;
   closeSheet();
   if (C.o.onCancel) C.o.onCancel();
+}
+
+/* -------------------- Account payment pop-up (bank accounts only) --------------------
+   Same look and steps as the card payment pop-up, but the only payment method is one of the customer's accounts:
+   account name, type, masked IBAN, currency and available balance; a TL payment can only come from a TL account.
+   Paying lowers the chosen account's balance for the session (ACCT_SPENT); an insufficient balance is never charged. */
+function acctUsable(a, amount) { return a.cur === 'TL' && acctAvail(a) >= amount; }
+// Preselect the first TL account that covers the amount; the customer can choose any TL account
+function acctPick(amount) { return (PAY_ACCOUNTS.find(a => acctUsable(a, amount)) || PAY_ACCOUNTS.find(a => a.cur === 'TL')).id; }
+function acctPopOpen(o) {
+  if (popBusy()) return;
+  PAY_POP = null; CF_POP = null;
+  ACCT_POP = { o, acct: acctPick(o.amount), phase: 'form', res: null, err: null };
+  acctPopRender();
+}
+function acctPopCur() { const A = ACCT_POP; return acctById(A.acct) || PAY_ACCOUNTS[0]; }
+function acctPopRender() {
+  const A = ACCT_POP;
+  if (!A) return;
+  popShow(A.phase === 'ok' ? acctPopOkHTML() : A.phase === 'fail' ? acctPopFailHTML() : acctPopFormHTML());
+}
+function acctRowHTML(a, on, amount) {
+  const avail = acctAvail(a), fx = a.cur !== 'TL', short = !fx && avail < amount;
+  return `<button class="acctpop-acct ${on ? 'on' : ''} ${fx ? 'off' : ''}" data-action="acctpop-acct" data-id="${a.id}" role="radio" aria-checked="${on}" ${fx ? 'aria-disabled="true"' : ''}>
+      <span class="acctpop-ico ${fx ? 'fx' : ''}">${a.mark}</span>
+      <span class="acctpop-mid"><b>${a.name}</b><span>${a.type} · Hesap no ${a.no}</span><span class="acctpop-iban">IBAN ${a.iban}</span>
+        <span class="acctpop-bal">Kullanılabilir bakiye <b>${acctMoney(avail, a.cur)}</b></span>
+        ${fx ? '<em class="acctpop-tag">TL ödemede kullanılamaz</em>' : short ? '<em class="acctpop-tag warn">Bakiye bu ödeme için yetersiz</em>' : ''}</span>
+      <span class="paypop-radio"></span>
+    </button>`;
+}
+function acctPopFormHTML() {
+  const A = ACCT_POP, o = A.o, busy = A.phase === 'busy', a = acctPopCur(), short = acctAvail(a) < o.amount;
+  return `
+    <div class="sheet-handle"></div>
+    <div class="sheet-bar"><h3>Hesaptan Ödeme</h3><button class="sheet-x" data-action="acctpop-close" aria-label="Kapat" ${busy ? 'disabled' : ''}>${I.close}</button></div>
+    <div class="paypop acctpop ${busy ? 'busy' : ''}">
+      <div class="paypop-sum">
+        <span class="paypop-type">${o.type || 'Ödenecek toplam tutar'}</span>
+        <b class="paypop-amt">${popTL(o.amount)}</b>
+        <div class="paypop-desc"><span class="paypop-desc-ico">${I.receipt}</span><div><b>${o.title}</b>${o.desc ? `<span>${o.desc}</span>` : ''}</div></div>
+      </div>
+      ${o.note ? `<div class="vm-sheet-note paypop-note">${I.info}<span>${o.note}</span></div>` : ''}
+      <div class="paypop-h">Ödeme yapılacak hesap</div>
+      <div class="acctpop-accts" role="radiogroup" aria-label="Hesaplarım">${PAY_ACCOUNTS.map(x => acctRowHTML(x, x.id === A.acct, o.amount)).join('')}</div>
+      <div class="acctpop-after ${short ? 'warn' : ''}" id="acctpop-after">${short
+        ? `${POP_ICO.warn}<span>${a.name} kullanılabilir bakiyesi (${acctMoney(acctAvail(a))}) bu ödeme için yeterli değil. Bakiyesi yeten bir hesap seç.</span>`
+        : `${I.info}<span>Ödemeden sonra ${a.name} bakiyesi: <b>${acctMoney(acctAvail(a) - o.amount)}</b></span>`}</div>
+    </div>
+    <button class="sheet-btn paypop-ok" id="acctpop-ok" data-action="acctpop-ok">${busy ? `<span class="spinner"></span> ${o.busyText || 'Ödemen yapılıyor…'}` : 'Ödemeyi Onayla'}</button>
+    <button class="sheet-btn ghost" data-action="acctpop-close" ${busy ? 'disabled' : ''}>Vazgeç</button>`;
+}
+function acctPopOkHTML() {
+  const A = ACCT_POP, r = A.res;
+  return `
+    <div class="sheet-handle"></div>
+    <div class="paypop-res ok" role="status">
+      <span class="pop-check">${POP_ICO.ok}</span>
+      <b class="paypop-res-t">Ödeme başarılı</b>
+      <span class="paypop-res-amt">${popTL(r.amount)}</span>
+      <span class="paypop-res-msg">${A.o.okMsg || 'İşleminiz başarıyla tamamlandı.'}</span>
+    </div>
+    <div class="receipt vm-receipt paypop-rcpt">
+      <div class="r-row"><span class="r-l">Ödeme</span><span class="r-r">${A.o.title}</span></div>
+      <div class="r-row"><span class="r-l">Ödeme yöntemi</span><span class="r-r">Hesaptan ödeme</span></div>
+      <div class="r-row"><span class="r-l">Hesap</span><span class="r-r">${r.acctLabel}</span></div>
+      <div class="r-row hl"><span class="r-l">Güncel bakiye</span><span class="r-r" id="acctpop-bal-after">${acctMoney(r.balanceAfter)}</span></div>
+      <div class="r-row"><span class="r-l">İşlem no</span><span class="r-r">${r.ref}</span></div>
+      <div class="r-row"><span class="r-l">İşlem tarihi</span><span class="r-r">${r.at}</span></div>
+    </div>
+    <button class="sheet-btn" data-action="acctpop-close">Tamam</button>`;
+}
+function acctPopFailHTML() {
+  return `
+    <div class="sheet-handle"></div>
+    <div class="paypop-res fail" role="alert">
+      <span class="pop-check warn">${POP_ICO.warn}</span>
+      <b class="paypop-res-t">Ödeme gerçekleştirilemedi</b>
+      <span class="paypop-res-msg">${ACCT_POP.err}</span>
+      <span class="paypop-res-sub">Hesabından para çekilmedi.</span>
+    </div>
+    <button class="sheet-btn" data-action="acctpop-retry">Başka Hesapla Dene</button>
+    <button class="sheet-btn ghost" data-action="acctpop-close">Vazgeç</button>`;
+}
+function acctPopSet(id) {
+  const A = ACCT_POP, a = acctById(id);
+  if (!A || A.phase !== 'form' || !a) return;
+  if (a.cur !== 'TL') return toast('Döviz hesabından TL ödeme yapılamaz');
+  A.acct = id;
+  acctPopRender();
+}
+function acctPopConfirm() {
+  const A = ACCT_POP;
+  if (!A || A.phase !== 'form') return;
+  A.phase = 'busy';
+  acctPopRender();
+  setTimeout(() => {
+    if (ACCT_POP !== A) return;
+    const a = acctPopCur(), avail = acctAvail(a), amt = A.o.amount;
+    if (a.cur !== 'TL' || amt > avail) {   // declined: nothing is charged, the customer can choose another account
+      A.phase = 'fail';
+      A.err = `${a.name} kullanılabilir bakiyesi (${acctMoney(avail, a.cur)}) bu ödeme için yeterli değil.`;
+      return acctPopRender();
+    }
+    ACCT_SPENT[a.id] = (ACCT_SPENT[a.id] || 0) + amt;
+    A.res = { ref: popRef('HSP'), at: popNow(), amount: amt, method: 'account', methodLabel: 'Hesaptan ödeme',
+      acct: { id: a.id, name: a.name, no: a.no }, acctLabel: `${a.name} · ${a.no}`, balanceAfter: acctAvail(a) };
+    A.phase = 'ok';
+    if (A.o.onPaid) A.o.onPaid(A.res);   // the calling screen updates its own payment state behind the pop-up
+    acctPopRender();
+    setTimeout(() => { if (ACCT_POP === A && A.phase === 'ok') acctPopClose(); }, A.o.autoClose || 2600);
+  }, A.o.ms || 1400);
+}
+function acctPopRetry() {
+  const A = ACCT_POP;
+  if (!A || A.phase !== 'fail') return;
+  A.phase = 'form';
+  A.err = null;
+  A.acct = acctPick(A.o.amount);
+  acctPopRender();
+}
+function acctPopClose() {
+  const A = ACCT_POP;
+  if (!A || A.phase === 'busy') return;
+  ACCT_POP = null;
+  closeSheet();
+  if (A.o.onClose) A.o.onClose(A.res);
 }
 
 /* -------------------- Check → approve animation (over the current screen, no separate page) -------------------- */
@@ -1157,7 +1297,7 @@ const SEARCH_FEATURES = [
   { hash: 'borc-izleme', name: 'Anlık Borç İzleme', icon: I.payments, sub: 'Tüm borçların tek ekranda: bu ay ödenecekler, toplam borç yükün ve seçerek ödeme',
     keys: ['borç', 'borç öde', 'borç izleme', 'anlık borç', 'borçlarım', 'toplu ödeme', 'toplu borç', 'ekstre', 'son ödeme', 'erken ödeme', 'kredi kartı borcu', 'kart borcu', 'esnek hesap', 'kmh', 'taksit', 'konut kredisi', 'taşıt kredisi', 'kredi borcu'] },
   { hash: 'isletme', name: 'Akıllı İşletme Finansmanı', icon: I.bars, sub: 'İşletmenin nakit akışını analiz et, sana özel finansman tekliflerini gör',
-    keys: ['işletme', 'işletme finansmanı', 'işletme sermayesi', 'sermaye', 'ticari', 'ticari kredi', 'kobi', 'şirket', 'finansman', 'nakit akışı', 'nakit açığı', 'tedarikçi', 'yapay zeka', 'yapay zekâ', 'akıllı asistan', 'analiz', 'yatırım fırsatı', 'büyüme', 'kredi'] },
+    keys: ['işletme', 'işletme finansmanı', 'işletme sermayesi', 'sermaye', 'ticari', 'ticari kredi', 'kobi', 'şirket', 'finansman', 'nakit akışı', 'nakit açığı', 'tedarikçi', 'yapay zeka', 'yapay zekâ', 'akıllı asistan', 'analiz', 'yatırım fırsatı', 'nakit yönetimi', 'vadeli mevduat', 'kredi'] },
   { hash: 'erken-maas', name: 'Erken Maaş Erişimi', icon: I.salaryEarly, sub: 'Maaşının %25\'ine maaş gününü beklemeden eriş',
     keys: ['erken maaş', 'maaş', 'maaş avansı', 'avans', 'erken erişim', 'maaş kredisi', 'kredi', 'nakit'] },
 ];
@@ -4945,17 +5085,17 @@ function debtPaySelected() {
   const items = debtSelItems();
   if (!items.length) return;
   const disc = debtSelDisc(), net = debtSelNet();
-  payPopOpen({
+  acctPopOpen({
     type: `Borç ödemesi · ${items.length} kalem`, title: items.map(d => d.name).join(', '),
     desc: `${DEBT_PERIOD.label} · ${items.map(d => `${d.name} ${fmtTL2(debtR2(d.amount - debtDisc(d)))}${debtRate(d) ? ` (${debtPctTxt(debtRate(d))} indirimli)` : ''}`).join(' · ')}`,
-    amount: net, methods: ['debit'], busyText: 'Borç ödemen yapılıyor…',
-    note: `${disc ? `Erken ödeme indirimi (örnek kampanya): −${fmtTL2(disc)}; borç tutarı ${fmtTL2(debtSelTotal())}. ` : ''}Kredi ve kredi kartı borçları, banka kartının bağlı olduğu hesaptan ödenir. Seçmediğin kalemler ödenmez.`,
+    amount: net, busyText: 'Borç ödemen yapılıyor…',
+    note: `${disc ? `Erken ödeme indirimi (örnek kampanya): −${fmtTL2(disc)}; borç tutarı ${fmtTL2(debtSelTotal())}. ` : ''}Seçilen kalemler seçtiğin hesaptan tek seferde ödenir; seçmediğin kalemler ödenmez.`,
     okMsg: `${items.length} borç kalemi ödendi${disc ? `; ${fmtTL2(disc)} erken ödeme indirimi uygulandı` : ''}.`,
     onPaid: res => debtApplyPayment(items, res),
   });
 }
 function debtApplyPayment(items, res) {
-  const s = state.debt, now = debtNow(), acct = res.acct || res.cardLabel;
+  const s = state.debt, now = debtNow(), acct = res.acctLabel || res.cardLabel;   // Hesaptan Ödeme gives the account
   const rows = items.map(d => ({ d, rate: debtRate(d), disc: debtDisc(d) }));
   rows.forEach(({ d, rate, disc }) => { s.paidItems[d.id] = { amount: d.amount, paid: debtR2(d.amount - disc), disc, rate, ref: now.ref, date: now.full, dateShort: now.short }; });
   const amount = debtR2(rows.reduce((a, x) => a + x.d.amount - x.disc, 0)), disc = debtR2(rows.reduce((a, x) => a + x.disc, 0));
@@ -5168,7 +5308,7 @@ function debtHistSheet(id) {
       <div class="r-row"><span class="r-l">İşlem tarihi</span><span class="r-r">${x.date}</span></div>
       <div class="r-row"><span class="r-l">Referans no</span><span class="r-r">${x.ref}</span></div>
       <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">${x.acct}</span></div>
-      ${x.items ? `<div class="r-row"><span class="r-l">Banka kartı</span><span class="r-r">${typeof x.card === 'string' ? x.card : ''}</span></div>` : ''}
+      ${x.items && typeof x.card === 'string' ? `<div class="r-row"><span class="r-l">Banka kartı</span><span class="r-r">${x.card}</span></div>` : x.items ? '<div class="r-row"><span class="r-l">Ödeme yöntemi</span><span class="r-r">Hesaptan ödeme</span></div>' : ''}
       ${x.disc ? `<div class="r-row"><span class="r-l">Erken ödeme indirimi</span><span class="r-r">−${fmtTL2(x.disc)} (örnek kampanya)</span></div>` : ''}
       ${x.ok ? '' : `<div class="r-row"><span class="r-l">Neden</span><span class="r-r">${x.reason}</span></div>`}
     </div>
@@ -5791,7 +5931,7 @@ state.vm = {
   kasko: 'k2',        // selected kasko offer
   kAgree: false,      // kasko information form read
   policy: null,       // { offer, no, payRef, payLabel, at, inst, amount, start, end }
-  use: null,          // Kullandırım { stage, contracts, docsAt, noterSlot, noterAt, pledgeAt, disbAt, disbRef }
+  use: null,          // Kullandırım { stage, contracts, gos, docsAt, noterAt, pledgeAt, disbAt, disbRef }
   ctAgree: false,     // "read and approve" box of the loan contracts sheet
   upl: {},            // uploaded documents { key: { at, file } }
   uploading: null,
@@ -7122,7 +7262,7 @@ function vmIssuePolicy(res = { ref: vmRef('ODM'), inst: 1, methodLabel: 'Kredi K
 
 /* -------------------- Screen 7 — Kullandırım: Gerekli Belgeler → Noter → Rehin -------------------- */
 // No branch visit: the documents and the digital approval of the loan contracts are completed here.
-// use.stage: 0 gerekli belgeler (documents + contracts) · 1 noter (sale & transfer; appointment set by the dealer) ·
+// use.stage: 0 gerekli belgeler (documents + contracts + Güvenli Ödeme Sistemi) · 1 noter (waiting for the notary) ·
 //            2 rehin being registered · 3 rehin registered, loan paid to the seller
 // Customer documents uploaded on this screen, { key: { t, d, file } } — none are requested for now; the upload flow stays for later needs
 const VM_UPL_DOCS = {};
@@ -7145,22 +7285,16 @@ function vmContractBody(k) {
       <h4>Rehnin kaldırılması</h4><p>Kredi tamamen ödendiğinde rehin bankamız tarafından kaldırılır.</p>`,
   }[k];
 }
-function vmNewUse() { return { stage: 0, contracts: null, docsAt: null, noterSlot: null, noterAt: null, pledgeAt: null, disbAt: null, disbRef: null }; }
-function vmNoter(c) { const d = vmDealer(c); return `${d.district} ${d.city === 'İstanbul' ? 12 : 3}. Noterliği`; }
-function vmBizDays(n, from, base = new Date()) {
-  const out = [], d = new Date(base);
-  d.setHours(12, 0, 0, 0);
-  d.setDate(d.getDate() + from);
-  while (out.length < n) { if (d.getDay() % 6) out.push(new Date(d)); d.setDate(d.getDate() + 1); }
-  return out;
-}
-function vmSlotLabel(d, t) { return `${KN_GUN[d.getDay()]}, ${d.getDate()} ${VM_AY[d.getMonth()]} · ${t}`; }
-function vmAt(d, hhmm) { const [h, m] = hhmm.split(':'); const x = new Date(d); x.setHours(+h, +m, 0, 0); return x; }
-function vmShortSlot(s) { return s.split(' · ')[0].split(', ')[1]; }
+function vmNewUse() { return { stage: 0, contracts: null, gos: null, docsAt: null, noterAt: null, pledgeAt: null, disbAt: null, disbRef: null }; }
+// Güvenli Ödeme Sistemi: the rest of the down payment (down payment − paid deposit) is held until the transfer
+function vmGosAmt(a = state.vm.app) { return Math.max(0, a.down - (a.dep || 0)); }
 function vmUseDocsMissing() { return Object.keys(VM_UPL_DOCS).filter(k => !state.vm.upl[k]); }
 function vmDocsTodo() {
-  const u = state.vm.use, docs = vmUseDocsMissing().length > 0, ct = !(u && u.contracts);
-  return docs && ct ? 'gerekli belgeleri yükle ve taşıt kredisi sözleşmelerini onayla' : docs ? 'gerekli belgeleri yükle' : ct ? 'taşıt kredisi sözleşmelerini onayla' : '';
+  const u = state.vm.use, miss = [];
+  if (vmUseDocsMissing().length) miss.push('gerekli belgeleri yükle');
+  if (!(u && u.contracts)) miss.push('taşıt kredisi sözleşmelerini onayla');
+  if (!(u && u.gos)) miss.push('kalan tutarı güvenli ödeme sistemine aktar');
+  return miss.length > 1 ? miss.slice(0, -1).join(', ') + ' ve ' + miss[miss.length - 1] : miss[0] || '';
 }
 function VmUse() {
   const v = state.vm, a = v.app;
@@ -7168,17 +7302,18 @@ function VmUse() {
   if (!v.policy) { state.screen = 'arac-kasko'; return VmKasko(); }
   if (!v.use) v.use = vmNewUse();
   const u = v.use, c = vmCar(a.car), st = u.stage, done = st >= 3;
-  const pill = done ? '' : st === 0 ? (u.contracts ? 'Belgeler bekleniyor' : 'Sözleşme onayı bekleniyor') : st === 1 ? 'Noter işlemi bekleniyor' : 'Rehin tesis ediliyor';
+  const pill = done ? '' : st === 0 ? (!u.contracts ? 'Sözleşme onayı bekleniyor' : !u.gos ? 'Güvenli ödeme bekleniyor' : 'Belgeler bekleniyor') : st === 1 ? 'Noter işlemi bekleniyor' : 'Rehin tesis ediliyor';
   const stages = [
-    { t: 'Gerekli Belgeler', d: st > 0 ? 'Tamamlandı' : u.contracts ? 'Belgeler bekleniyor' : 'Sözleşme onayı', s: st > 0 ? 'done' : 'on' },
-    { t: 'Noter', d: st > 1 ? 'Devir tamamlandı' : st === 1 ? 'Randevu ' + vmShortSlot(u.noterSlot) : 'Belgelerden sonra', s: st > 1 ? 'done' : st === 1 ? 'on' : 'todo' },
+    { t: 'Gerekli Belgeler', d: st > 0 ? 'Tamamlandı' : !u.contracts ? 'Sözleşme onayı' : !u.gos ? 'Ödeme bekleniyor' : 'Belgeler bekleniyor', s: st > 0 ? 'done' : 'on' },
+    { t: 'Noter', d: st > 1 ? 'Tamamlandı' : st === 1 ? 'İşlem bekleniyor' : 'Belgelerden sonra', s: st > 1 ? 'done' : st === 1 ? 'on' : 'todo' },
     { t: 'Rehin', d: st > 2 ? 'Tesis edildi' : st === 2 ? 'Tesis ediliyor' : 'Noter işleminde', s: st > 2 ? 'done' : st === 2 ? 'on' : 'todo' },
   ];
   const opsDone = [st > 0, st > 1, st > 2].filter(Boolean).length;
   const cta = st === 0 && !u.contracts ? '<button class="btn-primary" id="vm-use-cta" data-action="vm-contracts">Sözleşmeleri İncele ve Onayla</button>'
+    : st === 0 && !u.gos ? `<button class="btn-primary" id="vm-use-cta" data-action="vm-gos-pay">Kalan Tutarı Öde · ${vmTL(vmGosAmt(a))}</button>`
     : done ? '<button class="btn-primary" data-action="vm-home">Marketplace Taşıt\'a Dön</button>' : '';
-  const tip = st === 0 ? 'Sözleşmeleri onayladığında gerekli belgeler adımı tamamlanır; noter randevun bayi tarafından belirlenir.'
-    : st === 1 ? 'Sonraki adıma geçtiğinde noterde satış ve devir yapılır, ardından rehin tesis edilir.' : '';
+  const tip = st === 0 ? 'Sözleşmeleri onaylayıp kalan tutarı güvenli ödeme sistemine aktardığında gerekli belgeler adımı tamamlanır ve noter işlemi başlar.'
+    : st === 1 ? 'Sonraki adıma geçtiğinde noter işlemi başarıyla tamamlanmış kabul edilir ve rehin adımına geçilir.' : '';
   return `
   <div class="screen ${vmAnim()} vm">
     ${vmNav('Kullandırım')}
@@ -7200,7 +7335,7 @@ function VmUse() {
       <div class="kn-st3" aria-label="Kullandırım süreci">${vmStagesHTML(stages)}</div>
       <div class="vm-sec-t vm-sec-row"><span>Tamamlanacak işlemler</span><span class="vm-sec-ref">${opsDone}/3 tamamlandı</span></div>
       ${vmOpDocsHTML(u)}
-      ${vmOpNoterHTML(u, a, c)}
+      ${vmOpNoterHTML(u)}
       ${vmOpPledgeHTML(u, a, c)}
       <div class="ru-info-card vm-links kn-gap">
         <div class="ru-info-row tap" data-action="vm-plan-all"><span class="ru-info-ico">${I.doc}</span><span class="ru-info-k">Kredi ödeme planı</span><span class="ru-info-v">${a.term} taksit</span>${I.chevR}</div>
@@ -7216,29 +7351,23 @@ function VmUse() {
    Step 1 is the Gerekli Belgeler block itself: documents, their states and the contracts to approve. */
 function vmOpDocsHTML(u) {
   const st = u.stage, s = st > 0 ? 'done' : 'act';
-  const pill = st > 0 ? knOpPill('ok', 'Tamamlandı') : u.contracts ? knOpPill('on', 'Belge bekleniyor') : knOpPill('wait', 'Onay bekleniyor');
+  const pill = st > 0 ? knOpPill('ok', 'Tamamlandı') : !u.contracts ? knOpPill('wait', 'Onay bekleniyor') : !u.gos ? knOpPill('wait', 'Ödeme bekleniyor') : knOpPill('on', 'Belge bekleniyor');
   const todo = st === 0 ? vmDocsTodo() : '';
   return knOpHTML(1, s, 'Gerekli Belgeler', 'Kredi kullandırımı için gerekli belgelerin tamamlanması ve taşıt kredisi sözleşmelerinin dijital onayı.', pill,
     `<div class="vm-req-h" id="vm-req-t"><span>Belgeler</span><span class="vm-sec-ref">${vmReqCountTxt()}</span></div>
     ${todo ? `<div class="kn-docs-hint" role="status" aria-live="polite">${todo.charAt(0).toLocaleUpperCase('tr') + todo.slice(1)}. Şubeye gitmene gerek yok; tüm işlemler buradan tamamlanır.</div>` : ''}
     <div class="vm-docl kn-req vm-req-in" id="vm-docs">${vmUseDocsHTML()}</div>
+    <div class="vm-box vm-dep vm-gos ${u.gos ? 'paid' : ''}" id="vm-gos">${vmGosHTML(u)}</div>
     ${st > 0 ? `<div class="vm-deliv-pt">${I.check}<span><b>Gerekli belgeler tamamlandı</b>${u.docsAt}</span></div>` : ''}`);
 }
-function vmOpNoterHTML(u, a, c) {
-  const st = u.stage, d = vmDealer(c);
+function vmOpNoterHTML(u) {
+  const st = u.stage;
   const s = st > 1 ? 'done' : st === 1 ? 'on' : 'todo';
-  const pill = st > 1 ? knOpPill('ok', 'Devir tamamlandı') : st === 1 ? knOpPill('on', 'Randevu planlandı') : knOpPill('kn-later', 'Sırada');
-  const where = `<div class="vm-dealer"><div class="vm-dealer-ico">${KN_ICO.pen}</div><div class="vm-dealer-mid"><b>${vmNoter(c)}</b><span>Satış ve devir ${d.name} tarafından noterde yapılır</span></div></div>`;
-  const when = st === 0 ? `<div class="kn-lock">${I.lock}<span>Gerekli belgeler tamamlandığında noter randevun bayi tarafından belirlenir.</span></div>`
-    : `<div class="vm-deliv-pt">${KN_ICO.cal}<span><b>${st > 1 ? 'Satış ve devir yapıldı' : 'Noter randevun'}</b>${u.noterSlot}</span></div>`;
-  const rows = `<div class="vm-prof kn-op-rows">
-      <div class="vm-frow"><span>Araç</span><b>${c.brand} ${c.model} · ${c.year}</b></div>
-      <div class="vm-frow"><span>Satıcı</span><b>${VM_PAYEE.short}</b></div>
-      <div class="vm-frow"><span>Alıcı</span><b>${VM_PROFILE.name} · T.C. ${VM_PROFILE.tckn}</b></div>
-      <div class="vm-frow"><span>Noter işlem durumu</span><b class="${st > 1 ? 'kn-okv' : ''}">${st > 1 ? 'Araç adına devredildi' : st === 1 ? 'Randevu günü yapılacak' : 'Bekleniyor'}</b></div>
-    </div>`;
-  return knOpHTML(2, s, 'Noter', 'Araç satış ve devir işlemlerinin noter aracılığıyla gerçekleştirilmesi.', pill,
-    `${where}${when}${rows}<div class="vm-hint">Noterde satışla birlikte araç üzerine bankamız lehine rehin konulur; ruhsat yeni sahibi olarak senin adına düzenlenir.</div>`);
+  const pill = st > 1 ? knOpPill('ok', 'Tamamlandı') : st === 1 ? knOpPill('on', 'Bekleniyor') : knOpPill('kn-later', 'Sırada');
+  const body = st > 1 ? `<div class="vm-deliv-pt">${I.check}<span><b>Noter işlemi başarıyla tamamlandı</b>${u.noterAt}</span></div>`
+    : st === 1 ? `<div class="vm-noter-wait" role="status"><span class="vm-noter-ico">${KN_ICO.pen}</span><div><b>Noter İşlemi Bekleniyor</b><span>Araç satış ve devir işlemi noterde tamamlandığında bu adım güncellenir ve rehin adımına geçilir.</span></div></div>`
+    : `<div class="kn-lock">${I.lock}<span>Gerekli belgeler ve güvenli ödeme tamamlandığında noter işlemi başlar.</span></div>`;
+  return knOpHTML(2, s, 'Noter', 'Araç satış ve devir işlemlerinin noter aracılığıyla gerçekleştirilmesi.', pill, body);
 }
 function vmOpPledgeHTML(u, a, c) {
   const st = u.stage;
@@ -7289,6 +7418,38 @@ function vmUseDocsHTML() {
       <span class="vm-docl-ico">${x.k === 'contracts' ? KN_ICO.pen : I.doc}</span><div><b>${x.t}</b><span>${x.d}</span>${x.s === 'up' || x.s === 'sign' ? '<em class="vm-wait-tag">Bekleniyor</em>' : ''}${x.file ? `<em class="kn-upfile">${I.check}${x.file}</em>` : ''}</div>${pill(x)}</div>`).join('');
 }
 function vmUseRefresh() { if (state.screen === 'arac-kullandirim') vmStill(); }
+function vmGosHTML(u) {
+  const a = state.vm.app, g = u.gos;
+  return `<div class="vm-dep-top">
+      <span class="vm-dep-ico">${I.shield}</span>
+      <div class="vm-dep-mid"><b>Güvenli Ödeme Sistemi</b><em>Güvenli ödeme sistemine kalan tutarı aktar.</em></div>
+    </div>
+    <div class="vm-frow hl"><span>Aktarılacak tutar</span><b id="vm-gos-amt">${vmTL(g ? g.amount : vmGosAmt(a))}</b></div>
+    <div class="vm-frow"><span>Ödeme durumu</span><b>${g ? `<span class="vm-pill ok sm">${I.check}Ödendi</span>` : '<span class="vm-pill sm vm-dep-wait">Ödeme Bekleniyor</span>'}</b></div>
+    ${g ? `<div class="vm-frow"><span>Ödenen hesap</span><b>${g.acct}</b></div>
+    <div class="vm-frow"><span>İşlem no · tarih</span><b>${g.ref}<br><small>${g.at}</small></b></div>` : ''}
+    <button class="btn-primary vm-dep-btn" id="vm-gos-pay" data-action="vm-gos-pay" ${g ? 'disabled aria-disabled="true"' : ''}>${g ? I.check + 'Ödendi' : 'Öde'}</button>
+    <div class="vm-dep-note">${I.info}<span>Peşinat ${vmTL(a.down)}${a.dep ? `, ödenen kapora ${vmTL(a.dep)}` : ''}. Tutar noter işlemi tamamlanana kadar güvenli ödeme sisteminde tutulur, ardından ${VM_PAYEE.short} hesabına aktarılır.</span></div>`;
+}
+/* "Öde" opens the shared Hesaptan Ödeme pop-up; the step moves on only after a successful payment */
+function vmGosPay() {
+  const v = state.vm, a = v.app, u = v.use;
+  if (!a || !u || u.gos || u.stage !== 0 || state.screen !== 'arac-kullandirim') return;
+  const c = vmCar(a.car);
+  acctPopOpen({
+    type: 'Kalan tutar · Marketplace Taşıt', title: 'Güvenli Ödeme Sistemi', desc: 'Güvenli ödeme sistemine aktarılacak tutar',
+    amount: vmGosAmt(a), busyText: 'Güvenli ödeme sistemine aktarılıyor…',
+    note: `${c.brand} ${c.model} · ${vmDealer(c).name}. Tutar araç devri tamamlanana kadar güvenli ödeme sisteminde tutulur.`,
+    okMsg: 'Kalan tutar güvenli ödeme sistemine aktarıldı.',
+    onPaid: res => {
+      if (state.vm.use !== u) return;   // demo was reset meanwhile
+      u.gos = { amount: res.amount, ref: res.ref, at: res.at, acct: res.acctLabel, balanceAfter: res.balanceAfter };
+      vmDocsCheck();
+      vmUseRefresh();
+    },
+    onClose: res => { if (res && state.vm.use === u) toast(u.stage > 0 ? 'Gerekli belgeler tamamlandı · noter işlemi bekleniyor' : 'Güvenli ödeme tamamlandı'); },
+  });
+}
 /* Upload simulation (prototype: no real file is read or sent) */
 function vmUploadDoc(k) {
   const v = state.vm;
@@ -7351,12 +7512,11 @@ function vmContractApprove() {
     toast(done ? 'Sözleşmelerin onaylandı · gerekli belgeler tamamlandı' : 'Sözleşmelerin onaylandı');
   }, 1000);
 }
-/* Step 1 completes as soon as nothing is missing; the dealer then books the notary */
+/* Step 1 completes as soon as nothing is missing (documents, contracts and the Güvenli Ödeme Sistemi payment) */
 function vmDocsCheck() {
   const u = state.vm.use;
   if (!u || u.stage !== 0 || vmDocsTodo()) return false;
   u.stage = 1; u.docsAt = vmNowStr();
-  u.noterSlot = vmSlotLabel(vmBizDays(1, 2)[0], '11:00');
   return true;
 }
 function vmNoterDone(u) { u.stage = 2; u.noterAt = vmNowStr(); }
@@ -7378,7 +7538,7 @@ function vmAdvance() {
   if (u.stage === 1) {
     vmNoterDone(u);
     vmUseRefresh();
-    toast('Noterde satış ve devir yapıldı, rehin tesis ediliyor');
+    toast('Noter işlemi tamamlandı, rehin tesis ediliyor');
     setTimeout(() => vmPledgeDone(u), 2600);
   }
 }
@@ -7406,11 +7566,12 @@ function VmDone() {
         <div class="succ-date">${u.disbAt}</div>
         <div class="amt">${vmTL(a.loan)}</div>
         <div class="prod">${c.brand} ${c.model} · ${VM_PAYEE.short} hesabına aktarıldı</div>
-        <div class="kn-done kn-done-in"><span class="kn-done-ico">${VM_ICO.key}</span><b>İşlem tamamlandı</b><span>Şube, noter ve rehin işlemleri tamamlandı. Aracını ${d.name} ${d.district} satış noktasından teslim alabilirsin.</span></div>
+        <div class="kn-done kn-done-in"><span class="kn-done-ico">${VM_ICO.key}</span><b>İşlem tamamlandı</b><span>Güvenli ödeme, noter ve rehin işlemleri tamamlandı. Aracını ${d.name} ${d.district} satış noktasından teslim alabilirsin.</span></div>
         <div class="receipt">
           <div class="r-row"><span class="r-l">Araç</span><span class="r-r">${c.brand} ${c.model} · ${c.year} · ${c.type}</span></div>
           <div class="r-row"><span class="r-l">Satış noktası</span><span class="r-r">${d.name} · ${d.district}</span></div>
           <div class="r-row"><span class="r-l">Araç satış fiyatı · peşinat</span><span class="r-r">${vmTL(c.price)} · ${vmTL(a.down)}</span></div>
+          ${u.gos ? `<div class="r-row"><span class="r-l">Güvenli ödeme sistemi</span><span class="r-r">${vmTL(u.gos.amount)} · ${VM_PAYEE.short}'e aktarıldı</span></div>` : ''}
           <div class="r-row"><span class="r-l">Vade · aylık taksit</span><span class="r-r">${a.term} ay · ${vmTL(a.pay)}</span></div>
           <div class="r-row"><span class="r-l">Toplam geri ödeme</span><span class="r-r">${vmTL(a.total)}</span></div>
           <div class="r-row"><span class="r-l">İlk taksit</span><span class="r-r">${a.first}</span></div>
@@ -7438,6 +7599,8 @@ function vmFinSheet() {
       <div class="r-row"><span class="r-l">Araç</span><span class="r-r">${c.brand} ${c.model} · ${c.year} · ${c.type}</span></div>
       <div class="r-row"><span class="r-l">Araç satış fiyatı</span><span class="r-r">${vmTL(c.price)}</span></div>
       <div class="r-row"><span class="r-l">Peşinat</span><span class="r-r">${vmTL(a.down)}</span></div>
+      ${a.dep ? `<div class="r-row"><span class="r-l">Ödenen kapora</span><span class="r-r">${vmTL(a.dep)}</span></div>` : ''}
+      <div class="r-row"><span class="r-l">Güvenli ödeme sistemi</span><span class="r-r">${v.use && v.use.gos ? `${vmTL(v.use.gos.amount)} · ödendi` : `${vmTL(vmGosAmt(a))} · bekleniyor`}</span></div>
       <div class="r-row"><span class="r-l">Kredi tutarı</span><span class="r-r">${vmTL(a.loan)}</span></div>
       <div class="r-row"><span class="r-l">Vade</span><span class="r-r">${a.term} ay</span></div>
       <div class="r-row"><span class="r-l">Aylık taksit</span><span class="r-r">${vmTL(a.pay)}</span></div>
@@ -7593,6 +7756,7 @@ function vmSeed(h) {
   const u = v.use = vmNewUse();   // the whole Kullandırım part, completed
   Object.keys(VM_UPL_DOCS).forEach(k => { v.upl[k] = { at: vmNowStr(), file: VM_UPL_DOCS[k].file }; });
   u.contracts = { at: vmNowStr(), ref: vmRef('SZL') };
+  u.gos = { amount: vmGosAmt(v.app), ref: vmRef('HSP'), at: vmNowStr(), acct: 'Maaş Hesabım · 87654321', balanceAfter: null };
   vmDocsCheck();
   vmNoterDone(u);
   vmPledgeDone(u, true);
@@ -10172,31 +10336,36 @@ const BF_OFFERS = [
   { id: 'wc', type: 'Kısa vadeli işletme sermayesi finansmanı', short: 'İşletme sermayesi', icon: 'loan', tag: 'Akıllı Asistan önerisi', best: true, fit: 96,
     amount: 500000, min: 100000, max: 750000, term: 6, terms: [3, 6, 9, 12], rate: 3.19, kind: 'annuity',
     pay: 'Aylık eşit taksit', periodTxt: 'Aylık', early: 'Kalan anaparanın %1’i', earlyFree: false,
-    use: 'Maaş, kira, tedarikçi ve fatura ödemeleri dahil tüm işletme giderleri',
+    use: 'Maaş, kira, tedarikçi ve fatura ödemeleri dahil tüm işletme giderleri', desc: 'Sabit faiz ve eşit taksitle işletme giderlerini finanse eder.',
+    adv: 'Aralık açığını tamamen karşılar; sabit taksitle bütçe önceden planlanır.',
     reason: 'Aralık başındaki tahmini 430.000 TL’lik nakit açığını %15 güvenlik payıyla karşılar. Aylık taksit, Ocak’tan itibaren beklenen aylık nakit fazlasının en fazla %30’u kadar; sabit faiz ve taksitle bütçeni önceden planlarsın.' },
   { id: 'line', type: 'Nakit akışı destek finansmanı', short: 'Nakit akışı desteği', icon: 'refresh', tag: 'Esnek kullanım', fit: 88,
     amount: 600000, min: 200000, max: 800000, term: 12, terms: [12], rate: 3.89, kind: 'revolving',
     pay: 'Kullandıkça; her ay yalnızca faiz', periodTxt: 'Aylık (faiz)', early: 'Ücretsiz · istediğin an', earlyFree: true,
-    use: 'Ayın ilk günlerindeki maaş, kira ve tedarikçi ödemeleri',
+    use: 'Ayın ilk günlerindeki maaş, kira ve tedarikçi ödemeleri', desc: 'Limit olarak tanımlanır; yalnızca kullandığın tutar ve gün için faiz ödersin.',
+    adv: 'Yalnızca açık günlerinde kullanılırsa en düşük maliyet; tahsilat gelince kapatılır.',
     reason: 'Tahmin edilen açık dönemlerinde kullanır, tahsilat gelince kapatırsın; yalnızca kullandığın tutar ve gün için faiz ödersin. Faiz oranı değişkendir ve limit her yıl yeniden değerlendirilir.' },
   { id: 'flex', type: 'Esnek geri ödemeli işletme finansmanı', short: 'Esnek ödemeli', icon: 'calendar', tag: 'Sezona uyumlu', fit: 85,
     amount: 500000, min: 100000, max: 750000, term: 9, terms: [9, 12], grace: 2, rate: 3.39, kind: 'grace',
     pay: 'İlk 2 ay yalnızca faiz, sonra eşit taksit', periodTxt: 'Aylık', early: 'Ücretsiz (3. aydan sonra)', earlyFree: true,
-    use: 'Sezon dönemi işletme giderleri',
+    use: 'Sezon dönemi işletme giderleri', desc: 'İlk 2 ay yalnızca faiz, sonra eşit taksit; sezon tahsilatına uyumlu.',
+    adv: 'Sezon tahsilatları gelene kadar düşük ödeme; nakit tamponu korunur.',
     reason: 'Aralık ve Ocak’ta yalnızca faiz ödersin; anapara taksitleri sezon tahsilatları geldikten sonra, Şubat’ta başlar. Vade uzadığı için toplam maliyet daha yüksektir.' },
   { id: 'sup', type: 'Tedarikçi ödeme finansmanı', short: 'Tedarikçi finansmanı', icon: 'truck', tag: 'Stok dönemine özel', fit: 81,
     amount: 450000, min: 100000, max: 600000, term: 3, terms: [1, 2, 3], rate: 2.99, kind: 'bullet',
     pay: 'Vade sonunda tek ödeme', periodTxt: 'Vade sonunda', early: 'Ücretsiz', earlyFree: true,
-    use: 'Yalnızca tedarikçi ödemeleri; tutar doğrudan tedarikçine ödenir',
+    use: 'Yalnızca tedarikçi ödemeleri; tutar doğrudan tedarikçine ödenir', desc: 'Tedarikçi ödemesini vade sonuna öteler; tutar doğrudan tedarikçine ödenir.',
+    adv: 'Stok ödemesini satış tahsilatından sonraya taşır; vade içinde ara ödeme yok.',
     reason: '5 Aralık’taki sezon stok ödemesinin bir kısmını 90 gün öteler; ödemeyi Aralık satışlarının tahsilatı geldikten sonra yaparsın. Yalnızca tedarikçi ödemesinde kullanılabildiği için maaş ve kira açığını kapatmaz.' },
   { id: 'bill', type: 'Fatura ödeme finansmanı', short: 'Fatura finansmanı', icon: 'doc', tag: null, fit: 64,
     amount: 300000, min: 50000, max: 400000, term: 3, terms: [3, 6], rate: 3.29, kind: 'annuity',
     pay: 'Aylık eşit taksit', periodTxt: 'Aylık', early: 'Kalan anaparanın %1’i', earlyFree: false,
-    use: 'Kira, enerji ve hizmet faturaları',
+    use: 'Kira, enerji ve hizmet faturaları', desc: 'Kira ve fatura ödemelerini birkaç aya yayar.',
+    adv: 'Düşük tutarla sabit giderleri yayar; diğer finansmanlarla birlikte kullanılabilir.',
     reason: 'Aralık’taki kira ve fatura ödemelerini 3 aya yayar. Tutarı açığın tamamını karşılamadığı için tek başına yeterli değildir.' },
 ];
-const BF_STAGES = ['Başvuru', 'Kullan&shy;dırım', 'Geri ödeme'];
-const BF_AI_STEPS = ['Hesap hareketlerin sınıflandırılıyor', 'POS ve sipariş tahsilatların inceleniyor', 'Maaş, kira ve tedarikçi ödeme takvimin çıkarılıyor', 'Önümüzdeki 120 günün nakit akışı tahmin ediliyor', 'Finansman ihtiyacın ve risk göstergelerin hesaplanıyor', 'Büyüme ve yatırım fırsatların değerlendiriliyor'];
+const BF_STAGES = ['Kredi Detay', 'Kullan&shy;dırım', 'Geri ödeme'];
+const BF_AI_STEPS = ['Hesap hareketlerin sınıflandırılıyor', 'POS ve sipariş tahsilatların inceleniyor', 'Maaş, kira ve tedarikçi ödeme takvimin çıkarılıyor', 'Önümüzdeki 120 günün nakit akışı tahmin ediliyor', 'Finansman ihtiyacın ve risk göstergelerin hesaplanıyor', 'Nakit fazlası ve birikim fırsatların değerlendiriliyor'];
 const BF_AI_DUR = [900, 1300, 1100, 1700, 1200, 1000];   // unequal step durations (ms)
 
 state.bf = {
@@ -10204,14 +10373,15 @@ state.bf = {
   side: 'in', cat: null, shown: 20, cmp: false,
   pick: null,                                   // custom range being picked in the period sheet
   ai: { status: 'idle', step: 0, at: null, timer: null },
-  sel: ['wc', 'line', 'flex'],                  // offers in the comparison (max 3)
+  sel: [],                                      // offers chosen with "Öneriyi Seç" (max 3); none at first
   offer: 'wc', draft: null,
-  agree: { pre: false },                        // Ön Bilgilendirme Formu read (the only approval on the application)
-  ctAgree: false,                               // "read and approve" box of the open contract sheet
-  app: null,                                    // { no, offer, amount, term, status: 'approved' | 'active', contracts, disbAt, … }
+  ctChk: {},                                    // approval boxes ticked in the contracts modal { k: true }
+  app: null,                                    // { no, offer, amount, term, status: 'ready' | 'active', contracts, ctAt, disbAt, … }
   opp: 'fin',                                   // analysis results tab: 'fin' (Finansman Fırsatları) | 'inv' (Yatırım Fırsatları)
-  inv: 'cash',                                  // investment opportunity on the detail screen
-  invReq: {},                                   // requests left from investment opportunities { id: { ref, at } }
+  inv: 'deposit',                               // opportunity on the detail screen
+  invReq: {},                                   // accounts opened from the opportunities { id: { ref, at, label, note } }
+  depAmt: 400000, depTerm: 32,                  // Vadeli Mevduat: amount and term (days) on the detail screen
+  rdDest: { roundup: 'fund', statement: 'account' },   // where the rounded amounts go, chosen before the Birikim flow
 };
 
 /* -------------------- helpers -------------------- */
@@ -10571,7 +10741,7 @@ function bfAiCardHTML() {
     </div>`;
   }
   return `<div class="bf-ai-card">
-    <div class="bf-ai-top"><span class="bf-ai-ico">${I.spark}</span><div><b>Yapı Kredi Akıllı Asistanı</b><span>Son 3 ayın para giriş ve çıkışlarını inceler; nakit açığı risklerini ve finansman ihtiyacını önceden belirler, büyüme ve yatırım fırsatlarını ortaya çıkarır.</span></div></div>
+    <div class="bf-ai-top"><span class="bf-ai-ico">${I.spark}</span><div><b>Yapı Kredi Akıllı Asistanı</b><span>Son 3 ayın para giriş ve çıkışlarını inceler; nakit açığı risklerini ve finansman ihtiyacını önceden belirler, nakit fazlasını değerlendirme ve birikim fırsatlarını ortaya çıkarır.</span></div></div>
     <button class="btn-primary bf-ai-btn" data-action="bf-analyze">Yapı Kredi Akıllı Asistanı ile Analiz Et</button>
   </div>`;
 }
@@ -10598,7 +10768,7 @@ function bfOngoingHTML() {
   const o = bfOffer(a.offer);
   return `<div class="vm-ongoing bf-ongoing tap" data-action="bf-track">
     <span class="bf-ico" style="--c:var(--primary)">${I[o.icon]}</span>
-    <div class="vm-og-mid"><span>Finansman başvurun</span><b>${o.short} · ${vmTL(a.amount)}</b><em>${bfStatusTxt(a)}</em></div>
+    <div class="vm-og-mid"><span>Finansman işlemin</span><b>${o.short} · ${vmTL(a.amount)}</b><em>${bfStatusTxt(a)}</em></div>
     ${I.chevR}
   </div>`;
 }
@@ -10609,8 +10779,8 @@ function bfInfoSheet() {
     <div class="debt-how">
       <p class="bf-how-lead">Kredi değil, işletme finansman platformu.</p>
       <div class="debt-how-row"><span class="debt-how-ico">${I.bars}</span><div><b>Para giriş ve çıkışların tek ekranda</b><span>POS satışları, siparişler, nakit ve diğer tahsilatlar; fatura, maaş, tedarikçi ve diğer ödemeler aylık olarak karşılaştırılır.</span></div></div>
-      <div class="debt-how-row"><span class="debt-how-ico">${I.spark}</span><div><b>Yapı Kredi Akıllı Asistanı ile analiz</b><span>Nakit akışı eğilimi, olası nakit açığı dönemleri, risk göstergeleri ve büyüme fırsatları doğal dilde açıklanır.</span></div></div>
-      <div class="debt-how-row"><span class="debt-how-ico">${I.loan}</span><div><b>Finansman ve yatırım fırsatları</b><span>İhtiyacın için uygun finansman alternatifleri, güçlü göstergelerin için yatırım ve büyüme önerileri; finansmanda başvuru ve kullandırım iki adımda tamamlanır.</span></div></div>
+      <div class="debt-how-row"><span class="debt-how-ico">${I.spark}</span><div><b>Yapı Kredi Akıllı Asistanı ile analiz</b><span>Nakit akışı eğilimi, olası nakit açığı dönemleri, risk göstergeleri, nakit fazlası ve birikim fırsatları doğal dilde açıklanır.</span></div></div>
+      <div class="debt-how-row"><span class="debt-how-ico">${I.loan}</span><div><b>Finansman ve yatırım fırsatları</b><span>İhtiyacın için uygun finansman alternatifleri; nakit fazlası için vadeli mevduat ve Sınırsız Hesap, harcama ve ekstre yuvarlama ile birikim önerileri. Finansman Çatı Limit’ten, Kredi Detay ve Kullandırım adımlarıyla kullanılır.</span></div></div>
     </div>
     <div class="vm-sheet-note">${I.info}<span>Prototip: işletme, tutarlar, analiz ve teklifler demo veridir; gerçek hesap, POS veya Akıllı Asistan bağlantısı yoktur.</span></div>
     <button class="sheet-btn" data-action="close-sheet">Anladım</button>`;
@@ -10821,7 +10991,7 @@ function bfSummaryHTML() {
   return `<p>Son üç ayda (${bfRangeTxt(21, 23)}) işletmenin para girişleri %${Math.round(x.inG)} artarak aylık ortalama ${bfWords(bfAvg('in'))} TL’ye ulaştı; artışı POS satışları ve online siparişler sürüklüyor. Aynı dönemde tedarikçi ödemeleri yılbaşı sezonu stok alımlarıyla neredeyse iki katına çıktı ve toplam giderler %${Math.round(x.outG)} arttı. Bu nedenle aylık net nakit akışı Ağustos’taki ${bfWords(x.netA)} TL’den Ekim’de ${bfWords(x.netC)} TL’ye geriledi.</p>
     <p>Maaş, kira ve sezon stok ödemelerinin aynı haftaya denk geldiği <b>${bfGapTxt(g[0])}</b> arasında hesap bakiyesinin yaklaşık <b>${bfWords(need.min)} TL eksiye</b> düşmesi bekleniyor; ${g.length > 1 ? `${bfGapTxt(g[1])} ve ${bfGapTxt(g[g.length - 1])} tarihlerinde de kısa süreli açıklar var. ` : ''}Geçen yıl Aralık’ta da net nakit akışı ${bfWords(x.lastDec)} TL ekside kalmıştı.</p>
     <p>Bu açığı %${BF_BUFFER} güvenlik payıyla karşılamak için Aralık başından önce <b>${bfWords(need.amount)} TL tutarında, 6 ay vadeli</b> kısa vadeli işletme sermayesi finansmanı uygun görünüyor. Ocak’tan itibaren beklenen aylık nakit fazlası taksitleri rahatça karşılıyor.</p>
-    <p>Olumlu tarafta işletme güçlü büyüyor: son 12 ayda girişler <b>%${Math.round(bfPos().inG)}</b>, online siparişler <b>%${Math.round(bfPos().ordG)}</b> arttı; son üç ayda net nakit marjı <b>%${bfPct1(bfPos().net3)}</b>’e yükseldi. Aralık açığı kapandıktan sonra Ocak–Şubat’ta hesapta ortalama ${bfWords(bfPos().avgAfter)} TL bakiye bekleniyor; bu, nakit fazlasını değerlendirme, kapasite ve yeni pazar yatırımları için fırsat sunuyor.</p>`;
+    <p>Olumlu tarafta işletme güçlü büyüyor: son 12 ayda girişler <b>%${Math.round(bfPos().inG)}</b> arttı ve ${bfPos().plusN}/12 ay nakit fazlası verdi. Aralık açığı kapandıktan sonra Ocak–Şubat’ta hesapta ortalama ${bfWords(bfPos().avgAfter)} TL bakiye bekleniyor; uzun süre kullanılmayacak kısmı vadeli mevduatta, ay içinde bekleyen kısmı Sınırsız Hesap’ta değerlendirilebilir. Düzenli kart harcamaları ve ekstre de yuvarlama ile birikime dönüştürülebilir.</p>`;
 }
 function bfRisks() {
   const x = bfAI(), g = bfGaps()[0];
@@ -11006,8 +11176,8 @@ function bfCopy() {
 
 /* -------------------- Analysis results: Finansman Fırsatları and Yatırım Fırsatları --------------------
    The assistant reads both sides of the business. Needs (a projected cash gap, a heavy supplier month, payment days
-   that clash) lead to financing; strengths (steady growth, rising profitability, regular card / online collections,
-   the cash surplus expected after the gap) lead to investment and growth ideas. Every figure is derived from the demo
+   that clash) lead to financing; the cash surplus expected after the gap and the regular spending lead to cash
+   management and savings ideas (Revision 8, see below). Every figure is derived from the demo
    data; the ideas, yields and benefits are EXAMPLES, not investment advice. */
 function bfPos() {
   const inY = bfTot('in', 12, 23), inP = bfTot('in', 0, 11), outY = bfTot('out', 12, 23), outP = bfTot('out', 0, 11);
@@ -11027,67 +11197,6 @@ function bfPos() {
   };
 }
 function bfPct1(n) { return vmPctStr((+n).toFixed(1)); }
-const BF_INV_RATE = 40;   // EXAMPLE annual gross rate (%) used only to illustrate the cash-surplus idea
-const BF_INV_PARK = 400000;   // EXAMPLE amount that could be parked for 32 days while keeping a buffer
-function bfInvList() {
-  const p = bfPos(), gain = Math.round(BF_INV_PARK * BF_INV_RATE / 100 * 32 / 365 / 100) * 100;
-  return [
-    { id: 'cash', icon: 'wallet', signal: 'Düzenli nakit akışı · nakit fazlası', title: 'Nakit fazlasını değerlendir',
-      area: 'Kısa vadeli değerlendirme · ticari vadeli mevduat veya para piyasası fonu',
-      gainBig: `~${vmTL(gain)} / 32 gün`, gainShort: `${bfWords(BF_INV_PARK)} TL için 32 günde ~${bfWords(gain)} TL (örnek)`,
-      benefit: `Ocak ortasından itibaren hesapta biriken bakiyenin bir kısmı atıl kalmaz: örnek ${vmTL(BF_INV_PARK)} · 32 gün · yıllık %${BF_INV_RATE} brüt oranla yaklaşık ${vmTL(gain)} getiri. Vade sonunda tutar maaş ve stok ödemeleri için yeniden hazır olur.`,
-      ind: [
-        ['Ocak–Şubat tahmini ortalama bakiye', `~${bfWords(p.avgAfter)} TL`, '10 Ocak sonrası, tahmin'],
-        ['Tahmini en yüksek bakiye', `${bfCompact(p.peak)} TL · ${bfDayTxt(bfFcDate(p.peakK))}`, ''],
-        ['Nakit fazlası veren ay', `${p.plusN} / 12`, 'son 12 ay'],
-        ['Ocak ve Şubat tahmini net akış', `${bfCompactS(BF_FC_MONTHS[2][1])} / ${bfCompactS(BF_FC_MONTHS[3][1])} TL`, ''],
-      ],
-      why: 'Aralık’taki tahmini açık kapandıktan sonra, Ocak ortasından itibaren hesapta günlük giderlerin çok üzerinde bakiye birikiyor. Maaş ve kira günleri için tampon bırakıp kalanı kısa vadede değerlendirmek, nakdi atıl bırakmadan likiditeyi korur.',
-      timing: 'Ocak ortasından itibaren · 32 gün vadeli, yenilenebilir', product: 'Ticari vadeli mevduat / para piyasası fonu',
-      caution: 'Aralık nakit açığı kapatılmadan değerlendirme yapma; vadeyi maaş, kira ve tedarikçi ödeme günlerine göre seç.',
-      cta: 'Vadeli Hesap Talebi Oluştur', chart: () => `<div class="bf-fc-h"><span>Tahmini hesap bakiyesi · 120 gün</span></div>${bfFcSVG(true)}
-        <div class="bf-fc-legend"><span><i class="cur"></i>Mevcut tahmin</span><span><i class="fin"></i>Açık finansmanla kapatılırsa</span><span><i class="gap"></i>Açık dönemi</span></div>` },
-    { id: 'capacity', icon: 'trendUp', signal: 'Ciroda düzenli artış', title: 'Kapasiteni büyüt: yeni satış noktası',
-      area: 'Kapasite artırımı · 3. mağaza veya mevcut mağazalarda satış alanı',
-      gainBig: '+%15–20 ek ciro potansiyeli', gainShort: 'Yıllık ciroda tahmini +%15–20 (örnek)',
-      benefit: 'Artan talebi karşılayacak kapasite: mevcut büyüme hızı korunursa yeni satış noktasıyla yıllık ciroda tahmini +%15–20 ek potansiyel (örnek). Ölçek büyüdükçe tedarikçilerle pazarlık gücün de artar.',
-      ind: [
-        ['Son 12 ayda para girişleri', `+%${Math.round(p.inG)} · ${bfCompact(p.inY)} TL`, 'önceki 12 aya göre'],
-        ['Aylık büyüme (geçen yılın aynı ayına göre)', `%${Math.round(p.yoyMin)}–${Math.round(p.yoyMax)}`, 'son 12 ayın tamamında'],
-        ['Çalışan başına aylık giriş', `${bfWords(p.perStaff)} TL · +%${Math.round(p.perStaffG)}`, 'son 3 ay, geçen yıla göre'],
-      ],
-      why: `Girişler 12 aydır her ay geçen yılın aynı ayına göre %${Math.round(p.yoyMin)}’ten fazla büyüyor ve çalışan başına ciro artıyor. Bu tablo mevcut mağazaların kapasitesine yaklaştığını ve talebin büyümeye devam ettiğini gösteriyor.`,
-      timing: '2027 1. çeyrek · sezon sonrası', product: 'Yatırım planı ve yatırım kredisi görüşmesi',
-      caution: 'Yatırım planını Aralık açığı kapandıktan sonra ve nakit tamponunu koruyarak yap; finansman ihtiyacını müşteri temsilcinle birlikte değerlendir.',
-      cta: 'Müşteri Temsilcinle Görüş', chart: () => `<div class="bf-fc-h"><span>Son 12 ay · giriş ve çıkış</span><span class="bf-legend"><i class="in"></i>Giriş<i class="out"></i>Çıkış</span></div>${bfBarsSVG(12, 23)}` },
-    { id: 'equip', icon: 'box', signal: 'Kârlılık yükseliyor', title: 'Ekipman yatırımı: depo ve sipariş hazırlama',
-      area: 'Yeni ekipman · el terminali, raf düzeni ve paketleme sistemleri',
-      gainBig: 'Sipariş başına daha düşük maliyet', gainShort: 'Online sipariş artışı ek personelsiz karşılanır',
-      benefit: 'Sipariş hazırlama süresi kısalır; online siparişlerdeki artış ek personel gerektirmeden karşılanır, hatalı gönderim ve iade maliyetleri azalır.',
-      ind: [
-        ['Net nakit marjı (son 3 ay)', `%${bfPct1(p.net3)}`, `geçen yıl aynı dönem %${bfPct1(p.net3p)}`],
-        ['Net nakit marjı (12 ay)', `%${bfPct1(p.net12)}`, `önceki 12 ay %${bfPct1(p.net12p)}`],
-        ['Sipariş gelirleri (12 ay)', `+%${Math.round(p.ordG)}`, 'girişlerden daha hızlı'],
-      ],
-      why: 'Kârlılık yükselirken online siparişler toplam girişlerden daha hızlı büyüyor. Artan sipariş hacmi, depoda verimliliği artıracak bir ekipman yatırımını taşıyabilecek düzeyde.',
-      timing: 'Ocak–Mart · kampanya dönemi öncesi', product: 'Ekipman finansmanı teklifi',
-      caution: 'Ekipman bedelini tek seferde nakitten ödemek yerine vadeli ekipman finansmanı, nakit tamponunu korur.',
-      cta: 'Ekipman Finansmanı Teklifi İste', chart: () => `<div class="bf-fc-h"><span>Aylık net nakit akışı</span></div>${bfNetSVG(18, 23, [])}` },
-    { id: 'market', icon: 'world', signal: 'Tahsilat performansı iyileşiyor', title: 'Yeni pazar: pazaryeri ve e-ihracat',
-      area: 'Büyüme · pazaryeri mağazaları ve e-ihracat',
-      gainBig: '+%10 ek ciro potansiyeli', gainShort: 'İlk yıl tahmini +%10 ek ciro (örnek)',
-      benefit: 'Tahsilatlar hızlı ve düzenli olduğu için yeni satış kanalları nakit akışını bozmadan büyür; ilk yıl tahmini +%10 ek ciro (örnek).',
-      ind: [
-        ['Kart ve online tahsilatların payı', `%${Math.round(p.cardShare)}`, 'son 3 ay · gün içinde hesaba geçiyor'],
-        ['Online sipariş gelirleri', `+%${Math.round(p.ordG)} · girişlerin %${Math.round(p.ordShare)}’i`, '12 ay / son 3 ay'],
-        ['Nakit tahsilat payı', `%${Math.round(p.cashShare)}`, 'tahsilat riski düşük'],
-      ],
-      why: 'Tahsilatların büyük bölümü kart ve online kanallardan gün içinde hesaba geçiyor; online siparişlerin payı artıyor. Bu yapı, yeni pazarlara açılmayı düşük tahsilat riskiyle destekler.',
-      timing: '2027 başı · ilk aşamada sınırlı ürün grubu', product: 'Sanal POS ve e-ticaret çözümleri',
-      caution: 'Pazaryeri komisyonları ve yurt dışı lojistik marjı düşürebilir; ilk aşamada sınırlı bir ürün grubuyla başla.',
-      cta: 'Sanal POS Talebi Oluştur', chart: null },
-  ];
-}
 function bfInv(id = state.bf.inv) { const l = bfInvList(); return l.find(x => x.id === id) || l[0]; }
 /* Financing side: the existing recommendations with what they are based on */
 function bfFinOpps() {
@@ -11102,7 +11211,7 @@ function bfFinOpps() {
 function bfOppHTML() {
   const v = state.bf, fin = v.opp !== 'inv';
   return `<div class="vm-sec-h"><span>Analiz sonuçları</span></div>
-      <p class="bf-opp-lead">Akıllı Asistan yalnızca riskleri değil, işletmenin gelişim fırsatlarını da değerlendirir: ihtiyaçlar için finansman, güçlü göstergeler için yatırım ve büyüme önerileri.</p>
+      <p class="bf-opp-lead">Akıllı Asistan yalnızca riskleri değil, fırsatları da değerlendirir: ihtiyaçlar için finansman, nakit fazlası ve düzenli harcamalar için nakit yönetimi ve birikim önerileri.</p>
       <div class="bf-opp-seg" role="tablist" aria-label="Analiz sonuçları">
         <button class="${fin ? 'on' : ''}" data-action="bf-opp" data-v="fin" role="tab" aria-selected="${fin}"><span>Finansman Fırsatları</span><em>${bfFinOpps().length}</em></button>
         <button class="${fin ? '' : 'on'}" data-action="bf-opp" data-v="inv" role="tab" aria-selected="${!fin}"><span>Yatırım Fırsatları</span><em>${bfInvList().length}</em></button>
@@ -11119,24 +11228,6 @@ function bfFinOppHTML() {
         ${r.id ? `<button class="sp-link" data-action="bf-offer-focus" data-id="${r.id}">Teklifi incele ${I.chevR}</button>` : '<span class="bf-rec-tag">Finansman gerektirmez</span>'}</div>
     </div>`).join('')}</div>`;
 }
-function bfInvOppHTML() {
-  return `<div class="bf-opp-sum pos">${I.trendUp}<span><b>Tespit: güçlü büyüme ve nakit fazlası</b>Aralık açığı kapandıktan sonra değerlendirilebilecek fırsatlar</span></div>
-    <div class="bf-invs">${bfInvList().map(bfInvCardHTML).join('')}</div>
-    <div class="vm-note">${I.info}<span>Yatırım tavsiyesi değildir; öneriler demo verilerle oluşturulmuş örnek değerlendirmelerdir. Getiri ve büyüme değerleri örnektir.</span></div>`;
-}
-function bfInvCardHTML(x) {
-  const req = state.bf.invReq[x.id];
-  return `<div class="bf-inv tap" data-action="bf-inv" data-id="${x.id}" role="button">
-      <span class="bf-inv-ico">${I[x.icon]}</span>
-      <div class="bf-inv-mid">
-        <span class="bf-inv-sig">${x.signal}</span>
-        <b>${x.title}</b>
-        <em>${x.gainShort}</em>
-        ${req ? `<span class="vm-pill ok sm">${I.check}Talep alındı</span>` : ''}
-      </div>
-      ${I.chevR}
-    </div>`;
-}
 function bfSetOpp(t) {
   const v = state.bf;
   if (!['fin', 'inv'].includes(t) || v.opp === t) return;
@@ -11146,41 +11237,180 @@ function bfSetOpp(t) {
   if (body) body.innerHTML = t === 'inv' ? bfInvOppHTML() : bfFinOppHTML();
 }
 
-/* -------------------- Screen 3b — investment opportunity details -------------------- */
+/* "Uygun durumlarda ilgili ürüne yönlendirme": the customer leaves a request for the related product / service
+   (shared confirmation pop-up); nothing is opened or sold in the prototype */
+/* Revision 8 · Yatırım Fırsatları = cash management and savings (not equipment or growth investments).
+   The assistant reads how long the cash surplus stays idle and how the business spends:
+   long-term surplus → Vadeli Mevduat · short-term surplus → Sınırsız Hesap ·
+   regular card spending → Harcama Yuvarlama · card statement → Ekstre Yuvarlama.
+   The round-up ideas reuse the app's existing Birikim feature (harcama / ekstre yuvarlama), whose amounts go to
+   Fon, Maden or Mevduat (Sınırsız Hesap). Rates, returns and amounts are EXAMPLES, not investment advice. */
+const BF_DEP_RATES = { 32: 40, 46: 40.5, 92: 39, 181: 37 };   // EXAMPLE annual gross rates (%) of the time deposit per term (days)
+const BF_DEP_AMTS = [200000, 400000, 600000];                  // amount choices of the time deposit (TL)
+const BF_FLEX_RATE = 32;        // EXAMPLE annual gross rate (%) of Sınırsız Hesap, interest accrues daily
+const BF_FLEX_AMT = 150000;     // EXAMPLE balance that waits between collections and payments within the month
+const BF_CARD_TXN = 142;        // DEMO monthly card spendings of the business (last 3 months average)
+const BF_STMT_AVG = 38400;      // DEMO average monthly statement of the business credit card (TL)
+// Where the rounded amounts go — the Birikim destinations of the existing feature
+const BF_RD_DEST = [['fund', 'Fon', 'Yatırım fonu paylarına yatırılır'], ['metal', 'Maden', 'Altın, gümüş, platin, paladyum'], ['account', 'Mevduat', 'Sınırsız Hesap’ta günlük getiriyle birikir']];
+function bfDepQuote(amt = state.bf.depAmt, days = state.bf.depTerm) {
+  const rate = BF_DEP_RATES[days], gain = Math.round(amt * rate / 100 * days / 365);
+  return { amt, days, rate, gain, end: amt + gain };
+}
+function bfFlexGain() { return { day: BF_FLEX_AMT * BF_FLEX_RATE / 100 / 365, month: Math.round(BF_FLEX_AMT * BF_FLEX_RATE / 100 * 30 / 365) }; }
+function bfRdPlan(fund) { return state.sv.plans.find(p => p.fund === fund && BF_RD_DEST.some(d => d[0] === p.dest)) || null; }
+function bfRdDestName(k) { return (BF_RD_DEST.find(d => d[0] === k) || [])[1] || ''; }
+function bfInvList() {
+  const p = bfPos(), dq = bfDepQuote(), fg = bfFlexGain();
+  return [
+    { id: 'deposit', kind: 'deposit', icon: 'bank', cat: 'Uzun Vadeli Nakit Fazlası', title: 'Vadeli Mevduat',
+      desc: 'Uzun süre kullanmayacağın nakit fazlasını vadeli mevduatta değerlendir.',
+      signal: `Ocak–Şubat’ta hesapta ortalama ~${bfWords(p.avgAfter)} TL bakiye bekleniyor; ${p.plusN}/12 ay nakit fazlası verdi`,
+      adv: `${vmTL(dq.amt)} · ${dq.days} gün için ~${vmTL(dq.gain)} getiri (örnek)`,
+      ind: [
+        ['Ocak–Şubat tahmini ortalama bakiye', `~${bfWords(p.avgAfter)} TL`, '10 Ocak sonrası, tahmin'],
+        ['Tahmini en yüksek bakiye', `${bfCompact(p.peak)} TL · ${bfDayTxt(bfFcDate(p.peakK))}`, ''],
+        ['Nakit fazlası veren ay', `${p.plusN} / 12`, 'son 12 ay'],
+      ],
+      why: 'Aralık’taki tahmini açık kapandıktan sonra hesapta haftalarca kullanılmayacak bir bakiye birikiyor. Maaş ve kira günleri için tampon bırakıp bu kısmı vadeli mevduatta değerlendirmek, nakdi atıl bırakmaz.',
+      caution: 'Vadeyi maaş, kira ve tedarikçi ödeme günlerine göre seç; vade bozulursa getiri kaybedilir.',
+      cta: 'Vadeli Mevduat Hesabı Aç', chart: () => `<div class="bf-fc-h"><span>Tahmini hesap bakiyesi · 120 gün</span></div>${bfFcSVG(true)}
+        <div class="bf-fc-legend"><span><i class="cur"></i>Mevcut tahmin</span><span><i class="fin"></i>Açık finansmanla kapatılırsa</span><span><i class="gap"></i>Açık dönemi</span></div>` },
+    { id: 'flex', kind: 'flex', icon: 'wallet', cat: 'Kısa Vadeli Nakit Fazlası', title: 'Sınırsız Hesap',
+      desc: 'Kısa süre içinde kullanacağın parayı erişilebilir tutarken günlük getiri elde et.',
+      signal: `Ay içinde tahsilat ile ödeme günleri arasında ~${bfWords(BF_FLEX_AMT)} TL bakiye bekliyor; kart ve online tahsilatlar girişlerin %${Math.round(p.cardShare)}’i`,
+      adv: `Para her an kullanılabilir; ${vmTL(BF_FLEX_AMT)} için aylık ~${vmTL(fg.month)} getiri (örnek)`,
+      ind: [
+        ['Ay içinde bekleyen bakiye', `~${bfWords(BF_FLEX_AMT)} TL`, 'tahsilat ve ödeme günleri arasında'],
+        ['Kart ve online tahsilat payı', `%${Math.round(p.cardShare)}`, 'son 3 ay · gün içinde hesaba geçiyor'],
+        ['Günlük getiri (örnek)', `~${vmTL(fg.day)}`, `${vmTL(BF_FLEX_AMT)} · yıllık %${BF_FLEX_RATE} brüt`],
+      ],
+      why: 'Tahsilatlar ay içine yayılırken maaş, kira ve tedarikçi ödemeleri belirli günlerde çıkıyor; arada birkaç gün ile birkaç hafta bekleyen bir bakiye oluşuyor. Bu parayı vadeye bağlamadan, istediğin an kullanabileceğin şekilde günlük getiriyle değerlendirebilirsin.',
+      caution: 'Getiri oranı değişkendir; oran ve tutarlar örnektir.',
+      cta: 'Sınırsız Hesap Aç', chart: null },
+    { id: 'roundup', kind: 'round', fund: 'roundup', icon: 'card', cat: 'Günlük Birikim', title: 'Harcama Yuvarlama',
+      desc: 'Günlük harcamalarınızı yukarı yuvarlayarak aradaki farkı birikime dönüştürebilirsiniz.',
+      signal: `Kartla ayda ortalama ${BF_CARD_TXN} düzenli harcama (son 3 ay)`,
+      adv: `Fark fark birikim · aylık ~${vmTL(svMonthlyTL({ fund: 'roundup' }))} (örnek); Fon, Maden veya Mevduat’ta değerlendirilir`,
+      ind: [
+        ['Aylık kart harcaması adedi', `${BF_CARD_TXN}`, 'son 3 ay ortalaması'],
+        ['Yuvarlama birimi', `${RU_UNIT} TL`, `ör. ${RU_SAMPLES[0]} TL → ${ruNextUnit(RU_SAMPLES[0])} TL`],
+        ['Tahmini aylık birikim', `~${vmTL(svMonthlyTL({ fund: 'roundup' }))}`, 'örnek'],
+      ],
+      why: 'İşletmenin kartla yaptığı küçük ve düzenli harcamalar her ay yüzlerce işleme ulaşıyor. Her harcamanın yuvarlanan farkı fark edilmeden birikir ve seçtiğin alanda değerlendirilir.',
+      caution: 'Yuvarlama farkı harcamanın yapıldığı karttan ya da hesaptan çekilir; özelliği istediğin zaman durdurabilirsin.',
+      cta: 'Harcama Yuvarlamayı Aktifleştir', chart: null },
+    { id: 'statement', kind: 'round', fund: 'statement', icon: 'receipt', cat: 'Ekstre Üzerinden Birikim', title: 'Ekstre Yuvarlama',
+      desc: 'Kredi kartı ekstrenizi yuvarlayarak düzenli birikim oluşturabilirsiniz.',
+      signal: `Kredi kartı ekstresi aylık ortalama ${vmTL(BF_STMT_AVG)}, her ay düzenli ödeniyor`,
+      adv: 'Her ekstre döneminde otomatik ve düzenli birikim; Fon, Maden veya Mevduat’ta değerlendirilir',
+      ind: [
+        ['Ortalama aylık ekstre', vmTL(BF_STMT_AVG), 'son 3 ay'],
+        ['Ekstre ödemesi', 'Her ay tam ve zamanında', 'son 12 ay'],
+        ['Birikim kuralı', `Ekstrenin %${state.sv.rate}’i · aylık en fazla ${vmTL(state.sv.cap)}`, 'değiştirilebilir'],
+      ],
+      why: 'Ekstre her ay düzenli ödendiği için ekstre tutarına bağlı küçük bir birikim nakit akışını zorlamadan alışkanlığa dönüşür.',
+      caution: 'Birikim oranını ve aylık üst sınırı ekstre yuvarlama ayarlarından değiştirebilirsin.',
+      cta: 'Ekstre Yuvarlamayı Aktifleştir', chart: null },
+  ];
+}
+function bfInvOppHTML() {
+  return `<div class="bf-opp-sum pos">${I.trendUp}<span><b>Tespit: nakit fazlası ve düzenli harcamalar</b>Nakit fazlasını vadesine göre değerlendirme ve düzenli birikim önerileri</span></div>
+    <div class="bf-invs">${bfInvList().map(bfInvCardHTML).join('')}</div>
+    <div class="vm-note">${I.info}<span>Yatırım tavsiyesi değildir; öneriler demo verilerle oluşturulmuş örnek değerlendirmelerdir. Oran, getiri ve tutarlar örnektir.</span></div>`;
+}
+function bfInvStatus(x) {
+  const req = state.bf.invReq[x.id];
+  if (req) return `${I.check}${req.label}`;
+  if (x.kind === 'round') { const pl = bfRdPlan(x.fund); if (pl) return `${I.check}Aktif · ${bfRdDestName(pl.dest)}`; }
+  return '';
+}
+function bfInvCardHTML(x) {
+  const st = bfInvStatus(x);
+  return `<div class="bf-inv bf-inv8" id="bf-inv-${x.id}">
+      <div class="bf-inv-row">
+        <span class="bf-inv-ico">${I[x.icon]}</span>
+        <div class="bf-inv-mid">
+          <span class="bf-inv-sig">${x.cat}</span>
+          <b>${x.title}</b>
+          <em>${x.desc}</em>
+        </div>
+        ${st ? `<span class="vm-pill ok sm">${st}</span>` : ''}
+      </div>
+      <div class="bf-inv-kv"><span>Dayanak</span><p>${x.signal}</p></div>
+      <div class="bf-inv-kv"><span>Avantaj</span><p>${x.adv}</p></div>
+      <button class="bf-inv-go" data-action="bf-inv" data-id="${x.id}">${st ? 'Detayı Gör' : x.kind === 'round' ? 'İncele ve Aktifleştir' : 'İncele ve Hesap Aç'} ${I.chevR}</button>
+    </div>`;
+}
+/* Screen 3b — the opportunity: what it is based on, the product's own figures and the action */
 function BfInvest() {
   const v = state.bf;
   if (v.ai.status !== 'done') { state.screen = 'isletme-analiz'; return BfAnalysis(); }
-  const x = bfInv(), req = v.invReq[x.id];
+  const x = bfInv(), req = v.invReq[x.id], pl = x.kind === 'round' ? bfRdPlan(x.fund) : null, done = !!(req || pl);
   return `
   <div class="screen ${vmAnim()} vm bf">
     ${vmNav('Yatırım Fırsatı')}
     <div class="screen-scroll">
       <div class="bf-inv-hero">
         <span class="bf-inv-hico">${I[x.icon]}</span>
-        <span class="bf-inv-tag">${I.spark}${x.signal}</span>
+        <span class="bf-inv-tag">${I.spark}${x.cat}</span>
         <b>${x.title}</b>
-        <span>${x.area}</span>
+        <span>${x.desc}</span>
       </div>
-      ${req ? `<div class="vm-okbar bf-fresh">${I.check}<span><b>Talebin alındı · No ${req.ref}</b>Müşteri temsilcin 1 iş günü içinde seninle iletişime geçecek (${req.at}).</span></div>` : ''}
-      <div class="vm-sec-h"><span>Beklenen fayda</span><span class="bf-sec-sub">Örnek</span></div>
-      <div class="vm-box bf-inv-gain"><b>${x.gainBig}</b><span>${x.benefit}</span></div>
-      <div class="vm-sec-h"><span>Dayandığı finansal göstergeler</span></div>
+      ${req ? `<div class="vm-okbar bf-fresh">${I.check}<span><b>${req.label} · No ${req.ref}</b>${req.note} (${req.at})</span></div>` : ''}
+      ${pl ? `<div class="vm-okbar bf-fresh">${I.check}<span><b>${x.title} aktif · ${bfRdDestName(pl.dest)}</b>Yuvarlanan tutarlar ${SV_DEST[pl.dest].name} alanında değerlendiriliyor.</span></div>` : ''}
+      ${bfInvBodyHTML(x, done)}
+      <div class="vm-sec-h"><span>Dayandığı finansal durum</span></div>
       <div class="vm-box bf-inv-ind">${x.ind.map(([k, val, note]) => `<div class="bf-inv-i"><span>${k}${note ? `<em>${note}</em>` : ''}</span><b>${val}</b></div>`).join('')}</div>
       ${x.chart ? `<div class="vm-box bf-fc bf-inv-chart">${x.chart()}</div>` : ''}
       <div class="bf-why bf-inv-why"><div class="bf-why-h">${I.spark}<span>Neden bu öneri?</span></div><p>${x.why}</p></div>
-      <div class="vm-box bf-rows">
-        <div class="vm-frow"><span>Önerilen zamanlama</span><b>${x.timing}</b></div>
-        <div class="vm-frow"><span>İlgili ürün / hizmet</span><b>${x.product}</b></div>
-      </div>
       <div class="vm-warn bf-inv-warn">${I.info}<span><b>Dikkat edilmesi gereken</b> ${x.caution}</span></div>
-      <div class="vm-sec-h"><span>Diğer yatırım fırsatları</span></div>
+      <div class="vm-sec-h"><span>Diğer nakit yönetimi ve birikim önerileri</span></div>
       <div class="bf-invs">${bfInvList().filter(y => y.id !== x.id).map(bfInvCardHTML).join('')}</div>
       <div class="ai-disclaimer bf-disc bf-inv-disc">Yapı Kredi Akıllı Asistanı yapay zekâ ile çalışır ve hata yapabilir. Bu öneri demo verilerle oluşturulmuş örnek bir değerlendirmedir; yatırım tavsiyesi değildir.</div>
     </div>
-    <div class="screen-cta">${req
-      ? '<button class="btn-outline" data-action="bf-to-analysis">Analize Dön</button>'
-      : `<button class="btn-primary" data-action="bf-inv-req">${x.cta}</button>`}</div>
+    <div class="screen-cta">${pl
+      ? `<button class="btn-primary" data-action="sv-manage" data-id="${pl.id}">Birikimi Yönet</button>`
+      : req ? '<button class="btn-outline" data-action="bf-to-analysis">Analize Dön</button>'
+      : `<button class="btn-primary" id="bf-inv-go" data-action="bf-inv-req">${x.cta}</button>`}</div>
   </div>`;
+}
+function bfInvBodyHTML(x, done) {
+  const v = state.bf;
+  if (x.kind === 'deposit') {
+    const q = req => req ? bfDepQuote(req.amt, req.days) : bfDepQuote(), r = q(v.invReq.deposit);
+    return `<div class="vm-sec-h"><span>Vade ve getiri</span><span class="bf-sec-sub">Örnek</span></div>
+      <div class="vm-box bf-dep" id="bf-dep">
+        ${done ? '' : `<div class="bf-terms-pick"><span>Tutar</span><div class="vm-chips">${BF_DEP_AMTS.map(a => `<button class="vm-chip ${v.depAmt === a ? 'on' : ''}" data-action="bf-dep-amt" data-v="${a}">${vmTL(a)}</button>`).join('')}</div></div>
+        <div class="bf-terms-pick"><span>Vade seçenekleri</span><div class="vm-chips">${Object.keys(BF_DEP_RATES).map(d => `<button class="vm-chip ${v.depTerm === +d ? 'on' : ''}" data-action="bf-dep-term" data-v="${d}">${d} gün</button>`).join('')}</div></div>`}
+        <div class="vm-frow"><span>Yatırılacak tutar</span><b>${vmTL(r.amt)}</b></div>
+        <div class="vm-frow"><span>Vade · yıllık brüt faiz ${vmEx()}</span><b>${r.days} gün · %${vmPctStr(r.rate)}</b></div>
+        <div class="vm-frow hl"><span>Tahmini getiri</span><b id="bf-dep-gain">${vmTL(r.gain)}</b></div>
+        <div class="vm-frow hl"><span>Vade sonunda oluşacak tutar</span><b id="bf-dep-end">${vmTL(r.end)}</b></div>
+        <div class="vm-frow"><span>Vade sonu</span><b>${bfDateTxt(new Date(BF_TODAY.getTime() + r.days * 864e5))} ${vmEx()}</b></div>
+      </div>`;
+  }
+  if (x.kind === 'flex') {
+    const g = bfFlexGain();
+    return `<div class="vm-sec-h"><span>Likidite ve getiri</span><span class="bf-sec-sub">Örnek</span></div>
+      <div class="vm-box bf-dep">
+        <div class="bf-liq">${I.wallet}<span><b>Paran her an erişilebilir</b>Vade yok; para çekmek veya ödeme yapmak getirini bozmaz, faiz günlük işler.</span></div>
+        <div class="vm-frow"><span>Önerilen tutar</span><b>${vmTL(BF_FLEX_AMT)}</b></div>
+        <div class="vm-frow"><span>Yıllık brüt faiz ${vmEx()}</span><b>%${BF_FLEX_RATE} · değişken</b></div>
+        <div class="vm-frow hl"><span>Tahmini günlük getiri</span><b>${vmTL(g.day)}</b></div>
+        <div class="vm-frow hl"><span>Tahmini aylık getiri</span><b>${vmTL(g.month)}</b></div>
+      </div>`;
+  }
+  const pl = bfRdPlan(x.fund), cur = pl ? pl.dest : v.rdDest[x.fund];
+  return `<div class="vm-sec-h"><span>Yuvarlanan tutarlar nerede değerlendirilsin?</span></div>
+    <div class="bf-rd-dests" role="radiogroup" aria-label="Birikim alanı">${BF_RD_DEST.map(([k, n, d]) => `<button class="bf-rd-dest ${cur === k ? 'on' : ''}" data-action="bf-rd-dest" data-fund="${x.fund}" data-v="${k}" role="radio" aria-checked="${cur === k}" ${pl ? 'disabled' : ''}>
+        <span class="bf-rd-ico">${SV_DEST[k].icon}</span><span class="bf-rd-mid"><b>${n}</b><span>${d}</span></span><span class="paypop-radio"></span></button>`).join('')}</div>
+    <div class="vm-box bf-dep">
+      <div class="vm-frow"><span>Yöntem</span><b>${SV_FUND[x.fund].name}</b></div>
+      <div class="vm-frow"><span>Kural</span><b>${x.fund === 'roundup' ? `Her harcama ${RU_UNIT} TL’ye tamamlanır` : `Ekstrenin %${state.sv.rate}’i · en fazla ${vmTL(state.sv.cap)}`}</b></div>
+      <div class="vm-frow hl"><span>Tahmini aylık birikim</span><b>~${vmTL(svMonthlyTL({ fund: x.fund, rate: state.sv.rate, cap: state.sv.cap }))}</b></div>
+    </div>
+    <div class="vm-note">${I.info}<span>${pl ? 'Özellik aktif; ayarlarını Birikim ekranından yönetebilirsin.' : `Devam ettiğinde uygulamadaki ${SV_FUND[x.fund].name} özelliği seçtiğin alanla açılır; kart seçimi ve talimat onayıyla özellik aktifleşir.`}</span></div>`;
 }
 function bfOpenInv(id) {
   const v = state.bf;
@@ -11192,20 +11422,44 @@ function bfOpenInv(id) {
   }
   go('isletme-yatirim');
 }
-/* "Uygun durumlarda ilgili ürüne yönlendirme": the customer leaves a request for the related product / service
-   (shared confirmation pop-up); nothing is opened or sold in the prototype */
+function bfDepSet(k, val) {
+  const v = state.bf;
+  if (v.invReq.deposit) return;
+  if (k === 'amt' && BF_DEP_AMTS.includes(val)) v.depAmt = val;
+  if (k === 'term' && BF_DEP_RATES[val]) v.depTerm = val;
+  if (state.screen === 'isletme-yatirim') vmStill();
+}
+function bfRdSetDest(fund, k) {
+  if (!BF_RD_DEST.some(d => d[0] === k) || bfRdPlan(fund)) return;
+  state.bf.rdDest[fund] = k;
+  document.querySelectorAll(`.bf-rd-dest[data-fund="${fund}"]`).forEach(b => { const on = b.dataset.v === k; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+}
+/* Actions: the deposit products open (mock) after a confirmation; the round-ups go to the existing Birikim
+   feature with the method and the chosen destination already set, where the card and the instruction are approved */
 function bfInvRequest() {
   const v = state.bf, x = bfInv();
-  if (v.invReq[x.id] || state.screen !== 'isletme-yatirim') return;
+  if (state.screen !== 'isletme-yatirim' || v.invReq[x.id]) return;
+  if (x.kind === 'round') {
+    if (bfRdPlan(x.fund)) return;
+    const s = state.sv, dest = v.rdDest[x.fund];
+    s.fund = x.fund; s.dest = dest; s.agreed = false;
+    if (dest !== 'metal') s.unit = 'try';
+    return go('birikim-apply');
+  }
+  const dep = x.kind === 'deposit', q = bfDepQuote();
   confirmPopOpen({
-    title: 'Talebini onaylıyor musun?',
-    desc: `${x.product} için talebin müşteri temsilcine iletilir; seninle iletişime geçilir. Bu adımda bir ürün açılmaz veya ücret alınmaz.`,
-    rows: [['İşletme', BF_BIZ.name], ['Fırsat', x.title], ['İlgili ürün / hizmet', x.product, true], ['Yetkili', `${BF_BIZ.rep}`]],
-    okText: 'Talep Oluştur', busyText: 'Talebin iletiliyor…',
+    title: dep ? 'Vadeli mevduat hesabı açılsın mı?' : 'Sınırsız Hesap açılsın mı?',
+    desc: dep ? `${vmTL(q.amt)} ${BF_BIZ.account} hesabından vadeli hesaba aktarılır; vade sonunda anapara ve getiri aynı hesaba döner.` : `Hesap ${BF_BIZ.name} adına açılır; dilediğin tutarı aktarıp istediğin an kullanabilirsin.`,
+    rows: dep
+      ? [['Hesap', 'Ticari Vadeli Mevduat'], ['Tutar', vmTL(q.amt), true], ['Vade · faiz', `${q.days} gün · %${vmPctStr(q.rate)} ${vmEx()}`], ['Vade sonu tutarı', vmTL(q.end)]]
+      : [['Hesap', 'Sınırsız Hesap (TL)'], ['Yıllık brüt faiz', `%${BF_FLEX_RATE} · günlük ${vmEx()}`], ['İşletme', BF_BIZ.name]],
+    okText: dep ? 'Hesabı Aç' : 'Hesabı Aç', busyText: 'Hesabın açılıyor…',
     onConfirm: () => {
-      v.invReq[x.id] = { ref: vmRef('TLP'), at: bfStamp(bfDemoNow()) };
+      v.invReq[x.id] = dep
+        ? { ref: vmRef('VDL'), at: bfStamp(bfDemoNow()), label: 'Vadeli hesap açıldı', note: `${vmTL(q.amt)} · ${q.days} gün · vade sonu ${vmTL(q.end)}`, amt: q.amt, days: q.days }
+        : { ref: vmRef('SNR'), at: bfStamp(bfDemoNow()), label: 'Sınırsız Hesap açıldı', note: 'Paran her an erişilebilir, faiz günlük işler' };
       if (state.screen === 'isletme-yatirim') vmRerender('anim-fade');
-      toast('Talebin müşteri temsilcine iletildi');
+      toast(dep ? 'Vadeli mevduat hesabın açıldı' : 'Sınırsız Hesabın açıldı');
     },
   });
 }
@@ -11227,28 +11481,30 @@ function bfFitRing(n) {
   const r = 17, c = 2 * Math.PI * r;
   return `<svg viewBox="0 0 44 44" class="bf-ring"><circle cx="22" cy="22" r="${r}" class="bg"/><circle cx="22" cy="22" r="${r}" class="fg" stroke-dasharray="${(c * n / 100).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 22 22)"/><text x="22" y="26" text-anchor="middle">%${n}</text></svg>`;
 }
+/* Revision 8: every offer card has its own "Öneriyi Seç" toggle; the bottom button follows the selection —
+   none: passive "Devam etmek için bir öneri seçin" · one: "Teklif Detayını Gör" (Kredi Detay) ·
+   two or more: "Önerileri Karşılaştır" (comparison, where picking an offer opens its Kredi Detay). */
 function bfOfferCardHTML(o) {
   const v = state.bf, q = bfQuote(o), sel = v.sel.includes(o.id);
-  return `<div class="bf-offer ${o.best ? 'best' : ''} ${v.focus === o.id ? 'focus' : ''}" id="bf-of-${o.id}">
+  return `<div class="bf-offer ${o.best ? 'best' : ''} ${sel ? 'sel' : ''} ${v.focus === o.id ? 'focus' : ''}" id="bf-of-${o.id}">
     <div class="bf-of-top">
       ${bfIco({ icon: o.icon, color: o.best ? 'var(--primary)' : '#4A6FA5' }, 'lg')}
       <div class="bf-of-t">${o.tag ? `<span class="bf-tag ${o.best ? 'ai' : ''}">${o.best ? I.spark : ''}${o.tag}</span>` : ''}<b>${o.type}</b></div>
       <div class="bf-fit">${bfFitRing(o.fit)}<span>Uygunluk</span></div>
     </div>
+    <p class="bf-of-desc">${o.desc}</p>
     <div class="bf-of-amt"><span>${o.kind === 'revolving' ? 'Önerilen limit' : 'Önerilen tutar'}</span><b>${vmTL(o.amount)}</b></div>
     <div class="bf-of-grid">
       <div><span>Vade</span><b>${bfTermTxt(o, o.term)}</b></div>
-      <div><span>Tahmini maliyet ${vmEx()}</span><b>${bfCostTxt(o, q)}</b></div>
       <div><span>${o.kind === 'bullet' ? 'Ödeme' : 'Aylık ödeme'}</span><b>${bfMonthlyTxt(o, q)}</b></div>
+      <div><span>Tahmini maliyet ${vmEx()}</span><b>${bfCostTxt(o, q)}</b></div>
       <div><span>Geri ödeme</span><b>${o.pay}</b></div>
     </div>
     <div class="bf-why"><div class="bf-why-h">${I.spark}<span>Neden bu öneri?</span></div><p>${o.reason}</p></div>
-    <div class="bf-of-act">
-      <button class="bf-cmp-tg ${sel ? 'on' : ''}" data-action="bf-sel" data-id="${o.id}"><span class="cbx">${I.check}</span>Karşılaştır</button>
-      <button class="btn-primary bf-sm" data-action="bf-choose" data-id="${o.id}">Bu Teklifi Seç</button>
-    </div>
+    <button class="bf-of-sel ${sel ? 'on' : ''}" data-action="bf-sel" data-id="${o.id}" aria-pressed="${sel}">${bfSelBtnTxt(sel)}</button>
   </div>`;
 }
+function bfSelBtnTxt(on) { return on ? `${I.check}Seçildi<small>Kaldırmak için dokun</small>` : 'Öneriyi Seç'; }
 function BfOffers() {
   const v = state.bf, need = bfNeed();
   if (v.ai.status !== 'done') { state.screen = 'isletme-analiz'; return BfAnalysis(); }
@@ -11260,25 +11516,33 @@ function BfOffers() {
         <span class="bf-ai-ico">${I.spark}</span>
         <div><span>Akıllı Asistan analizine göre ihtiyacın</span><b>${vmTL(need.amount)} · Aralık başından önce</b><em>${BF_OFFERS.length} alternatif, işletmenin nakit akışına uygunluğuna göre sıralandı</em></div>
       </div>
-      ${v.app ? `<div class="vm-warn bf-warn tap" data-action="bf-track">${I.info}<span><b>Devam eden başvurun var.</b> Yeni başvuru için önce mevcut başvurunu takip ekranından tamamla ya da demoyu sıfırla.</span></div>` : ''}
+      ${v.app ? `<div class="vm-warn bf-warn tap" data-action="bf-track">${I.info}<span><b>Devam eden finansman işlemin var.</b> Yeni bir öneriyle devam etmek için önce mevcut işlemini tamamla ya da demoyu sıfırla.</span></div>` : ''}
+      <div class="bf-sel-tip">${I.info}<span>Bir öneri seçerek detayına geçebilir, birden fazla öneri seçerek (en fazla 3) karşılaştırabilirsin.</span></div>
       <div class="bf-offers">${BF_OFFERS.map(bfOfferCardHTML).join('')}</div>
       <div class="vm-note">${I.info}<span>Teklifler, oranlar ve tutarlar demo verisidir; gerçek banka teklifi veya kredi kararı değildir. Maliyete faiz, BSMV (%${BF_BSMV}) ve kredi tahsis ücreti (binde ${vmPctStr(BF_FEE * 10)}) dahildir.</span></div>
     </div>
-    <div class="screen-cta"><button class="btn-primary" id="bf-cmp-go" data-action="bf-compare">${bfCmpBtnTxt()}</button></div>
+    <div class="screen-cta" id="bf-sel-cta">${bfSelCtaHTML()}</div>
   </div>`;
 }
-function bfCmpBtnTxt() { const n = state.bf.sel.length; return n >= 2 ? `Teklifleri Karşılaştır (${n})` : 'Karşılaştırmak için en az 2 teklif seç'; }
+function bfSelCtaHTML() {
+  const n = state.bf.sel.length;
+  const t = n === 0 ? 'Devam etmek için bir öneri seçin' : n === 1 ? 'Teklif Detayını Gör' : `Önerileri Karşılaştır (${n})`;
+  return `<button class="btn-primary vm-guide ${n ? '' : 'disabled'}" id="bf-cmp-go" data-action="bf-compare" aria-disabled="${!n}">${t}</button>`;
+}
 function bfToggleSel(id) {
   const v = state.bf, on = v.sel.includes(id);
-  if (!on && v.sel.length >= 3) return toast('En fazla 3 teklifi karşılaştırabilirsin');
+  if (!on && v.sel.length >= 3) return toast('En fazla 3 öneriyi karşılaştırabilirsin');
   v.sel = on ? v.sel.filter(x => x !== id) : [...v.sel, id];
-  document.querySelectorAll(`[data-action="bf-sel"][data-id="${id}"]`).forEach(b => b.classList.toggle('on', !on));
-  const b = document.getElementById('bf-cmp-go');
-  if (b) { b.textContent = bfCmpBtnTxt(); b.classList.toggle('disabled', v.sel.length < 2); }
-  if (state.screen === 'isletme-karsilastir') vmRerender('anim-fade');
+  if (state.screen === 'isletme-karsilastir') return vmRerender('anim-fade');
+  document.querySelectorAll(`.bf-of-sel[data-id="${id}"]`).forEach(b => { b.classList.toggle('on', !on); b.setAttribute('aria-pressed', !on); b.innerHTML = bfSelBtnTxt(!on); });
+  document.getElementById('bf-of-' + id)?.classList.toggle('sel', !on);
+  const box = document.getElementById('bf-sel-cta'); if (box) box.innerHTML = bfSelCtaHTML();
 }
+/* Bottom button of the offers: one selected offer → its Kredi Detay, two or more → the comparison */
 function bfCompare() {
-  if (state.bf.sel.length < 2) return toast('Karşılaştırmak için en az 2 teklif seç');
+  const s = state.bf.sel;
+  if (!s.length) return toast('Devam etmek için bir öneri seçin');
+  if (s.length === 1) return bfChoose(s[0]);
   go('isletme-karsilastir');
 }
 function bfFocus(id) {
@@ -11295,10 +11559,10 @@ function bfChoose(id) {
   const v = state.bf;
   if (v.app) return bfGoTrack();
   v.offer = id; v.draft = null;
-  go('isletme-basvuru');
+  go('isletme-kredi');
 }
 
-/* -------------------- Screen 5 — compare offers -------------------- */
+/* -------------------- Screen 5 — compare the selected offers -------------------- */
 function BfCompare() {
   const v = state.bf;
   if (v.ai.status !== 'done') { state.screen = 'isletme-analiz'; return BfAnalysis(); }
@@ -11311,12 +11575,13 @@ function BfCompare() {
   const cell = (val, best) => `<td class="${best ? 'best' : ''}">${val}</td>`;
   const rows = [
     ['Finansman tutarı', cols.map(o => cell(`${o.kind === 'revolving' ? 'Limit ' : ''}${vmTL(o.amount)}`))],
+    ['Vade', cols.map(o => cell(bfTermTxt(o, o.term)))],
+    ['Aylık taksit', qs.map((q, k) => cell(cols[k].kind === 'bullet' ? 'Vade sonunda tek ödeme' : cols[k].kind === 'revolving' ? 'Yalnızca faiz' : cols[k].kind === 'grace' ? `${vmTL(q.first.pay)}<i>ilk 2 ay</i>${vmTL(q.monthly)}` : vmTL(q.monthly), mon[k] != null && mon[k] === bestMon))],
+    ['Toplam geri ödeme', qs.map((q, k) => cell(cols[k].kind === 'revolving' ? `Kullanım + ~${vmTL(q.int + q.tax)}<sup>*</sup>` : vmTL(q.total), tot[k] != null && tot[k] === bestTot))],
     ['Finansman maliyeti', qs.map((q, k) => cell(`${bfCostTxt(cols[k], q)}${cols[k].kind === 'revolving' ? '<sup>*</sup>' : ''}`, cost[k] != null && cost[k] === bestCost))],
     ['Aylık faiz oranı', cols.map(o => cell(`%${vmPctStr(o.rate)}`, false))],
-    ['Vade', cols.map(o => cell(bfTermTxt(o, o.term)))],
+    ['İşletmen için avantajı', cols.map(o => `<td class="bf-adv">${o.adv}</td>`)],
     ['Ödeme periyodu', cols.map(o => cell(o.periodTxt))],
-    ['Aylık ödeme', qs.map((q, k) => cell(cols[k].kind === 'bullet' ? '—' : cols[k].kind === 'revolving' ? 'Yalnızca faiz' : cols[k].kind === 'grace' ? `${vmTL(q.first.pay)}<i>ilk 2 ay</i>${vmTL(q.monthly)}` : vmTL(q.monthly), mon[k] != null && mon[k] === bestMon))],
-    ['Toplam geri ödeme', qs.map((q, k) => cell(cols[k].kind === 'revolving' ? `Kullanım + ~${vmTL(q.int + q.tax)}<sup>*</sup>` : vmTL(q.total), tot[k] != null && tot[k] === bestTot))],
     ['Erken ödeme', cols.map(o => cell(o.early, o.earlyFree))],
     ['Kullanım alanı', cols.map(o => cell(o.use))],
     ['Uygunluk', cols.map(o => cell(`%${o.fit}`, o.fit === bestFit))],
@@ -11324,247 +11589,195 @@ function BfCompare() {
   const cheap = cols[cost.indexOf(bestCost)], lowMon = cols[mon.indexOf(bestMon)], ai = cols.find(o => o.best);
   return `
   <div class="screen ${vmAnim()} vm bf">
-    ${vmNav('Teklifleri Karşılaştır')}
+    ${vmNav('Önerileri Karşılaştır')}
     <div class="screen-scroll">
       <div class="bf-pickrow">
-        <span>Karşılaştırılan teklifler (en fazla 3)</span>
+        <span>Karşılaştırılan öneriler (en fazla 3)</span>
         <div class="vm-chips">${BF_OFFERS.map(o => `<button class="vm-chip ${v.sel.includes(o.id) ? 'on' : ''}" data-action="bf-sel" data-id="${o.id}">${o.short}</button>`).join('')}</div>
       </div>
-      ${cols.length < 2 ? `<div class="vm-box bf-empty">Karşılaştırmak için en az 2 teklif seç.</div>` : `
+      ${cols.length < 2 ? `<div class="vm-box bf-empty">Karşılaştırmak için en az 2 öneri seç.${cols.length === 1 ? `<button class="btn-primary bf-sm" data-action="bf-pick" data-id="${cols[0].id}">${cols[0].short} · Teklif Detayını Gör</button>` : ''}</div>` : `
       <div class="bf-ctable-wrap"><table class="bf-ctable c${cols.length}">
-        <thead><tr><th></th>${cols.map(o => `<th class="${v.offer === o.id ? 'sel' : ''}"><span class="bf-ttag ${o.best ? 'ai' : ''}">${o.best ? I.spark : ''}${o.tag || '&nbsp;'}</span><b>${o.short}</b></th>`).join('')}</tr></thead>
+        <thead><tr><th></th>${cols.map(o => `<th><span class="bf-ttag ${o.best ? 'ai' : ''}">${o.best ? I.spark : ''}${o.tag || '&nbsp;'}</span><b>${o.short}</b></th>`).join('')}</tr></thead>
         <tbody>${rows.map(([t, cells]) => `<tr><th>${t}</th>${cells.join('')}</tr>`).join('')}</tbody>
-        <tfoot><tr><th></th>${cols.map(o => `<td><button class="bf-pick ${v.offer === o.id ? 'on' : ''}" data-action="bf-pick" data-id="${o.id}">${v.offer === o.id ? `${I.check} Seçildi` : 'Seç'}</button></td>`).join('')}</tr></tfoot>
+        <tfoot><tr><th></th>${cols.map(o => `<td><button class="bf-pick" data-action="bf-pick" data-id="${o.id}">Teklifi Seç</button></td>`).join('')}</tr></tfoot>
       </table></div>
       <div class="bf-why bf-cmp-ai"><div class="bf-why-h">${I.spark}<span>Akıllı Asistan yorumu</span></div>
         <p>${cheap ? `Seçtiklerin içinde en düşük maliyet <b>${cheap.short}</b> (${vmTL(bfQuote(cheap).cost)}); ancak tutarlar ve kullanım alanları farklı. ` : ''}${lowMon ? `En düşük aylık ödeme <b>${lowMon.short}</b>. ` : ''}${cols.some(o => o.kind === 'revolving') ? 'Nakit akışı desteği, tahmin edildiği gibi yalnızca açık günlerinde kullanılırsa en ucuz seçenek olabilir; faizi değişkendir. ' : ''}${ai ? `Açığın tamamını sabit faiz ve öngörülebilir taksitle karşılayan seçenek <b>${ai.short}</b>.` : ''}</p>
       </div>`}
-      <div class="vm-note">${I.info}<span>Değerler örnektir. Maliyete faiz, BSMV ve tahsis ücreti dahildir. * Nakit akışı desteğinde maliyet, tahmini nakit açığı günlerinde kullanıma göre hesaplanmıştır.</span></div>
+      <div class="vm-note">${I.info}<span>Bir teklifi seçtiğinde Kredi Detay ekranına geçersin. Değerler örnektir; maliyete faiz, BSMV ve tahsis ücreti dahildir. * Nakit akışı desteğinde maliyet, tahmini nakit açığı günlerinde kullanıma göre hesaplanmıştır.</span></div>
     </div>
-    <div class="screen-cta"><button class="btn-primary" data-action="bf-apply">${bfOffer().short} ile Devam Et</button></div>
   </div>`;
 }
-function bfPick(id) { state.bf.offer = id; state.bf.draft = null; vmRerender('anim-fade'); }
+/* Picking an offer in the comparison opens its Kredi Detay */
+function bfPick(id) {
+  const v = state.bf;
+  if (v.app) return bfGoTrack();
+  v.offer = id; v.draft = null;
+  go('isletme-kredi');
+}
 function bfToApply() {
   if (state.bf.app) return bfGoTrack();
-  go('isletme-basvuru');
+  go('isletme-kredi');
 }
 
-/* -------------------- Screen 6 — Başvuru (stage 1 of 2) --------------------
-   After an offer is chosen the process has two stages, modelled on Marketplace Taşıt: Başvuru → Kullandırım.
-   Başvuru shows the offer, the business and customer information already registered at the bank and the
-   pre-contract information (Ön Bilgilendirme) only — no contract is shown or approved here. "Başvuruyu Tamamla"
-   opens the shared confirmation pop-up; a short check → approve animation runs over the screen and the same
-   screen then shows "Başvurunuz Onaylandı". */
-const BF_FLOW = ['Başvuru', 'Kullandırım'];
-const BF_CUST = { no: '4812 0377', since: 'Mart 2016', branch: 'Kadıköy Ticari Şube', segment: 'KOBİ Bankacılığı' };   // DEMO customer record
-function bfFlowHTML(cur) {   // cur: 0 Başvuru · 1 Kullandırım · 2 both completed
+/* -------------------- Screen 6 — Kredi Detay (stage 1 of 2) --------------------
+   Revision 8: there is no application and no approval. The financing is drawn from the business's existing
+   Çatı Limit, so this screen only fixes the offer: the amount on a slider (as in the Taşıt simulation, never above
+   the available Çatı Limit), the repayment plan for the chosen term and a summary. "Kullandırım Adımına Geç" goes
+   straight to the Kullandırım, where the financing contracts are approved. */
+const BF_FLOW = ['Kredi Detay', 'Kullandırım'];
+// DEMO İşletme Çatı Limiti (TL): the total and the part already used by the business's other loans
+const BF_CATI = { total: 1500000, used: 800000 };
+const BF_AMT_STEP = 10000;   // slider increment (TL)
+function bfFlowHTML(cur) {   // cur: 0 Kredi Detay · 1 Kullandırım · 2 both completed
   return `<div class="vm-flow bf-flow2" role="list" aria-label="Finansman adımları">${BF_FLOW.map((t, i) =>
     `<div class="vm-flow-s ${i < cur ? 'done' : i === cur ? 'on' : ''}" role="listitem"><i>${i < cur ? I.check : i + 1}</i><span>${t}</span></div>`).join('<b></b>')}</div>`;
 }
-function bfCanSubmit() { return !!state.bf.agree.pre; }
 function bfPayLabel(o) { return o.kind === 'bullet' ? 'Vade sonunda ödeme' : o.kind === 'grace' ? 'Aylık ödeme (ilk 2 ay / sonra)' : o.kind === 'revolving' ? 'Ödeme' : 'Aylık taksit'; }
 function bfPayTxt(o, q) { return o.kind === 'bullet' ? vmTL(q.total) : o.kind === 'grace' ? `${vmTL(q.first.pay)} / ${vmTL(q.monthly)}` : o.kind === 'revolving' ? 'Kullandıkça, aylık faiz' : vmTL(q.monthly); }
-function BfApply() {
-  const v = state.bf;
-  if (v.app) return bfApplyDone();
-  const o = bfOffer(), ok = bfCanSubmit();
-  bfDraft();
+/* Çatı Limit: the financing in use counts as used; the one being prepared is shown on top of it */
+function bfCati() {
+  const a = state.bf.app, own = a && a.status === 'active' ? a.amount : 0, used = BF_CATI.used + own;
+  return { total: BF_CATI.total, used, avail: BF_CATI.total - used, own };
+}
+function bfMaxAmt(o = bfOffer()) { return Math.max(o.min, Math.min(o.max, BF_CATI.total - BF_CATI.used)); }
+function bfCatiHTML(amount, done) {
+  const c = bfCati(), T = c.total, pct = x => (x / T * 100).toFixed(1);
+  const base = done ? c.used - c.own : c.used, rest = T - base - amount;
+  return `<div class="bf-cati-h"><span>${I.pie}Çatı Limitin</span><b>${vmTL(T)}</b></div>
+    <div class="bf-cati-bar" role="img" aria-label="Çatı Limit kullanımı"><i class="u" style="width:${pct(base)}%"></i><i class="t" style="width:${pct(amount)}%"></i></div>
+    <div class="bf-cati-leg">
+      <span><i class="u"></i>Diğer kullanımlar<b>${vmTL(base)}</b></span>
+      <span><i class="t"></i>${done ? 'Bu finansman' : 'Bu finansmanla kullanılacak'}<b id="bf-cati-this">${vmTL(amount)}</b></span>
+      <span><i></i>${done ? 'Kalan Çatı Limit' : 'Kullanım sonrası kalan'}<b id="bf-cati-rest">${vmTL(rest)}</b></span>
+    </div>`;
+}
+function BfDetail() {
+  const v = state.bf, a = v.app;
+  if (v.ai.status !== 'done') { state.screen = 'isletme-analiz'; return BfAnalysis(); }
+  if (a && a.status === 'active') return bfDetailDone();
+  if (a && !v.draft) v.draft = { id: a.offer, amount: a.amount, term: a.term };   // back from Kullandırım: the saved details
+  const o = bfOffer(), d = bfDraft(), lo = o.min, hi = bfMaxAmt(o), rev = o.kind === 'revolving';
+  d.amount = Math.min(hi, Math.max(lo, d.amount));
   return `
   <div class="screen ${vmAnim()} vm bf">
-    ${vmNav('Finansman Başvurusu')}
+    ${vmNav('Kredi Detay')}
     <div class="screen-scroll">
       ${bfFlowHTML(0)}
       <div class="bf-selof">
         ${bfIco({ icon: o.icon, color: 'var(--primary)' }, 'lg')}
         <div><span>Seçilen finansman teklifi</span><b>${o.type}</b>${o.tag ? `<em class="bf-tag ${o.best ? 'ai' : ''}">${o.best ? I.spark : ''}${o.tag}</em>` : ''}</div>
-        <button class="sp-link" data-action="bf-change">Değiştir</button>
+        ${a ? '' : '<button class="sp-link" data-action="bf-change">Değiştir</button>'}
       </div>
 
       <div class="vm-sec-h"><span>Finansman teklifi</span></div>
-      <div class="vm-box bf-terms" id="bf-terms">${bfTermsHTML()}</div>
+      <div class="vm-box vm-calc bf-calc">
+        <div class="vm-calc-h"><span>${rev ? 'Limit tutarı' : 'Finansman tutarı'}</span><b id="bf-amt-pct">${bfAmtNote(d.amount)}</b></div>
+        <label class="vm-money lg"><input id="bf-amt-in" inputmode="numeric" enterkeyhint="done" autocomplete="off" value="${d.amount.toLocaleString('tr-TR')}" aria-label="${rev ? 'Limit tutarı' : 'Finansman tutarı'}"><em>TL</em></label>
+        <div class="vm-slider" id="bf-amt-sl" style="--v:${vmSlPct(d.amount, lo, hi)}%">
+          <div class="vm-track"><i></i></div>
+          <input type="range" class="vm-range" id="bf-amt-range" min="${lo}" max="${hi}" step="${BF_AMT_STEP}" value="${d.amount}" aria-label="${rev ? 'Limit tutarı' : 'Finansman tutarı'}">
+        </div>
+        <div class="vm-scale"><span>${vmTL(lo)}</span><span>${vmTL(hi)}</span></div>
+        <div class="vm-warn-inline" id="bf-amt-warn" role="status" aria-live="polite"></div>
+        <div class="bf-amt-lim">${I.info}<span>${hi < o.max ? `Üst sınır kullanılabilir Çatı Limitin: ${vmTL(hi)} (teklifin üst sınırı ${vmTL(o.max)})` : `Teklif aralığı ${vmTL(lo)}–${vmTL(o.max)}; kullanılabilir Çatı Limitin ${vmTL(BF_CATI.total - BF_CATI.used)}`}</span></div>
+        <div class="bf-cati" id="bf-cati">${bfCatiHTML(d.amount)}</div>
+      </div>
 
-      <div class="vm-sec-h"><span>${o.kind === 'revolving' ? 'Örnek kullanım ve faiz planı' : 'Geri ödeme planı'}</span><button class="sp-link" data-action="bf-plan">Tümü ${I.chevR}</button></div>
+      <div class="vm-sec-h"><span>${rev ? 'Örnek kullanım ve faiz planı' : 'Geri ödeme planı'}</span><button class="sp-link" data-action="bf-plan">Tümü ${I.chevR}</button></div>
+      <div class="vm-box bf-terms" id="bf-terms">${bfTermsHTML()}</div>
       <div class="vm-box bf-plan" id="bf-plan">${bfPlanHTML(3)}</div>
 
-      <div class="vm-sec-h"><span>İşletme ve müşteri bilgileri</span></div>
-      <div class="vm-box bf-rows">
-        <div class="kn-src">${I.check}<span>Bankamızda kayıtlı bilgilerin; yeniden girmen gerekmez</span></div>
-        <div class="vm-frow"><span>Ticari unvan</span><b>${BF_BIZ.name}</b></div>
-        <div class="vm-frow"><span>Vergi no · dairesi</span><b>${BF_BIZ.taxNo} · ${BF_BIZ.taxOffice}</b></div>
-        <div class="vm-frow"><span>Faaliyet</span><b>${BF_BIZ.sector} · ${BF_BIZ.activity}</b></div>
-        <div class="vm-frow"><span>Kuruluş · çalışan</span><b>${BF_BIZ.founded} · ${BF_BIZ.employees} çalışan</b></div>
-        <div class="vm-frow"><span>Yetkili</span><b>${BF_BIZ.rep} · ${BF_BIZ.repRole}</b></div>
-        <div class="vm-frow"><span>Adres</span><b>${BF_BIZ.address}</b></div>
-        <div class="vm-frow"><span>Müşteri no · müşteri olduğu tarih</span><b>${BF_CUST.no} · ${BF_CUST.since}</b></div>
-        <div class="vm-frow"><span>Şube · segment</span><b>${BF_CUST.branch} · ${BF_CUST.segment}</b></div>
-        <div class="vm-frow"><span>Kullandırım hesabı</span><b>${BF_BIZ.account}<br><small>${BF_BIZ.iban}</small></b></div>
-      </div>
-      <div class="vm-sec-h"><span>Finansal görünüm</span><span class="bf-sec-sub">${bfRangeShort(21, 23)} · aylık ort.</span></div>
-      <div class="vm-box bf-rows">
-        <div class="vm-frow"><span>Para girişi</span><b class="bf-amt-in">${vmTL(bfAvg('in'))}</b></div>
-        <div class="vm-frow"><span>Para çıkışı</span><b class="bf-amt-out">${vmTL(bfAvg('out'))}</b></div>
-        <div class="vm-frow"><span>Net nakit akışı</span><b>${bfTLs(bfAvg('in') - bfAvg('out'))}</b></div>
-        <div class="vm-frow"><span>Akıllı Asistan finansal sağlık puanı</span><b>${bfScore()} / 100 · ${bfScoreLabel(bfScore())}</b></div>
-      </div>
-
-      <div class="vm-sec-h"><span>Başvuru özeti</span></div>
+      <div class="vm-sec-h"><span>Kredi özeti</span></div>
       <div class="vm-box vm-receipt" id="bf-summary">${bfSummaryRowsHTML()}</div>
-
-      <div class="vm-sec-t">Ön bilgilendirme</div>
-      <div class="vm-box bf-pre" id="bf-pre">
-        <div class="bf-pre-top"><span class="bf-pre-ico">${I.doc}</span><div><b>Ticari Kredi Ön Bilgilendirme Formu</b><span>Teklifin koşulları, toplam maliyeti ve geri ödeme bilgileri</span></div></div>
-        <div id="bf-pre-rows">${bfPreRowsHTML()}</div>
-        <button class="bf-pre-btn" data-action="bf-doc" data-doc="pre">Formun tamamını incele ${I.chevR}</button>
-        <label class="contract-row ${v.agree.pre ? 'on' : ''}" data-action="bf-agree" data-key="pre">
-          <span class="cbx">${I.check}</span>
-          <span class="contract-txt">Ön Bilgilendirme Formu’nu okudum, finansman koşullarını inceledim.</span>
-        </label>
-      </div>
-      <div class="vm-note">${I.info}<span>Bu adımda sözleşme gösterilmez veya onaylanmaz. Başvurun onaylanınca Kullandırım adımında finansman sözleşmelerini dijital olarak onaylarsın; ek belge veya bilgi istenmez. Prototipte gerçek başvuru yapılmaz.</span></div>
+      <div class="vm-note">${I.info}<span>Finansman, işletmenin mevcut Çatı Limiti’nden kullandırılır; ayrıca başvuru veya onay süreci yoktur. Kullandırım adımında finansman sözleşmelerini dijital olarak onaylarsın. Değerler örnektir.</span></div>
     </div>
-    <div class="screen-cta">
-      <button class="btn-primary vm-approve vm-guide ${ok ? '' : 'disabled'}" id="bf-submit" data-action="bf-submit" aria-disabled="${!ok}">Başvuruyu Tamamla</button>
-    </div>
+    <div class="screen-cta"><button class="btn-primary" id="bf-detail-go" data-action="bf-detail-go">Kullandırım Adımına Geç</button></div>
   </div>`;
 }
-/* Key conditions of the pre-contract information (follows the amount / term chosen above) */
-function bfPreRowsHTML() {
-  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term), rev = o.kind === 'revolving';
-  return `<div class="vm-frow"><span>Faiz</span><b>Aylık %${vmPctStr(o.rate)} · ${rev ? 'değişken' : 'sabit'} ${vmEx()}</b></div>
-    <div class="vm-frow"><span>Toplam finansman maliyeti</span><b>${rev ? '~' : ''}${vmTL(q.cost)}</b></div>
-    ${rev ? '' : `<div class="vm-frow"><span>Toplam geri ödeme</span><b>${vmTL(q.total)}</b></div>`}
-    <div class="vm-frow"><span>Erken ödeme</span><b>${o.early}</b></div>`;
+function bfAmtNote(x) {
+  const o = bfOffer(), ref = o.best ? bfNeed().amount : o.amount;
+  return x === ref ? `${I.spark}${o.best ? 'Akıllı Asistan önerisi' : 'Önerilen tutar'}` : `Önerilen ${vmTL(ref)}`;
 }
-function bfToggleAgree(el) {
-  const g = state.bf.agree, k = el.dataset.key;
-  g[k] = !g[k];
-  el.classList.toggle('on', g[k]);
-  bfSubmitState();
-}
-function bfSubmitState() {
-  const b = document.getElementById('bf-submit');
-  if (b) { b.classList.toggle('disabled', !bfCanSubmit()); b.setAttribute('aria-disabled', !bfCanSubmit()); }
-}
-/* Ön Bilgilendirme Formu (EXAMPLE text): the conditions of the offer — not a contract */
-function bfDocSheet() {
-  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term), rev = o.kind === 'revolving', read = state.bf.agree.pre;
-  sheetEl.innerHTML = `
-    <div class="sheet-handle"></div>
-    <div class="sheet-bar"><h3>Ön Bilgilendirme Formu</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
-    <div class="legal-scroll"><p>Bu metin prototip amaçlı örnek bir ön bilgilendirmedir; sözleşme değildir ve gerçek ürün koşullarını yansıtmaz.</p>
-      <h4>1. Taraflar</h4><p>${BF_BIZ.name} (kredi kullanan) ile Yapı Kredi Bankası A.Ş.</p>
-      <h4>2. Finansman</h4><p>${o.type}; ${rev ? 'limit' : 'tutar'} ${vmTL(d.amount)}, vade ${bfTermTxt(o, d.term)}, aylık faiz %${vmPctStr(o.rate)} (${rev ? 'değişken' : 'sabit'}, örnek), BSMV faiz üzerinden %${BF_BSMV}, kredi tahsis ücreti ${vmTL(q.fee)}.</p>
-      <h4>3. Toplam maliyet</h4><p>Toplam finansman maliyeti ${rev ? 'yaklaşık ' : ''}${vmTL(q.cost)}${rev ? ' (tahmini kullanıma göre)' : `; toplam geri ödeme ${vmTL(q.total)}`}.</p>
-      <h4>4. Geri ödeme</h4><p>${o.pay}. Erken ödeme: ${o.early}.</p>
-      <h4>5. Kullanım</h4><p>${o.use}.</p>
-      <h4>6. Değerlendirme</h4><p>Başvurun; işletmenin hesap, POS ve e-fatura hareketleri ile ticari kredi kayıtları (KKB) kullanılarak değerlendirilir. Prototipte gerçek sorgu yapılmaz.</p>
-      <h4>7. Sözleşmeler</h4><p>Başvuru onaylanırsa Genel Kredi Sözleşmesi, Finansman Sözleşmesi Eki ve Ödeme Planı Kullandırım adımında dijital onayına sunulur.</p></div>
-    ${read ? '<button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>' : `<button class="sheet-btn" data-action="bf-pre-ok">Okudum, Anladım</button>
-    <button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>`}`;
-  sheetEl.classList.add('open'); sheetScrimEl.classList.add('open');
-}
-function bfPreOk() {
-  state.bf.agree.pre = true;
-  closeSheet();
-  document.querySelector('.contract-row[data-key="pre"]')?.classList.add('on');
-  bfSubmitState();
-}
-function bfMakeApp() {
-  const o = bfOffer(), d = bfDraft(), at = bfDemoNow(), st = bfStamp(at);
-  return { no: vmRef('IF'), offer: o.id, amount: d.amount, term: d.term, at: at.getTime(), status: 'approved', approvedAt: st,
-    contracts: {}, disbTs: null, disbAt: null, disbRef: null, paid: 0, used: o.kind === 'revolving' ? 0 : null, fresh: null, justOk: false,
-    events: [
-      { t: 'Finansman başvurun alındı', d: `${o.short} · ${vmTL(d.amount)}`, at: st, k: 'ok' },
-      { t: 'Başvurun onaylandı', d: `${vmTL(d.amount)} · kullandırım için sözleşme onayı bekleniyor`, at: st, k: 'ok' },
-    ] };
-}
-function bfSubmit() {
-  const v = state.bf;
-  if (v.app || state.screen !== 'isletme-basvuru') return;
-  if (!bfCanSubmit()) {
-    const box = document.getElementById('bf-pre');
-    if (box) { box.scrollIntoView({ block: 'center', behavior: 'smooth' }); box.classList.remove('nudge'); void box.offsetWidth; box.classList.add('nudge'); }
-    return toast('Başvuruyu tamamlamak için Ön Bilgilendirme Formu’nu onayla');
-  }
-  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term), rev = o.kind === 'revolving';
-  confirmPopOpen({
-    title: 'Başvurunuzu tamamlamak üzeresiniz.',
-    desc: 'Girdiğiniz bilgileri kontrol ettikten sonra finansman başvurunuzu tamamlayabilirsiniz.',
-    rows: [
-      ['İşletme', BF_BIZ.name],
-      ['Finansman', o.short],
-      [rev ? 'Talep edilen limit' : 'Talep edilen tutar', vmTL(d.amount), true],
-      ['Vade', bfTermTxt(o, d.term)],
-      ...(rev ? [] : [[bfPayLabel(o), bfPayTxt(o, q)], ['Toplam geri ödeme', vmTL(q.total)]]),
-    ],
-    ms: 0,
-    check: () => state.bf.app ? 'Bu finansman için başvurun zaten alınmış.' : '',
-    onConfirm: bfSubmitDone,
-  });
-}
-function bfSubmitDone() {
-  const v = state.bf;
-  if (v.app || !bfCanSubmit()) return;
-  const a = v.app = bfMakeApp(), o = bfOffer(a.offer);   // kept in state from the start: leaving during the animation does not lose it
-  a.justOk = true;
-  bfUnwind();   // back from here goes to İşletme Finansmanı, not to the offers
-  if (state.screen !== 'isletme-basvuru') return;
-  checkAnimRun({
-    steps: ['Başvurunuz kontrol ediliyor…', 'İşletme bilgileriniz değerlendiriliyor…'],
-    items: ['İşletme ve yetkili bilgileri', 'Hesap, POS ve e-fatura hareketleri', 'Ticari kredi kayıtları (KKB)'],
-    okTitle: 'Başvurunuz onaylandı', okSub: `${vmTL(a.amount)} ${o.kind === 'revolving' ? 'limitli ' : ''}${o.short.toLocaleLowerCase('tr')} onaylandı.`,
-    onDone: () => {
-      if (state.bf.app !== a || state.screen !== 'isletme-basvuru') return;
-      vmRerender('anim-fade');
-      const sc = document.querySelector('#app .screen-scroll'); if (sc) sc.scrollTop = 0;
-      toast('Finansman başvurun onaylandı');
-    },
-  });
-}
-/* The same route after the approval: "Başvurunuz Onaylandı" and the way to Kullandırım */
-function bfApplyDone() {
-  const a = state.bf.app, o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term), rev = o.kind === 'revolving', done = a.status === 'active', fresh = a.justOk;
-  a.justOk = false;
+/* The financing in use: Kredi Detay shows what was fixed, read only */
+function bfDetailDone() {
+  const a = state.bf.app, o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term), rev = o.kind === 'revolving';
   return `
   <div class="screen ${vmAnim()} vm bf">
-    ${vmNav('Finansman Başvurusu')}
+    ${vmNav('Kredi Detay')}
     <div class="screen-scroll">
-      ${bfFlowHTML(done ? 2 : 1)}
-      <div class="vm-box vm-app-ok ${fresh ? 'fresh' : ''}" role="status">
-        <div class="vm-app-ok-top"><span class="vm-app-ok-ico">${I.check}</span><div><b>Başvurunuz Onaylandı</b><span>Finansman başvurun değerlendirildi ve onaylandı.</span></div></div>
-        <div class="vm-frow"><span>Başvuru no</span><b>${a.no}</b></div>
-        <div class="vm-frow"><span>Başvuru tarihi</span><b>${bfAppTime(a, 0)}</b></div>
-        <div class="vm-frow"><span>Başvuru durumu</span><b><span class="vm-pill ok sm">${I.check}Onaylandı</span></b></div>
-        <div class="vm-frow hl"><span>${rev ? 'Onaylanan limit' : 'Onaylanan tutar'}</span><b>${vmTL(a.amount)}</b></div>
-        <div class="vm-frow"><span>Vade</span><b>${bfTermTxt(o, a.term)}</b></div>
-        ${rev ? `<div class="vm-frow"><span>Ödeme</span><b>${bfPayTxt(o, q)}</b></div>` : `<div class="vm-frow"><span>${bfPayLabel(o)} ${vmEx()}</span><b>${bfPayTxt(o, q)}</b></div>
-        <div class="vm-frow"><span>Toplam geri ödeme</span><b>${vmTL(q.total)}</b></div>`}
-      </div>
-      <div class="vm-sec-t">Seçilen finansman</div>
+      ${bfFlowHTML(2)}
       <div class="bf-selof bf-selof-done">
         ${bfIco({ icon: o.icon, color: 'var(--primary)' }, 'lg')}
         <div><span>${BF_BIZ.short}</span><b>${o.type}</b></div>
       </div>
+      <div class="vm-sec-h"><span>Kredi özeti</span></div>
+      <div class="vm-box vm-receipt">${bfSummaryRowsHTML(a)}</div>
       <div class="vm-box kn-next">
-        <span class="kn-next-ico">${done ? I.check : KN_ICO.pen}</span>
-        <div><span>Sonraki adım</span><b>${done ? 'Finansman kullanımda' : 'Kullandırım'}</b><em>${done
-          ? `Kullandırım ${a.disbAt} tarihinde tamamlandı. Geri ödemeleri takip ekranından izleyebilirsin.`
-          : `Finansman sözleşmelerini dijital olarak onayladığında ${o.id === 'sup' ? 'tutar tedarikçine ödenir' : rev ? 'limitin tanımlanır' : 'tutar işletme hesabına aktarılır'}. Yeniden belge veya bilgi istenmez.`}</em></div>
-      </div>
-      <div class="ru-info-card vm-links kn-gap">
-        <div class="ru-info-row tap" data-action="bf-plan"><span class="ru-info-ico">${I.doc}</span><span class="ru-info-k">${rev ? 'Örnek kullanım planı' : 'Geri ödeme planı'}</span><span class="ru-info-v">${rev ? bfTermTxt(o, a.term) : `${q.rows.length} ödeme`}</span>${I.chevR}</div>
-        <div class="ru-info-row tap" data-action="bf-doc" data-doc="pre"><span class="ru-info-ico">${I.receipt}</span><span class="ru-info-k">Ön Bilgilendirme Formu</span><span class="ru-info-v">Okundu</span>${I.chevR}</div>
+        <span class="kn-next-ico">${I.check}</span>
+        <div><span>Durum</span><b>${rev ? 'Limit kullanımda' : 'Finansman kullandırıldı'}</b><em>Kullandırım ${a.disbAt} tarihinde tamamlandı. ${rev ? '' : `${q.rows.length} ödemelik planı `}Takip ekranından izleyebilirsin.</em></div>
       </div>
     </div>
-    <div class="screen-cta"><button class="btn-primary" data-action="${done ? 'bf-track' : 'bf-to-use'}">${done ? 'Finansman Takibine Git' : 'Kullandırım Adımına Geç'}</button></div>
+    <div class="screen-cta"><button class="btn-primary" data-action="bf-track">Finansman Takibine Git</button></div>
   </div>`;
+}
+/* Amount: slider, typed amount and the Çatı Limit cap */
+function bfSetAmount(raw) {
+  const o = bfOffer(), d = bfDraft(), lo = o.min, hi = bfMaxAmt(o);
+  let x = Math.round(+raw || 0), warn = '';
+  if (x > hi) {
+    x = hi;
+    warn = hi < o.max ? `Tutar kullanılabilir Çatı Limitini (${vmTL(hi)}) aşamaz.` : `Bu teklifte en fazla ${vmTL(o.max)} kullanılabilir.`;
+  } else if (x < lo) {
+    x = lo;
+    warn = `Bu teklifte en az ${vmTL(lo)} kullanılabilir.`;
+  }
+  d.amount = x;
+  bfRefreshTerms();
+  vmWarn('bf-amt-warn', warn);
+}
+function bfSetupDetail() {
+  const r = document.getElementById('bf-amt-range'), inp = document.getElementById('bf-amt-in');
+  if (r) r.addEventListener('input', () => bfSetAmount(+r.value));
+  if (inp) vmMoneyInput(inp, bfSetAmount);
+}
+/* "Kullandırım Adımına Geç": no confirmation, no application — the details are kept and the Kullandırım opens */
+function bfDetailGo() {
+  const v = state.bf;
+  if (state.screen !== 'isletme-kredi') return;
+  if (v.app && v.app.status === 'active') return bfGoTrack();
+  const o = bfOffer(), d = bfDraft();
+  if (d.amount > bfMaxAmt(o)) return toast(`Tutar kullanılabilir Çatı Limitini (${vmTL(bfMaxAmt(o))}) aşamaz`);
+  if (!v.app) v.app = bfMakeApp();
+  else {
+    const a = v.app;
+    if (a.offer !== o.id || a.amount !== d.amount || a.term !== d.term) {   // changed after coming back from Kullandırım
+      const had = bfCtDone(a) > 0;
+      Object.assign(a, { offer: o.id, amount: d.amount, term: d.term, contracts: {}, ctAt: null, ctRef: null, used: o.kind === 'revolving' ? 0 : null });
+      a.events.push({ t: 'Kredi detayı güncellendi', d: `${o.short} · ${vmTL(d.amount)} · ${bfTermTxt(o, d.term)}`, at: bfStamp(bfDemoNow()), k: 'info' });
+      if (had) toast('Kredi detayı değişti; sözleşmeleri yeniden onaylaman gerekiyor');
+    }
+  }
+  state.bf.ctChk = {};
+  bfToUse();
+}
+function bfToDetail() {
+  const prev = state.nav[state.nav.length - 1];
+  if (prev && prev.screen === 'isletme-kredi') return navBack();
+  go('isletme-kredi');
+}
+function bfMakeApp() {
+  const o = bfOffer(), d = bfDraft(), at = bfDemoNow(), st = bfStamp(at);
+  return { no: vmRef('IF'), offer: o.id, amount: d.amount, term: d.term, at: at.getTime(), status: 'ready',
+    contracts: {}, ctAt: null, ctRef: null, disbTs: null, disbAt: null, disbRef: null, paid: 0, used: o.kind === 'revolving' ? 0 : null, fresh: null,
+    events: [{ t: 'Kredi detayı oluşturuldu', d: `${o.short} · ${vmTL(d.amount)} · Çatı Limit’ten`, at: st, k: 'ok' }] };
 }
 
 /* -------------------- Screen 7 — Kullandırım (stage 2 of 2) --------------------
-   Only the financing contracts and their digital approval: the offer and the amount come from the application;
-   no document, upload or information is asked for again. Every contract must be approved before
-   "Kullandırımı Tamamla" becomes active; it then checks the approvals (short animation) and shows the result. */
+   One block, "İşletme Finansmanı Sözleşmeleri": "İncele ve Onayla" opens a modal (as in Marketplace Taşıt) that
+   lists the contracts, shows their content and has an approval box for each. Once they are approved the block
+   reads "Onaylandı" and "Kullandırımı Tamamla" becomes active: it checks the approvals (short animation), shows
+   the result and updates the used / remaining Çatı Limit. No document is shown or asked for. */
 const BF_CONTRACTS = [
   { k: 'gks', t: 'Genel Kredi Sözleşmesi', d: 'Ticari kredilerin genel hüküm ve koşulları' },
   { k: 'fin', t: 'Finansman Sözleşmesi Eki', d: 'Seçilen finansmanın tutar, vade, faiz ve kullanım koşulları' },
@@ -11575,8 +11788,9 @@ function bfContractBody(k) {
   const to = o.id === 'sup' ? 'tedarikçi Ege Elektronik Dağıtım A.Ş.’ye ödenir' : `${BF_BIZ.account} hesabına aktarılır`;
   return {
     gks: `<h4>1. Taraflar ve kapsam</h4><p>${BF_BIZ.name} ile Yapı Kredi Bankası A.Ş. arasında kullandırılacak ticari kredilerin genel hüküm ve koşullarını düzenler.</p>
-      <h4>2. Faiz ve masraflar</h4><p>Faiz, BSMV ve ücretler ilgili finansman ekinde ve ödeme planında belirtilir.</p>
-      <h4>3. Temerrüt</h4><p>Ödemelerin vadesinde yapılmaması halinde temerrüt faizi uygulanır.</p>`,
+      <h4>2. Çatı Limit</h4><p>Krediler, işletmeye tanımlı ${vmTL(BF_CATI.total)} tutarındaki Çatı Limit içinden kullandırılır.</p>
+      <h4>3. Faiz ve masraflar</h4><p>Faiz, BSMV ve ücretler ilgili finansman ekinde ve ödeme planında belirtilir.</p>
+      <h4>4. Temerrüt</h4><p>Ödemelerin vadesinde yapılmaması halinde temerrüt faizi uygulanır.</p>`,
     fin: `<h4>Finansman</h4><p>${o.type}: ${rev ? 'limit' : 'tutar'} ${vmTL(a.amount)}, vade ${bfTermTxt(o, a.term)}, aylık faiz %${vmPctStr(o.rate)} (${rev ? 'değişken' : 'sabit'}, örnek).</p>
       <h4>Kullandırım</h4><p>${rev ? `Limit ${BF_BIZ.account} hesabına tanımlanır; ihtiyaç duyulduğunda kullanılır.` : `Tutar ${to}.`}</p>
       <h4>Kullanım alanı</h4><p>${o.use}.</p>`,
@@ -11586,14 +11800,13 @@ function bfContractBody(k) {
   }[k];
 }
 function bfCtDone(a = state.bf.app) { return a ? BF_CONTRACTS.filter(c => a.contracts[c.k]).length : 0; }
-function bfCtNext(a = state.bf.app) { return BF_CONTRACTS.find(c => !a.contracts[c.k]); }
+function bfCtAll(a = state.bf.app) { return bfCtDone(a) === BF_CONTRACTS.length; }
 function BfUse() {
   const v = state.bf, a = v.app;
-  if (!a) { state.screen = 'isletme-basvuru'; return BfApply(); }
-  const o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term), rev = o.kind === 'revolving', done = a.status === 'active';
-  const n = bfCtDone(a), all = n === BF_CONTRACTS.length;
+  if (!a) { state.screen = 'isletme-kredi'; return BfDetail(); }
+  const o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term), rev = o.kind === 'revolving', done = a.status === 'active', ok = bfCtAll(a);
   const where = o.id === 'sup' ? 'Ege Elektronik Dağıtım A.Ş. (tedarikçi)' : `${BF_BIZ.account} · ${BF_BIZ.iban.slice(-4)}`;
-  const pill = done ? `${I.check}${rev ? 'Limit açıldı' : 'Kullandırıldı'}` : all ? 'Kullandırıma hazır' : 'Sözleşme onayı bekleniyor';
+  const pill = done ? `${I.check}${rev ? 'Limit açıldı' : 'Kullandırıldı'}` : ok ? 'Kullandırıma hazır' : 'Sözleşme onayı bekleniyor';
   return `
   <div class="screen ${vmAnim()} vm bf">
     ${vmNav('Kullandırım')}
@@ -11601,15 +11814,15 @@ function BfUse() {
       ${bfFlowHTML(done ? 2 : 1)}
       <div class="vm-pre-res kn-ipt-hero">
         <span class="vm-pill ${done ? 'ok' : 'kn-pill-nv'}">${pill}</span>
-        <span class="vm-pre-l">${rev ? 'Onaylanan limit' : 'Onaylanan finansman tutarı'}</span>
+        <span class="vm-pre-l">${rev ? (done ? 'Tanımlanan limit' : 'Tanımlanacak limit') : (done ? 'Kullandırılan tutar' : 'Kullandırılacak tutar')}</span>
         <b>${vmTL(a.amount)}</b>
         <em>${o.short} · ${bfTermTxt(o, a.term)} · ${rev ? 'kullandıkça faiz' : o.kind === 'bullet' ? `vade sonunda ${vmTL(q.total)}` : o.kind === 'grace' ? `aylık ${vmTL(q.first.pay)} → ${vmTL(q.monthly)}` : `aylık ${vmTL(q.monthly)}`}</em>
-        <span class="kn-hero-note">${I.check}Başvuru no ${a.no}</span>
+        <span class="kn-hero-note">${I.check}Çatı Limit’ten · işlem no ${a.no}</span>
       </div>
       ${done ? bfUseDoneHTML(a, o, q, where) : ''}
-      <div class="vm-sec-h"><span>Finansman özeti</span></div>
+      <div class="vm-sec-h"><span>Finansman özeti</span>${done ? '' : '<button class="sp-link" data-action="bf-to-detail">Kredi Detay</button>'}</div>
       <div class="vm-box bf-rows">
-        <div class="kn-src">${I.check}<span>Başvurudaki bilgilerin kullanılır; ek belge veya bilgi istenmez</span></div>
+        <div class="kn-src">${I.check}<span>Kredi Detay’daki bilgilerin kullanılır; ek belge veya bilgi istenmez</span></div>
         <div class="vm-frow"><span>Finansman</span><b>${o.type}</b></div>
         <div class="vm-frow"><span>${rev ? 'Limit' : 'Tutar'}</span><b>${vmTL(a.amount)}</b></div>
         <div class="vm-frow"><span>Vade</span><b>${bfTermTxt(o, a.term)}</b></div>
@@ -11618,32 +11831,31 @@ function BfUse() {
         <div class="vm-frow"><span>${o.kind === 'bullet' ? 'Ödeme tarihi' : 'İlk ödeme tarihi'}</span><b>${bfDateTxt(q.rows[0].date)}</b></div>`}
         <div class="vm-frow"><span>${o.id === 'sup' ? 'Ödenecek tedarikçi' : rev ? 'Limitin tanımlanacağı hesap' : 'Aktarılacak hesap'}</span><b>${where}</b></div>
       </div>
-      <div class="vm-sec-h"><span>Sözleşmeler</span><span class="bf-sec-sub" id="bf-ct-n">${n}/${BF_CONTRACTS.length} onaylandı</span></div>
-      <div class="vm-box bf-cts" id="bf-cts">
-        <div class="bf-ct-prog" role="img" aria-label="${n} / ${BF_CONTRACTS.length} sözleşme onaylandı"><i style="width:${(n / BF_CONTRACTS.length * 100).toFixed(1)}%"></i></div>
-        ${BF_CONTRACTS.map(c => bfCtRowHTML(c, a)).join('')}
+      <div class="vm-sec-h"><span>Çatı Limit kullanımı</span></div>
+      <div class="vm-box bf-cati bf-cati-box" id="bf-use-cati">${bfCatiHTML(a.amount, done)}</div>
+      <div class="vm-sec-h"><span>Sözleşmeler</span></div>
+      <div class="vm-box bf-ctblock ${ok ? 'ok' : ''}" id="bf-ctblock">
+        <div class="bf-ctb-top">
+          <span class="bf-ctb-ico">${ok ? I.check : KN_ICO.pen}</span>
+          <div><b>İşletme Finansmanı Sözleşmeleri</b><span>Genel Kredi Sözleşmesi, finansman eki ve ödeme planı · ${BF_CONTRACTS.length} sözleşme</span></div>
+        </div>
+        <div class="vm-frow"><span>Onay durumu</span><b id="bf-ct-state">${ok ? `<span class="vm-pill ok sm">${I.check}Onaylandı</span>` : '<span class="vm-pill sm vm-dep-wait">Onay bekleniyor</span>'}</b></div>
+        ${ok ? `<div class="vm-frow"><span>Onay tarihi · no</span><b>${a.ctAt}<br><small>${a.ctRef}</small></b></div>` : ''}
+        <button class="${ok ? 'btn-outline' : 'btn-primary'} bf-ctb-btn" id="bf-ct-open" data-action="bf-ct">${ok ? 'Sözleşmeleri Görüntüle' : 'İncele ve Onayla'}</button>
       </div>
-      <div class="vm-note">${I.info}<span>${done ? 'Sözleşmelerin dijital olarak onaylandı; kopyalarına sözleşmeye dokunarak ulaşabilirsin.' : 'Sözleşmeye dokunarak içeriğini incele ve onayla. Tüm sözleşmeler onaylanınca Kullandırımı Tamamla aktifleşir. Prototipte gerçek sözleşme veya kullandırım yapılmaz.'}</span></div>
+      <div class="vm-note">${I.info}<span>${done ? 'Sözleşmelerin dijital olarak onaylandı; kopyalarına sözleşme bloğundan ulaşabilirsin.' : 'Sözleşmeler onaylanınca Kullandırımı Tamamla aktifleşir. Prototipte gerçek sözleşme veya kullandırım yapılmaz.'}</span></div>
     </div>
     <div class="screen-cta">${done
       ? '<button class="btn-primary" data-action="bf-track">Finansman Takibine Git</button>'
-      : `<button class="btn-primary vm-approve vm-guide ${all ? '' : 'disabled'}" id="bf-use-ok" data-action="bf-use-ok" aria-disabled="${!all}">Kullandırımı Tamamla</button>`}</div>
+      : `<button class="btn-primary vm-approve vm-guide ${ok ? '' : 'disabled'}" id="bf-use-ok" data-action="bf-use-ok" aria-disabled="${!ok}">Kullandırımı Tamamla</button>`}</div>
   </div>`;
 }
-function bfCtRowHTML(c, a) {
-  const x = a.contracts[c.k];
-  return `<div class="bf-ct ${x ? 'ok' : ''} tap" data-action="bf-ct" data-k="${c.k}" role="button">
-      <span class="bf-ct-ico">${x ? I.check : I.doc}</span>
-      <div class="bf-ct-mid"><b>${c.t}</b><span>${x ? `Onaylandı · ${x.at}` : c.d}</span></div>
-      ${x ? `<span class="vm-pill ok sm">${I.check}Onaylandı</span>` : `<span class="kn-up miss bf-ct-btn">${KN_ICO.pen}İncele</span>`}
-    </div>`;
-}
 function bfUseDoneHTML(a, o, q, where) {
-  const rev = o.kind === 'revolving';
+  const rev = o.kind === 'revolving', c = bfCati();
   return `<div class="kn-done" role="status">
       <span class="kn-done-ico">${I.check}</span>
       <b>Kullandırım tamamlandı</b>
-      <span>${rev ? `${vmTL(a.amount)} limitin ${BF_BIZ.account} hesabına tanımlandı; ihtiyaç duyduğunda kullanabilirsin.` : o.id === 'sup' ? `${vmTL(a.amount)} tedarikçine ödendi.` : `${vmTL(a.amount)} ${BF_BIZ.account} hesabına aktarıldı.`}</span>
+      <span>${rev ? `${vmTL(a.amount)} limitin ${BF_BIZ.account} hesabına tanımlandı; ihtiyaç duyduğunda kullanabilirsin.` : o.id === 'sup' ? `${vmTL(a.amount)} tedarikçine ödendi.` : `${vmTL(a.amount)} ${BF_BIZ.account} hesabına aktarıldı.`} Kalan Çatı Limitin ${vmTL(c.avail)}.</span>
     </div>
     <div class="vm-box vm-receipt bf-disb">
       <div class="r-row"><span class="r-l">İşlem no</span><span class="r-r">${a.disbRef}</span></div>
@@ -11651,68 +11863,89 @@ function bfUseDoneHTML(a, o, q, where) {
       <div class="r-row hl"><span class="r-l">${rev ? 'Tanımlanan limit' : o.id === 'sup' ? 'Tedarikçiye ödenen' : 'Aktarılan tutar'}</span><span class="r-r">${vmTL(a.amount)}</span></div>
       <div class="r-row"><span class="r-l">${o.id === 'sup' ? 'Tedarikçi' : 'Hesap'}</span><span class="r-r">${where}</span></div>
       ${rev ? '' : `<div class="r-row"><span class="r-l">${o.kind === 'bullet' ? 'Ödeme' : 'İlk ödeme'}</span><span class="r-r">${bfDateTxt(q.rows[0].date)} · ${vmTL(q.rows[0].pay)}</span></div>`}
+      <div class="r-row"><span class="r-l">Kullanılan Çatı Limit</span><span class="r-r" id="bf-cati-used">${vmTL(c.used)}</span></div>
+      <div class="r-row"><span class="r-l">Kalan Çatı Limit</span><span class="r-r" id="bf-cati-left">${vmTL(c.avail)}</span></div>
       <div class="r-row"><span class="r-l">Sözleşmeler</span><span class="r-r">${BF_CONTRACTS.length}/${BF_CONTRACTS.length} onaylandı</span></div>
     </div>`;
 }
-/* Contract sheet: the content of one contract and its own approval */
-function bfContractSheet(k) {
-  const v = state.bf, a = v.app, c = BF_CONTRACTS.find(x => x.k === k);
-  if (!a || !c) return;
-  const x = a.contracts[k], n = bfCtDone(a);
-  if (sheetEl.dataset.bfct !== k) v.ctAgree = false;
-  sheetEl.dataset.bfct = k;
+/* İşletme Finansmanı Sözleşmeleri modal: every contract opens in place and has its own approval box */
+function bfContractSheet(open) {
+  const v = state.bf, a = v.app;
+  if (!a) return;
+  const ok = bfCtAll(a), ctOpen = open === undefined ? (sheetEl.dataset.bfct || '') : open, chk = v.ctChk;
+  const n = BF_CONTRACTS.filter(c => chk[c.k]).length;
+  sheetEl.dataset.bfct = ctOpen;
   sheetEl.innerHTML = `
     <div class="sheet-handle"></div>
-    <div class="sheet-bar"><h3>${c.t}</h3><button class="sheet-x" data-action="close-sheet" aria-label="Kapat">${I.close}</button></div>
-    <div class="vm-ct-note">${x ? `${I.check}<span>${x.at} tarihinde dijital olarak onaylandı · onay no ${x.ref}</span>` : `${I.info}<span>Sözleşme ${BF_CONTRACTS.indexOf(c) + 1}/${BF_CONTRACTS.length} · ${n} sözleşme onaylandı. ${BF_BIZ.rep} (imza yetkilisi) olarak dijital onay veriyorsun.</span>`}</div>
-    <div class="vm-ct-body vm-legal bf-ct-body">${bfContractBody(k)}<p class="vm-ct-ex">Metin örnektir.</p></div>
-    ${x ? '<button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>' : `
-    <label class="contract-row vm-ct-agree ${v.ctAgree ? 'on' : ''}" data-action="bf-ct-agree"><span class="cbx">${I.check}</span><span class="contract-txt">${c.t}’ni okudum, onaylıyorum.</span></label>
-    <button class="sheet-btn" id="bf-ct-ok" data-action="bf-ct-ok" data-k="${k}" ${v.ctAgree ? '' : 'disabled'}>Sözleşmeyi Onayla</button>
+    <div class="sheet-bar"><h3 class="bf-ct-h3">İşletme Finansmanı Sözleşmeleri</h3><button class="sheet-x" data-action="close-sheet" aria-label="Kapat">${I.close}</button></div>
+    <div class="vm-ct-note">${ok ? `${I.check}<span>Sözleşmeler ${a.ctAt} tarihinde ${BF_BIZ.rep} (imza yetkilisi) tarafından dijital olarak onaylandı · onay no ${a.ctRef}</span>` : `${I.info}<span>Kullandırım için aşağıdaki sözleşmeleri onaylaman gerekiyor. İçeriği görmek için sözleşmeye dokun; okuduğun her sözleşmeyi işaretle.</span>`}</div>
+    <div class="vm-ct-list bf-ct-list">${BF_CONTRACTS.map(x => `<div class="vm-ct ${ctOpen === x.k ? 'open' : ''}">
+        <button class="vm-ct-h" data-action="bf-ct-toggle" data-k="${x.k}" aria-expanded="${ctOpen === x.k}"><span class="vm-ct-ico">${I.doc}</span><span class="vm-ct-mid"><b>${x.t}</b><span>${x.d}</span></span>${ok ? `<span class="vm-pill ok sm">${I.check}Onaylandı</span>` : ''}<span class="vm-ct-chev">${I.chevDown}</span></button>
+        ${ctOpen === x.k ? `<div class="vm-ct-body vm-legal">${bfContractBody(x.k)}<p class="vm-ct-ex">Metin örnektir.</p></div>` : ''}
+        ${ok ? '' : `<label class="contract-row bf-ct-chk ${chk[x.k] ? 'on' : ''}" data-action="bf-ct-agree" data-k="${x.k}"><span class="cbx">${I.check}</span><span class="contract-txt">Okudum, onaylıyorum.</span></label>`}
+      </div>`).join('')}</div>
+    ${ok ? '<button class="sheet-btn ghost" data-action="close-sheet">Kapat</button>' : `
+    <button class="sheet-btn" id="bf-ct-ok" data-action="bf-ct-ok" ${n === BF_CONTRACTS.length ? '' : 'disabled'}>${bfCtOkTxt(n)}</button>
     <button class="sheet-btn ghost" data-action="close-sheet">Vazgeç</button>`}`;
   sheetEl.classList.add('open', 'pop-sheet');
   sheetScrimEl.classList.add('open');
-  sheetEl.scrollTop = 0;
 }
-function bfContractAgree() {
+/* "İncele ve Onayla": the modal opens with no box ticked (a cancelled modal does not keep half the approvals) */
+function bfContractOpen() {
   const v = state.bf;
-  v.ctAgree = !v.ctAgree;
-  sheetEl.querySelector('.vm-ct-agree')?.classList.toggle('on', v.ctAgree);
-  const b = document.getElementById('bf-ct-ok'); if (b) b.disabled = !v.ctAgree;
+  if (!v.app) return;
+  v.ctChk = {};
+  bfContractSheet('');
 }
-function bfContractApprove(k) {
-  const v = state.bf, a = v.app, b = document.getElementById('bf-ct-ok'), c = BF_CONTRACTS.find(x => x.k === k);
-  if (!a || !c || a.contracts[k] || !v.ctAgree || !b || b.dataset.busy) return;
+function bfCtOkTxt(n) { return n === BF_CONTRACTS.length ? 'Sözleşmeleri Onayla' : `Sözleşmeleri Onayla (${n}/${BF_CONTRACTS.length})`; }
+function bfContractToggle(k) {
+  const y = sheetEl.scrollTop;
+  bfContractSheet(sheetEl.dataset.bfct === k ? '' : k);
+  sheetEl.scrollTop = y;
+}
+function bfContractAgree(k) {
+  const v = state.bf;
+  if (!v.app || bfCtAll(v.app) || !BF_CONTRACTS.some(c => c.k === k)) return;
+  v.ctChk[k] = !v.ctChk[k];
+  sheetEl.querySelector(`.bf-ct-chk[data-k="${k}"]`)?.classList.toggle('on', v.ctChk[k]);
+  const n = BF_CONTRACTS.filter(c => v.ctChk[c.k]).length, b = document.getElementById('bf-ct-ok');
+  if (b) { b.disabled = n !== BF_CONTRACTS.length; b.textContent = bfCtOkTxt(n); }
+}
+function bfContractApprove() {
+  const v = state.bf, a = v.app, b = document.getElementById('bf-ct-ok');
+  if (!a || bfCtAll(a) || !b || b.dataset.busy || BF_CONTRACTS.some(c => !v.ctChk[c.k])) return;
   b.dataset.busy = '1';
-  b.innerHTML = '<span class="spinner"></span> Sözleşme onaylanıyor…';
+  b.innerHTML = '<span class="spinner"></span> Sözleşmelerin onaylanıyor…';
   sheetEl.querySelectorAll('.sheet-btn.ghost, .sheet-x').forEach(x => { x.disabled = true; });
   setTimeout(() => {
     if (state.bf.app !== a) return closeSheet();   // demo was reset meanwhile
-    a.contracts[k] = { at: bfStamp(bfDemoNow()), ref: vmRef('SZL') };
-    v.ctAgree = false;
+    const at = bfStamp(bfDemoNow()), ref = vmRef('SZL');
+    BF_CONTRACTS.forEach(c => { a.contracts[c.k] = { at, ref }; });
+    a.ctAt = at; a.ctRef = ref;
+    v.ctChk = {};
     delete sheetEl.dataset.bfct;
     closeSheet();
-    const n = bfCtDone(a);
     if (state.screen === 'isletme-kullandirim') vmStill();
-    toast(n === BF_CONTRACTS.length ? 'Tüm sözleşmeler onaylandı · kullandırımı tamamlayabilirsin' : `${c.t} onaylandı · ${n}/${BF_CONTRACTS.length}`);
+    toast('Sözleşmeler onaylandı · kullandırımı tamamlayabilirsin');
   }, 900);
 }
-/* "Kullandırımı Tamamla": every approval is checked, a short animation runs, then the result on the same screen */
+/* "Kullandırımı Tamamla": the approvals are checked, a short animation runs, then the result on the same screen */
 function bfUseComplete() {
   const a = state.bf.app;
-  if (!a || a.status !== 'approved' || state.screen !== 'isletme-kullandirim') return;
-  const next = bfCtNext(a);
-  if (next) {
-    toast(`Kullandırım için önce sözleşmeleri onayla (${bfCtDone(a)}/${BF_CONTRACTS.length})`);
-    return bfContractSheet(next.k);
+  if (!a || a.status !== 'ready' || state.screen !== 'isletme-kullandirim') return;
+  if (!bfCtAll(a)) {
+    document.getElementById('bf-ctblock')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    return toast('Kullandırım için önce İşletme Finansmanı Sözleşmeleri’ni onayla');
   }
   const o = bfOffer(a.offer), rev = o.kind === 'revolving';
   bfActivate(a);   // kept in state at once; the screen shows it after the animation
+  bfUnwind();      // back from here goes to İşletme Finansmanı
+  const c = bfCati();
   checkAnimRun({
     steps: ['Onayların kontrol ediliyor…', rev ? 'Limitin tanımlanıyor…' : o.id === 'sup' ? 'Tedarikçine ödeme yapılıyor…' : 'Tutar hesabına aktarılıyor…'],
-    items: [`Sözleşme onayları (${BF_CONTRACTS.length}/${BF_CONTRACTS.length})`, 'Finansman ve hesap bilgileri', rev ? 'Limit tanımlama' : o.id === 'sup' ? 'Tedarikçi ödemesi' : 'İşletme hesabına aktarım'],
+    items: [`Sözleşme onayları (${BF_CONTRACTS.length}/${BF_CONTRACTS.length})`, `Çatı Limit kullanımı · ${vmTL(a.amount)}`, rev ? 'Limit tanımlama' : o.id === 'sup' ? 'Tedarikçi ödemesi' : 'İşletme hesabına aktarım'],
     okTitle: 'Kullandırım tamamlandı',
-    okSub: rev ? `${vmTL(a.amount)} limitin kullanıma açıldı.` : o.id === 'sup' ? `${vmTL(a.amount)} tedarikçine ödendi.` : `${vmTL(a.amount)} işletme hesabına aktarıldı.`,
+    okSub: `${rev ? `${vmTL(a.amount)} limitin kullanıma açıldı.` : o.id === 'sup' ? `${vmTL(a.amount)} tedarikçine ödendi.` : `${vmTL(a.amount)} işletme hesabına aktarıldı.`} Kalan Çatı Limit ${vmTL(c.avail)}.`,
     onDone: () => {
       if (state.bf.app !== a || state.screen !== 'isletme-kullandirim') return;
       vmRerender('anim-fade');
@@ -11722,20 +11955,22 @@ function bfUseComplete() {
   });
 }
 function bfActivate(a, quiet) {
-  const o = bfOffer(a.offer), now = bfDemoNow();
-  BF_CONTRACTS.forEach(c => { if (!a.contracts[c.k]) a.contracts[c.k] = { at: bfStamp(now), ref: vmRef('SZL') }; });
+  const o = bfOffer(a.offer), now = bfDemoNow(), st = bfStamp(now);
+  if (!bfCtAll(a)) { const ref = vmRef('SZL'); BF_CONTRACTS.forEach(c => { a.contracts[c.k] = { at: st, ref }; }); a.ctAt = st; a.ctRef = ref; }
   a.status = 'active';
   a.disbTs = now.getTime();
-  a.disbAt = bfStamp(now);
+  a.disbAt = st;
   a.disbRef = vmRef('KLD');
-  a.events.push({ t: 'Sözleşmeler dijital olarak onaylandı', d: `${BF_CONTRACTS.length} sözleşme · ${BF_BIZ.rep}`, at: a.disbAt, k: 'ok' });
+  const c = bfCati();
+  a.events.push({ t: 'Sözleşmeler dijital olarak onaylandı', d: `${BF_CONTRACTS.length} sözleşme · ${BF_BIZ.rep}`, at: a.ctAt, k: 'ok' });
   a.events.push({ t: o.kind === 'revolving' ? `${vmTL(a.amount)} limit açıldı` : o.id === 'sup' ? `${vmTL(a.amount)} tedarikçine ödendi` : `${vmTL(a.amount)} işletme hesabına aktarıldı`, d: o.id === 'sup' ? 'Ege Elektronik Dağıtım A.Ş.' : BF_BIZ.account, at: a.disbAt, k: 'ok' });
+  a.events.push({ t: `Çatı Limit’ten ${vmTL(a.amount)} kullanıldı`, d: `Kalan Çatı Limit ${vmTL(c.avail)}`, at: a.disbAt, k: 'ok' });
   a.fresh = quiet ? null : o.kind === 'revolving' ? 'Limitin açıldı; ihtiyaç duyduğunda kullanabilirsin.' : o.id === 'sup' ? 'Tutar tedarikçine ödendi.' : `${vmTL(a.amount)} işletme hesabına aktarıldı.`;
 }
 
 /* -------------------- Screen 8 — financing tracking (after the Kullandırım) -------------------- */
 function bfStatusTxt(a) {
-  if (a.status === 'approved') return `Onaylandı · kullandırım için sözleşme onayı bekleniyor (${bfCtDone(a)}/${BF_CONTRACTS.length})`;
+  if (a.status === 'ready') return bfCtAll(a) ? 'Kullandırıma hazır · sözleşmeler onaylandı' : 'Kullandırım bekleniyor · sözleşme onayı';
   const o = bfOffer(a.offer), q = bfQuote(o, a.amount, a.term);
   if (o.kind === 'revolving') return a.used ? `Limit kullanımda · ${vmTL(a.used)}` : 'Limit tanımlandı · kullanıma hazır';
   return a.paid >= q.rows.length ? 'Finansman kapandı' : `Kullandırıldı · ${a.paid}/${q.rows.length} ödeme yapıldı`;
@@ -11761,9 +11996,10 @@ function BfTrack() {
     <div class="screen-scroll">
       <div class="vm-box bf-trk-head">
         <div class="bf-trk-top"><div><span>Finansman</span><b>No ${a.no}</b></div><span class="vm-pill sm bf-pill-ok">${rev ? 'Limit aktif' : 'Kullandırıldı'}</span></div>
-        <div class="vm-frow"><span>Başvuru tarihi</span><b>${bfAppTime(a, 0)}</b></div>
+        <div class="vm-frow"><span>İşlem tarihi</span><b>${bfAppTime(a, 0)}</b></div>
         <div class="vm-frow"><span>Finansman</span><b>${o.short}<br><small>${rev ? 'Limit ' : ''}${vmTL(a.amount)} · ${bfTermTxt(o, a.term)}</small></b></div>
         <div class="vm-frow"><span>Durum</span><b id="bf-status">${bfStatusTxt(a)}</b></div>
+        <div class="vm-frow"><span>Çatı Limit</span><b>Kullanılan ${vmTL(bfCati().used)}<br><small>Kalan ${vmTL(bfCati().avail)}</small></b></div>
       </div>
       ${bfProgHTML(a)}
       ${a.fresh ? `<div class="vm-okbar bf-fresh">${I.check}<span><b>${a.fresh}</b></span></div>` : ''}
@@ -11807,7 +12043,7 @@ function bfAdvance() {
 /* The most relevant screen of an ongoing financing: Kullandırım until it is completed, then the tracking */
 function bfGoTrack() {
   closeSheet();
-  const a = state.bf.app, to = a && a.status === 'approved' ? 'isletme-kullandirim' : 'isletme-takip';
+  const a = state.bf.app, to = a && a.status === 'ready' ? 'isletme-kullandirim' : 'isletme-takip';
   if (state.screen === to) return;
   const prev = state.nav[state.nav.length - 1];
   if (prev && prev.screen === to) return navBack();
@@ -11820,8 +12056,7 @@ function bfToUse() {
 }
 function bfResetFlow() {
   const v = state.bf;
-  v.app = null; v.draft = null; v.offer = 'wc'; v.ctAgree = false;
-  v.agree = { pre: false };
+  v.app = null; v.draft = null; v.offer = 'wc'; v.sel = []; v.ctChk = {};
 }
 function bfReset() { bfResetFlow(); bfGoHome(); toast('Demo süreci sıfırlandı'); }
 /* Clears the "fresh" banner of the tracking screen once it has been seen */
@@ -11831,38 +12066,27 @@ function bfSeed(hash) {
   const v = state.bf;
   if (hash === 'isletme' || hash === 'isletme-hareketler') return;
   if (v.ai.status !== 'done') { clearTimeout(v.ai.timer); bfAIDone(true); }
+  if (hash === 'isletme-karsilastir' && v.sel.length < 2) v.sel = ['wc', 'line', 'flex'];   // a comparison needs offers to compare
   if (!['isletme-kullandirim', 'isletme-takip'].includes(hash) || v.app) return;
   v.offer = 'wc'; v.draft = null;
-  v.agree = { pre: true };
-  v.app = bfMakeApp();   // approved application waiting for the contracts
+  v.app = bfMakeApp();   // Kredi Detay fixed, waiting for the contracts
   if (hash === 'isletme-takip') bfActivate(v.app, true);   // the financing in use
 }
 
 /* -------------------- kept helpers (offer terms, plans, tracking, draws, navigation) -------------------- */
 function bfTermsHTML() {
-  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term), need = bfNeed().amount, rev = o.kind === 'revolving';
-  const diff = d.amount - (o.best ? need : o.amount);
+  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term), rev = o.kind === 'revolving';
   return `
-    <div class="bf-amt-edit">
-      <span>${rev ? 'Talep edilen limit' : 'Talep edilen tutar'}</span>
-      <div class="bf-stepper">
-        <button class="bf-stp" data-action="bf-amt" data-d="-1" aria-label="Azalt" ${d.amount <= o.min ? 'disabled' : ''}>−</button>
-        <b>${vmTL(d.amount)}</b>
-        <button class="bf-stp" data-action="bf-amt" data-d="1" aria-label="Artır" ${d.amount >= o.max ? 'disabled' : ''}>+</button>
-      </div>
-      <em class="${diff ? 'warn' : ''}">${I.spark}${diff === 0 ? (o.best ? 'Akıllı Asistan önerisiyle aynı' : 'Önerilen tutar') : `Önerilen: ${vmTL(o.best ? need : o.amount)} · ${diff > 0 ? 'fazla tutar maliyeti artırır' : 'tahmini açığı tam karşılamayabilir'}`} · ${vmTL(o.min)}–${vmTL(o.max)}</em>
-    </div>
-    ${o.terms.length > 1 ? `<div class="bf-terms-pick"><span>Vade</span><div class="vm-chips">${o.terms.map(n => `<button class="vm-chip ${d.term === n ? 'on' : ''}" data-action="bf-term" data-v="${n}">${bfTermTxt(o, n)}</button>`).join('')}</div></div>` : ''}
-    ${o.terms.length > 1 ? '' : `<div class="vm-frow"><span>Vade</span><b>${bfTermTxt(o, d.term)}</b></div>`}
-    <div class="vm-frow"><span>Aylık faiz oranı ${vmEx()}</span><b>%${vmPctStr(o.rate)}</b></div>
-    <div class="vm-frow"><span>BSMV</span><b>Faiz üzerinden %${BF_BSMV}</b></div>
+    ${o.terms.length > 1 ? `<div class="bf-terms-pick"><span>Vade seçenekleri</span><div class="vm-chips">${o.terms.map(n => `<button class="vm-chip ${d.term === n ? 'on' : ''}" data-action="bf-term" data-v="${n}">${bfTermTxt(o, n)}</button>`).join('')}</div></div>`
+      : `<div class="vm-frow"><span>Vade</span><b>${bfTermTxt(o, d.term)}</b></div>`}
+    <div class="vm-frow"><span>Aylık faiz oranı ${vmEx()}</span><b>%${vmPctStr(o.rate)} · ${rev ? 'değişken' : 'sabit'}</b></div>
     <div class="vm-frow"><span>Geri ödeme</span><b>${o.pay}</b></div>
     ${rev ? `<div class="vm-frow"><span>Tahmini faiz + BSMV <small>örnek kullanım</small></span><b>${vmTL(q.int + q.tax)}</b></div>`
-      : `<div class="vm-frow"><span>${o.kind === 'bullet' ? 'Vade sonunda ödeme' : o.kind === 'grace' ? 'Aylık ödeme (ilk 2 ay / sonra)' : 'Aylık taksit'}</span><b>${o.kind === 'bullet' ? vmTL(q.total) : o.kind === 'grace' ? `${vmTL(q.first.pay)} / ${vmTL(q.monthly)}` : vmTL(q.monthly)}</b></div>
+      : `<div class="vm-frow hl"><span>${bfPayLabel(o)}</span><b id="bf-pay">${bfPayTxt(o, q)}</b></div>
          <div class="vm-frow"><span>Toplam faiz + BSMV</span><b>${vmTL(q.int + q.tax)}</b></div>`}
     <div class="vm-frow"><span>Kredi tahsis ücreti <small>binde ${vmPctStr(BF_FEE * 10)}</small></span><b>${vmTL(q.fee)}</b></div>
-    <div class="vm-frow hl"><span>Toplam finansman maliyeti</span><b>${rev ? '~' : ''}${vmTL(q.cost)}</b></div>
-    ${rev ? '' : `<div class="vm-frow hl"><span>Toplam geri ödeme</span><b>${vmTL(q.total)}</b></div>`}
+    <div class="vm-frow hl"><span>Finansman maliyeti</span><b id="bf-cost">${rev ? '~' : ''}${vmTL(q.cost)}</b></div>
+    ${rev ? '' : `<div class="vm-frow hl"><span>Toplam geri ödeme</span><b id="bf-total">${vmTL(q.total)}</b></div>`}
     <div class="vm-frow"><span>Erken ödeme</span><b>${o.early}</b></div>`;
 }
 function bfPlanHTML(limit) {
@@ -11879,29 +12103,32 @@ function bfPlanHTML(limit) {
       <span>${r.n}${a && a.status === 'active' && r.n <= paid ? ` ${I.check}` : ''}</span><span>${bfNumDate(r.date)}</span><b>${vmTL(r.pay)}</b><span>${vmTL(r.rest)}</span></div>`).join('')}
     ${limit && q.rows.length > limit ? `<button class="bf-more sm" data-action="bf-plan">${q.rows.length - limit} taksit daha</button>` : ''}`;
 }
-function bfSummaryRowsHTML() {
-  const o = bfOffer(), d = bfDraft(), q = bfQuote(o, d.amount, d.term), rev = o.kind === 'revolving';
-  const r = (l, val, hl) => `<div class="r-row ${hl ? 'hl' : ''}"><span class="r-l">${l}</span><span class="r-r">${val}</span></div>`;
-  return r('İşletme', BF_BIZ.name)
-    + r('Finansman türü', o.type)
-    + r(rev ? 'Talep edilen limit' : 'Talep edilen tutar', vmTL(d.amount), true)
-    + r('Vade', bfTermTxt(o, d.term))
-    + r(o.kind === 'bullet' ? 'Ödeme tarihi' : 'İlk ödeme tarihi', `${bfDateTxt(q.rows[0].date)} ${vmEx()}`)
-    + (rev ? r('Tahmini maliyet', `~${vmTL(q.cost)}`) : r('Toplam finansman maliyeti', vmTL(q.cost)) + r('Toplam geri ödeme', vmTL(q.total), true))
-    + r('Kullandırım hesabı', `${BF_BIZ.account} · ${BF_BIZ.iban.slice(-4)}`)
-    + r('Başvuran', `${BF_BIZ.rep} (yetkili)`);
+/* Kredi özeti: what will be used from the Çatı Limit (a = the financing in use, read only) */
+function bfSummaryRowsHTML(a) {
+  const o = bfOffer(a ? a.offer : undefined), x = a || bfDraft(), q = bfQuote(o, x.amount, x.term), rev = o.kind === 'revolving';
+  const r = (l, val, hl, id) => `<div class="r-row ${hl ? 'hl' : ''}"><span class="r-l">${l}</span><span class="r-r" ${id ? `id="${id}"` : ''}>${val}</span></div>`;
+  const rest = a && a.status === 'active' ? bfCati().avail : BF_CATI.total - BF_CATI.used - x.amount;
+  return r('Finansman ürünü', o.type)
+    + r(rev ? 'Limit tutarı' : 'Finansman tutarı', vmTL(x.amount), true, 'bf-sum-amt')
+    + r('Vade', bfTermTxt(o, x.term))
+    + r(bfPayLabel(o), bfPayTxt(o, q), false, 'bf-sum-pay')
+    + (rev ? r('Tahmini maliyet', `~${vmTL(q.cost)}`) : r('Toplam geri ödeme', vmTL(q.total), true, 'bf-sum-total'))
+    + r('Kullanılacak Çatı Limit tutarı', vmTL(x.amount), true, 'bf-sum-cati')
+    + r(a && a.status === 'active' ? 'Kalan Çatı Limit' : 'Kullanım sonrası kalan Çatı Limit', vmTL(rest))
+    + r(o.id === 'sup' ? 'Ödeme yapılacak tedarikçi' : 'Kullandırım hesabı', o.id === 'sup' ? 'Ege Elektronik Dağıtım A.Ş.' : `${BF_BIZ.account} · ${BF_BIZ.iban.slice(-4)}`);
 }
+/* Live update of Kredi Detay without re-rendering the screen (the slider keeps its drag, the input its focus) */
 function bfRefreshTerms() {
-  const t = document.getElementById('bf-terms'), p = document.getElementById('bf-plan'), s = document.getElementById('bf-summary');
-  if (t) t.innerHTML = bfTermsHTML();
-  if (p) p.innerHTML = bfPlanHTML(3);
-  if (s) s.innerHTML = bfSummaryRowsHTML();
-  const pr = document.getElementById('bf-pre-rows'); if (pr) pr.innerHTML = bfPreRowsHTML();   // the pre-contract information follows the terms
-}
-function bfAmt(dir) {
-  const o = bfOffer(), d = bfDraft(), step = o.max - o.min > 400000 ? 50000 : 25000;
-  d.amount = Math.min(o.max, Math.max(o.min, d.amount + dir * step));
-  bfRefreshTerms();
+  const o = bfOffer(), d = bfDraft(), lo = o.min, hi = bfMaxAmt(o);
+  const set = (id, h) => { const el = document.getElementById(id); if (el) el.innerHTML = h; };
+  const inp = document.getElementById('bf-amt-in'); if (inp && document.activeElement !== inp) inp.value = d.amount.toLocaleString('tr-TR');
+  const r = document.getElementById('bf-amt-range'); if (r && +r.value !== d.amount) r.value = d.amount;
+  const sl = document.getElementById('bf-amt-sl'); if (sl) sl.style.setProperty('--v', vmSlPct(d.amount, lo, hi) + '%');
+  set('bf-amt-pct', bfAmtNote(d.amount));
+  set('bf-cati', bfCatiHTML(d.amount));
+  set('bf-terms', bfTermsHTML());
+  set('bf-plan', bfPlanHTML(3));
+  set('bf-summary', bfSummaryRowsHTML());
 }
 function bfTerm(n) { bfDraft().term = n; bfRefreshTerms(); }
 function bfPlanSheet() {
@@ -11956,9 +12183,9 @@ function bfTrackPlanHTML(a, o, q) {
 function bfTrackEmpty() {
   return `
   <div class="screen ${vmAnim()} vm bf">
-    ${vmNav('Başvuru Takibi')}
+    ${vmNav('Finansman Takibi')}
     <div class="screen-scroll">
-      <div class="vm-empty big">${I.doc}<b>Henüz finansman başvurun yok</b><span>Akıllı Asistan analizinden sonra sana özel teklifleri inceleyip başvurabilirsin.</span>
+      <div class="vm-empty big">${I.doc}<b>Henüz kullandırılan finansmanın yok</b><span>Akıllı Asistan analizinden sonra sana özel önerileri inceleyip Çatı Limit’inden kullanabilirsin.</span>
         <button class="btn-primary" data-action="${state.bf.ai.status === 'done' ? 'bf-offers' : 'bf-analyze'}">${state.bf.ai.status === 'done' ? 'Finansman Önerilerini Gör' : 'Yapı Kredi Akıllı Asistanı ile Analiz Et'}</button></div>
     </div>
   </div>`;
@@ -14199,29 +14426,18 @@ function SkySuccess() {
 
 /* -------------------- Installment payment → limit re-opens -------------------- */
 function skyPaySheet() {
-  const ni = state.sky.nextInst, p = skyP(ni.product);
-  if (ni.paid) return toast(`${state.sky.payment.inst} taksiti ödendi; sıradaki taksit ${ni.dates[ni.i]}`);
-  sheetEl.innerHTML = `
-    <div class="sheet-handle"></div>
-    <div class="sheet-amount-label">${p.name} · ${ni.dates[ni.i]} taksiti</div>
-    <div class="sheet-amount">${fmtTL(ni.amount)}</div>
-    <div class="sky-sheet-gain">${I.refresh}<span>Ödeme onaylanınca <b>${skyTL(ni.amount)}</b> yeni limit açılır ve Çatı Limit'ine eklenir: ${skyTL(skyTotal())} → <b>${skyTL(skyTotal() + ni.amount)}</b>.</span></div>
-    <div class="sheet-pay-row"><span>Ödeme hesabı</span><span class="spr-r">Vadesiz TL Hesabım · 12345678</span></div>
-    <button class="sheet-btn" id="sky-pay-btn" data-action="sky-pay-approve">${I.shield} Ödemeyi Onaylıyorum</button>
-    <button class="sheet-btn ghost" data-action="close-sheet">Vazgeç</button>`;
-  sheetEl.classList.add('open');
-  sheetScrimEl.classList.add('open');
-}
-function skyPayApprove() {
-  const btn = document.getElementById('sky-pay-btn');
-  if (!btn) return;
-  btn.innerHTML = '<span class="spinner"></span> Ödeme yapılıyor…';
-  btn.style.pointerEvents = 'none';
-  setTimeout(() => {
-    skyApplyPayment();
-    closeSheet();
-    setTimeout(() => go('cati-limit-payment'), 250);
-  }, 1400);
+  const s = state.sky, ni = s.nextInst, p = skyP(ni.product);
+  if (ni.paid) return toast(`${s.payment.inst} taksiti ödendi; sıradaki taksit ${ni.dates[ni.i]}`);
+  acctPopOpen({
+    type: 'Çatı Limit · taksit ödemesi', title: `${p.name} · ${ni.dates[ni.i]} taksiti`,
+    desc: `Ödeme onaylanınca ${skyTL(ni.amount)} yeni limit açılır: ${skyTL(skyTotal())} → ${skyTL(skyTotal() + ni.amount)}`,
+    amount: ni.amount, busyText: 'Taksit ödemen yapılıyor…', okMsg: 'Taksitin ödendi; yeni limitin açılıyor.',
+    onPaid: res => {   // the limit opens only here, after a successful payment
+      skyApplyPayment();
+      if (s.payment) s.payment.acct = res.acctLabel;
+    },
+    onClose: res => { if (res && s.payment) setTimeout(() => go('cati-limit-payment'), 150); },
+  });
 }
 /* Runs only after the payment is approved: the installment lowers the product's debt and the same amount
    opens as NEW limit that is added to the main Çatı Limit (500.000 → 520.000 TL), not yet allocated to a product. */
@@ -14282,7 +14498,7 @@ function SkyPaid() {
 
         <div class="receipt">
           <div class="r-row"><span class="r-l">Ödenen tutar</span><span class="r-r">${fmtTL(pm.amount)}</span></div>
-          <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">Vadesiz TL Hesabım</span></div>
+          <div class="r-row"><span class="r-l">Ödeme hesabı</span><span class="r-r">${pm.acct || 'Vadesiz TL Hesabım'}</span></div>
           <div class="r-row"><span class="r-l">Yeni toplam Çatı Limit</span><span class="r-r">${skyTL(pm.afterTotal)}</span></div>
           <div class="r-row"><span class="r-l">Sıradaki taksit</span><span class="r-r">${pm.next}</span></div>
           <div class="r-row"><span class="r-l">İşlem No</span><span class="r-r">${pm.no}</span></div>
@@ -14562,7 +14778,7 @@ function render() {
     case 'isletme-analiz': html = BfAnalysis(); break;
     case 'isletme-oneriler': html = BfOffers(); break;
     case 'isletme-karsilastir': html = BfCompare(); break;
-    case 'isletme-basvuru': html = BfApply(); break;
+    case 'isletme-kredi': html = BfDetail(); break;
     case 'isletme-kullandirim': html = BfUse(); break;
     case 'isletme-takip': html = BfTrack(); break;
     case 'isletme-yatirim': html = BfInvest(); break;
@@ -14609,6 +14825,7 @@ function render() {
   vmHeroSync();   // Marketplace Taşıt hero animation: starts on its screen, stops everywhere else
   if (state.screen === 'arac-detay') vmSetupDetail();
   if (state.screen === 'arac-kredi') vmSetupSim();
+  if (state.screen === 'isletme-kredi') bfSetupDetail();
   if (state.screen === 'arac-basvuru') vmSetupApply();
   if (state.screen === 'konut') knSetupSearch();
   if (state.screen === 'konut-detay') knSetupDetail();
@@ -15536,7 +15753,7 @@ function closeSheet() {
   sheetEl.classList.remove('open');
   sheetScrimEl.classList.remove('open');
   mbRuleOpen = false;   // maden "Kuralı değiştir" bağlamını sıfırla
-  PAY_POP = null; CF_POP = null;   // a shared pop-up closed from outside is dropped as it is
+  PAY_POP = null; CF_POP = null; ACCT_POP = null;   // a shared pop-up closed from outside is dropped as it is
   setTimeout(() => { if (!sheetEl.classList.contains('open')) sheetEl.classList.remove('pop-sheet'); }, 350);
 }
 function approvePayment() {
@@ -15709,6 +15926,10 @@ document.addEventListener('click', (e) => {
     case 'cfpop-ok': return confirmPopOk();
     case 'cfpop-retry': return confirmPopRetry();
     case 'cfpop-cancel': return confirmPopCancel();
+    case 'acctpop-acct': return acctPopSet(t.dataset.id);
+    case 'acctpop-ok': return acctPopConfirm();
+    case 'acctpop-retry': return acctPopRetry();
+    case 'acctpop-close': return acctPopClose();
 
     // Karekod ile Öde — ana ekran widget'ı
     case 'qr-start': return qrStart();
@@ -16014,6 +16235,7 @@ document.addEventListener('click', (e) => {
     case 'vm-track': return vmGoTrack();
     case 'vm-fin': return vmFinSheet();
     case 'vm-contracts': return vmContractSheet('');
+    case 'vm-gos-pay': return vmGosPay();
     case 'vm-ct-toggle': return vmContractToggle(t.dataset.k);
     case 'vm-ct-agree': return vmContractAgree();
     case 'vm-ct-ok': return vmContractApprove();
@@ -16121,18 +16343,19 @@ document.addEventListener('click', (e) => {
     case 'bf-pick': return bfPick(t.dataset.id);
     case 'bf-apply': return bfToApply();
     case 'bf-change': return bfChange();
-    case 'bf-amt': return bfAmt(+t.dataset.d);
     case 'bf-term': return bfTerm(+t.dataset.v);
     case 'bf-plan': return bfPlanSheet();
-    case 'bf-agree': return bfToggleAgree(t);
-    case 'bf-doc': e.preventDefault(); return bfDocSheet(t.dataset.doc);
-    case 'bf-pre-ok': return bfPreOk();
-    case 'bf-submit': return bfSubmit();
+    case 'bf-detail-go': return bfDetailGo();
+    case 'bf-to-detail': return bfToDetail();
     case 'bf-track': return bfGoTrack();
     case 'bf-to-use': return bfToUse();
-    case 'bf-ct': return bfContractSheet(t.dataset.k);
-    case 'bf-ct-agree': return bfContractAgree();
-    case 'bf-ct-ok': return bfContractApprove(t.dataset.k);
+    case 'bf-ct': return bfContractOpen();
+    case 'bf-ct-toggle': return bfContractToggle(t.dataset.k);
+    case 'bf-ct-agree': e.preventDefault(); return bfContractAgree(t.dataset.k);
+    case 'bf-ct-ok': return bfContractApprove();
+    case 'bf-dep-amt': return bfDepSet('amt', +t.dataset.v);
+    case 'bf-dep-term': return bfDepSet('term', +t.dataset.v);
+    case 'bf-rd-dest': return bfRdSetDest(t.dataset.fund, t.dataset.v);
     case 'bf-use-ok': return bfUseComplete();
     case 'bf-opp': return bfSetOpp(t.dataset.v);
     case 'bf-inv': return bfOpenInv(t.dataset.id);
@@ -16158,7 +16381,6 @@ document.addEventListener('click', (e) => {
     case 'sky-cancel': return skyCancel();
     case 'sky-home': return skyGoHome();
     case 'sky-pay': return skyPaySheet();
-    case 'sky-pay-approve': return skyPayApprove();
 
     case 'toast': return toast(t.dataset.msg || 'Bu işlem prototipte aktif değil');
   }
@@ -16177,9 +16399,9 @@ function updateClock() {
    Her bölümün kendi hash linki var: #home #assistant #setur #chat #payment
    #success #tracking #search #settings #sections
    Link açıldığında ekran gereken state ile hazır gelir (akışı tekrarlamadan). */
-const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'cati-limit', 'cati-limit-manage', 'cati-limit-confirm', 'cati-limit-success', 'cati-limit-payment', 'borc-izleme', 'borc-izleme-detay', 'borc-izleme-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis', 'arac', 'arac-liste', 'arac-detay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-kullandirim', 'arac-tamam', 'konut', 'konut-liste', 'konut-detay', 'konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek', 'konut-tanitim', 'konut-tahsis', 'konut-takbis', 'konut-tamam', 'isletme', 'isletme-hareketler', 'isletme-analiz', 'isletme-oneriler', 'isletme-karsilastir', 'isletme-basvuru', 'isletme-kullandirim', 'isletme-takip', 'isletme-yatirim'];
+const ROUTES = ['home', 'springboard', 'widgets', 'qr-scan', 'qr-pay', 'qr-success', 'search', 'chat', 'assistant', 'setur', 'payment', 'success', 'tracking', 'settings', 'sections', 'roundup', 'roundup-apply', 'roundup-jar', 'roundup-history', 'spendup', 'spendup-apply', 'spendup-jar', 'spendup-history', 'metal', 'metal-apply', 'metal-jar', 'metal-history', 'fayda', 'fayda-journey', 'fayda-reward', 'fayda-wallet', 'insights', 'insights-category', 'insights-cats', 'limits', 'kid', 'split', 'split-pick', 'split-amount', 'split-people', 'split-form', 'split-pay', 'reward-goal', 'reward-goal-new', 'reward-goal-track', 'reward-goal-win', 'birikim', 'birikim-apply', 'birikim-manage', 'birikim-history', 'cati-limit', 'cati-limit-manage', 'cati-limit-confirm', 'cati-limit-success', 'cati-limit-payment', 'borc-izleme', 'borc-izleme-detay', 'borc-izleme-gecmis', 'erken-maas', 'erken-maas-tutar', 'erken-maas-kosullar', 'erken-maas-onay', 'erken-maas-sonuc', 'erken-maas-gecmis', 'arac', 'arac-liste', 'arac-detay', 'arac-kredi', 'arac-basvuru', 'arac-kasko', 'arac-kullandirim', 'arac-tamam', 'konut', 'konut-liste', 'konut-detay', 'konut-kredi', 'konut-basvuru', 'konut-takip', 'konut-ekspertiz', 'konut-ipotek', 'konut-tanitim', 'konut-tahsis', 'konut-takbis', 'konut-tamam', 'isletme', 'isletme-hareketler', 'isletme-analiz', 'isletme-oneriler', 'isletme-karsilastir', 'isletme-kredi', 'isletme-kullandirim', 'isletme-takip', 'isletme-yatirim'];
 function routeTo(hash) {
-  const h = debtAlias(((hash || '').replace('#', '') || 'home').replace(/^sky-limit/, 'cati-limit'));   // links from before the renames
+  const h = debtAlias(((hash || '').replace('#', '') || 'home').replace(/^sky-limit/, 'cati-limit').replace(/^isletme-basvuru$/, 'isletme-kredi'));   // links from before the renames
   if (!ROUTES.includes(h)) return false;
   // Ödeme/başarı/takip: ürün seçili değilse asistanın önerdiğiyle hazırla
   if (['payment', 'success', 'tracking'].includes(h) && !state.selectedProduct) {
