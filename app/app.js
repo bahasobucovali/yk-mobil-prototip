@@ -272,8 +272,8 @@ const SECTIONS = [
   { hash: 'konut-ekspertiz', icon: 'pin', t: 'Taslak — Marketplace Konut: Ekspertiz', d: 'Bankanın başlattığı ekspertiz: atanan kuruluş, randevu; sonraki girişte onaylı rapor ve kullandırıma geçiş' },
   { hash: 'konut-ipotek', icon: 'bank', t: 'Taslak — Marketplace Konut: Kullandırım', d: 'Onaylanan tutar; şube randevusu, tapu devri (randevu tapu müdürlüğünce) ve ipotek; gerekli belgeler ve DASK ödemesi (ortak ödeme pop-up’ı)' },
   { hash: 'konut-tamam', icon: 'check', t: 'Taslak — Marketplace Konut: Kredi kullandırıldı', d: 'Süreç tamamlandı ekranı' },
-  { hash: 'isletme', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı', d: 'İşletmenin para giriş ve çıkışları, Yapı Kredi Akıllı Asistanı analizi ve sana özel finansman teklifleri' },
-  { hash: 'isletme-hareketler', icon: 'pie', t: 'Taslak — Akıllı İşletme Finansmanı: Finansal hareketler', d: 'Şirkete girenler / çıkanlar, kategori ve işlem detayı, dönem karşılaştırma' },
+  { hash: 'isletme', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı', d: 'İşletmenin gelir ve giderleri, Yapı Kredi Akıllı Asistanı analizi ve sana özel finansman teklifleri' },
+  { hash: 'isletme-hareketler', icon: 'pie', t: 'Taslak — Akıllı İşletme Finansmanı: Finansal hareketler', d: 'Gelirler / giderler, kategori ve işlem detayı, dönem karşılaştırma' },
   { hash: 'isletme-analiz', icon: 'spark', t: 'Taslak — Akıllı İşletme Finansmanı: Akıllı Asistan analizi', d: 'Finansal sağlık, nakit akışı eğilimi, olası nakit açıkları; finansman fırsatları, nakit yönetimi ve birikim önerileri' },
   { hash: 'isletme-yatirim', icon: 'bars', t: 'Taslak — Akıllı İşletme Finansmanı: Yatırım fırsatı', d: 'Nakit yönetimi ve birikim: vadeli mevduat, Sınırsız Hesap, harcama ve ekstre yuvarlama (Fon / Maden / Mevduat)' },
   { hash: 'isletme-oneriler', icon: 'loan', t: 'Taslak — Akıllı İşletme Finansmanı: Finansman önerileri', d: 'İşletmeye özel 5 alternatif, Öneriyi Seç; tek öneride teklif detayı, birden fazlasında karşılaştırma' },
@@ -10295,7 +10295,7 @@ const BF_AY3 = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl',
 const BF_N = 24;                            // months of data: index 0 = Kasım 2024 … 23 = Ekim 2026
 const BF_LAST = BF_N - 1;
 /* Monthly totals per category (TL). The last three months (Ağustos–Ekim 2026) average exactly to
-   the brief's test data; "Nakit girişleri" is not in the brief's test data and is an EXAMPLE value. */
+   the brief's test data; "Nakit tahsilatlar" is not in the brief's test data and is an EXAMPLE value. */
 const BF_K = 1000;
 const BF_SERIES = {
   pos:   [747, 773, 726, 592, 697, 732, 777, 815, 775, 810, 859, 925, 1010, 1076, 950, 803, 942, 1013, 1073, 1090, 1092, 1100, 1180, 1320],
@@ -10313,7 +10313,7 @@ const BF_COL = { in: '#14A5A0', out: '#F5883E' };   // money in / money out (pal
 const BF_IN = [
   { id: 'pos', name: 'POS satışları', short: 'POS', icon: 'card', color: '#14A5A0', unit: 'kart işlemi', ticket: 245, d: 'Mağaza POS cihazlarından hesaba geçen kart satışları' },
   { id: 'order', name: 'Sipariş gelirleri', short: 'Sipariş', icon: 'box', color: '#2F6FED', unit: 'sipariş', ticket: 1850, d: 'Online mağaza, pazaryeri ve kurumsal sipariş tahsilatları' },
-  { id: 'cash', name: 'Nakit girişleri', short: 'Nakit', icon: 'cashout', color: '#4A6FA5', d: 'Mağaza kasalarından hesaba yatırılan nakit' },
+  { id: 'cash', name: 'Nakit tahsilatlar', short: 'Nakit', icon: 'cashout', color: '#4A6FA5', d: 'Mağaza kasalarından hesaba yatırılan nakit' },
   { id: 'oin', name: 'Diğer tahsilatlar', short: 'Diğer', icon: 'receipt', color: '#8A8F98', d: 'Prim iadeleri, servis ve kira gelirleri, çek tahsilatları' },
 ];
 const BF_OUT = [
@@ -10565,9 +10565,9 @@ function bfAI() {
 }
 function bfScores() {
   return [
-    ['Gelir büyümesi', 88, 'Girişler üç ayda istikrarlı artıyor'],
-    ['Nakit marjı', 74, 'Girişlerin yaklaşık %18’i nete kalıyor'],
-    ['Gider dengesi', 62, 'Giderler girişlerden hızlı artıyor'],
+    ['Gelir büyümesi', 88, 'Gelirler üç ayda istikrarlı artıyor'],
+    ['Nakit marjı', 74, 'Gelirlerin yaklaşık %18’i nete kalıyor'],
+    ['Gider dengesi', 62, 'Giderler gelirlerden hızlı artıyor'],
     ['Nakit tamponu', 40, 'Bakiye birkaç günlük gidere yetiyor'],
   ];
 }
@@ -10592,13 +10592,13 @@ function bfBarsSVG(from, to, focus = null) {
   const bars = ins.map((a, k) => {
     const cx = L + cw * k + cw / 2, b = outs[k], net = a - b, i = from + k;
     return `<g class="bf-bar-g ${focus ? 'f-' + focus : ''}">
-      <rect class="bf-b-in" x="${cx - bw - gap / 2}" y="${y(a)}" width="${bw}" height="${ph * a / top}" rx="${Math.min(3, bw / 3)}"><title>${bfMonLong(i)} · giriş ${vmTL(a)}</title></rect>
-      <rect class="bf-b-out" x="${cx + gap / 2}" y="${y(b)}" width="${bw}" height="${ph * b / top}" rx="${Math.min(3, bw / 3)}"><title>${bfMonLong(i)} · çıkış ${vmTL(b)}</title></rect>
+      <rect class="bf-b-in" x="${cx - bw - gap / 2}" y="${y(a)}" width="${bw}" height="${ph * a / top}" rx="${Math.min(3, bw / 3)}"><title>${bfMonLong(i)} · gelir ${vmTL(a)}</title></rect>
+      <rect class="bf-b-out" x="${cx + gap / 2}" y="${y(b)}" width="${bw}" height="${ph * b / top}" rx="${Math.min(3, bw / 3)}"><title>${bfMonLong(i)} · gider ${vmTL(b)}</title></rect>
       <text class="bf-axis m" x="${cx}" y="${H - B + 14}" text-anchor="middle">${bfMonShort(i)}</text>
       <text class="bf-axis net ${net < 0 ? 'neg' : 'pos'}" x="${cx}" y="${H - B + 30}" text-anchor="middle">${bfSign(net)}${Math.round(Math.abs(net) / 1000).toLocaleString('tr-TR')}</text>
     </g>`;
   }).join('');
-  return `<svg class="bf-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Aylık para girişi ve çıkışı">${grid}${bars}
+  return `<svg class="bf-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Aylık gelir ve gider">${grid}${bars}
     <text class="bf-axis" x="${L - 5}" y="${H - B + 30}" text-anchor="end">Net</text></svg>
     <div class="bf-svg-cap">Net satırı bin TL</div>`;
 }
@@ -10683,14 +10683,14 @@ function BfHome() {
         <div class="ru-jar-amt bf-net">${bfTLs(net)}</div>
         <div class="bf-hero-sub">${n > 1 ? `Aylık ortalama ${bfTLs(net / n)}` : bfRangeTxt(p.from, p.to)}</div>
         <div class="ru-statrow">
-          <div class="ru-stat tap" data-action="bf-flows-side" data-side="in"><div class="ru-stat-l"><i class="bf-dot in"></i>Toplam giriş</div><div class="ru-stat-v">${bfCompact(tin)} TL</div></div>
-          <div class="ru-stat mid tap" data-action="bf-flows-side" data-side="out"><div class="ru-stat-l"><i class="bf-dot out"></i>Toplam çıkış</div><div class="ru-stat-v">${bfCompact(tout)} TL</div></div>
+          <div class="ru-stat tap" data-action="bf-flows-side" data-side="in"><div class="ru-stat-l"><i class="bf-dot in"></i>Toplam gelir</div><div class="ru-stat-v">${bfCompact(tin)} TL</div></div>
+          <div class="ru-stat mid tap" data-action="bf-flows-side" data-side="out"><div class="ru-stat-l"><i class="bf-dot out"></i>Toplam gider</div><div class="ru-stat-v">${bfCompact(tout)} TL</div></div>
           <div class="ru-stat"><div class="ru-stat-l">Net marj</div><div class="ru-stat-v">%${vmPctStr((net / tin * 100).toFixed(1))}</div></div>
         </div>
       </div>
       ${bfOngoingHTML()}
       <div id="bf-ai-card">${bfAiCardHTML()}</div>
-      <div class="vm-sec-h"><span>Aylık finansal durum</span><span class="bf-legend"><i class="in"></i>Giriş<i class="out"></i>Çıkış</span></div>
+      <div class="vm-sec-h"><span>Aylık finansal durum</span><span class="bf-legend"><i class="in"></i>Gelir<i class="out"></i>Gider</span></div>
       <div class="vm-box bf-chart-box">${bfBarsSVG(p.from, p.to)}${bfMonthStatusHTML(p)}</div>
       <div class="vm-sec-h"><span>Finansal hareketlerin özeti</span><button class="sp-link" data-action="bf-flows">Tümü ${I.chevR}</button></div>
       <div class="vm-box bf-sum">${bfSumSideHTML('in', p)}${bfSumSideHTML('out', p)}</div>
@@ -10714,7 +10714,7 @@ function bfSumSideHTML(side, p) {
   const cats = bfSideCats(side), tot = bfTot(side, p.from, p.to);
   const rows = cats.map(c => ({ c, a: bfSum(c.id, p.from, p.to) }));
   return `<div class="bf-sum-side">
-    <div class="bf-sum-h"><span><i class="bf-dot ${side}"></i>${side === 'in' ? 'Şirkete girenler' : 'Şirketten çıkanlar'}</span><b>${vmTL(tot)}</b></div>
+    <div class="bf-sum-h"><span><i class="bf-dot ${side}"></i>${side === 'in' ? 'Gelirler' : 'Giderler'}</span><b>${vmTL(tot)}</b></div>
     <div class="debt-bar bf-dist" role="img" aria-label="Kategorilere göre dağılım">${rows.map(x => `<span class="debt-seg" style="flex:${x.a} 1 0;background:${x.c.color}"></span>`).join('')}</div>
     ${rows.map(x => `<div class="bf-sum-row tap" data-action="bf-flows-cat" data-side="${side}" data-cat="${x.c.id}">
       ${bfIco(x.c, 'sm')}<span class="bf-sum-n">${x.c.name}</span><span class="bf-sum-p">%${Math.round(x.a / tot * 100)}</span><b>${bfCompact(x.a)} TL</b>${I.chevR}
@@ -10741,7 +10741,7 @@ function bfAiCardHTML() {
     </div>`;
   }
   return `<div class="bf-ai-card">
-    <div class="bf-ai-top"><span class="bf-ai-ico">${I.spark}</span><div><b>Yapı Kredi Akıllı Asistanı</b><span>Son 3 ayın para giriş ve çıkışlarını inceler; nakit açığı risklerini ve finansman ihtiyacını önceden belirler, nakit fazlasını değerlendirme ve birikim fırsatlarını ortaya çıkarır.</span></div></div>
+    <div class="bf-ai-top"><span class="bf-ai-ico">${I.spark}</span><div><b>Yapı Kredi Akıllı Asistanı</b><span>Son 3 ayın gelir ve giderlerini inceler; nakit açığı risklerini ve finansman ihtiyacını önceden belirler, nakit fazlasını değerlendirme ve birikim fırsatlarını ortaya çıkarır.</span></div></div>
     <button class="btn-primary bf-ai-btn" data-action="bf-analyze">Yapı Kredi Akıllı Asistanı ile Analiz Et</button>
   </div>`;
 }
@@ -10778,7 +10778,7 @@ function bfInfoSheet() {
     <div class="sheet-bar"><h3>Akıllı İşletme Sermayesi Finansmanı</h3><button class="sheet-x" data-action="close-sheet">${I.close}</button></div>
     <div class="debt-how">
       <p class="bf-how-lead">Kredi değil, işletme finansman platformu.</p>
-      <div class="debt-how-row"><span class="debt-how-ico">${I.bars}</span><div><b>Para giriş ve çıkışların tek ekranda</b><span>POS satışları, siparişler, nakit ve diğer tahsilatlar; fatura, maaş, tedarikçi ve diğer ödemeler aylık olarak karşılaştırılır.</span></div></div>
+      <div class="debt-how-row"><span class="debt-how-ico">${I.bars}</span><div><b>Gelir ve giderlerin tek ekranda</b><span>POS satışları, siparişler, nakit ve diğer tahsilatlar; fatura, maaş, tedarikçi ve diğer ödemeler aylık olarak karşılaştırılır.</span></div></div>
       <div class="debt-how-row"><span class="debt-how-ico">${I.spark}</span><div><b>Yapı Kredi Akıllı Asistanı ile analiz</b><span>Nakit akışı eğilimi, olası nakit açığı dönemleri, risk göstergeleri, nakit fazlası ve birikim fırsatları doğal dilde açıklanır.</span></div></div>
       <div class="debt-how-row"><span class="debt-how-ico">${I.loan}</span><div><b>Finansman ve yatırım fırsatları</b><span>İhtiyacın için uygun finansman alternatifleri; nakit fazlası için vadeli mevduat ve Sınırsız Hesap, harcama ve ekstre yuvarlama ile birikim önerileri. Finansman Çatı Limit’ten, Kredi Detay ve Kullandırım adımlarıyla kullanılır.</span></div></div>
     </div>
@@ -10858,8 +10858,8 @@ function BfFlows() {
     </div>
     <div class="sp-top">
       <div class="sp-seg">
-        <button class="sp-seg-b ${side === 'in' ? 'on' : ''}" data-action="bf-side" data-side="in">Şirkete Girenler</button>
-        <button class="sp-seg-b ${side === 'out' ? 'on' : ''}" data-action="bf-side" data-side="out">Şirketten Çıkanlar</button>
+        <button class="sp-seg-b ${side === 'in' ? 'on' : ''}" data-action="bf-side" data-side="in">Gelirler</button>
+        <button class="sp-seg-b ${side === 'out' ? 'on' : ''}" data-action="bf-side" data-side="out">Giderler</button>
       </div>
       <div class="sp-filters">
         <button class="sp-fpill" data-action="bf-period"><span class="sp-fp-ic">${I.calendar}</span><span>${p.id === 'custom' ? bfRangeShort(p.from, p.to) : bfPerLabel()}</span>${I.chevDown}</button>
@@ -10868,14 +10868,14 @@ function BfFlows() {
     </div>
     <div class="screen-scroll">
       <div class="sp-card bf-flow-sum">
-        <div class="sp-sum-label">${side === 'in' ? 'Şirkete giren para' : 'Şirketten çıkan para'} · ${bfRangeTxt(p.from, p.to)}</div>
+        <div class="sp-sum-label">${side === 'in' ? 'Toplam gelir' : 'Toplam gider'} · ${bfRangeTxt(p.from, p.to)}</div>
         <div class="sp-sum-amt bf-amt-${side}">${vmTL(tot)}</div>
         <div class="bf-flow-meta"><span>${cnt.toLocaleString('tr-TR')} işlem</span>${n > 1 ? `<span>Aylık ort. ${vmTL(tot / n)}</span>` : ''}
           ${v.cmp ? `<span class="bf-chip ${bfGood(side, tot - ptot) ? 'good' : 'bad'}">${bfChgTxt(bfChg(tot, ptot))} önceki döneme göre</span>` : ''}</div>
       </div>
       ${v.cmp ? bfCmpHTML(p, q) : ''}
       <div class="sp-card bf-chart-card">
-        <div class="bf-card-h"><span>Giriş ve çıkış karşılaştırması</span><span class="bf-legend"><i class="in"></i>Giriş<i class="out"></i>Çıkış</span></div>
+        <div class="bf-card-h"><span>Gelir ve gider karşılaştırması</span><span class="bf-legend"><i class="in"></i>Gelir<i class="out"></i>Gider</span></div>
         ${bfBarsSVG(p.from, p.to, side)}
       </div>
       <div class="vm-sec-h"><span>Kategoriler</span><span class="bf-sec-sub">${bfRangeShort(p.from, p.to)}</span></div>
@@ -10920,7 +10920,7 @@ function bfCmpHTML(p, q) {
   return `<div class="sp-card bf-cmp">
     <div class="bf-card-h"><span>Dönem karşılaştırması</span></div>
     <div class="bf-cmp-legend"><span><i></i>${bfRangeShort(p.from, p.to)}</span><span class="prev"><i></i>${bfRangeShort(q.from, q.to)}</span></div>
-    ${row('Para girişi', ia, ib, 'in')}${row('Para çıkışı', oa, ob, 'out')}${row('Net nakit akışı', ia - oa, ib - ob, null)}
+    ${row('Gelir', ia, ib, 'in')}${row('Gider', oa, ob, 'out')}${row('Net nakit akışı', ia - oa, ib - ob, null)}
   </div>`;
 }
 function bfTxListHTML() {
@@ -10988,19 +10988,19 @@ function bfGapTxt(g) {
 }
 function bfSummaryHTML() {
   const x = bfAI(), g = bfGaps(), need = x.need;
-  return `<p>Son üç ayda (${bfRangeTxt(21, 23)}) işletmenin para girişleri %${Math.round(x.inG)} artarak aylık ortalama ${bfWords(bfAvg('in'))} TL’ye ulaştı; artışı POS satışları ve online siparişler sürüklüyor. Aynı dönemde tedarikçi ödemeleri yılbaşı sezonu stok alımlarıyla neredeyse iki katına çıktı ve toplam giderler %${Math.round(x.outG)} arttı. Bu nedenle aylık net nakit akışı Ağustos’taki ${bfWords(x.netA)} TL’den Ekim’de ${bfWords(x.netC)} TL’ye geriledi.</p>
+  return `<p>Son üç ayda (${bfRangeTxt(21, 23)}) işletmenin gelirleri %${Math.round(x.inG)} artarak aylık ortalama ${bfWords(bfAvg('in'))} TL’ye ulaştı; artışı POS satışları ve online siparişler sürüklüyor. Aynı dönemde tedarikçi ödemeleri yılbaşı sezonu stok alımlarıyla neredeyse iki katına çıktı ve toplam giderler %${Math.round(x.outG)} arttı. Bu nedenle aylık net nakit akışı Ağustos’taki ${bfWords(x.netA)} TL’den Ekim’de ${bfWords(x.netC)} TL’ye geriledi.</p>
     <p>Maaş, kira ve sezon stok ödemelerinin aynı haftaya denk geldiği <b>${bfGapTxt(g[0])}</b> arasında hesap bakiyesinin yaklaşık <b>${bfWords(need.min)} TL eksiye</b> düşmesi bekleniyor; ${g.length > 1 ? `${bfGapTxt(g[1])} ve ${bfGapTxt(g[g.length - 1])} tarihlerinde de kısa süreli açıklar var. ` : ''}Geçen yıl Aralık’ta da net nakit akışı ${bfWords(x.lastDec)} TL ekside kalmıştı.</p>
     <p>Bu açığı %${BF_BUFFER} güvenlik payıyla karşılamak için Aralık başından önce <b>${bfWords(need.amount)} TL tutarında, 6 ay vadeli</b> kısa vadeli işletme sermayesi finansmanı uygun görünüyor. Ocak’tan itibaren beklenen aylık nakit fazlası taksitleri rahatça karşılıyor.</p>
-    <p>Olumlu tarafta işletme güçlü büyüyor: son 12 ayda girişler <b>%${Math.round(bfPos().inG)}</b> arttı ve ${bfPos().plusN}/12 ay nakit fazlası verdi. Aralık açığı kapandıktan sonra Ocak–Şubat’ta hesapta ortalama ${bfWords(bfPos().avgAfter)} TL bakiye bekleniyor; uzun süre kullanılmayacak kısmı vadeli mevduatta, ay içinde bekleyen kısmı Sınırsız Hesap’ta değerlendirilebilir. Düzenli kart harcamaları ve ekstre de yuvarlama ile birikime dönüştürülebilir.</p>`;
+    <p>Olumlu tarafta işletme güçlü büyüyor: son 12 ayda gelirler <b>%${Math.round(bfPos().inG)}</b> arttı ve ${bfPos().plusN}/12 ay nakit fazlası verdi. Aralık açığı kapandıktan sonra Ocak–Şubat’ta hesapta ortalama ${bfWords(bfPos().avgAfter)} TL bakiye bekleniyor; uzun süre kullanılmayacak kısmı vadeli mevduatta, ay içinde bekleyen kısmı Sınırsız Hesap’ta değerlendirilebilir. Düzenli kart harcamaları ve ekstre de yuvarlama ile birikime dönüştürülebilir.</p>`;
 }
 function bfRisks() {
   const x = bfAI(), g = bfGaps()[0];
   return [
     ['Nakit tamponu', 'hi', `Kullanılabilir bakiye (${vmTL(BF_BIZ.balance)}) yaklaşık ${Math.round(x.days)} günlük gidere yetiyor.`],
     ['Mevsimsel nakit açığı', 'hi', `${bfGapTxt(g)} arasında tahmini en düşük bakiye ${bfTLs(x.need.min)}; geçen yıl Aralık’ta net akış ${bfTLs(x.lastDec)} olmuştu.`],
-    ['Gider artış hızı', 'mid', `Son üç ayda giderler %${Math.round(x.outG)}, girişler %${Math.round(x.inG)} arttı.`],
+    ['Gider artış hızı', 'mid', `Son üç ayda giderler %${Math.round(x.outG)}, gelirler %${Math.round(x.inG)} arttı.`],
     ['Tedarikçi yoğunlaşması', 'mid', `Ekim’de tedarikçi ödemelerinde tek tedarikçinin (Ege Elektronik) payı %${Math.round(x.top)}.`],
-    ['Tahsilat düzenliliği', 'lo', `Girişlerde POS satışlarının payı %${Math.round(x.posShare)}; tahsilatlar her gün düzenli geliyor.`],
+    ['Tahsilat düzenliliği', 'lo', `Gelirlerde POS satışlarının payı %${Math.round(x.posShare)}; tahsilatlar her gün düzenli geliyor.`],
   ];
 }
 const BF_RISK_LBL = { hi: 'Yüksek', mid: 'Orta', lo: 'Düşük' };
@@ -11029,7 +11029,7 @@ function BfAnalysis() {
           <div class="bf-ai-orb ${run ? 'run' : ''}">${I.spark}</div>
           <b>${run ? 'Finansal verilerin analiz ediliyor' : ai.stopped ? 'Analiz durduruldu' : 'Yapı Kredi Akıllı Asistanı'}</b>
           ${run ? `<div class="think-line"><span class="shimmer" id="bf-think">${BF_AI_STEPS[Math.min(ai.step, BF_AI_STEPS.length - 1)]}…</span></div>`
-            : `<p>${ai.stopped ? 'Analizi istediğin zaman yeniden başlatabilirsin. ' : ''}Son 3 ayın para giriş ve çıkışları incelenir, önümüzdeki 120 günün nakit akışı tahmin edilir; finansman ihtiyacın ve sana özel teklifler belirlenir.</p>`}
+            : `<p>${ai.stopped ? 'Analizi istediğin zaman yeniden başlatabilirsin. ' : ''}Son 3 ayın gelir ve giderleri incelenir, önümüzdeki 120 günün nakit akışı tahmin edilir; finansman ihtiyacın ve sana özel teklifler belirlenir.</p>`}
           <div class="bf-ai-src">${I.lock} Kullanılan veriler: 3 işletme hesabı, 2 POS cihazı, e-fatura kayıtları · ${bfRangeTxt(21, 23)} (demo)</div>
         </div>
         ${run ? `<div class="bf-skel"><i></i><i></i><i class="s"></i></div><div class="bf-skel"><i></i><i class="s"></i></div><div class="bf-skel"><i></i><i></i><i class="s"></i></div>` : ''}
@@ -11062,7 +11062,7 @@ function BfAnalysis() {
         ${bfScores().map(([t, v, d]) => `<div class="bf-score"><div><span>${t}</span><b>${v}</b></div><div class="bf-score-bar"><i class="${v >= 75 ? 'g' : v >= 55 ? 'm' : 'w'}" style="width:${v}%"></i></div><em>${d}</em></div>`).join('')}
       </div>
 
-      <div class="vm-sec-h"><span>Gelir – gider dengesi</span><span class="bf-legend"><i class="in"></i>Giriş<i class="out"></i>Çıkış</span></div>
+      <div class="vm-sec-h"><span>Gelir – gider dengesi</span><span class="bf-legend"><i class="in"></i>Gelir<i class="out"></i>Gider</span></div>
       <div class="vm-box bf-bal">
         <div class="bf-kpis">
           <div><span>Ortalama aylık gelir</span><b class="bf-amt-in">${vmTL(bfAvg('in'))}</b></div>
@@ -11077,7 +11077,7 @@ function BfAnalysis() {
       <div class="vm-box bf-trend">
         ${bfNetSVG(18, 23, BF_FC_MONTHS)}
         <div class="bf-trend-chips">
-          <span class="bf-chip good">Girişler ${bfChgTxt(x.inG)}</span>
+          <span class="bf-chip good">Gelirler ${bfChgTxt(x.inG)}</span>
           <span class="bf-chip bad">Giderler ${bfChgTxt(x.outG)}</span>
           <span class="bf-chip bad">Net ${bfChgTxt(bfChg(x.netC, x.netA))}</span>
         </div>
@@ -11278,7 +11278,7 @@ function bfInvList() {
         <div class="bf-fc-legend"><span><i class="cur"></i>Mevcut tahmin</span><span><i class="fin"></i>Açık finansmanla kapatılırsa</span><span><i class="gap"></i>Açık dönemi</span></div>` },
     { id: 'flex', kind: 'flex', icon: 'wallet', cat: 'Kısa Vadeli Nakit Fazlası', title: 'Sınırsız Hesap',
       desc: 'Kısa süre içinde kullanacağın parayı erişilebilir tutarken günlük getiri elde et.',
-      signal: `Ay içinde tahsilat ile ödeme günleri arasında ~${bfWords(BF_FLEX_AMT)} TL bakiye bekliyor; kart ve online tahsilatlar girişlerin %${Math.round(p.cardShare)}’i`,
+      signal: `Ay içinde tahsilat ile ödeme günleri arasında ~${bfWords(BF_FLEX_AMT)} TL bakiye bekliyor; kart ve online tahsilatlar gelirlerin %${Math.round(p.cardShare)}’i`,
       adv: `Para her an kullanılabilir; ${vmTL(BF_FLEX_AMT)} için aylık ~${vmTL(fg.month)} getiri (örnek)`,
       ind: [
         ['Ay içinde bekleyen bakiye', `~${bfWords(BF_FLEX_AMT)} TL`, 'tahsilat ve ödeme günleri arasında'],
